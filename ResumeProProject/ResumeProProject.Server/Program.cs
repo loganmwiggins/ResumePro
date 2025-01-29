@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using ResumeProProject.Server.Data;
+
 namespace ResumeProProject.Server
 {
     public class Program
@@ -7,12 +10,27 @@ namespace ResumeProProject.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                });
+            
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();   // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Allows application to hit external Swagger endpoints
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy("MyPolicy", builder =>
+                {
+                    // In production, change this to only allow origins you want to accept connections from
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
@@ -28,8 +46,9 @@ namespace ResumeProProject.Server
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("MyPolicy");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

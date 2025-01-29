@@ -7,18 +7,15 @@ namespace ResumeProProject.Server.Data
 {
     public class AppDbContext : DbContext
     {
-        protected readonly IConfiguration Configuration;
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //{
+        // // Connect to sql server with connection string from app settings
+        //options.UseSqlServer(Configuration.GetConnectionString("ResumePro"));
+        //}
 
-        public AppDbContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            // connect to sql server with connection string from app settings
-            options.UseSqlServer(Configuration.GetConnectionString("ResumePro"));
-        }
+        // Entity Relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Education>()
@@ -35,8 +32,17 @@ namespace ResumeProProject.Server.Data
                 .HasConversion<string>(); // Store enum as string
         }
 
-        public DbSet<User> Users { get; set; }
 
+        // Tables
+        public DbSet<User> Users { get; set; }
         public DbSet<Resume> Resumes { get; set; }
+        public DbSet<Template> Templates { get; set; }
+
+        public DbSet<GeneralInformation> GeneralInformations { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<Certification> Certifications { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Skills> Skills { get; set; }
     }
 }

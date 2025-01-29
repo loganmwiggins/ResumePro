@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResumeProProject.Server.Data.Models
 {
-    public class GeneralInfo
+    public class GeneralInformation
     {
         [Key]
         public Guid GeneralInfoId { get; set; }
