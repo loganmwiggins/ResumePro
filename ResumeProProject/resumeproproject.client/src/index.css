@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,51 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+:root {
+  /* Root styles */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* background-color: #242424; */
+
+  /* Color variables */
+  --text-primary: #fff;
+  --text-secondary: #eee;
+  --text-third: #ddd;
+  --text-fourth: #bbb;
+  --accent-blue: rgb(0, 216, 255);
+  --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
+  --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
+
+  --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
+
+* { margin: 0; padding: 0; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  img {
+    width: 1.75rem;
+    filter: var(--filter-white);
+  }
+  h1 { text-align: left; }
+}
+
+/* .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    filter: var(--filter-white);
+  }
+} */

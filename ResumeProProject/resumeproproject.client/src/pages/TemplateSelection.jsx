@@ -1,10 +1,12 @@
 import '../stylesheets/TemplateSelection.css';
 
-import React from 'react'
+import React from 'react';
 
 function TemplateSelection() {
   return (
-    <div>TemplateSelection</div>
+    <div className="page-header">
+        <h1>Choose a Template</h1>
+    </div>
   )
 }
 
