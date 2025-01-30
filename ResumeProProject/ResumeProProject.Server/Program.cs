@@ -1,5 +1,7 @@
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using ResumeProProject.Server.Data;
 
 namespace ResumeProProject.Server
@@ -10,34 +12,72 @@ namespace ResumeProProject.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ✅ Add Logging for Debugging
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+            builder.Logging.AddEventSourceLogger();
+            builder.Services.AddSingleton<ILoggerFactory, LoggerFactory>();
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
                 });
-            
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();   // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-            // Allows application to hit external Swagger endpoints
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            // ✅ Configure CORS
             builder.Services.AddCors(option =>
             {
                 option.AddPolicy("MyPolicy", builder =>
                 {
-                    // In production, change this to only allow origins you want to accept connections from
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // ✅ Determine Database Provider
+            string dbType = builder.Configuration.GetValue<string>("DatabaseType") ?? "SqlServer";
+            var logger = builder.Logging.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
+            logger.LogInformation($"Using database provider: {dbType}");
+
+            if (dbType.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+            {
+                builder.Services.AddDbContext<AppDbContext>(options =>
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+            }
+            else
+            {
+                builder.Services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            }
+
+            // ✅ Configure Authentication (JWT)
+            var jwtKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
+                ?? throw new ArgumentNullException("Jwt:Key is missing from configuration."));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(jwtKey)
+                    };
+                });
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -45,13 +85,12 @@ namespace ResumeProProject.Server
             }
 
             app.UseHttpsRedirection();
-
             app.UseCors("MyPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
-
             app.MapFallbackToFile("/index.html");
 
             app.Run();

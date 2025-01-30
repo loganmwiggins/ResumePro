@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResumeProProject.Server.Data.Models
@@ -8,26 +9,34 @@ namespace ResumeProProject.Server.Data.Models
         [Key]
         public Guid EducationId { get; set; }
 
+        // ✅ Explicit Foreign Key for Resume
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
 
-        public required string SchoolName { get; set; }
+        // ✅ Navigation Property
+        public virtual Resume Resume { get; set; }
 
-        public Degree DegreeType { get; set; } // Enum Property
+        [Required]
+        public string SchoolName { get; set; }
+
+        // ✅ Store Enum as String
+        [Required]
+        public DegreeLevel DegreeType { get; set; }
 
         public double? GPA { get; set; }
 
-        public required string Major { get; set; }
+        [Required]
+        public string Major { get; set; }
 
         public string? Minor { get; set; }
 
-        public required DateOnly StartDate {  get; set; }
+        [Required]
+        public DateOnly StartDate { get; set; }
 
         public DateOnly? EndDate { get; set; }
-
     }
 
-    public enum Degree
+    public enum DegreeLevel
     {
         Undergraduate,
         Graduate,

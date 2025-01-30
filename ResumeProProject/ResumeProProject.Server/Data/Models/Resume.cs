@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResumeProProject.Server.Data.Models
@@ -8,12 +10,20 @@ namespace ResumeProProject.Server.Data.Models
         [Key]
         public Guid ResumeId { get; set; }
 
-        [ForeignKey("Template")]
-        public Guid TemplateId { get; set; }
+        public string Name { get; set; }
 
-        public required string Name { get; set; } = "Untitled Resume";
+        public DateTime UpdatedDateTime { get; set; } = DateTime.UtcNow;
 
-        public required DateTime UpdatedDateTime { get; set; }
+        // ✅ Explicitly define foreign key mapping
+        [ForeignKey("User")]
+        public Guid UserId { get; set; }
 
+        public virtual User User { get; set; }
+
+        public virtual ICollection<Education> Educations { get; set; } = new List<Education>();
+        public virtual ICollection<Experience> Experiences { get; set; } = new List<Experience>();
+        public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
+        public virtual ICollection<Skills> Skills { get; set; } = new List<Skills>();
     }
 }

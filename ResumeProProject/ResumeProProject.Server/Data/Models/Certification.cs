@@ -18,5 +18,9 @@ namespace ResumeProProject.Server.Data.Models
         public required DateOnly IssueDate { get; set; }
 
         public DateOnly? ExpireDate { get; set; }
+
+        // ✅ Navigation Property
+        public virtual Resume Resume { get; set; }
+ 
     }
 }
