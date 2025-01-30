@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ResumeProProject.Server.Data;
+using ResumeProProject.Server.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ResumeProProject.Server
 {
@@ -52,31 +55,49 @@ namespace ResumeProProject.Server
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             }
 
-            // ✅ Configure Authentication (JWT)
-            var jwtKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
-                ?? throw new ArgumentNullException("Jwt:Key is missing from configuration."));
+            //// ✅ Configure Authentication (JWT)
+            //var jwtKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
+            //    ?? throw new ArgumentNullException("Jwt:Key is missing from configuration."));
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(jwtKey)
-                    };
-                });
+            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            //            ValidAudience = builder.Configuration["Jwt:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(jwtKey)
+            //        };
+            //    });
 
             builder.Services.AddAuthorization();
+            builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
 
             var app = builder.Build();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.MapIdentityApi<User>();
+
+            app.MapPost("/logout", async (SignInManager<User> signInManager) =>
+            {
+                await signInManager.SignOutAsync(); // removes cookie
+                return Results.Ok();
+            }).RequireAuthorization();
+
+            app.MapGet("/pingauth", (ClaimsPrincipal user) =>
+            {
+                var email = user.FindFirstValue(ClaimTypes.Email); // get email from claim
+                return Results.Json(new { Email = email }); ; // return email as plain txt response
+            }).RequireAuthorization();
+
+
+
+
 
             if (app.Environment.IsDevelopment())
             {

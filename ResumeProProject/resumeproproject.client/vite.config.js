@@ -44,7 +44,24 @@ export default defineConfig({
     server: {
         proxy: {
             '^/weatherforecast': {
-                target,
+                target: 'https://localhost:7035/',
+                secure: false
+            },
+            // Pass through vite into asp.net core
+            '^/pingauth': {
+                target: 'https://localhost:7035/',
+                secure: false
+            },
+            '^/register': {
+                target: 'https://localhost:7035/',
+                secure: false
+            },
+            '^/login': {
+                target: 'https://localhost:7035/',
+                secure: false
+            },
+            '^/logout': {
+                target: 'https://localhost:7035/',
                 secure: false
             }
         },
