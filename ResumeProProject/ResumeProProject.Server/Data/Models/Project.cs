@@ -11,4 +11,6 @@ public class Project
     public required Guid ResumeId { get; set; }
 
     public required string Description { get; set; }
+
+    public virtual Resume Resume { get; set; }
 }

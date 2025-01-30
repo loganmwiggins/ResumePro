@@ -30,6 +30,9 @@ namespace ResumeProProject.Server.Data.Models
         public OfficeType OfficeType { get; set; }
 
         public JobType JobType { get; set; }
+
+        // ✅ Added Navigation Property
+        public virtual Resume Resume { get; set; }
     }
 
     public enum OfficeType
