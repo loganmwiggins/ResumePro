@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
-const UserContext = createContext({});
+export const UserContext = createContext({});
 
 function AuthorizeView({ children }) {
     const [authorized, setAuthorized] = useState(false);
@@ -26,17 +26,20 @@ function AuthorizeView({ children }) {
                     setUser({ email: data.email });
                     setAuthorized(true);
                     return response;
-                } else if (response.status === 401) {
+                }
+                else if (response.status === 401) {
                     console.log("Unauthorized");
                     return response;
-                } else {
+                }
+                else {
                     throw new Error("" + response.status);
                 }
             } catch (error) {
                 retryCount++;
                 if (retryCount > maxRetries) {
                     throw error;
-                } else {
+                }
+                else {
                     await wait(delay);
                     return fetchWithRetry(url, options);
                 }

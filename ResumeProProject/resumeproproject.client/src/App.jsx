@@ -20,17 +20,16 @@ function App() {
 
             {/* Content changes based on route */}
             <Routes>
-                {/* Main pages */}
                 <Route path="/" element={<Welcome />} />
+                <Route path="/welcome" element={<Welcome />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/templates" element={<TemplateSelection />} />
                 <Route path="/editor" element={<ResumeEditor />} />
                 <Route path="/insights" element={<ResumeInsights />} />
+                <Route path="/profile" element={<Profile />} />
 
-                {/* User pages */}
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
             </Routes>
         </div>
     </BrowserRouter>
