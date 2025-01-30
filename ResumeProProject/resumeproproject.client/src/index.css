@@ -78,7 +78,7 @@ button:focus-visible {
   --text-secondary: #eee;
   --text-third: #ddd;
   --text-fourth: #bbb;
-  --accent-blue: rgb(0, 216, 255);
+  --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
@@ -89,7 +89,7 @@ button:focus-visible {
 
 .page-header {
   display: flex;
-  align-items: center;
+  text-align: left;
   gap: 1rem;
 
   img {
@@ -113,3 +113,27 @@ button:focus-visible {
     filter: var(--filter-white);
   }
 } */
+
+.btn-accent {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  max-width: fit-content;
+  cursor: pointer;
+  transition: transform .2s ease;
+
+  img {
+    width: 1rem;
+    filter: var(--filter-white);
+  }
+}
+.btn-accent:hover {
+  transform: scale(1.1);
+  transition: transform .2s ease;
+}

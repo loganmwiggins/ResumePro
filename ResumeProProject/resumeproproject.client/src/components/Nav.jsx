@@ -11,10 +11,10 @@ function Nav() {
             </div>
 
             <div className="directory">
-                <button className="login-btn">
+                <button className="btn-accent">
                     Login
                 </button>
-                <button className="login-btn">
+                <button className="btn-accent">
                     Sign Up
                 </button>
                 <button className="user-btn">

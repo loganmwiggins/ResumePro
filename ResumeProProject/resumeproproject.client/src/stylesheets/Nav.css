@@ -49,10 +49,6 @@
     cursor: default;
 }
 
-.login-btn {
-    cursor: pointer;
-}
-
 .user-btn {
     display: flex;
     align-items: center;
