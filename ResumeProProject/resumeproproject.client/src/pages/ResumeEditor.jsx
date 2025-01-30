@@ -1,4 +1,5 @@
 import '../stylesheets/ResumeEditor.css';
+
 import React from 'react'
 
 function ResumeEditor() {
@@ -7,4 +8,4 @@ function ResumeEditor() {
   )
 }
 
-export default ResumeEditor
+export default ResumeEditor;

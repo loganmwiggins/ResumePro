@@ -1,4 +1,5 @@
 import '../stylesheets/ResumeInsights.css';
+
 import React from 'react'
 
 function ResumeInsights() {
@@ -7,4 +8,4 @@ function ResumeInsights() {
   )
 }
 
-export default ResumeInsights
+export default ResumeInsights;

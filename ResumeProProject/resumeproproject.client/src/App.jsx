@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css';
 import Nav from './components/Nav';
+import Welcome from './pages/Welcome';
 import Home from './pages/Home';
 import TemplateSelection from './pages/TemplateSelection';
 import ResumeEditor from './pages/ResumeEditor';
@@ -20,7 +21,8 @@ function App() {
             {/* Content changes based on route */}
             <Routes>
                 {/* Main pages */}
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Welcome />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/templates" element={<TemplateSelection />} />
                 <Route path="/editor" element={<ResumeEditor />} />
                 <Route path="/insights" element={<ResumeInsights />} />
