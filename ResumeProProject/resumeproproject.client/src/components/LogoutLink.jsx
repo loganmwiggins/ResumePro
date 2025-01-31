@@ -23,9 +23,9 @@ function LogoutLink({ children }) {
     };
 
     return (
-        <a href="#" onClick={handleLogoutClick}>
+        <button onClick={handleLogoutClick}>
             {children}
-        </a>
+        </button>
     );
 }
 

@@ -8,7 +8,7 @@ function Profile() {
   return (
   <AuthorizeView>
     <div>Profile page</div>
-    <LogoutLink>logout</LogoutLink>
+    <LogoutLink>Logout</LogoutLink>
   </AuthorizeView>
   )
 }
