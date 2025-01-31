@@ -1,14 +1,12 @@
-import AuthorizeView from '../components/AuthorizeView';
-import LogoutLink from '../components/LogoutLink';
-import '../stylesheets/Home.css';
+import React from 'react';
 
-import React from 'react'
+import '../stylesheets/Home.css';
+import AuthorizeView from '../components/AuthorizeView';
 
 function Home() {
   return (
     <AuthorizeView>    
-      <div>Home</div>
-      <LogoutLink children={"logout"}>logout</LogoutLink>
+      <div>Home page</div>
     </AuthorizeView>
   )
 }
