@@ -61,41 +61,41 @@ function Login() {
 
     return (
         <div className="login-ctnr">
-            {/* GRAPHIC */}
+            {/* GRAPHIC SIDE */}
             <div className="graphic-ctnr">
                 <img src="assets/images/resume-2.webp" draggable="false" />
             </div>
 
-            {/* FORM */}
+            {/* FORM SIDE */}
             <div className="form-ctnr">
                 <h3>ResumePro</h3>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-header">
                         <h3>Welcome Back</h3>
-                        <p>Enter your email and password to access your account</p>
+                        <p>Enter your email and password to access your account.</p>
                     </div>
 
                     {/* Email input */}
                     <div className="form-label">
-                        <label htmlFor="email">Email</label>
+                        {/* <label htmlFor="email">Email</label> */}
                         <input 
                             type="email" 
                             id="email" 
                             name="email" 
-                            placeholder="Enter your email"
+                            placeholder="Email"
                             value={email} 
                             onChange={handleChange} 
                         />
                     </div>
                     {/* Password input */}
                     <div className="form-label">
-                        <label htmlFor="password">Password</label>
+                        {/* <label htmlFor="password">Password</label> */}
                         <input 
                             type="password" 
                             id="password" 
                             name="password"
-                            placeholder="Enter your password"
+                            placeholder="Password"
                             value={password} 
                             onChange={handleChange} 
                         />

@@ -1,9 +1,12 @@
-import '../stylesheets/SignUp.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import '../stylesheets/Login.css';
+
 function SignUp() {
     // State variables
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,7 +21,9 @@ function SignUp() {
     // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "email") setEmail(value);
+        if (name === "firstname") setFirstName(value);
+        else if (name === "lastname") setLastName(value);
+        else if (name === "email") setEmail(value);
         else if (name === "password") setPassword(value);
         else if (name === "confirmPassword") setConfirmPassword(value);
     };
@@ -65,36 +70,96 @@ function SignUp() {
     };
 
     return (
-        <div className="containerbox">
-            <h3>Sign Up</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                </div>
-                <div>
-                    <input type="email" id="email" name="email" value={email} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                </div>
-                <div>
-                    <input type="password" id="password" name="password" value={password} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                </div>
-                <div>
-                    <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} />
-                </div>
-                <div>
-                    <button type="submit">Sign Up</button>
-                </div>
-                <div>
-                    <button type="button" onClick={handleLoginClick}>Go to Login</button>
-                </div>
-            </form>
+        <div className="login-ctnr">
+            {/* GRAPHIC SIDE */}
+            <div className="graphic-ctnr">
+                <img src="assets/images/resume-1.webp" draggable="false" />
+            </div>
 
-            {error && <p className="error">{error}</p>}
+            {/* FORM SIDE */}
+            <div className="form-ctnr">
+                <h3>ResumePro</h3>
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-header">
+                        <h3>Create an Account</h3>
+                        <p>Enter the following information to sign up and create your account.</p>
+                    </div>
+
+                    <div className="form-label-row">
+                        {/* First Name input */}
+                        <div className="form-label">
+                            {/* <label htmlFor="firstname">First Name</label> */}
+                            <input 
+                                type="firstname" 
+                                id="firstname" 
+                                name="firstname" 
+                                placeholder="First Name"
+                                value={firstName} 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                        {/* Last Name input */}
+                        <div className="form-label">
+                            {/* <label htmlFor="lastname">Last Name</label> */}
+                            <input 
+                                type="lastname" 
+                                id="lastname" 
+                                name="lastname" 
+                                placeholder="Last Name"
+                                value={lastName} 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                    </div>
+                    
+                    {/* Email input */}
+                    <div className="form-label">
+                        {/* <label htmlFor="email">Email</label> */}
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Email"
+                            value={email} 
+                            onChange={handleChange} 
+                        />
+                    </div>
+                    {/* Password input */}
+                    <div className="form-label">
+                        {/* <label htmlFor="password">Password</label> */}
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="Password"
+                            value={password} 
+                            onChange={handleChange} 
+                        />
+                    </div>
+                    {/* Confirm Password input */}
+                    <div className="form-label">
+                        {/* <label htmlFor="confirmPassword">Confirm Password</label> */}
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            placeholder="Confirm Password"
+                            value={confirmPassword} 
+                            onChange={handleChange} 
+                        />
+                    </div>
+                    
+                    <button type="submit" className="btn-login">Sign Up</button>
+
+                    {error && <p className="error">{error}</p>}
+                </form>
+
+                <div className="signup-ctnr">
+                    <p>Already have an account?</p>
+                    <a href="#" onClick={handleLoginClick}>Login</a>
+                </div>
+            </div>
         </div>
     );
 }

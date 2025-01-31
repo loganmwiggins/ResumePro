@@ -6,6 +6,7 @@
     padding: 1rem;
     border: 1px solid rgb(230, 230, 230);
     border-radius: .5rem;
+    height: 90svh;
 }
 
 .form-ctnr, .graphic-ctnr { flex: 1; }
@@ -18,7 +19,7 @@
     background: aliceblue;
     border-radius: .5rem;
     width: 100%;
-    height: 70svh;
+    height: 100%;
 
     img {
         width: 100%;
@@ -50,7 +51,15 @@ form {
     width: 100%;
 }
 
+.form-label-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .form-label {
+    flex: 1;
     display: flex;
     flex-direction: column; 
     align-items: start;
@@ -59,10 +68,7 @@ form {
     input {
         width: 100%;
         padding: .75rem;
-        /* box-sizing: border-box; */
-        /* background: rgb(250, 250, 250); */
         background: rgb(235, 239, 247);
-        /* border: 1px solid grey; */
         border: none;
         border-radius: .5rem;
     }
