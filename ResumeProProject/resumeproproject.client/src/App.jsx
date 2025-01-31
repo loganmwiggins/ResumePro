@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { UserProvider } from "./context/UserContext";
 
 import './App.css';
 import Nav from './components/Nav';
@@ -19,7 +20,7 @@ function App() {
   const hideNavRoutes = ["/login", "/signup"];
   
   return (
-    <>
+    < UserProvider>
       {/* Conditionally render Nav */}
       {!hideNavRoutes.includes(location.pathname) && <Nav />}
 
@@ -40,7 +41,7 @@ function App() {
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 }
 

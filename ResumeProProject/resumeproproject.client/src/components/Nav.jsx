@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from "../context/UserContext"; 
 
 import '../stylesheets/Nav.css';
 
 function Nav() {
+    const user = useUser();
     const navigate = useNavigate();
 
     const handleTitleClick = () => {
@@ -25,7 +27,9 @@ function Nav() {
                 <div className="directory">
                     <button className="user-btn" onClick={handleProfileClick}>
                         <img src="assets/icons/user.svg" draggable="false" />
-                        <span>Vraj</span>
+                        <span>
+                            {user ? `${user.firstName}` : "Guest"}
+                        </span>
                     </button>
                 </div>
             </div>
