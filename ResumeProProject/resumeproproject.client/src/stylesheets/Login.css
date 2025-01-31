@@ -4,6 +4,7 @@
     border: 1px solid rgb(230, 230, 230);
     border-radius: .5rem;
     height: 90svh;
+    box-shadow: 0 0 .5rem rgb(215, 215, 215);
 }
 
 .form-ctnr, .graphic-ctnr { flex: 1; }

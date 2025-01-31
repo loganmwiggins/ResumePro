@@ -57,7 +57,7 @@ function Welcome() {
                     className="btn-accent"
                 >
                     <img src="assets/icons/new-document.svg" draggable="false" />
-                    Get Started
+                    <span>Get Started</span>
                 </button>
             </div>
 
