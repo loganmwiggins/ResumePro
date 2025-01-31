@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import './App.css';
 import Nav from './components/Nav';
@@ -13,27 +13,36 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 
 function App() {
+  const location = useLocation();
+  
+  // Define routes where Nav should be hidden
+  const hideNavRoutes = ["/login", "/signup"];
+  
   return (
-    <BrowserRouter>
-        <div>
-            <Nav />
+    <>
+      {/* Conditionally render Nav */}
+      {!hideNavRoutes.includes(location.pathname) && <Nav />}
 
-            {/* Content changes based on route */}
-            <Routes>
-                <Route path="/" element={<Welcome />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/templates" element={<TemplateSelection />} />
-                <Route path="/editor" element={<ResumeEditor />} />
-                <Route path="/insights" element={<ResumeInsights />} />
-                <Route path="/profile" element={<Profile />} />
-
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-            </Routes>
-        </div>
-    </BrowserRouter>
-  )
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/templates" element={<TemplateSelection />} />
+        <Route path="/editor" element={<ResumeEditor />} />
+        <Route path="/insights" element={<ResumeInsights />} />
+        <Route path="/profile" element={<Profile />} />
+        
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App;
+export default function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
