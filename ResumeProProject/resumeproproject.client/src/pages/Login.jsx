@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../stylesheets/Login.css';
+import PasswordInput from "../components/PasswordInput";
 
 function Login() {
     // State variables
@@ -61,45 +62,43 @@ function Login() {
 
     return (
         <div className="login-ctnr">
-            {/* GRAPHIC */}
+            {/* GRAPHIC SIDE */}
             <div className="graphic-ctnr">
                 <img src="assets/images/resume-2.webp" draggable="false" />
             </div>
 
-            {/* FORM */}
+            {/* FORM SIDE */}
             <div className="form-ctnr">
-                <h3>ResumePro</h3>
+                <div className="form-title">
+                    <img src="assets/icons/resume-logo.svg" draggable="false" />
+                    <h3>ResumePro</h3>
+                </div>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-header">
                         <h3>Welcome Back</h3>
-                        <p>Enter your email and password to access your account</p>
+                        <p>Enter your email and password to access your account.</p>
                     </div>
 
                     {/* Email input */}
-                    <div className="form-label">
-                        <label htmlFor="email">Email</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="Enter your email"
-                            value={email} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Email"
+                        value={email} 
+                        onChange={handleChange} 
+                    />
+
                     {/* Password input */}
-                    <div className="form-label">
-                        <label htmlFor="password">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            placeholder="Enter your password"
-                            value={password} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        handleChange={handleChange}
+                    />
+                    
                     <div className="remember-forgot-ctnr">
                         {/* Remember Me input */}
                         <div className="checkbox-ctnr">

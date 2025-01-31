@@ -1,9 +1,13 @@
-import '../stylesheets/SignUp.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import '../stylesheets/Login.css';
+import PasswordInput from "../components/PasswordInput";
+
 function SignUp() {
     // State variables
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,17 +22,19 @@ function SignUp() {
     // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "email") setEmail(value);
+        if (name === "firstname") setFirstName(value);
+        else if (name === "lastname") setLastName(value);
+        else if (name === "email") setEmail(value);
         else if (name === "password") setPassword(value);
         else if (name === "confirmPassword") setConfirmPassword(value);
     };
 
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate input fields
-        if (!email || !password || !confirmPassword) {
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
             setError("Please fill in all fields.");
             return;
         }
@@ -44,57 +50,108 @@ function SignUp() {
         setError(""); // Clear errors
 
         // Send request to API
-        fetch("/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setError("Successful sign-up.");
-                } else {
-                    setError("Error signing up.");
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                setError("Error signing up.");
+        try {
+            const response = await fetch("https://localhost:7035/api/user/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ firstName, lastName, email, password }),
             });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                //alert("Sign-up successful! Redirecting to login.");
+                navigate("/login");
+            } else {
+                setError(data.message || "Error signing up.");
+            }
+        } catch (error) {
+            console.error(error);
+            setError("Error signing up. Please try again.");
+        }
     };
 
     return (
-        <div className="containerbox">
-            <h3>Sign Up</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                </div>
-                <div>
-                    <input type="email" id="email" name="email" value={email} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                </div>
-                <div>
-                    <input type="password" id="password" name="password" value={password} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                </div>
-                <div>
-                    <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} />
-                </div>
-                <div>
-                    <button type="submit">Sign Up</button>
-                </div>
-                <div>
-                    <button type="button" onClick={handleLoginClick}>Go to Login</button>
-                </div>
-            </form>
+        <div className="login-ctnr">
+            {/* GRAPHIC SIDE */}
+            <div className="graphic-ctnr">
+                <img src="assets/images/resume-1.webp" draggable="false" />
+            </div>
 
-            {error && <p className="error">{error}</p>}
+            {/* FORM SIDE */}
+            <div className="form-ctnr">
+                <div className="form-title">
+                    <img src="assets/icons/resume-logo.svg" draggable="false" />
+                    <h3>ResumePro</h3>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-header">
+                        <h3>Create an Account</h3>
+                        <p>Enter the following information to sign up and create your account.</p>
+                    </div>
+
+                    <div className="input-row">
+                        {/* First Name input */}
+                        <input 
+                            type="text" 
+                            id="firstname" 
+                            name="firstname" 
+                            placeholder="First Name"
+                            value={firstName} 
+                            onChange={handleChange} 
+                        />
+                        {/* Last Name input */}
+                        <input 
+                            type="text" 
+                            id="lastname" 
+                            name="lastname" 
+                            placeholder="Last Name"
+                            value={lastName} 
+                            onChange={handleChange} 
+                        />
+                    </div>
+                    
+                    {/* Email input */}
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Email"
+                        value={email} 
+                        onChange={handleChange} 
+                    />
+
+                    {/* Password input */}
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        handleChange={handleChange}
+                    />
+
+                    {/* Confirm Password input */}
+                    <PasswordInput
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        handleChange={handleChange}
+                    />
+
+                    <button type="submit" className="btn-login">Sign Up</button>
+
+                    {error && <p className="error">{error}</p>}
+                </form>
+
+                <div className="signup-ctnr">
+                    <p>Already have an account?</p>
+                    <a href="#" onClick={handleLoginClick}>Login</a>
+                </div>
+            </div>
         </div>
     );
 }

@@ -8,7 +8,6 @@ function Welcome() {
     const navigate = useNavigate();
 
     return (
-    <AuthorizeView> 
         <div className="welcome-container">
             <div className="welcome-content">
                 <div className="page-header">
@@ -57,7 +56,7 @@ function Welcome() {
                     className="btn-accent"
                 >
                     <img src="assets/icons/new-document.svg" draggable="false" />
-                    Get Started
+                    <span>Get Started</span>
                 </button>
             </div>
 
@@ -65,7 +64,6 @@ function Welcome() {
                 <div className="document"></div>
             </div>
         </div>
-    </AuthorizeView> 
     )
 }
 
