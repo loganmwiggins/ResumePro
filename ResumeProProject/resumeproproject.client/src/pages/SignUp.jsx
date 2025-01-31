@@ -30,11 +30,11 @@ function SignUp() {
     };
 
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate input fields
-        if (!email || !password || !confirmPassword) {
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
             setError("Please fill in all fields.");
             return;
         }
@@ -50,24 +50,27 @@ function SignUp() {
         setError(""); // Clear errors
 
         // Send request to API
-        fetch("/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setError("Successful sign-up.");
-                } else {
-                    setError("Error signing up.");
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                setError("Error signing up.");
+        try {
+            const response = await fetch("https://localhost:7035/api/user/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ firstName, lastName, email, password }),
             });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                //alert("Sign-up successful! Redirecting to login.");
+                navigate("/login");
+            } else {
+                setError(data.message || "Error signing up.");
+            }
+        } catch (error) {
+            console.error(error);
+            setError("Error signing up. Please try again.");
+        }
     };
 
     return (
@@ -93,7 +96,7 @@ function SignUp() {
                     <div className="input-row">
                         {/* First Name input */}
                         <input 
-                            type="firstname" 
+                            type="text" 
                             id="firstname" 
                             name="firstname" 
                             placeholder="First Name"
@@ -102,7 +105,7 @@ function SignUp() {
                         />
                         {/* Last Name input */}
                         <input 
-                            type="lastname" 
+                            type="text" 
                             id="lastname" 
                             name="lastname" 
                             placeholder="Last Name"
