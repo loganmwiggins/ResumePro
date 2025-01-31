@@ -12,8 +12,8 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250130204734_RemoveNonNullableFromUser")]
-    partial class RemoveNonNullableFromUser
+    [Migration("20250131150449_InitialMigrationWithIdentity")]
+    partial class InitialMigrationWithIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

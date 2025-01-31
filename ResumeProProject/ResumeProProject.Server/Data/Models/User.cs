@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResumeProProject.Server.Data.Models
 {
-    public class User: IdentityUser
+    public class User : IdentityUser
     {
         //[Key]
         //public Guid UserId { get; set; }

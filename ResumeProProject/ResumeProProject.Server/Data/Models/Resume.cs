@@ -17,7 +17,6 @@ namespace ResumeProProject.Server.Data.Models
         // ✅ Explicitly define foreign key mapping
         [ForeignKey("User")]
         public string Id { get; set; }
-
         public virtual User User { get; set; }
 
         public virtual ICollection<Education> Educations { get; set; } = new List<Education>();
