@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 import Nav from './components/Nav';
@@ -22,6 +24,14 @@ function App() {
     <>
       {/* Conditionally render Nav */}
       {!hideNavRoutes.includes(location.pathname) && <Nav />}
+
+      {/* Toast Container for toast alerts */}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        closeOnClick
+        newestOnTop
+      />
 
       <Routes>
         {/* Protected routes */}

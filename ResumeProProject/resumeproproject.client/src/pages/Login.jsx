@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import '../stylesheets/Login.css';
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from '../components/PasswordInput';
+import { showToast } from '../utils/toast';
 
 function Login() {
     // State variables
@@ -30,7 +31,8 @@ function Login() {
 
         // Validate email and password
         if (!email || !password) {
-            setError("Please fill in all fields.");
+            // setError("Please fill in all fields.");
+            showToast("Please fill in all fields.", "warning")
             return;
         }
 
@@ -48,15 +50,18 @@ function Login() {
         })
             .then((response) => {
                 if (response.ok) {
-                    setError("Successful Login.");
+                    // setError("Successful Login.");
                     window.location.href = "/";
+                    showToast("Successful login.", "success");
                 } else {
-                    setError("Error Logging In.");
+                    // setError("Error Logging In.");
+                    showToast("Error logging in.", "error");
                 }
             })
             .catch((error) => {
                 console.error(error);
-                setError("Error Logging in.");
+                // setError("Error Logging in.");
+                showToast("Error logging in.", "error");
             });
     };
 
