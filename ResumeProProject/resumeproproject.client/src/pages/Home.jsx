@@ -7,8 +7,8 @@ import React from 'react'
 function Home() {
   return (
     <AuthorizeView>    
-        <div>Home</div>
-        <LogoutLink children={"logout"}>logout</LogoutLink>
+      <div>Home</div>
+      <LogoutLink children={"logout"}>logout</LogoutLink>
     </AuthorizeView>
   )
 }

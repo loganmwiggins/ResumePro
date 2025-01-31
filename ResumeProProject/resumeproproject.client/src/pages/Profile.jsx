@@ -1,10 +1,13 @@
-import '../stylesheets/Profile.css';
+import React from 'react';
 
-import React from 'react'
+import '../stylesheets/Profile.css';
+import AuthorizeView from '../components/AuthorizeView';
 
 function Profile() {
   return (
-    <div>Profile</div>
+  <AuthorizeView>
+    <div>Profile page</div>
+  </AuthorizeView>
   )
 }
 

@@ -1,10 +1,13 @@
-import '../stylesheets/ResumeEditor.css';
+import React from 'react';
 
-import React from 'react'
+import '../stylesheets/ResumeEditor.css';
+import AuthorizeView from '../components/AuthorizeView';
 
 function ResumeEditor() {
   return (
-    <div>ResumeEditor</div>
+    <AuthorizeView>
+      <div>Resume Editor page</div>
+    </AuthorizeView>
   )
 }
 

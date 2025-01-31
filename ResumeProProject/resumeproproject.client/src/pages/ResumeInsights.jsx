@@ -1,10 +1,13 @@
-import '../stylesheets/ResumeInsights.css';
+import React from 'react';
 
-import React from 'react'
+import '../stylesheets/ResumeInsights.css';
+import AuthorizeView from '../components/AuthorizeView';
 
 function ResumeInsights() {
   return (
-    <div>ResumeInsights</div>
+    <AuthorizeView>
+      <div>Resume Insights page</div>
+    </AuthorizeView>
   )
 }
 

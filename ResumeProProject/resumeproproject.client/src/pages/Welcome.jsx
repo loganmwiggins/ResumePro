@@ -15,7 +15,7 @@ function Welcome() {
                     <h1>Welcome</h1>
                 </div>
 
-                <h3>Your Path to a Standout Resume!</h3>
+                <h3>Your Path to a Standout Resume</h3>
                 <p>
                     Creating a professional resume has never been easier! ResumePro is your all-in-one resume builder, designed to help you craft an eye-catching, industry-ready resume in minutes. Whether you’re a seasoned professional or just starting your career journey, our guided input system makes it simple to showcase your skills, experience, and personality.
                 </p>

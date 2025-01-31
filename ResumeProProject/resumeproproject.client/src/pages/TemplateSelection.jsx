@@ -1,12 +1,15 @@
-import '../stylesheets/TemplateSelection.css';
-
 import React from 'react';
+
+import '../stylesheets/TemplateSelection.css';
+import AuthorizeView from '../components/AuthorizeView';
 
 function TemplateSelection() {
   return (
-    <div className="page-header">
+    <AuthorizeView>
+      <div className="page-header">
         <h1>Choose a Template</h1>
-    </div>
+      </div>
+    </AuthorizeView>
   )
 }
 
