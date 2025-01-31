@@ -27,17 +27,7 @@
     cursor: default;
 
     h3 { font-size: 1.5rem; }
-
-    img {
-        width: 1.75rem;
-        height: 1.75rem;
-        /* animation: rotate 10s linear infinite; */
-        transition: scale .2s ease-in-out;
-    }
-    img:hover {
-        scale: 125%;
-        transition: scale .2s ease-in-out;
-    }
+    img { width: 1.5rem; }
 }
 
 .directory {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../stylesheets/Login.css';
+import PasswordInput from "../components/PasswordInput";
 
 function Login() {
     // State variables
@@ -80,29 +81,24 @@ function Login() {
                     </div>
 
                     {/* Email input */}
-                    <div className="form-label">
-                        {/* <label htmlFor="email">Email</label> */}
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="Email"
-                            value={email} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Email"
+                        value={email} 
+                        onChange={handleChange} 
+                    />
+
                     {/* Password input */}
-                    <div className="form-label">
-                        {/* <label htmlFor="password">Password</label> */}
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            placeholder="Password"
-                            value={password} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        handleChange={handleChange}
+                    />
+                    
                     <div className="remember-forgot-ctnr">
                         {/* Remember Me input */}
                         <div className="checkbox-ctnr">

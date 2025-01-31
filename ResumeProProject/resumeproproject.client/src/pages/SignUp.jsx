@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../stylesheets/Login.css';
+import PasswordInput from "../components/PasswordInput";
 
 function SignUp() {
     // State variables
@@ -89,70 +90,55 @@ function SignUp() {
                         <p>Enter the following information to sign up and create your account.</p>
                     </div>
 
-                    <div className="form-label-row">
+                    <div className="input-row">
                         {/* First Name input */}
-                        <div className="form-label">
-                            {/* <label htmlFor="firstname">First Name</label> */}
-                            <input 
-                                type="firstname" 
-                                id="firstname" 
-                                name="firstname" 
-                                placeholder="First Name"
-                                value={firstName} 
-                                onChange={handleChange} 
-                            />
-                        </div>
+                        <input 
+                            type="firstname" 
+                            id="firstname" 
+                            name="firstname" 
+                            placeholder="First Name"
+                            value={firstName} 
+                            onChange={handleChange} 
+                        />
                         {/* Last Name input */}
-                        <div className="form-label">
-                            {/* <label htmlFor="lastname">Last Name</label> */}
-                            <input 
-                                type="lastname" 
-                                id="lastname" 
-                                name="lastname" 
-                                placeholder="Last Name"
-                                value={lastName} 
-                                onChange={handleChange} 
-                            />
-                        </div>
+                        <input 
+                            type="lastname" 
+                            id="lastname" 
+                            name="lastname" 
+                            placeholder="Last Name"
+                            value={lastName} 
+                            onChange={handleChange} 
+                        />
                     </div>
                     
                     {/* Email input */}
-                    <div className="form-label">
-                        {/* <label htmlFor="email">Email</label> */}
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="Email"
-                            value={email} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Email"
+                        value={email} 
+                        onChange={handleChange} 
+                    />
+
                     {/* Password input */}
-                    <div className="form-label">
-                        {/* <label htmlFor="password">Password</label> */}
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            placeholder="Password"
-                            value={password} 
-                            onChange={handleChange} 
-                        />
-                    </div>
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        handleChange={handleChange}
+                    />
+
                     {/* Confirm Password input */}
-                    <div className="form-label">
-                        {/* <label htmlFor="confirmPassword">Confirm Password</label> */}
-                        <input 
-                            type="password" 
-                            id="confirmPassword" 
-                            name="confirmPassword" 
-                            placeholder="Confirm Password"
-                            value={confirmPassword} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    
+                    <PasswordInput
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        handleChange={handleChange}
+                    />
+
                     <button type="submit" className="btn-login">Sign Up</button>
 
                     {error && <p className="error">{error}</p>}
