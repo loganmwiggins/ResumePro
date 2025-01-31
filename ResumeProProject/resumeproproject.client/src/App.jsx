@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
 import './App.css';
 import Nav from './components/Nav';
@@ -24,16 +24,21 @@ function App() {
       {!hideNavRoutes.includes(location.pathname) && <Nav />}
 
       <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/welcome" element={<Welcome />} />
+        {/* Protected routes */}
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/editor" element={<ResumeEditor />} />
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         
+        {/* Unprotected routes */}
+        <Route path="/" element={<Welcome />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Catch-all route for unknown paths */}
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </>
   );

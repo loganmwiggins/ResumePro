@@ -8,7 +8,6 @@ function Welcome() {
     const navigate = useNavigate();
 
     return (
-    <AuthorizeView> 
         <div className="welcome-container">
             <div className="welcome-content">
                 <div className="page-header">
@@ -65,7 +64,6 @@ function Welcome() {
                 <div className="document"></div>
             </div>
         </div>
-    </AuthorizeView> 
     )
 }
 
