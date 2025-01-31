@@ -68,7 +68,10 @@ function Login() {
 
             {/* FORM SIDE */}
             <div className="form-ctnr">
-                <h3>ResumePro</h3>
+                <div className="form-title">
+                    <img src="assets/icons/resume-logo.svg" draggable="false" />
+                    <h3>ResumePro</h3>
+                </div>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-header">
