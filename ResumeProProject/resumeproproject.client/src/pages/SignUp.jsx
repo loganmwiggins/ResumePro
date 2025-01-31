@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import '../stylesheets/Login.css';
 import PasswordInput from "../components/PasswordInput";
+import { showToast } from "../utils/toast";
 
 function SignUp() {
     // State variables
@@ -11,7 +12,6 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     // Navigate to login page
@@ -35,19 +35,17 @@ function SignUp() {
 
         // Validate input fields
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
-            setError("Please fill in all fields.");
+            showToast("Please fill in all fields.", "warning");
             return;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError("Please enter a valid email address.");
+            showToast("Please enter a valid email address.", "warning");
             return;
         }
         if (password !== confirmPassword) {
-            setError("Passwords do not match.");
+            showToast("Passwords do not match.", "warning");
             return;
         }
-
-        setError(""); // Clear errors
 
         // Send request to API
         try {
@@ -62,14 +60,16 @@ function SignUp() {
             const data = await response.json();
 
             if (response.ok) {
-                //alert("Sign-up successful! Redirecting to login.");
+                showToast("Sign up successful!", "success");
                 navigate("/login");
-            } else {
-                setError(data.message || "Error signing up.");
             }
-        } catch (error) {
+            else {
+                data.message || showToast("Error signing up.", "error");
+            }
+        }
+        catch (error) {
+            showToast("Error signing up. Please try again.", "error");
             console.error(error);
-            setError("Error signing up. Please try again.");
         }
     };
 
@@ -143,8 +143,6 @@ function SignUp() {
                     />
 
                     <button type="submit" className="btn-login">Sign Up</button>
-
-                    {error && <p className="error">{error}</p>}
                 </form>
 
                 <div className="signup-ctnr">

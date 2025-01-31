@@ -27,7 +27,7 @@ function App() {
 
       {/* Toast Container for toast alerts */}
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={3000}
         closeOnClick
         newestOnTop
