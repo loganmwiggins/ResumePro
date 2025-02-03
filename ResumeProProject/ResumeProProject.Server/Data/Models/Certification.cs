@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResumeProProject.Server.Data.Models
 {
@@ -7,7 +8,7 @@ namespace ResumeProProject.Server.Data.Models
     {
         [Key]
         public Guid CertificationId { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
 
@@ -20,7 +21,8 @@ namespace ResumeProProject.Server.Data.Models
         public DateOnly? ExpireDate { get; set; }
 
         // ✅ Navigation Property
-        public virtual Resume Resume { get; set; }
- 
+        [JsonIgnore]
+        public virtual Resume? Resume { get; set; }
+
     }
 }
