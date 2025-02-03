@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 namespace ResumeProProject.Server.Data.Models
 {
     // An "Experience" can encompass work experience, internships, volunteer work, etc.
 
     public class Experience
     {
+        [JsonIgnore]
         [Key]
         public Guid ExperienceId { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
 
@@ -31,8 +33,9 @@ namespace ResumeProProject.Server.Data.Models
 
         public JobType JobType { get; set; }
 
-        // ✅ Added Navigation Property
-        public virtual Resume Resume { get; set; }
+        //// ✅ Added Navigation Property
+        [JsonIgnore]
+        public virtual Resume? Resume { get; set; }
     }
 
     public enum OfficeType

@@ -136,6 +136,30 @@ namespace ResumeProProject.Server.Controllers
 
             return Ok(new { message = "User deleted successfully" });
         }
+
+        [HttpGet("info")]
+        //[Authorize]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null)
+                return Unauthorized(new { message = "User not authenticated" });
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            return Ok(new
+            {
+                user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.DateJoined,
+                user.CoreResumeId
+            });
+        }
+
     }
 
     // DTOs

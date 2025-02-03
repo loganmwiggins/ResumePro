@@ -348,6 +348,9 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("TemplateId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedDateTime")
                         .HasColumnType("timestamp with time zone");
 

@@ -1,20 +1,23 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResumeProProject.Server.Data.Models
 {
     public class Education
     {
+        [JsonIgnore]
         [Key]
         public Guid EducationId { get; set; }
-
+        [JsonIgnore]
         // ✅ Explicit Foreign Key for Resume
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
 
-        // ✅ Navigation Property
-        public virtual Resume Resume { get; set; }
+        //// ✅ Navigation Property
+        [JsonIgnore]
+        public virtual Resume? Resume { get; set; }
 
         [Required]
         public string SchoolName { get; set; }

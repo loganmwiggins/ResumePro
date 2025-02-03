@@ -76,6 +76,15 @@ namespace ResumeProProject.Server
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    builder => builder
+                        .WithOrigins("https://localhost:5173") // Allows front-end origin
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()); // For authentication cookies
+            });
 
             var app = builder.Build();
 
@@ -106,7 +115,8 @@ namespace ResumeProProject.Server
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("MyPolicy");
+            //app.UseCors("MyPolicy");
+            app.UseCors("AllowFrontend");
 
             app.UseAuthentication();
             app.UseAuthorization();

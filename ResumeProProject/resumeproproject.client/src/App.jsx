@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-route
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { UserProvider } from "./context/UserContext";
+
 import './App.css';
 import Nav from './components/Nav';
 import Welcome from './pages/Welcome';
@@ -21,7 +23,7 @@ function App() {
   const hideNavRoutes = ["/login", "/signup"];
   
   return (
-    <>
+    < UserProvider>
       {/* Conditionally render Nav */}
       {!hideNavRoutes.includes(location.pathname) && <Nav />}
 
@@ -50,7 +52,7 @@ function App() {
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 }
 
