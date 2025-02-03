@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import '../stylesheets/Profile.css';
 import AuthorizeView from '../components/AuthorizeView';
@@ -7,6 +8,7 @@ import { useUser } from "../context/UserContext";
 
 function Profile() {
   const { user, loading } = useUser();
+  const navigate = useNavigate();
 
   // Function to format DateTime
   const formatDate = (isoDate) => {
@@ -16,10 +18,14 @@ function Profile() {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
   };
 
+  const handleEditProfile = () => {
+    navigate("/edit-profile");
+  }
+
   return (
   <AuthorizeView>
     {loading ? (
-        <div className="loading-spinner"></div>  // Replace with a spinner or skeleton
+        <div className="loading-spinner"></div>
     ) : (
       <div className="profile-ctnr">
         <div className="profile-banner">
@@ -37,7 +43,7 @@ function Profile() {
             </div>
           </div>
           <div className="head-btns">
-            <button type="button">Edit Profile</button>
+            <button type="button" onClick={handleEditProfile}>Edit Profile</button>
             <LogoutLink>Logout</LogoutLink>
           </div>
         </div>
