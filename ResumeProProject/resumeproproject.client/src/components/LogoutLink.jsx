@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import { showToast } from '../utils/Toast';
+
 function LogoutLink({ children }) {
     const navigate = useNavigate();
 
@@ -15,10 +17,12 @@ function LogoutLink({ children }) {
             .then((response) => {
                 if (response.ok) {
                     navigate("/login");
+                    showToast("Logged out successfully.", "success");
                 }
             })
             .catch((error) => {
                 console.error("Logout failed:", error);
+                showToast("Logout failed.", "error");
             });
     };
 

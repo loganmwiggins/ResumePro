@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import '../stylesheets/Login.css';
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from '../components/PasswordInput';
+import { showToast } from '../utils/Toast';
 
 function Login() {
     // State variables
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberme, setRememberme] = useState(false);
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     // Handle change events for input fields
@@ -30,11 +30,9 @@ function Login() {
 
         // Validate email and password
         if (!email || !password) {
-            setError("Please fill in all fields.");
+            showToast("Please fill in all fields.", "warning");
             return;
         }
-
-        setError(""); // Clear errors
 
         // Determine login URL based on "Remember Me"
         const loginUrl = rememberme ? "/login?useCookies=true" : "/login?useSessionCookies=true";
@@ -48,15 +46,15 @@ function Login() {
         })
             .then((response) => {
                 if (response.ok) {
-                    setError("Successful Login.");
-                    window.location.href = "/";
+                    window.location.href = "/home"; // Need to refresh to register cookie
+                    showToast("Successful login.", "success");
                 } else {
-                    setError("Error Logging In.");
+                    showToast("Error logging in.", "error");
                 }
             })
             .catch((error) => {
                 console.error(error);
-                setError("Error Logging in.");
+                showToast("Error logging in.", "error");
             });
     };
 
@@ -117,8 +115,6 @@ function Login() {
                     </div>
                     
                     <button type="submit" className="btn-login">Login</button>
-
-                    {error && <p className="error">{error}</p>}
                 </form>
 
                 <div className="signup-ctnr">
