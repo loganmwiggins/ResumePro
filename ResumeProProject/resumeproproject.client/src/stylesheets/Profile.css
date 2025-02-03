@@ -1,0 +1,72 @@
+.profile-ctnr {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Profile head */
+.profile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid lightgrey;
+}
+
+.head-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+        width: 3rem;
+    }
+}
+.head-info-txt {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: .25rem;
+
+    p { color: var(--text-third); }
+}
+
+.user-tags {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    p {
+        font-size: .85rem;
+        padding: .1rem .5rem;
+        background: rgb(220, 239, 255);
+        color: rgb(13, 13, 163);
+        border-radius: .25rem;
+    }
+}
+
+.head-btns {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    button {
+        background: none;
+        color: var(--text-secondary);
+        padding: .25rem .5rem;
+        border: 1px solid grey;
+        border-radius: .25rem;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+    button:hover {
+        background: #000;
+        border-color: #000;
+        color: white;
+        transition: all .2s ease;
+    }
+
+    button:last-child:hover {
+        background: var(--text-danger);
+        border-color: var(--text-danger);
+    }
+}
