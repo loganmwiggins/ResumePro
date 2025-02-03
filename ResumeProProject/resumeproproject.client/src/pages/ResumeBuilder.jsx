@@ -1,14 +1,14 @@
 import React from 'react';
 
-import '../stylesheets/ResumeEditor.css';
+import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 
-function ResumeEditor() {
+function ResumeBuilder() {
   return (
     <AuthorizeView>
-      <div>Resume Editor page</div>
+        <div>Resume Builder page</div>
     </AuthorizeView>
   )
 }
 
-export default ResumeEditor;
+export default ResumeBuilder;
