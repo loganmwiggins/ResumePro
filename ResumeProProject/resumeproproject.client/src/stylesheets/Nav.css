@@ -25,7 +25,10 @@
     cursor: pointer;
 
     h3 { font-size: 1.25rem; }
-    img { width: 1.25rem; }
+    img {
+        width: 1.25rem;
+        opacity: .85;
+    }
 }
 
 .directory {

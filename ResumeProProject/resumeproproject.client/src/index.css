@@ -2,6 +2,7 @@
   /* Root styles */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   /* color: rgba(255, 255, 255, 0.87); */
+  color: #222;
   /* background-color: #242424; */
 
   /* Color variables */
@@ -27,11 +28,17 @@ html {
   box-sizing: inherit;
 }
 
+.page-ctnr {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .page-header {
   display: flex;
   flex-direction: column;
   text-align: left;
-  gap: .5rem;
+  gap: .25rem;
 
   h1 { text-align: left; }
   p { color: var(--text-third); }
