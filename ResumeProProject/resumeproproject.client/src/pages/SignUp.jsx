@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import '../stylesheets/Login.css';
 import PasswordInput from "../components/PasswordInput";
-import { showToast } from "../utils/toast";
+import { showToast } from "../utils/Toast";
 
 function SignUp() {
     // State variables

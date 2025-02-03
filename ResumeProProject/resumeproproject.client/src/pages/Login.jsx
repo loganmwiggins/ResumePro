@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../stylesheets/Login.css';
 import PasswordInput from '../components/PasswordInput';
-import { showToast } from '../utils/toast';
+import { showToast } from '../utils/Toast';
 
 function Login() {
     // State variables
@@ -46,7 +46,7 @@ function Login() {
         })
             .then((response) => {
                 if (response.ok) {
-                    window.location.href = "/home";
+                    window.location.href = "/home"; // Need to refresh to register cookie
                     showToast("Successful login.", "success");
                 } else {
                     showToast("Error logging in.", "error");

@@ -25,7 +25,7 @@ function Nav() {
                 <div className="directory">
                     <button className="user-btn" onClick={handleProfileClick}>
                         <img src="assets/icons/user.svg" draggable="false" />
-                        <span>Vraj</span>
+                        <span>User</span>
                     </button>
                 </div>
             </div>
