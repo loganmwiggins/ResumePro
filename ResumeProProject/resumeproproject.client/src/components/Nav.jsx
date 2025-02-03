@@ -16,6 +16,10 @@ function Nav() {
         navigate("/profile");
     };
 
+    const handleLoginClick = () => {
+        navigate("/login");
+    }
+
     return (
         <div className="nav-container">
             <div className="main-row">
@@ -25,12 +29,16 @@ function Nav() {
                 </div>
 
                 <div className="directory">
-                    <button className="user-btn" onClick={handleProfileClick}>
-                        <img src="assets/icons/user.svg" draggable="false" />
-                        <span>
-                            {user ? `${user.firstName}` : "Guest"}
-                        </span>
-                    </button>
+                    {user ? (
+                        <button className="user-btn" onClick={handleProfileClick}>
+                            <img src="assets/icons/user.svg" draggable="false" />
+                            <span>{user.firstName}</span>
+                        </button>
+                    ) : (
+                        <button onClick={handleLoginClick}>
+                            <span>Login</span>
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
