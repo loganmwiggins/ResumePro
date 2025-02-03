@@ -1,35 +1,43 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import '../stylesheets/Home.css';
 import AuthorizeView from '../components/AuthorizeView';
-import { showToast } from '../utils/Toast';
+import { useUser } from "../context/UserContext"; 
+import '../stylesheets/Home.css';
 
 function Home() {
-  const toastSuccess = () => {
-    showToast("This is a toast message.", "success", "Success!");
-  }
-  const toastError = () => {
-    showToast("This is a toast message.", "error", "Error");
-  }
-  const toastWarning = () => {
-    showToast("This is a toast message.", "warning", "Warning");
-  }
-  const toastInfo = () => {
-    showToast("This is a toast message.", "info");
-  }
+  const { user, loading } = useUser();
+  const navigate = useNavigate();
+
+  // Array of possible greetings
+  const greetings = ["Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy", "Ahoy"];
+  
+  // Array of possible messages
+  const messages = [
+    "Create your own custom resume to apply for jobs.",
+    "Ready to make a resume?",
+    "Your dream job starts with a great resume!",
+    "Showcase your skills with a professional resume.",
+    "Time to build a resume that stands out!",
+    "Make a resume that gets you hired.",
+    "Polish your resume and land that job!"
+  ];
+
+  // Function to randomly pick a greeting and a message
+  const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
 
   return (
-    <AuthorizeView>    
-      <div>Home page</div>
-      <br />
-      <div className="temp">
-        <button onClick={toastSuccess}>Success</button>
-        <button onClick={toastError}>Error</button>
-        <button onClick={toastWarning}>Warning</button>
-        <button onClick={toastInfo}>Info</button>
-      </div>
+    <AuthorizeView>
+      {loading ? (
+        <div className="loading-spinner"></div>
+      ) : (
+        <div className="page-header">
+          <h1>{getRandomElement(greetings)}, {user.firstName}</h1>
+          <p>{getRandomElement(messages)}</p>
+        </div>
+      )}  
     </AuthorizeView>
-  )
+  );
 }
 
 export default Home;

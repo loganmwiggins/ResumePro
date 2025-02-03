@@ -29,14 +29,12 @@ html {
 
 .page-header {
   display: flex;
+  flex-direction: column;
   text-align: left;
-  gap: 1rem;
+  gap: .5rem;
 
-  img {
-    width: 1.75rem;
-    filter: var(--filter-white);
-  }
   h1 { text-align: left; }
+  p { color: var(--text-third); }
 }
 
 .btn-accent {
