@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const UserContext = createContext(null);
+const UserContext = createContext({ user: null, loading: true });
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -20,15 +21,26 @@ export const UserProvider = ({ children }) => {
                     const data = await response.json();
                     setUser(data);
                 }
-            } catch (error) {
+                else {
+                    setUser(null);  // If not authenticated, set user to null
+                }
+            } 
+            catch (error) {
                 console.error("Error fetching user data:", error);
+            }
+            finally {
+                setLoading(false);
             }
         };
 
         fetchUserInfo();
     }, []);
 
-    return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+    return (
+        <UserContext.Provider value={{ user, loading }}>
+            {children}
+        </UserContext.Provider>
+    ); 
 };
 
 export const useUser = () => useContext(UserContext);

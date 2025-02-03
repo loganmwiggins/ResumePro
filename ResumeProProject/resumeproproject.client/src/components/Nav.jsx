@@ -5,20 +5,12 @@ import { useUser } from "../context/UserContext";
 import '../stylesheets/Nav.css';
 
 function Nav() {
-    const user = useUser();
+    const { user, loading } = useUser();
     const navigate = useNavigate();
 
-    const handleTitleClick = () => {
-        navigate("/home");
-    };
-
-    const handleProfileClick = () => {
-        navigate("/profile");
-    };
-
-    const handleLoginClick = () => {
-        navigate("/login");
-    }
+    const handleTitleClick = () => { navigate("/home"); };
+    const handleProfileClick = () => { navigate("/profile"); };
+    const handleLoginClick = () => { navigate("/login"); }
 
     return (
         <div className="nav-container">
@@ -29,9 +21,11 @@ function Nav() {
                 </div>
 
                 <div className="directory">
-                    {user ? (
+                    {loading ? (
+                        <div className="loading-spinner"></div>  // Replace with a spinner or skeleton
+                    ) : user ? (
                         <button className="user-btn" onClick={handleProfileClick}>
-                            <img src="assets/icons/user.svg" draggable="false" />
+                            <img src="assets/icons/user.svg" draggable="false" alt="User" />
                             <span>{user.firstName}</span>
                         </button>
                     ) : (
