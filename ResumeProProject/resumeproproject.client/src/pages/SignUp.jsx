@@ -60,7 +60,7 @@ function SignUp() {
             const data = await response.json();
 
             if (response.ok) {
-                showToast("Sign up successful!", "success");
+                showToast("Your account has been created.", "success", "Thanks for Joining!");
                 navigate("/login");
             }
             else {
