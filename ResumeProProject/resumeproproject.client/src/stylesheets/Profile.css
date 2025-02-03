@@ -3,12 +3,27 @@
     flex-direction: column;
 }
 
+/* Profile banner */
+.profile-banner {
+    width: 100%;
+    height: 10rem;
+    background-color: aliceblue;
+    border-radius: .5rem;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+    }
+}
+
 /* Profile head */
 .profile-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 2rem;
+    padding: 2rem 0;
     border-bottom: 1px solid lightgrey;
 }
 

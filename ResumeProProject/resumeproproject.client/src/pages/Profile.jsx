@@ -22,6 +22,9 @@ function Profile() {
         <div className="loading-spinner"></div>  // Replace with a spinner or skeleton
     ) : (
       <div className="profile-ctnr">
+        <div className="profile-banner">
+          <img src="assets/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+        </div>
         <div className="profile-head">
           <div className="head-info">
             <img src="assets/icons/user.svg" draggable="false" />
