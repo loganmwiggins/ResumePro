@@ -15,7 +15,7 @@ function Nav() {
     return (
         <div className="nav-container">
             <div className="main-row">
-                <div className="title" onClick={handleTitleClick}>
+                <div className="title" onClick={handleTitleClick} title="Go Home">
                     <img src="assets/icons/resume-logo.svg" draggable="false" />
                     <h3>ResumePro</h3>
                 </div>
@@ -24,9 +24,10 @@ function Nav() {
                     {loading ? (
                         <div className="loading-spinner"></div>  // Replace with a spinner or skeleton
                     ) : user ? (
-                        <button className="user-btn" onClick={handleProfileClick}>
-                            <img src="assets/icons/user.svg" draggable="false" alt="User" />
-                            <span>{user.firstName}</span>
+                        <button className="user-btn" onClick={handleProfileClick} title="Profile">
+                            <img src="assets/icons/user.svg" draggable="false" />
+                            {/* <span>{user.firstName}</span> */}
+                            <img src="assets/icons/angle-down.svg" draggable="false" />
                         </button>
                     ) : (
                         <button onClick={handleLoginClick}>
