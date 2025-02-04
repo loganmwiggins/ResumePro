@@ -53,7 +53,7 @@ function AuthorizeView({ children }) {
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <div className="loading-spinner"></div>;
     }
 
     return authorized ? (
