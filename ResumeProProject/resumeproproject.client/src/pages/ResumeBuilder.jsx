@@ -20,9 +20,9 @@ function ResumeBuilder() {
                 currentDate: new Date(),
                 templateId: "4b5aac66-6e72-4ffe-a6fc-ca6c76c31270",
                 generalInformation: {
-                    firstName: "",
+                    firstName: null,
                     middleName: null,
-                    lastName: "",
+                    lastName: null,
                     email: null,
                     phoneNumber: null,
                     websiteUrl: null,
@@ -31,13 +31,13 @@ function ResumeBuilder() {
                 },
                 experiences: [
                     {
-                        companyName: "",
-                        role: "",
+                        companyName: null,
+                        role: null,
                         startDate: new Date().toISOString().split("T")[0],
                         endDate: null,
                         isCurrent: false,
-                        description: "",
-                        location: "",
+                        description: null,
+                        location: null,
                         officeType: 1,
                         jobType: 1
                     }
