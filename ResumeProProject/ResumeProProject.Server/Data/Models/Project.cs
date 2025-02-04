@@ -12,7 +12,13 @@ public class Project
     [ForeignKey("Resume")]
     public Guid ResumeId { get; set; }
 
+    public required string Title { get; set; }
     public required string Description { get; set; }
+
+    [Required]
+    public DateOnly StartDate { get; set; }
+
+    public DateOnly? EndDate { get; set; }
 
     [JsonIgnore]
     public virtual Resume? Resume { get; set; }

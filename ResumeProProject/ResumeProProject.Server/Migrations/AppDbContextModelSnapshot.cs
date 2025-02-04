@@ -304,12 +304,18 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ResumeId1")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("WebsiteUrl")
                         .HasColumnType("text");
 
                     b.HasKey("GeneralInfoId");
 
                     b.HasIndex("ResumeId")
+                        .IsUnique();
+
+                    b.HasIndex("ResumeId1")
                         .IsUnique();
 
                     b.ToTable("GeneralInformation");
@@ -325,8 +331,18 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ProjectId");
 
@@ -568,6 +584,10 @@ namespace ResumeProProject.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", null)
+                        .WithOne("GeneralInformation")
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.GeneralInformation", "ResumeId1");
+
                     b.Navigation("Resume");
                 });
 
@@ -610,6 +630,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");
+
+                    b.Navigation("GeneralInformation")
+                        .IsRequired();
 
                     b.Navigation("Projects");
 

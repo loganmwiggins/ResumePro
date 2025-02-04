@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ResumeProProject.Server.Data.Models;
 using ResumeProProject.Server.Data;
 using Microsoft.AspNetCore.Identity;
+using Azure.Core;
 
 
 namespace ResumeProProject.Server.Controllers
@@ -45,7 +46,7 @@ namespace ResumeProProject.Server.Controllers
             var NewResume = new Resume
             {
                 Name = request.ResumeName,
-                UpdatedDateTime = request.currentDate,
+                UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId
 
@@ -57,7 +58,7 @@ namespace ResumeProProject.Server.Controllers
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Resume fetchedResume = await _db.Resumes
-        .FirstOrDefaultAsync(r => r.UpdatedDateTime == request.currentDate);
+        .FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             var NewGeneralInformation = new GeneralInformation
@@ -146,6 +147,9 @@ namespace ResumeProProject.Server.Controllers
                 {
                     ResumeId = fetchedResume.ResumeId,
                     Description = request.Projects[i].Description,
+                    StartDate = request.Projects[i].StartDate,
+                    EndDate = request.Projects[i].EndDate,
+                    Title = request.Projects[i].Title
                 };
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();
