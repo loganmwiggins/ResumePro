@@ -10,11 +10,12 @@ import Nav from './components/Nav';
 import Welcome from './pages/Welcome';
 import Home from './pages/Home';
 import TemplateSelection from './pages/TemplateSelection';
-import ResumeEditor from './pages/ResumeEditor';
+import ResumeBuilder from './pages/ResumeBuilder';
 import ResumeInsights from './pages/ResumeInsights';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 
 function App() {
   const location = useLocation();
@@ -36,14 +37,15 @@ function App() {
       />
 
       <Routes>
-        {/* Protected routes */}
+        {/* Authorized routes */}
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
-        <Route path="/editor" element={<ResumeEditor />} />
+        <Route path="/builder" element={<ResumeBuilder />} />
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
         
-        {/* Unprotected routes */}
+        {/* Unauthorized routes */}
         <Route path="/" element={<Welcome />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/signup" element={<SignUp />} />

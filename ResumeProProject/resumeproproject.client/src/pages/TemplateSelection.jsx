@@ -8,6 +8,7 @@ function TemplateSelection() {
     <AuthorizeView>
       <div className="page-header">
         <h1>Choose a Template</h1>
+        <p>Let's get started!</p>
       </div>
     </AuthorizeView>
   )

@@ -1,0 +1,55 @@
+.builder-ctnr {
+    display: flex;
+    background: rgb(250, 250, 250);
+}
+
+.template-view, .build-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.build-view {
+    height: 80svh;
+    border-left: 1px solid lightgrey;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+
+.build-view form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+
+    section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 1rem;
+        padding: 2rem 0;
+        border-bottom: 1px solid grey;
+    }
+}
+
+.inputs-ctnr {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    gap: 1rem;
+}
+
+.input-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .25rem;
+
+    label {
+        color: #555;
+    }
+}

@@ -2,13 +2,15 @@
   /* Root styles */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   /* color: rgba(255, 255, 255, 0.87); */
+  color: #222;
   /* background-color: #242424; */
 
   /* Color variables */
-  --text-primary: black;
-  --text-secondary: #eee;
-  --text-third: #ddd;
-  --text-fourth: #bbb;
+  --text-primary: #000;
+  --text-secondary: #333;
+  --text-third: #666;
+  --text-fourth: #999;
+  --text-danger: rgb(230, 0, 0);
   --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
@@ -26,32 +28,21 @@ html {
   box-sizing: inherit;
 }
 
-.page-header {
+.page-ctnr {
   display: flex;
-  text-align: left;
-  gap: 1rem;
-
-  img {
-    width: 1.75rem;
-    filter: var(--filter-white);
-  }
-  h1 { text-align: left; }
+  flex-direction: column;
+  gap: 2rem;
 }
 
-/* .btn-icon {
+.page-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
+  flex-direction: column;
+  text-align: left;
+  gap: .25rem;
 
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
-    filter: var(--filter-white);
-  }
-} */
+  h1 { text-align: left; }
+  p { color: var(--text-third); }
+}
 
 .btn-accent {
   display: flex;
@@ -65,7 +56,7 @@ html {
   padding: .5rem 1rem;
   max-width: fit-content;
   cursor: pointer;
-  transition: transform .2s ease;
+  transition: all .2s ease;
 
   img {
     width: 1rem;
@@ -74,8 +65,24 @@ html {
 }
 .btn-accent:hover {
   transform: scale(1.1);
-  transition: transform .2s ease;
+  transition: all .2s ease;
 }
+
+
+/* Loading animation */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-top: 3px solid #000;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 
 /* Overriding default Toastify styling */
 .Toastify__toast-theme--light {

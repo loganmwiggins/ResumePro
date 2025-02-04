@@ -10,25 +10,23 @@ namespace ResumeProProject.Server.Controllers
 {
     public class CreateResumeDto
     {
-        //RESUME ATTRIBUTES
-        public required string  Id { get; set; }
+        // Resume Attributes
+        public required string Id { get; set; } // User ID
         public required string ResumeName { get; set; }
-        public required DateTime currentDate { get; set; }
+        public required DateTime CurrentDate { get; set; }
         public required Guid TemplateId { get; set; }
 
-
+        // One-to-One Relationship
         public required GeneralInformation GeneralInformation { get; set; }
-        public List<Education> Educations { get; set; } = new List<Education>();
-        public List<Certification>Certifications { get; set; } = new List<Certification>();
-        public List<Experience> Experiences { get; set; } = new List<Experience>();
-        public List<Project> Projects { get; set; } = new List<Project>();
-        //public Education? Education { get; set; } //array
-        //public Certification? Certification { get; set; } //array 
-        //public Experience? Experience { get; set; } //array
-        public Skills? Skills { get; set; }
-        //public Project? Project { get; set; }
+        public Skills Skills { get; set; }
 
+        // One-to-Many Relationships
+        public List<Education> Educations { get; set; } = new();
+        public List<Certification> Certifications { get; set; } = new();
+        public List<Experience> Experiences { get; set; } = new();
+        public List<Project> Projects { get; set; } = new();
     }
+
 
     [ApiController]
     [Route("/api/[controller]")]
