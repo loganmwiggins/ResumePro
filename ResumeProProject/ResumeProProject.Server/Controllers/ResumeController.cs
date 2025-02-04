@@ -43,10 +43,14 @@ namespace ResumeProProject.Server.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateResume([FromBody] CreateResumeDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var NewResume = new Resume
             {
                 Name = request.ResumeName,
-                UpdatedDateTime = request.CurrentDate,
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId
@@ -57,9 +61,7 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
 
 
-            Resume fetchedResume = await _db.Resumes
-        .FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
 
             var NewGeneralInformation = new GeneralInformation
             {
@@ -141,7 +143,7 @@ namespace ResumeProProject.Server.Controllers
                 _db.Skills.Add(NewSkill);
                 await _db.SaveChangesAsync();
             }
-            for (int i = 0; i < request.Experiences.Count; i++)
+            for (int i = 0; i < request.Projects.Count; i++)
             {
                 var NewProject = new Project
                 {
@@ -155,8 +157,7 @@ namespace ResumeProProject.Server.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            return Ok();
+            return Ok(new { message = "Resume created successfully." });
         }
-
     }
 }
