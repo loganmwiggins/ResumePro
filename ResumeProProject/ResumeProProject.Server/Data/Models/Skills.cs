@@ -8,6 +8,7 @@ namespace ResumeProProject.Server.Data.Models
     public class Skills
     {
         [Key]
+        [JsonIgnore]
         public Guid SkillId { get; set; }
         [JsonIgnore]
         [ForeignKey("Resume")]

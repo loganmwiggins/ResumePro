@@ -29,5 +29,6 @@ namespace ResumeProProject.Server.Data.Models
         public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<Skills> Skills { get; set; } = new List<Skills>();
+        public virtual ICollection<GeneralInformation> GeneralInformations { get; set; } = new List<GeneralInformation>();
     }
 }

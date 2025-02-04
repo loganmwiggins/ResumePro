@@ -80,7 +80,7 @@ namespace ResumeProProject.Server
             {
                 options.AddPolicy("AllowFrontend",
                     builder => builder
-                        .WithOrigins("https://localhost:5173") // Allows front-end origin
+                        .WithOrigins("https://localhost:5173", "https://localhost:7035") // Allows front-end origin
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()); // For authentication cookies
