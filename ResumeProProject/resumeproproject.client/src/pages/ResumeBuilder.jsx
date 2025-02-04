@@ -18,20 +18,20 @@ function ResumeBuilder() {
                 templateId: "4b5aac66-6e72-4ffe-a6fc-ca6c76c31270",
                 generalInformation: {
                     firstName: "",
-                    middleName: "",
+                    middleName: null,
                     lastName: "",
-                    email: "",
-                    phoneNumber: "",
-                    websiteUrl: "https://www.loganwigins.com",
-                    linkedInUrl: "https://www.loganwigins.com",
-                    gitHubUrl: "https://www.loganwigins.com"
+                    email: null,
+                    phoneNumber: null,
+                    websiteUrl: null,
+                    linkedInUrl: null,
+                    gitHubUrl: null
                 },
                 experiences: [
                     {
                         companyName: "",
                         role: "",
-                        startDate: "2023-12-06",
-                        endDate: "",
+                        startDate: new Date().toISOString().split("T")[0],
+                        endDate: null,
                         isCurrent: false,
                         description: "",
                         location: "",
@@ -40,7 +40,7 @@ function ResumeBuilder() {
                     }
                 ],
                 skills: {
-                    skillsDataJson: "hello"
+                    skillsDataJson: ""
                 }
             });
         }
@@ -50,10 +50,11 @@ function ResumeBuilder() {
         const { name, value } = event.target;       // Destructuring 'name' and 'value' attributes from the input field
 
         setResumeData(prevData => ({
-        ...prevData,                                // Preserves previous state of resume data
+            ...prevData,
+            [name]: prevData.hasOwnProperty(name) ? value : prevData[name],     // Update resumeName directly if it exists
             generalInformation: {
                 ...prevData.generalInformation,     // Preserves previous state of general info data
-                [name]: value                       // Dynamically updates the changed field
+                [name]: prevData.generalInformation.hasOwnProperty(name) ? value : prevData.generalInformation[name]  // Update generalInformation fields
             }
         }));
     };
@@ -102,92 +103,97 @@ function ResumeBuilder() {
     else {
         return (
             <AuthorizeView>
-                <div className="builder-ctnr">
-                    <div className="template-view">x</div>
-                    <div className="build-view">
-                        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-                            {/* General Information */}
-                            <section id="general-information">
-                                <h3>General Information</h3>
-                                <div className="inputs-ctnr">
-                                    <div className="input-field">
-                                        <label>First Name</label>
-                                        <input type="text" name="firstName" placeholder="Enter First Name" value={resumeData.generalInformation.firstName} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>Middle Name</label>
-                                        <input type="text" name="middleName" placeholder="Enter Middle Name" value={resumeData.generalInformation.middleName} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>Last Name</label>
-                                        <input type="text" name="lastName" placeholder="Enter Last Name" value={resumeData.generalInformation.lastName} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>Email</label>
-                                        <input type="email" name="email" placeholder="Enter Email" value={resumeData.generalInformation.email} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>Phone Number</label>
-                                        <input type="text" name="phoneNumber" placeholder="Enter Phone Number" value={resumeData.generalInformation.phoneNumber} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>Website URL</label>
-                                        <input type="text" name="websiteUrl" placeholder="Enter Website URL" value={resumeData.generalInformation.websiteUrl} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>LinkedIn URL</label>
-                                        <input type="text" name="linkedInUrl" placeholder="Enter LinkedIn URL" value={resumeData.generalInformation.linkedInUrl} onChange={handleChange} />
-                                    </div>
-                                    <div className="input-field">
-                                        <label>GitHub URL</label>
-                                        <input type="text" name="gitHubUrl" placeholder="Enter GitHub URL" value={resumeData.generalInformation.gitHubUrl} onChange={handleChange} />
-                                    </div>
-                                </div>
-                            </section>
-                            
-                            {/* Experience */}
-                            <section id="experience">
-                                <h3>Experience</h3>
-                                <div className="inputs-ctnr">
-                                    {resumeData.experiences.map((experience, index) => (
-                                        <div key={index} className="experience-entry">
-                                            <div className="input-field">
-                                                <label>Company Name</label>
-                                                <input type="text" name="companyName" placeholder="Enter Company Name" value={experience.companyName} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>Role</label>
-                                                <input type="text" name="role" placeholder="Enter Role" value={experience.role} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>Start Date</label>
-                                                <input type="date" name="startDate" value={experience.startDate} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>End Date</label>
-                                                <input type="date" name="endDate" value={experience.endDate} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>Is Current</label>
-                                                <input type="checkbox" name="isCurrent" checked={experience.isCurrent} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>Description</label>
-                                                <input type="textarea" name="description" placeholder="What did you do?" value={experience.description} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                            <div className="input-field">
-                                                <label>Location</label>
-                                                <input type="text" name="location" placeholder="City, State" value={experience.location} onChange={(e) => handleExperienceChange(index, e)} />
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                            
+                <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                    {/* LEFT SIDE */}
+                    <div className="template-view">
+                        <div className="resume-ctnr"></div>
+                        <div className="resume-actions">
+                            <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
                             <button type="submit">Save Resume</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+
+                    {/* RIGHT SIDE */}
+                    <div className="build-view">
+                        {/* General Information */}
+                        <section id="general-information">
+                            <h3>General Information</h3>
+                            <div className="inputs-ctnr">
+                                <div className="input-field">
+                                    <label>First Name</label>
+                                    <input type="text" name="firstName" placeholder="Enter First Name" value={resumeData.generalInformation.firstName} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>Middle Name</label>
+                                    <input type="text" name="middleName" placeholder="Enter Middle Name" value={resumeData.generalInformation.middleName} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>Last Name</label>
+                                    <input type="text" name="lastName" placeholder="Enter Last Name" value={resumeData.generalInformation.lastName} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="Enter Email" value={resumeData.generalInformation.email} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>Phone Number</label>
+                                    <input type="text" name="phoneNumber" placeholder="Enter Phone Number" value={resumeData.generalInformation.phoneNumber} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>Website URL</label>
+                                    <input type="text" name="websiteUrl" placeholder="Enter Website URL" value={resumeData.generalInformation.websiteUrl} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>LinkedIn URL</label>
+                                    <input type="text" name="linkedInUrl" placeholder="Enter LinkedIn URL" value={resumeData.generalInformation.linkedInUrl} onChange={handleChange} />
+                                </div>
+                                <div className="input-field">
+                                    <label>GitHub URL</label>
+                                    <input type="text" name="gitHubUrl" placeholder="Enter GitHub URL" value={resumeData.generalInformation.gitHubUrl} onChange={handleChange} />
+                                </div>
+                            </div>
+                        </section>
+                        
+                        {/* Experience */}
+                        <section id="experience">
+                            <h3>Experience</h3>
+                            <div className="inputs-ctnr">
+                                {resumeData.experiences.map((experience, index) => (
+                                    <div key={index} className="experience-entry">
+                                        <div className="input-field">
+                                            <label>Company Name</label>
+                                            <input type="text" name="companyName" placeholder="Enter Company Name" value={experience.companyName} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Role</label>
+                                            <input type="text" name="role" placeholder="Enter Role" value={experience.role} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Start Date</label>
+                                            <input type="date" name="startDate" value={experience.startDate} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>End Date</label>
+                                            <input type="date" name="endDate" value={experience.endDate} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Is Current</label>
+                                            <input type="checkbox" name="isCurrent" checked={experience.isCurrent} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Description</label>
+                                            <input type="textarea" name="description" placeholder="What did you do?" value={experience.description} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Location</label>
+                                            <input type="text" name="location" placeholder="City, State" value={experience.location} onChange={(e) => handleExperienceChange(index, e)} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </div>
+                </form>
             </AuthorizeView>
         );
     }
