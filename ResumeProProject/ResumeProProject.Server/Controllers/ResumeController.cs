@@ -47,6 +47,7 @@ namespace ResumeProProject.Server.Controllers
             {
                 Name = request.ResumeName,
                 UpdatedDateTime = request.CurrentDate,
+                UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId
 
@@ -56,7 +57,6 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
 
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Resume fetchedResume = await _db.Resumes
         .FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.

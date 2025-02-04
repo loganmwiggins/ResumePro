@@ -1,203 +1,120 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
+import { useUser } from "../context/UserContext";
+import { showToast } from '../utils/Toast';
 
 function ResumeBuilder() {
-  return (
-    <AuthorizeView>
-        <div className="builder-ctnr">
-            <div className="template-view">
-                x
+    const { user, loading } = useUser();
+
+    const [resumeData, setResumeData] = useState({
+        Id: loading ? "000" : user.id,
+        Name: "Untitled Document",
+        UpdatedDateTime: new Date(),
+        TemplateId: "000",
+        GeneralInformation: { firstName: "", middleName: "", lastName: "", email: "", phoneNumber: "", websiteUrl: "", linkedinUrl: "", githubUrl: "" },
+        Educations: [{ schoolName: "", degreeType: "", gpa: 0.0, major: "", minor: "", startDate: new Date(), endDate: new Date() }],
+        Experiences: [{ companyName: "", role: "", startDate: new Date(), endDate: new Date(), isCurrent: false, description: "", location: "", officeType: "", jobType: "" }],
+        Certifications: [{ name: "", issuer: "", issueDate: new Date(), expireDate: new Date() }],
+        Projects: [{ title: "", description: "", startDate: new Date(), endDate: new Date() }],
+        Skills: [{ skillsJson: "" }],
+    });
+
+    const handleChange = (section, field, value, index = null) => {
+        setResumeData(prevData => {
+            if (index !== null) {
+                return {
+                    ...prevData,
+                    [section]: prevData[section].map((item, i) => i === index ? { ...item, [field]: value } : item)
+                };
+            } else {
+                return {
+                    ...prevData,
+                    [section]: { ...prevData[section], [field]: value }
+                };
+            }
+        });
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch("/api/Resume/Create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(resumeData),
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                showToast("Resume created successfully!", "success");
+            } else {
+                showToast("Failed to create resume.", "error");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    return (
+        <AuthorizeView>
+            <div className="builder-ctnr">
+                <div className="template-view">x</div>
+                <div className="build-view">
+                    <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                        <section id="general-information">
+                            <h3>General Information</h3>
+                            <div className="inputs-ctnr">
+                                {Object.keys(resumeData.GeneralInformation).map((key) => (
+                                    <div className="input-field" key={key}>
+                                        <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                        <input 
+                                            type="text" 
+                                            name={key}
+                                            placeholder={`Enter ${key}`}
+                                            value={resumeData.GeneralInformation[key]}
+                                            onChange={(e) => handleChange("GeneralInformation", key, e.target.value)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                        
+                        <section id="experience">
+                            <h3>Experience</h3>
+                            <div className="inputs-ctnr">
+                                {resumeData.Experiences.map((experience, index) => (
+                                    <div key={index} className="experience-entry">
+                                        {Object.keys(experience).map((key) => (
+                                            <div className="input-field" key={key}>
+                                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                                {key === "isCurrent" ? (
+                                                    <input
+                                                        type="checkbox"
+                                                        name={key}
+                                                        checked={experience[key]}
+                                                        onChange={(e) => handleChange("Experiences", key, e.target.checked, index)}
+                                                    />
+                                                ) : (
+                                                    <input
+                                                        type="text"
+                                                        name={key}
+                                                        placeholder={`Enter ${key}`}
+                                                        value={experience[key]}
+                                                        onChange={(e) => handleChange("Experiences", key, e.target.value, index)}
+                                                    />
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                        <button type="submit">Save Resume</button>
+                    </form>
+                </div>
             </div>
-            <div className="build-view">
-                <form action="">
-                    {/* General Information */}
-                    <section id="general-information">
-                        <h3>General Information</h3>
-                        <div className="inputs-ctnr">
-                            {/* First Name */}
-                            <div className="input-field">
-                                <label>First Name *</label>
-                                <input 
-                                    type="text" 
-                                    name="firstName"
-                                    placeholder="Enter first name"
-                                />
-                            </div>
-
-                            {/* Middle Name */}
-                            <div className="input-field">
-                                <label>Middle Name</label>
-                                <input 
-                                    type="text" 
-                                    name="middleName"
-                                    placeholder="Enter middle name"
-                                />
-                            </div>
-
-                            {/* Last Name */}
-                            <div className="input-field">
-                                <label>Last Name *</label>
-                                <input 
-                                    type="text" 
-                                    name="lastName"
-                                    placeholder="Enter last name"
-                                />
-                            </div>
-
-                            {/* Email */}
-                            <div className="input-field">
-                                <label>Email</label>
-                                <input 
-                                    type="text" 
-                                    name="email"
-                                    placeholder="Enter email address"
-                                />
-                            </div>
-
-                            {/* Phone Number */}
-                            <div className="input-field">
-                                <label>Phone Number</label>
-                                <input 
-                                    type="text" 
-                                    name="phoneNumber"
-                                    placeholder="Enter phone number"
-                                />
-                            </div>
-                            
-                            {/* Website URL */}
-                            <div className="input-field">
-                                <label>Website URL</label>
-                                <input 
-                                    type="text" 
-                                    name="websiteUrl"
-                                    placeholder="Enter website URL"
-                                />
-                            </div>
-
-                            {/* LinkedIn URL */}
-                            <div className="input-field">
-                                <label>LinkedIn URL</label>
-                                <input 
-                                    type="text" 
-                                    name="linkedinUrl"
-                                    placeholder="Enter LinkedIn URL"
-                                />
-                            </div>
-
-                            {/* GitHub URL */}
-                            <div className="input-field">
-                                <label>GitHub URL</label>
-                                <input 
-                                    type="text" 
-                                    name="githubUrl"
-                                    placeholder="Enter GitHub URL"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Experience */}
-                    <section id="experience">
-                        <h3>Experience</h3>
-                        <div className="inputs-ctnr">
-                            {/* Company Name */}
-                            <div className="input-field">
-                                <label>Company/Employer *</label>
-                                <input 
-                                    type="text" 
-                                    name="companyName"
-                                    placeholder="Enter name of company"
-                                />
-                            </div>
-
-                            {/* Role */}
-                            <div className="input-field">
-                                <label>Role *</label>
-                                <input 
-                                    type="text" 
-                                    name="role"
-                                    placeholder="Enter your role at the company"
-                                />
-                            </div>
-
-                            {/* Location */}
-                            <div className="input-field">
-                                <label>Location</label>
-                                <input 
-                                    type="text" 
-                                    name="location"
-                                    placeholder="City, State"
-                                />
-                            </div>
-
-                            {/* Office Type */}
-                            <div className="input-field">
-                                <label>Office Type</label>
-                                <select name="officeType">
-                                    <option value="onsite">On-site</option>
-                                    <option value="remote">Remote</option>
-                                    <option value="hybrid">Hybrid</option>
-                                </select>
-                            </div>
-
-                            {/* Job Type */}
-                            <div className="input-field">
-                                <label>Job Type</label>
-                                <select name="jobType">
-                                    <option value="fulltime">Full-time</option>
-                                    <option value="parttime">Part-time</option>
-                                    <option value="internship">Internship</option>
-                                    <option value="volunteer">Volunteer</option>
-                                </select>
-                            </div>
-
-                            {/* Start Date */}
-                            <div className="input-field">
-                                <label>Start Date *</label>
-                                <input 
-                                    type="text" 
-                                    name="startDate"
-                                    placeholder="Enter the date you started"
-                                />
-                            </div>
-
-                            {/* End Date */}
-                            <div className="input-field">
-                                <label>End Date</label>
-                                <input 
-                                    type="text" 
-                                    name="endDate"
-                                    placeholder="Enter the date you left"
-                                />
-                            </div>
-
-                            {/* Is Current? */}
-                            <div className="input-field">
-                                <label>Current? *</label>
-                                <input 
-                                    type="checkbox" 
-                                    name="isCurrent"
-                                />
-                            </div>
-
-                            {/* Description */}
-                            <div className="input-field">
-                                <label>Description *</label>
-                                <input 
-                                    type="textarea" 
-                                    name="description"
-                                    placeholder="What did you do there?"
-                                />
-                            </div>
-                        </div>
-                    </section>
-                </form>
-            </div>
-        </div>
-    </AuthorizeView>
-  )
+        </AuthorizeView>
+    );
 }
 
 export default ResumeBuilder;
