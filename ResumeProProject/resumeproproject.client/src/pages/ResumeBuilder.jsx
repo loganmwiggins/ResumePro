@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
 
 function ResumeBuilder() {
+    const navigate = useNavigate();
     const { user, loading } = useUser();
     const [resumeData, setResumeData] = useState(null);
 
@@ -72,6 +75,11 @@ function ResumeBuilder() {
         });
     };
 
+    const handleCancel = () => {
+        showToast("Resume abandoned.", "info");
+        navigate("/home");
+    }
+
     // [POST] to Create Resume from form
     const handleSubmit = async () => {
         console.log("Sending Data: ", JSON.stringify(resumeData, null, 2));
@@ -109,6 +117,7 @@ function ResumeBuilder() {
                         <div className="resume-ctnr"></div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
+                            <button type="button" onClick={handleCancel}>Cancel</button>
                             <button type="submit">Save Resume</button>
                         </div>
                     </div>
