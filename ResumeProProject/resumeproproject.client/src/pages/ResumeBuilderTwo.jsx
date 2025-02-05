@@ -242,7 +242,7 @@ function ResumeBuilderTwo() {
                                     </div>
                                 ))}
                                 
-                                {/* Add Another Experience button */}
+                                {/* Add Experience button */}
                                 <button type="button" onClick={() => handleAddEntry("experiences", {
                                     companyName: "",
                                     role: "",
@@ -320,7 +320,7 @@ function ResumeBuilderTwo() {
                                     </div>
                                 ))}
 
-                                {/* Add Another Education button */}
+                                {/* Add Education button */}
                                 <button type="button" onClick={() => handleAddEntry("educations", {
                                     schoolName: "",
                                     degreeType: 0,
@@ -333,6 +333,111 @@ function ResumeBuilderTwo() {
                             </section>
                         )}
 
+
+                        {/* CERTIFICATIONS */}
+                        {visibleSections.includes("certifications") && (
+                            <section>
+                                <h3>Certifications</h3>
+
+                                {/* Certification entry */}
+                                {resumeData.certifications.map((cert, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1} - {resumeData.certifications[index].name}</h4>
+                                        <div className="input-field">
+                                            <label>Name <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of certification (e.g., Azure Fundamentals)"
+                                                onChange={(e) => handleChange("certifications", "name", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Issuer <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of issuer (e.g., Microsoft)"
+                                                onChange={(e) => handleChange("certifications", "issuer", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Issue Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("certifications", "issueDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Expire Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Certification button */}
+                                <button type="button" onClick={() => handleAddEntry("certifications", {
+                                    name: null,
+                                    issuer: null,
+                                    issueDate: null,
+                                    expireDate: null
+                                })}>Add Certification</button>
+                            </section>
+                        )}
+
+
+                        {/* PROJECTS */}
+                        {visibleSections.includes("projects") && (
+                            <section>
+                                <h3>Projects</h3>
+
+                                {/* Project entry */}
+                                {resumeData.projects.map((proj, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1}</h4>
+                                        <div className="input-field">
+                                            <label>Title <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of project (e.g., Weather App)"
+                                                onChange={(e) => handleChange("projects", "title", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Description <span className="req">*</span></label>
+                                            <input 
+                                                type="textarea"
+                                                placeholder="What did you do?"
+                                                onChange={(e) => handleChange("projects", "description", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Start Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("projects", "startDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>End Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Project button */}
+                                <button type="button" onClick={() => handleAddEntry("projects", {
+                                    title: null,
+                                    description: null,
+                                    startDate: null,
+                                    endDate: null
+                                })}>Add Project</button>
+                            </section>
+                        )}
 
 
                         <section>
