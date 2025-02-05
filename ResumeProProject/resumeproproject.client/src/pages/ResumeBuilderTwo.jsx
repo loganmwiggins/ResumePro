@@ -32,7 +32,7 @@ function ResumeBuilderTwo() {
                     gitHubUrl: null
                 },
                 skills: {
-                    skillsDataJson: "[]"
+                    skillsDataJson: {}
                 },
                 experiences: [],
                 educations: [],
@@ -62,6 +62,67 @@ function ResumeBuilderTwo() {
         });
     };
 
+    const handleAddSkillCategory = (category) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (!updatedSkills[category]) {
+                updatedSkills[category] = new Set(); // Use a Set to avoid duplicates
+            }
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };
+    
+    const handleAddSkill = (category, skill) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (!updatedSkills[category]) {
+                updatedSkills[category] = new Set();
+            }
+    
+            updatedSkills[category].add(skill);
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };
+    
+    const handleRemoveSkill = (category, skill) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (updatedSkills[category]) {
+                updatedSkills[category].delete(skill);
+    
+                // Remove category if empty
+                if (updatedSkills[category].size === 0) {
+                    delete updatedSkills[category];
+                }
+            }
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };    
+
     const handleAddEntry = (section, entry) => {
         setResumeData((prevResume) => ({
           ...prevResume,
@@ -82,17 +143,29 @@ function ResumeBuilderTwo() {
 
     // [POST] to Create Resume from form
     const handleSubmit = async () => {
-        console.log("Sending Data: ", JSON.stringify(resumeData, null, 2));
+        const processedResumeData = {
+            ...resumeData,
+            skills: {
+                ...resumeData.skills,
+                skillsDataJson: JSON.stringify(
+                    Object.fromEntries(
+                        Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
+                    )
+                )
+            }
+        };
+
+        console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
         try {
             const response = await fetch("https://localhost:7035/api/Resume/Create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(resumeData),
+                body: JSON.stringify(processedResumeData),
             });
             
             if (response.ok) {
-                const data = await response.json();
+                // const data = await response.json();
                 showToast("Resume created successfully!", "success");
             } 
             else {
@@ -438,6 +511,67 @@ function ResumeBuilderTwo() {
                                 })}>Add Project</button>
                             </section>
                         )}
+
+
+                        {/* SKILLS */}
+                        {visibleSections.includes("skills") && (
+                            <section>
+                                <h3>Skills</h3>
+                                
+                                {/* Add new category */}
+                                <div className="input-field">
+                                    <label>New Skill Category</label>
+                                    <input type="text" id="newCategoryInput" />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            const category = document.getElementById("newCategoryInput").value;
+                                            if (category) {
+                                                handleAddSkillCategory(category);
+                                                document.getElementById("newCategoryInput").value = "";
+                                            }
+                                        }}
+                                    >
+                                        Add Category
+                                    </button>
+                                </div>
+
+                                {/* Render categories and skills */}
+                                {Object.entries(resumeData.skills.skillsDataJson).map(([category, skills]) => (
+                                    <div key={category} className="skill-category">
+                                        <h4>{category}</h4>
+                                        
+                                        {/* Add skill input */}
+                                        <div className="input-field">
+                                            <input type="text" id={`skillInput-${category}`} />
+                                            <button 
+                                                type="button"
+                                                onClick={() => {
+                                                    const skill = document.getElementById(`skillInput-${category}`).value;
+                                                    if (skill) {
+                                                        handleAddSkill(category, skill);
+                                                        document.getElementById(`skillInput-${category}`).value = "";
+                                                    }
+                                                }}
+                                            >
+                                                Add Skill
+                                            </button>
+                                        </div>
+
+                                        {/* Display Skills */}
+                                        <ul>
+                                            {[...skills].map((skill) => (
+                                                <li key={skill}>
+                                                    {skill} 
+                                                    <button onClick={() => handleRemoveSkill(category, skill)}>Remove</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </section>
+                        )}
+
 
 
                         <section>
