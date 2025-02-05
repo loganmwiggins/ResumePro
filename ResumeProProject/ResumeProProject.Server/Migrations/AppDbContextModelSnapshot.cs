@@ -414,6 +414,14 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("TemplateId");
 
                     b.ToTable("Templates");
+
+                    b.HasData(
+                        new
+                        {
+                            TemplateId = new Guid("4f1d9d3f-09c3-4f3e-bb56-ffdc3d7b6ad0"),
+                            Content = "purr",
+                            Name = "Default Template"
+                        });
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>
