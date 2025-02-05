@@ -5,7 +5,7 @@ namespace ResumeProProject.Server.Data.Models
 {
     public class Template
     {
-        [JsonIgnore]
+        
         [Key]
         public Guid TemplateId { get; set; }
         
