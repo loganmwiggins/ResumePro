@@ -122,13 +122,14 @@ namespace ResumeProProject.Server.Controllers
                     Role = request.Experiences[i].Role,
                     StartDate = request.Experiences[i].StartDate,
                     EndDate = request.Experiences[i].EndDate,
-                    IsCurrent = request.Experiences[i].IsCurrent,
+                    IsCurrent = request.Experiences[i].EndDate == null ? true : false,
                     Description = request.Experiences[i].Description,
                     Location = request.Experiences[i].Location,
                     OfficeType = request.Experiences[i].OfficeType,
                     JobType = request.Experiences[i].JobType,
                     //Resume = fetchedResume,
                 };
+
                 if (NewExperience != null) { _db.Experiences.Add(NewExperience); }
                 await _db.SaveChangesAsync();
             }

@@ -43,7 +43,7 @@ function ResumeBuilder() {
                     }
                 ],
                 skills: {
-                    skillsDataJson: ""
+                    skillsDataJson: "[]"
                 }
             });
         }

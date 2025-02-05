@@ -241,7 +241,7 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsCurrent")
+                    b.Property<bool?>("IsCurrent")
                         .HasColumnType("boolean");
 
                     b.Property<string>("JobType")

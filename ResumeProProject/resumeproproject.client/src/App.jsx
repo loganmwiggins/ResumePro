@@ -11,6 +11,7 @@ import Welcome from './pages/Welcome';
 import Home from './pages/Home';
 import TemplateSelection from './pages/TemplateSelection';
 import ResumeBuilder from './pages/ResumeBuilder';
+import ResumeBuilderTwo from './pages/ResumeBuilderTwo';
 import ResumeInsights from './pages/ResumeInsights';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/builder" element={<ResumeBuilder />} />
+        <Route path="/builder2" element={<ResumeBuilderTwo />} />
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />

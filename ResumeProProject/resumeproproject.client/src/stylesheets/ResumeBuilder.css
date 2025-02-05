@@ -82,3 +82,7 @@
 .req {
     color: var(--text-danger);
 }
+
+.section-btn {
+    padding: .5rem;
+}
