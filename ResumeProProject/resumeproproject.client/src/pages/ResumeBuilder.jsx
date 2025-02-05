@@ -11,6 +11,8 @@ function ResumeBuilder() {
     const { user, loading } = useUser();
     const [resumeData, setResumeData] = useState(null);
 
+    const [visibleSections, setVisibleSections] = useState("generalInformation");
+
     // When user data is available, set resumeData
     useEffect(() => {
         if (user?.id) {
@@ -29,50 +31,109 @@ function ResumeBuilder() {
                     linkedInUrl: null,
                     gitHubUrl: null
                 },
-                experiences: [
-                    {
-                        companyName: null,
-                        role: null,
-                        startDate: new Date().toISOString().split("T")[0],
-                        endDate: null,
-                        isCurrent: false,
-                        description: null,
-                        location: null,
-                        officeType: 1,
-                        jobType: 1
-                    }
-                ],
                 skills: {
-                    skillsDataJson: "[]"
-                }
+                    skillsDataJson: {}
+                },
+                experiences: [],
+                educations: [],
+                certifications: [],
+                projects: []
             });
         }
     }, [user]); // Runs whenever 'user' changes
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;       // Destructuring 'name' and 'value' attributes from the input field
-
-        setResumeData(prevData => ({
-            ...prevData,
-            [name]: prevData.hasOwnProperty(name) ? value : prevData[name],     // Update resumeName directly if it exists
-            generalInformation: {
-                ...prevData.generalInformation,     // Preserves previous state of general info data
-                [name]: prevData.generalInformation.hasOwnProperty(name) ? value : prevData.generalInformation[name]  // Update generalInformation fields
+    const handleChange = (section, field, value, index = null) => {
+        setResumeData((prevResume) => {
+            if (index !== null) {
+              return {
+                ...prevResume,
+                [section]: prevResume[section].map((entry, i) =>
+                  i === index ? { ...entry, [field]: value } : entry
+                ),
+              };
             }
-        }));
-    };
-
-    const handleExperienceChange = (index, event) => {
-        const { name, value, type, checked } = event.target;                            // Destructuring input field
-
-        setResumeData(prevData => {
-            const updatedExperiences = [...prevData.experiences];                       // Create a copy of the experiences array
-            updatedExperiences[index][name] = type === "checkbox" ? checked : value;    // Update exp at index, if checkbox update with checked, otherwise use value
             return {
-                ...prevData,
-                experiences: updatedExperiences
+              ...prevResume,
+              [section]: {
+                ...prevResume[section],
+                [field]: value,
+              },
             };
         });
+    };
+
+    const handleAddSkillCategory = (category) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (!updatedSkills[category]) {
+                updatedSkills[category] = new Set(); // Use a Set to avoid duplicates
+            }
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };
+    
+    const handleAddSkill = (category, skill) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (!updatedSkills[category]) {
+                updatedSkills[category] = new Set();
+            }
+    
+            updatedSkills[category].add(skill);
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };
+    
+    const handleRemoveSkill = (category, skill) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+    
+            if (updatedSkills[category]) {
+                updatedSkills[category].delete(skill);
+    
+                // Remove category if empty
+                if (updatedSkills[category].size === 0) {
+                    delete updatedSkills[category];
+                }
+            }
+    
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };    
+
+    const handleAddEntry = (section, entry) => {
+        setResumeData((prevResume) => ({
+          ...prevResume,
+          [section]: [...prevResume[section], entry],
+        }));
+      };
+    
+    const handleShowSection = (section) => {
+        if (!visibleSections.includes(section)) {
+            setVisibleSections([...visibleSections, section]);
+        }
     };
 
     const handleCancel = () => {
@@ -82,17 +143,29 @@ function ResumeBuilder() {
 
     // [POST] to Create Resume from form
     const handleSubmit = async () => {
-        console.log("Sending Data: ", JSON.stringify(resumeData, null, 2));
+        const processedResumeData = {
+            ...resumeData,
+            skills: {
+                ...resumeData.skills,
+                skillsDataJson: JSON.stringify(
+                    Object.fromEntries(
+                        Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
+                    )
+                )
+            }
+        };
+
+        console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
         try {
             const response = await fetch("https://localhost:7035/api/Resume/Create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(resumeData),
+                body: JSON.stringify(processedResumeData),
             });
             
             if (response.ok) {
-                const data = await response.json();
+                // const data = await response.json();
                 showToast("Resume created successfully!", "success");
             } 
             else {
@@ -124,81 +197,391 @@ function ResumeBuilder() {
 
                     {/* RIGHT SIDE */}
                     <div className="build-view">
-                        {/* General Information */}
+                        {/* GENERAL INFORMATION */}
                         <section id="general-information">
                             <h3>General Information</h3>
                             <div className="inputs-ctnr">
                                 <div className="input-field">
                                     <label>First Name <span className="req">*</span></label>
-                                    <input type="text" name="firstName" placeholder="Enter First Name" value={resumeData.generalInformation.firstName} onChange={handleChange} />
+                                    <input 
+                                        type="text" 
+                                        onChange={(e) => handleChange("generalInformation", "firstName", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>Middle Name</label>
-                                    <input type="text" name="middleName" placeholder="Enter Middle Name" value={resumeData.generalInformation.middleName} onChange={handleChange} />
+                                    <input 
+                                        type="text" 
+                                        onChange={(e) => handleChange("generalInformation", "middleName", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>Last Name <span className="req">*</span></label>
-                                    <input type="text" name="lastName" placeholder="Enter Last Name" value={resumeData.generalInformation.lastName} onChange={handleChange} />
+                                    <input 
+                                        type="text" 
+                                        onChange={(e) => handleChange("generalInformation", "lastName", e.target.value)} 
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>Email</label>
-                                    <input type="email" name="email" placeholder="Enter Email" value={resumeData.generalInformation.email} onChange={handleChange} />
+                                    <input 
+                                        type="email" 
+                                        onChange={(e) => handleChange("generalInformation", "email", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>Phone Number</label>
-                                    <input type="text" name="phoneNumber" placeholder="Enter Phone Number" value={resumeData.generalInformation.phoneNumber} onChange={handleChange} />
+                                    <input
+                                        type="text"
+                                        onChange={(e) => handleChange("generalInformation", "phoneNumber", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>Website URL</label>
-                                    <input type="text" name="websiteUrl" placeholder="Enter Website URL" value={resumeData.generalInformation.websiteUrl} onChange={handleChange} />
+                                    <input 
+                                        type="text" 
+                                        onChange={(e) => handleChange("generalInformation", "websiteUrl", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>LinkedIn URL</label>
-                                    <input type="text" name="linkedInUrl" placeholder="Enter LinkedIn URL" value={resumeData.generalInformation.linkedInUrl} onChange={handleChange} />
+                                    <input 
+                                        type="text" 
+                                        onChange={(e) => handleChange("generalInformation", "linkedInUrl", e.target.value)}
+                                    />
                                 </div>
                                 <div className="input-field">
                                     <label>GitHub URL</label>
-                                    <input type="text" name="gitHubUrl" placeholder="Enter GitHub URL" value={resumeData.generalInformation.gitHubUrl} onChange={handleChange} />
+                                    <input
+                                        type="text"
+                                        onChange={(e) => handleChange("generalInformation", "gitHubUrl", e.target.value)}
+                                    />
                                 </div>
                             </div>
                         </section>
+
                         
-                        {/* Experience */}
-                        <section id="experience">
-                            <h3>Experience</h3>
-                            <div className="inputs-ctnr">
-                                {resumeData.experiences.map((experience, index) => (
-                                    <div key={index} className="experience-entry">
+                        {/* EXPERIENCES */}
+                        {visibleSections.includes("experiences") && (
+                            <section>
+                                <h3>Experience</h3>
+
+                                {/* Individual experience entry */}
+                                {resumeData.experiences.map((exp, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index + 1} - {resumeData.experiences[index].companyName}</h4>
                                         <div className="input-field">
                                             <label>Company / Employer <span className="req">*</span></label>
-                                            <input type="text" name="companyName" placeholder="Enter Company Name" value={experience.companyName} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input
+                                                type="text"
+                                                onChange={(e) => handleChange("experiences", "companyName", e.target.value, index)}
+                                            />
                                         </div>
                                         <div className="input-field">
                                             <label>Role <span className="req">*</span></label>
-                                            <input type="text" name="role" placeholder="Enter Role" value={experience.role} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input
+                                                type="text"
+                                                onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
+                                            />
                                         </div>
                                         <div className="input-field">
                                             <label>Start Date <span className="req">*</span></label>
-                                            <input type="date" name="startDate" value={experience.startDate} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("experiences", "startDate", e.target.value, index)} 
+                                            />
                                         </div>
                                         <div className="input-field">
                                             <label>End Date</label>
-                                            <input type="date" name="endDate" value={experience.endDate} onChange={(e) => handleExperienceChange(index, e)} />
-                                        </div>
-                                        <div className="input-field">
-                                            <label>Is Current? <span className="req">*</span></label>
-                                            <input type="checkbox" name="isCurrent" checked={experience.isCurrent} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)} 
+                                            />
                                         </div>
                                         <div className="input-field">
                                             <label>Description <span className="req">*</span></label>
-                                            <input type="textarea" name="description" placeholder="What did you do?" value={experience.description} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input 
+                                                type="textarea" 
+                                                onChange={(e) => handleChange("experiences", "description", e.target.value, index)} 
+                                            />
                                         </div>
                                         <div className="input-field">
                                             <label>Location</label>
-                                            <input type="text" name="location" placeholder="City, State" value={experience.location} onChange={(e) => handleExperienceChange(index, e)} />
+                                            <input 
+                                                type="text" 
+                                                onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
+                                            />
                                         </div>
                                     </div>
                                 ))}
+                                
+                                {/* Add Experience button */}
+                                <button type="button" onClick={() => handleAddEntry("experiences", {
+                                    companyName: "",
+                                    role: "",
+                                    startDate: new Date(),
+                                    endDate: null,
+                                    isCurrent: null,
+                                    description: "",
+                                    location: null,
+                                    officeType: 0,
+                                    jobType: 0
+                                })}>Add Experience</button>
+                            </section>
+                        )}
+
+
+                        {/* EDUCATIONS */}
+                        {visibleSections.includes("educations") && (
+                            <section>
+                                <h3>Education</h3>
+
+                                {/* Education entry */}
+                                {resumeData.educations.map((edu, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1}</h4>
+                                        <div className="input-field">
+                                            <label>School / University <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Degree Type <span className="req">*</span></label>
+                                            <select onChange={(e) => handleChange("educations", "degreeType", e.target.value, index)}>
+                                                <option value={0}>Undergraduate</option>
+                                                <option value={1}>Graduate</option>
+                                                <option value={2}>Doctorate</option>
+                                            </select>
+                                        </div>
+                                        <div className="input-field">
+                                            <label>GPA</label>
+                                            <input 
+                                                type="number"
+                                                onChange={(e) => handleChange("educations", "gpa", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Major <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "major", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Minor</label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "minor", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Start Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("educations", "startDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>End Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("educations", "endDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Education button */}
+                                <button type="button" onClick={() => handleAddEntry("educations", {
+                                    schoolName: "",
+                                    degreeType: 0,
+                                    gpa: null,
+                                    major: "",
+                                    minor: null,
+                                    startDate: null,
+                                    endDate: null,
+                                })}>Add Education</button>
+                            </section>
+                        )}
+
+
+                        {/* CERTIFICATIONS */}
+                        {visibleSections.includes("certifications") && (
+                            <section>
+                                <h3>Certifications</h3>
+
+                                {/* Certification entry */}
+                                {resumeData.certifications.map((cert, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1} - {resumeData.certifications[index].name}</h4>
+                                        <div className="input-field">
+                                            <label>Name <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of certification (e.g., Azure Fundamentals)"
+                                                onChange={(e) => handleChange("certifications", "name", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Issuer <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of issuer (e.g., Microsoft)"
+                                                onChange={(e) => handleChange("certifications", "issuer", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Issue Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("certifications", "issueDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Expire Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Certification button */}
+                                <button type="button" onClick={() => handleAddEntry("certifications", {
+                                    name: null,
+                                    issuer: null,
+                                    issueDate: null,
+                                    expireDate: null
+                                })}>Add Certification</button>
+                            </section>
+                        )}
+
+
+                        {/* PROJECTS */}
+                        {visibleSections.includes("projects") && (
+                            <section>
+                                <h3>Projects</h3>
+
+                                {/* Project entry */}
+                                {resumeData.projects.map((proj, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1}</h4>
+                                        <div className="input-field">
+                                            <label>Title <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                placeholder="Name of project (e.g., Weather App)"
+                                                onChange={(e) => handleChange("projects", "title", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Description <span className="req">*</span></label>
+                                            <input 
+                                                type="textarea"
+                                                placeholder="What did you do?"
+                                                onChange={(e) => handleChange("projects", "description", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Start Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("projects", "startDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>End Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Project button */}
+                                <button type="button" onClick={() => handleAddEntry("projects", {
+                                    title: null,
+                                    description: null,
+                                    startDate: null,
+                                    endDate: null
+                                })}>Add Project</button>
+                            </section>
+                        )}
+
+
+                        {/* SKILLS */}
+                        {visibleSections.includes("skills") && (
+                            <section>
+                                <h3>Skills</h3>
+                                
+                                {/* Add new category */}
+                                <div className="input-field">
+                                    <label>New Skill Category</label>
+                                    <input type="text" id="newCategoryInput" />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            const category = document.getElementById("newCategoryInput").value;
+                                            if (category) {
+                                                handleAddSkillCategory(category);
+                                                document.getElementById("newCategoryInput").value = "";
+                                            }
+                                        }}
+                                    >
+                                        Add Category
+                                    </button>
+                                </div>
+
+                                {/* Render categories and skills */}
+                                {Object.entries(resumeData.skills.skillsDataJson).map(([category, skills]) => (
+                                    <div key={category} className="skill-category">
+                                        <h4>{category}</h4>
+                                        
+                                        {/* Add skill input */}
+                                        <div className="input-field">
+                                            <input type="text" id={`skillInput-${category}`} />
+                                            <button 
+                                                type="button"
+                                                onClick={() => {
+                                                    const skill = document.getElementById(`skillInput-${category}`).value;
+                                                    if (skill) {
+                                                        handleAddSkill(category, skill);
+                                                        document.getElementById(`skillInput-${category}`).value = "";
+                                                    }
+                                                }}
+                                            >
+                                                Add Skill
+                                            </button>
+                                        </div>
+
+                                        {/* Display Skills */}
+                                        <ul>
+                                            {[...skills].map((skill) => (
+                                                <li key={skill}>
+                                                    {skill} 
+                                                    <button onClick={() => handleRemoveSkill(category, skill)}>Remove</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </section>
+                        )}
+
+
+
+                        <section>
+                            <h3>Add a Section</h3>
+                            <div className="inputs-ctnr">
+                                <button type="button" className="section-btn" onClick={() => handleShowSection("experiences")}>Experiences</button>
+                                <button type="button" className="section-btn" onClick={() => handleShowSection("educations")}>Educations</button>
+                                <button type="button" className="section-btn" onClick={() => handleShowSection("certifications")}>Certifications</button>
+                                <button type="button" className="section-btn" onClick={() => handleShowSection("projects")}>Projects</button>
+                                <button type="button" className="section-btn" onClick={() => handleShowSection("skills")}>Skills</button>
                             </div>
                         </section>
                     </div>
