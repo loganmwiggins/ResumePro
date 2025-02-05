@@ -41,7 +41,7 @@ function App() {
         {/* Authorized routes */}
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
-        <Route path="/builder" element={<ResumeBuilder />} />
+        <Route path="/builder/:templateId" element={<ResumeBuilder />} />
         <Route path="/builder2" element={<ResumeBuilderTwo />} />
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />

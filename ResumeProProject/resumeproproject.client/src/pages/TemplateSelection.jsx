@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import '../stylesheets/TemplateSelection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 
 function TemplateSelection() {
+  const navigate = useNavigate();
   const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function TemplateSelection() {
         if (response.ok) {
           const data = await response.json();
           setTemplates(data); // Store fetched templates in state
-          showToast("Templates retrieved successfully.", "success");
+          // showToast("Templates retrieved successfully.", "success");
         } else {
           showToast("Failed to fetch templates.", "error");
         }
@@ -30,6 +33,11 @@ function TemplateSelection() {
     getAllTemplates();
   }, []);
 
+  const handleTemplateSelect = (templateId) => {
+    navigate(`/builder/${templateId}`);
+    // showToast(templateId, "info");
+  }
+
   return (
     <AuthorizeView>
       <div className="page-header">
@@ -40,7 +48,7 @@ function TemplateSelection() {
       <div className="template-list">
         {templates.length > 0 ? (
           templates.map((template, index) => (
-            <div key={index} className="template-item">
+            <div key={index} className="template-item" onClick={() => handleTemplateSelect(template.templateId)}>
               <h2>{template.name}</h2>
               <iframe 
                 title={template.name} 
