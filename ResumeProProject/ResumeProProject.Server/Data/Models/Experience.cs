@@ -23,7 +23,7 @@ namespace ResumeProProject.Server.Data.Models
 
         public DateOnly? EndDate { get; set; }
 
-        public required bool IsCurrent { get; set; }
+        public bool? IsCurrent { get; set; }
 
         public required string Description { get; set; }
 

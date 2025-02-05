@@ -109,17 +109,17 @@ namespace ResumeProProject.Server.Data
         //        UpdatedDateTime = fixedDateTime
         //    });
 
-        //    // ✅ Seed Template
-        //    modelBuilder.Entity<Template>().HasData(new Template
-        //    {
-        //        TemplateId = templateId,
-        //        Name = "Default Template",
-        //        Content = "This is a default resume template."
-        //    });
+            // ✅ Seed Template
+            modelBuilder.Entity<Template>().HasData(new Template
+            {
+                TemplateId = Guid.Parse("4f1d9d3f-09c3-4f3e-bb56-ffdc3d7b6ad0"),
+                Name = "Default Template",
+                Content = "purr"
+            });
 
         //    // ✅ Seed Skills
         //    modelBuilder.Entity<Skills>().HasData(new Skills
-        //    {
+        //    {s
         //        SkillId = skillId,
         //        ResumeId = resumeId,
         //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>

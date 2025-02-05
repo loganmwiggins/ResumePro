@@ -241,7 +241,7 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsCurrent")
+                    b.Property<bool?>("IsCurrent")
                         .HasColumnType("boolean");
 
                     b.Property<string>("JobType")
@@ -304,12 +304,18 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ResumeId1")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("WebsiteUrl")
                         .HasColumnType("text");
 
                     b.HasKey("GeneralInfoId");
 
                     b.HasIndex("ResumeId")
+                        .IsUnique();
+
+                    b.HasIndex("ResumeId1")
                         .IsUnique();
 
                     b.ToTable("GeneralInformation");
@@ -325,8 +331,18 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ProjectId");
 
@@ -398,6 +414,14 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("TemplateId");
 
                     b.ToTable("Templates");
+
+                    b.HasData(
+                        new
+                        {
+                            TemplateId = new Guid("4f1d9d3f-09c3-4f3e-bb56-ffdc3d7b6ad0"),
+                            Content = "purr",
+                            Name = "Default Template"
+                        });
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>
@@ -568,6 +592,10 @@ namespace ResumeProProject.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", null)
+                        .WithOne("GeneralInformation")
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.GeneralInformation", "ResumeId1");
+
                     b.Navigation("Resume");
                 });
 
@@ -610,6 +638,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");
+
+                    b.Navigation("GeneralInformation")
+                        .IsRequired();
 
                     b.Navigation("Projects");
 

@@ -1,0 +1,88 @@
+.builder-ctnr {
+    display: flex;
+    flex-direction: row;
+    background: rgb(250, 250, 250);
+}
+
+.template-view, .build-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    height: 80svh;
+}
+
+/* TEMPLATE VIEW (LEFT SIDE) */
+.template-view {
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.resume-ctnr {
+    background: white;
+    border: 1px solid grey;
+    width: 100%;
+    height: 95%;
+}
+
+.resume-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    button {
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: .25rem;
+        padding: .5rem .75rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+}
+
+
+/* BUILD VIEW (RIGHT SIDE) */
+.build-view {
+    border-left: 1px solid lightgrey;
+    overflow-y: scroll;
+    padding: 0 2rem;
+
+    section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 1rem;
+        padding: 2rem 0;
+        border-bottom: 1px solid lightgrey;
+    }
+}
+
+.inputs-ctnr, .experience-entry {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    gap: 1rem;
+}
+
+.input-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .25rem;
+}
+
+.req {
+    color: var(--text-danger);
+}
+
+.section-btn {
+    padding: .5rem;
+}

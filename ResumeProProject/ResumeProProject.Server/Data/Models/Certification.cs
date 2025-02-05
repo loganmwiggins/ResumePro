@@ -7,6 +7,7 @@ namespace ResumeProProject.Server.Data.Models
     public class Certification
     {
         [Key]
+        [JsonIgnore]
         public Guid CertificationId { get; set; }
         [JsonIgnore]
         [ForeignKey("Resume")]
