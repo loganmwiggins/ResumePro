@@ -158,5 +158,106 @@ namespace ResumeProProject.Server.Controllers
             return Ok();
         }
 
+        [HttpGet("GetResumes/{userId}")]
+        public async Task<IActionResult> GetResumes(string userId)
+        {
+            var resumes = await _db.Resumes
+                .Where(r => r.Id == userId)
+                .Include(r => r.GeneralInformation)
+                .Include(r => r.Educations)
+                .Include(r => r.Certifications)
+                .Include(r => r.Experiences)
+                .Include(r => r.Projects)
+                .Include(r => r.Skills)
+                .ToListAsync();
+
+            if (!resumes.Any())
+            {
+                return NotFound(new { message = "No resumes found for this user." });
+            }
+
+            // Fetch all GeneralInformation separately
+            var resumeIds = resumes.Select(r => r.ResumeId).ToList();
+            var generalInfoDict = await _db.GeneralInformation
+                .Where(g => resumeIds.Contains(g.ResumeId))
+                .ToDictionaryAsync(g => g.ResumeId);
+
+            var result = resumes.Select(resume => new
+            {
+                ResumeId = resume.ResumeId,
+                ResumeName = resume.Name,
+                UpdatedDateTime = resume.UpdatedDateTime,
+                TemplateId = resume.TemplateId,
+
+                GeneralInformation = generalInfoDict.TryGetValue(resume.ResumeId, out var genInfo) ? genInfo : null,
+
+                Educations = resume.Educations.Select(e => new
+                {
+                    e.SchoolName,
+                    e.DegreeType,
+                    e.GPA,
+                    e.Major,
+                    e.Minor,
+                    e.StartDate,
+                    e.EndDate
+                }).ToList(),
+
+                Certifications = resume.Certifications.Select(c => new
+                {
+                    c.Name,
+                    c.Issuer,
+                    c.IssueDate,
+                    c.ExpireDate
+                }).ToList(),
+
+                Experiences = resume.Experiences.Select(ex => new
+                {
+                    ex.CompanyName,
+                    ex.Role,
+                    ex.StartDate,
+                    ex.EndDate,
+                    ex.IsCurrent,
+                    ex.Description,
+                    ex.Location,
+                    ex.OfficeType,
+                    ex.JobType
+                }).ToList(),
+
+                Projects = resume.Projects.Select(p => new
+                {
+                    p.Title,
+                    p.Description,
+                    p.StartDate,
+                    p.EndDate
+                }).ToList(),
+
+                Skills = resume.Skills != null ? new
+                {
+                    resume.Skills
+                } : null
+            }).ToList();
+
+            return Ok(result);
+        }
+
+        [HttpDelete("DeleteResume/{resumeId}")]
+        public async Task<IActionResult> DeleteResume(Guid resumeId)
+        {
+            var resume = await _db.Resumes.FindAsync(resumeId);
+
+            if (resume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+
+            _db.Resumes.Remove(resume);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Resume deleted successfully." });
+        }
+
     }
+
+
 }
+
