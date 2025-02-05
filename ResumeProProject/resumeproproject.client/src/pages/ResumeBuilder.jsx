@@ -23,19 +23,19 @@ function ResumeBuilder() {
     useEffect(() => {
         const getTemplate = async () => {
             try {
-            const response = await fetch(`https://localhost:7035/api/Template/${templateId}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            });
+                const response = await fetch(`https://localhost:7035/api/Template/${templateId}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
 
-            if (response.ok) {
-                const data = await response.json();
-                setTemplate(data); // Store fetched templates in state
-                showToast(`Let's get started with ${template.name}!`, "success");
-            } else {
-                showToast("Failed to fetch template.", "error");
-            }
-            } catch (error) {
+                if (response.ok) {
+                    const data = await response.json();
+                    setTemplate(data); // Store fetched templates in state
+                } else {
+                    showToast("Failed to fetch template.", "error");
+                }
+            } 
+            catch (error) {
                 console.error("Error:", error);
                 showToast("An error occurred.", "error");
             }
