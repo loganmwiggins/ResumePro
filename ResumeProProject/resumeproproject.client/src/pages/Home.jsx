@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import AuthorizeView from '../components/AuthorizeView';
-import { useUser } from "../context/UserContext"; 
+import { useUser } from '../context/UserContext';
 import '../stylesheets/Home.css';
 
 function Home() {
   const { user, loading } = useUser();
   const navigate = useNavigate();
+  const [resumes, setResumes] = useState([]);
 
-  // Array of possible greetings
-  const greetings = [
+   // Array of possible greetings
+   const greetings = [
     "Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy",
-    "Good to see you", "Hey there", "Hello there"
+    "Good to see you", "Hey there", "Hello there", "Good Morrow"
   ];
   
   // Array of possible messages
@@ -40,10 +40,46 @@ function Home() {
 
   // Function to randomly pick a greeting and a message
   const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
+  useEffect(() => {
+    if (!user || !user.id) return;
+ console.log(user.id)
+    const fetchResumes = async () => {
+      try {
+        const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
+        if (!response.ok) throw new Error('Failed to fetch resumes');
+        const data = await response.json();
+        setResumes(data); // Assuming API returns an array of resumes
+      } catch (error) {
+        console.error('Error fetching resumes:', error);
+      }
+    };
 
-  const handleNewResume = () => {
-    navigate("/templates");
-  }
+    fetchResumes();
+  }, [user]);
+
+  // Handle navigation to create a new resume
+  const handleNewResume = () => navigate('/templates');
+
+  // Handle editing a resume
+  const handleEditResume = (resumeId) => navigate(`/edit-resume/${resumeId}`);
+
+  // Handle deleting a resume
+  const handleDeleteResume = async (resumeId) => {
+    if (!window.confirm('Are you sure you want to delete this resume?')) return;
+    console.log(resumeId);
+    try {
+      const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
+{
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Failed to delete resume');
+
+      setResumes((prevResumes) => prevResumes.filter((r) => r.resumeId !== resumeId));
+    } catch (error) {
+      console.error('Error deleting resume:', error);
+    }
+  };
 
   return (
     <AuthorizeView>
@@ -72,66 +108,33 @@ function Home() {
           <div className="my-resumes-ctnr">
             <h2>My Resumes</h2>
             <div className="resumes-row">
-              {/* Resume */}
-              <div className="resume">
-                <div className="resume-img"></div>
-                <div className="resume-info">
-                  <div className="resume-txt">
-                    <p>Resume for JM Family</p>
-                    <p>Last Updated: Feb 3, 2025</p>
+              {resumes.length > 0 ? (
+                resumes.map((resume) => (
+                  <div className="resume" key={resume.resumeId}>
+                    <div className="resume-img"></div>
+                    <div className="resume-info">
+                      <div className="resume-txt">
+                        <p>{resume.resumeName}</p>
+                        <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
+                      </div>
+                      <div className="resume-btns">
+                        <button onClick={() => handleEditResume(resume.resumeId)}>
+                          <img src="assets/icons/pencil.svg" draggable="false" />
+                        </button>
+                        <button onClick={() => handleDeleteResume(resume.resumeId)}>
+                          <img src="assets/icons/trash.svg" draggable="false" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="resume-btns">
-                    <button>
-                      <img src="assets/icons/pencil.svg" draggable="false" />
-                    </button>
-                    <button>
-                      <img src="assets/icons/trash.svg" draggable="false" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Resume */}
-              <div className="resume">
-                <div className="resume-img"></div>
-                <div className="resume-info">
-                  <div className="resume-txt">
-                    <p>JPMorgan Resume</p>
-                    <p>Last Updated: Jan 27, 2025</p>
-                  </div>
-                  <div className="resume-btns">
-                    <button>
-                      <img src="assets/icons/pencil.svg" draggable="false" />
-                    </button>
-                    <button>
-                      <img src="assets/icons/trash.svg" draggable="false" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Resume */}
-              <div className="resume">
-                <div className="resume-img"></div>
-                <div className="resume-info">
-                  <div className="resume-txt">
-                    <p>Untitled Document</p>
-                    <p>Last Updated: Nov 12, 2024</p>
-                  </div>
-                  <div className="resume-btns">
-                    <button>
-                      <img src="assets/icons/pencil.svg" draggable="false" />
-                    </button>
-                    <button>
-                      <img src="assets/icons/trash.svg" draggable="false" />
-                    </button>
-                  </div>
-                </div>
-              </div>
+                ))
+              ) : (
+                <p>No resumes found. Create one now!</p>
+              )}
             </div>
           </div>
         </div>
-      )}  
+      )}
     </AuthorizeView>
   );
 }
