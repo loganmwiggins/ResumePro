@@ -1,5 +1,6 @@
 .builder-ctnr {
     display: flex;
+    flex-direction: row;
     background: rgb(250, 250, 250);
 }
 
@@ -8,20 +9,48 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+    height: 80svh;
 }
 
+/* TEMPLATE VIEW (LEFT SIDE) */
+.template-view {
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.resume-ctnr {
+    background: white;
+    border: 1px solid grey;
+    width: 100%;
+    height: 95%;
+}
+
+.resume-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    button {
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: .25rem;
+        padding: .5rem .75rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+}
+
+
+/* BUILD VIEW (RIGHT SIDE) */
 .build-view {
-    height: 80svh;
     border-left: 1px solid lightgrey;
     overflow-y: scroll;
     padding: 0 2rem;
-}
-
-.build-view form {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 1rem;
 
     section {
         width: 100%;
@@ -30,11 +59,11 @@
         align-items: start;
         gap: 1rem;
         padding: 2rem 0;
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid lightgrey;
     }
 }
 
-.inputs-ctnr {
+.inputs-ctnr, .experience-entry {
     width: 100%;
     display: flex;
     align-items: center;
@@ -48,8 +77,8 @@
     flex-direction: column;
     align-items: start;
     gap: .25rem;
+}
 
-    label {
-        color: #555;
-    }
+.req {
+    color: var(--text-danger);
 }

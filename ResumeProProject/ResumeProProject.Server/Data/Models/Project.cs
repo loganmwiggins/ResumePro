@@ -8,6 +8,7 @@ public class Project
     [JsonIgnore]
     [Key]
     public Guid ProjectId { get; set; }
+
     [JsonIgnore]
     [ForeignKey("Resume")]
     public Guid ResumeId { get; set; }
