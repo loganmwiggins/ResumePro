@@ -257,6 +257,84 @@ function ResumeBuilderTwo() {
                             </section>
                         )}
 
+
+                        {/* EDUCATIONS */}
+                        {visibleSections.includes("educations") && (
+                            <section>
+                                <h3>Education</h3>
+
+                                {/* Education entry */}
+                                {resumeData.educations.map((edu, index) => (
+                                    <div className="inputs-ctnr" key={index}>
+                                        <h4>#{index+1}</h4>
+                                        <div className="input-field">
+                                            <label>School / University <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Degree Type <span className="req">*</span></label>
+                                            <select onChange={(e) => handleChange("educations", "degreeType", e.target.value, index)}>
+                                                <option value={0}>Undergraduate</option>
+                                                <option value={1}>Graduate</option>
+                                                <option value={2}>Doctorate</option>
+                                            </select>
+                                        </div>
+                                        <div className="input-field">
+                                            <label>GPA</label>
+                                            <input 
+                                                type="number"
+                                                onChange={(e) => handleChange("educations", "gpa", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Major <span className="req">*</span></label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "major", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Minor</label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "minor", e.target.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Start Date <span className="req">*</span></label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("educations", "startDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>End Date</label>
+                                            <input 
+                                                type="date" 
+                                                onChange={(e) => handleChange("educations", "endDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Another Education button */}
+                                <button type="button" onClick={() => handleAddEntry("educations", {
+                                    schoolName: "",
+                                    degreeType: 0,
+                                    gpa: null,
+                                    major: "",
+                                    minor: null,
+                                    startDate: null,
+                                    endDate: null,
+                                })}>Add Education</button>
+                            </section>
+                        )}
+
+
+
                         <section>
                             <h3>Add a Section</h3>
                             <div className="inputs-ctnr">
