@@ -78,3 +78,7 @@
     align-items: start;
     gap: .25rem;
 }
+
+.req {
+    color: var(--text-danger);
+}

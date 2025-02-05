@@ -129,7 +129,7 @@ function ResumeBuilder() {
                             <h3>General Information</h3>
                             <div className="inputs-ctnr">
                                 <div className="input-field">
-                                    <label>First Name</label>
+                                    <label>First Name <span className="req">*</span></label>
                                     <input type="text" name="firstName" placeholder="Enter First Name" value={resumeData.generalInformation.firstName} onChange={handleChange} />
                                 </div>
                                 <div className="input-field">
@@ -137,7 +137,7 @@ function ResumeBuilder() {
                                     <input type="text" name="middleName" placeholder="Enter Middle Name" value={resumeData.generalInformation.middleName} onChange={handleChange} />
                                 </div>
                                 <div className="input-field">
-                                    <label>Last Name</label>
+                                    <label>Last Name <span className="req">*</span></label>
                                     <input type="text" name="lastName" placeholder="Enter Last Name" value={resumeData.generalInformation.lastName} onChange={handleChange} />
                                 </div>
                                 <div className="input-field">
@@ -170,15 +170,15 @@ function ResumeBuilder() {
                                 {resumeData.experiences.map((experience, index) => (
                                     <div key={index} className="experience-entry">
                                         <div className="input-field">
-                                            <label>Company Name</label>
+                                            <label>Company / Employer <span className="req">*</span></label>
                                             <input type="text" name="companyName" placeholder="Enter Company Name" value={experience.companyName} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
-                                            <label>Role</label>
+                                            <label>Role <span className="req">*</span></label>
                                             <input type="text" name="role" placeholder="Enter Role" value={experience.role} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
-                                            <label>Start Date</label>
+                                            <label>Start Date <span className="req">*</span></label>
                                             <input type="date" name="startDate" value={experience.startDate} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
@@ -186,11 +186,11 @@ function ResumeBuilder() {
                                             <input type="date" name="endDate" value={experience.endDate} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
-                                            <label>Is Current</label>
+                                            <label>Is Current? <span className="req">*</span></label>
                                             <input type="checkbox" name="isCurrent" checked={experience.isCurrent} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
-                                            <label>Description</label>
+                                            <label>Description <span className="req">*</span></label>
                                             <input type="textarea" name="description" placeholder="What did you do?" value={experience.description} onChange={(e) => handleExperienceChange(index, e)} />
                                         </div>
                                         <div className="input-field">
