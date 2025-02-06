@@ -333,9 +333,9 @@ function ResumeBuilder() {
                                         </div>
 
                                         <Select
-                                        options={jobTypeOptions}
-                                        defaultValue={jobTypeOptions[0]}
-                                        onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
+                                            options={jobTypeOptions}
+                                            defaultValue={jobTypeOptions[0]}
+                                            onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
                                         />
                                         <div className="input-field">
                                             <label>Start Date <span className="req">*</span></label>
@@ -364,15 +364,12 @@ function ResumeBuilder() {
                                                 type="text" 
                                                 onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
                                             />
-                                         <Select
-                                        options={officeTypeOptions}
-                                        defaultValue={officeTypeOptions[0]}
-                                        onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
-                                        />
-
-                                            
-                                            
                                         </div>
+                                        <Select
+                                            options={officeTypeOptions}
+                                            defaultValue={officeTypeOptions[0]}
+                                            onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
+                                        />
                                     </div>
                                 ))}
                                 
@@ -481,8 +478,8 @@ function ResumeBuilder() {
                                             <label>Name <span className="req">*</span></label>
                                             <input 
                                                 type="text"
-                                                placeholder="Name of certification (e.g., Azure Fundamentals)"
                                                 onChange={(e) => handleChange("certifications", "name", e.target.value, index)}
+                                                placeholder="Name of certification (e.g., Azure Fundamentals)"
                                             />
                                         </div>
                                         <div className="input-field">

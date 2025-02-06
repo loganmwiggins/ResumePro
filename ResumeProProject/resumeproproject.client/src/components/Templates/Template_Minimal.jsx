@@ -3,18 +3,29 @@ import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
     // console.log(resumeData);
+
+    const formatDate = (dateString) => {
+        const [year, month, day] = dateString.split("-").map(Number);
+        const date = new Date(year, month - 1, day); // Month is zero-based in JavaScript Date()
+        
+        return date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        });
+    }
+
     return (
         <div className="resume-paper">
             {/* GENERAL INFORMATION */}
             <header>
                 <div className="header-left">
-                    <h1 className="text-3xl font-bold">
-                        {resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}
-                    </h1>
-                    <p>{resumeData.generalInformation.email} | (123) 456-7890</p>
+                    <h1>{resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}</h1>
+                    <p>{resumeData.generalInformation.location}</p>
                 </div>
                 <div className="header-right">
-                    <p>{resumeData.generalInformation.location}</p>
+                    <p>{resumeData.generalInformation.email}</p>
+                    <p>{resumeData.generalInformation.phoneNumber}</p>
                 </div>
             </header>
 
@@ -64,17 +75,25 @@ function Template_Minimal({ resumeData }) {
                 </div>
             </section>
 
-            <section>
-                <h2>CERTIFICATIONS</h2>
-                <div>
-                    <h3>Azure Developer Associate</h3>
-                    <p>Microsoft | Issued: May 12, 2024 | Expires: May 12, 2026</p>
-                </div>
-                <div>
-                    <h3>Azure Fundamentals</h3>
-                    <p>Microsoft | Issued: March 31, 2024</p>
-                </div>
-            </section>
+            {/* CERTIFICATIONS */}
+            {resumeData.certifications.length > 0 && (
+                <section>
+                    <h2>CERTIFICATIONS</h2>
+                    {resumeData.certifications.map(cert => (
+                        <div key={cert.name}>
+                            <h3>{cert.name}</h3>
+                            <p>
+                                {cert.issuer} {cert.issueDate && (
+                                    `| Issued: ${formatDate(cert.issueDate)}` 
+                                )} {cert.expireDate && (
+                                    `| Expires: ${formatDate(cert.expireDate)}`
+                                )}
+                            </p>
+                        </div>
+                    ))}
+                </section>
+            )}
+            
             
             <section>
                 <h2>SKILLS</h2>

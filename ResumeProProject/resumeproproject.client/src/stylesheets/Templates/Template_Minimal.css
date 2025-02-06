@@ -14,7 +14,14 @@
 
 header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
 }
 
 section {
@@ -29,6 +36,7 @@ section {
 .urls {
     display: flex;
     align-items: center;
+    flex-flow: wrap;
     gap: 1rem;
 
     span {
