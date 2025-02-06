@@ -11,10 +11,6 @@ function AllTemplates({ selectedTemplate, resumeData }) { // Planning to possibl
   const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
 
   return (
-    // <>
-    //     {/* Insert different resume templates and load them conditionally */}
-    //     <Template_Minimal></Template_Minimal>
-    // </>
     <div className="template-list"> 
         <div className="template-item">
             <div className="template-preview">
