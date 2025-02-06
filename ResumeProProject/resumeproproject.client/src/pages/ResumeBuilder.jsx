@@ -5,6 +5,7 @@ import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
+import AllTemplates from '../components/Templates/AllTemplates';
 
 function ResumeBuilder() {
     const navigate = useNavigate();
@@ -18,31 +19,6 @@ function ResumeBuilder() {
 
     // Extract templateId from URL
     const templateId = params.templateId;
-
-    // Retrieve template data with templateId
-    useEffect(() => {
-        const getTemplate = async () => {
-            try {
-                const response = await fetch(`https://localhost:7035/api/Template/${templateId}`, {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setTemplate(data); // Store fetched templates in state
-                } else {
-                    showToast("Failed to fetch template.", "error");
-                }
-            } 
-            catch (error) {
-                console.error("Error:", error);
-                showToast("An error occurred.", "error");
-            }
-        };
-
-        getTemplate();
-    }, []);
 
     // When user data is available, set resumeData
     useEffect(() => {
@@ -219,12 +195,7 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         <div className="resume-ctnr">
-                            <iframe 
-                                srcDoc={template.content} 
-                                width= "425px"
-                                height= "550px"
-                                className="template-preview"
-                            />
+                            <AllTemplates selectedTemplate={templateId}></AllTemplates>
                         </div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />

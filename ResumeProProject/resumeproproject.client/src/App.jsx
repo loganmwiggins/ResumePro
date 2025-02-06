@@ -17,6 +17,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Template_Minimal from './components/Templates/Template_Minimal';
 
 function App() {
   const location = useLocation();
@@ -42,7 +43,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/builder/:templateId" element={<ResumeBuilder />} />
-        <Route path="/builder2" element={<ResumeBuilderTwo />} />
+        {/* <Route path="/builder2" element={<ResumeBuilderTwo />} /> */}
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
@@ -52,6 +53,9 @@ function App() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+
+        {/* WILL REMOVE LATER: Templates for viewing */}
+        <Route path="/template-minimal" element={<Template_Minimal />} />
 
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Navigate to="/home" />} />

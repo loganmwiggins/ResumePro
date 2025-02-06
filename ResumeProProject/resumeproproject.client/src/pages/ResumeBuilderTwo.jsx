@@ -1,17 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
+import AllTemplates from '../components/Templates/AllTemplates';
 
-function ResumeBuilderTwo() {
+function ResumeBuilder() {
     const navigate = useNavigate();
+    // const params = useParams();
     const { user, loading } = useUser();
+
+    const [template, setTemplate] = useState([]);
     const [resumeData, setResumeData] = useState(null);
 
     const [visibleSections, setVisibleSections] = useState("generalInformation");
+
+    // Extract templateId from URL
+    // const templateId = params.templateId;
+
+    // Retrieve template data with templateId
+    // useEffect(() => {
+    //     const getTemplate = async () => {
+    //         try {
+    //             const response = await fetch(`https://localhost:7035/api/Template/${templateId}`, {
+    //                 method: "GET",
+    //                 headers: { "Content-Type": "application/json" },
+    //             });
+
+    //             if (response.ok) {
+    //                 const data = await response.json();
+    //                 setTemplate(data); // Store fetched templates in state
+    //             } else {
+    //                 showToast("Failed to fetch template.", "error");
+    //             }
+    //         } 
+    //         catch (error) {
+    //             console.error("Error:", error);
+    //             showToast("An error occurred.", "error");
+    //         }
+    //     };
+
+    //     getTemplate();
+    // }, []);
 
     // When user data is available, set resumeData
     useEffect(() => {
@@ -187,7 +219,9 @@ function ResumeBuilderTwo() {
                 <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     {/* LEFT SIDE */}
                     <div className="template-view">
-                        <div className="resume-ctnr"></div>
+                        <div className="resume-ctnr">
+                            {/* <AllTemplates></AllTemplates> */}
+                        </div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
                             <button type="button" onClick={handleCancel}>Cancel</button>
@@ -591,4 +625,4 @@ function ResumeBuilderTwo() {
     }
 }
 
-export default ResumeBuilderTwo;
+export default ResumeBuilder;
