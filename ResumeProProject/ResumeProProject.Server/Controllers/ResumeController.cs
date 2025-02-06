@@ -15,7 +15,7 @@ namespace ResumeProProject.Server.Controllers
         public required string Id { get; set; } // User ID
         public required string ResumeName { get; set; }
         public required DateTime CurrentDate { get; set; }
-        public required Guid TemplateId { get; set; }
+        public required string TemplateId { get; set; }
 
         // One-to-One Relationship
         public required GeneralInformation GeneralInformation { get; set; }
