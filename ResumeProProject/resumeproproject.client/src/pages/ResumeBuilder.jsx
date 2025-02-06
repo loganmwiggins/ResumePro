@@ -171,11 +171,6 @@ function ResumeBuilder() {
         showToast("Resume abandoned.", "info");
         navigate("/home");
     }
-    const degreeOptions = [
-        { value: 0, label: "Undergraduate" },
-        { value: 1, label: "Graduate" },
-        { value: 2, label: "Doctorate" }
-    ];
     const officeTypeOptions = [
         { value: 0, label: "Fully On-site" },
         { value: 2, label: "Hybrid" },
@@ -414,11 +409,14 @@ function ResumeBuilder() {
                                                 onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
                                             />
                                         </div>
-                                        <Select
-                                        options={degreeOptions}
-                                        defaultValue={degreeOptions[0]}
-                                        onChange={(selectedOption) => handleChange("educations", "degreeType", selectedOption.value, index)}
-                                        />
+                                        <div className="input-field">
+                                            <label>Degree Type</label>
+                                            <input 
+                                                type="text"
+                                                onChange={(e) => handleChange("educations", "degreeType", e.target.value, index)}
+                                                placeholder="(e.g., Bachelor of Science)"
+                                            />
+                                            </div>
                                         <div className="input-field">
                                             <label>GPA</label>
                                             <input 
@@ -460,7 +458,7 @@ function ResumeBuilder() {
                                 {/* Add Education button */}
                                 <button type="button" onClick={() => handleAddEntry("educations", {
                                     schoolName: "",
-                                    degreeType: 0,
+                                    degreeType: "",
                                     gpa: null,
                                     major: "",
                                     minor: null,

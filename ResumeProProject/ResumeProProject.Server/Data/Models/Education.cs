@@ -24,7 +24,7 @@ namespace ResumeProProject.Server.Data.Models
 
         // ✅ Store Enum as String
         [Required]
-        public DegreeLevel DegreeType { get; set; }
+        public string DegreeType { get; set; }
 
         public double? GPA { get; set; }
 
@@ -39,10 +39,5 @@ namespace ResumeProProject.Server.Data.Models
         public DateOnly? EndDate { get; set; }
     }
 
-    public enum DegreeLevel
-    {
-        Undergraduate,
-        Graduate,
-        Doctorate
-    }
+    
 }
