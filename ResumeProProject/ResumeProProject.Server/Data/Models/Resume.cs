@@ -15,10 +15,8 @@ namespace ResumeProProject.Server.Data.Models
 
         public DateTime UpdatedDateTime { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("Template")]
-        public Guid TemplateId { get; set; }
+        public string TemplateId { get; set; }
 
-        // ✅ Explicitly define foreign key mapping
         [ForeignKey("User")]
         public required string  Id { get; set; } //THIS IS THE USER ID
         [JsonIgnore]
