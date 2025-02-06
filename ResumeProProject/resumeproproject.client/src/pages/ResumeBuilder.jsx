@@ -21,7 +21,7 @@ function ResumeBuilder() {
     // Extract templateId from URL
     const templateId = params.templateId;
 
-    // When user data is available, set resumeData
+    // When user data is available, initialize resumeData with default values
     useEffect(() => {
         if (user?.id) {
             setResumeData({
@@ -34,9 +34,10 @@ function ResumeBuilder() {
                     middleName: null,
                     lastName: "Doe",
                     email: "john.doe@example.com",
-                    phoneNumber: null,
-                    websiteUrl: null,
-                    linkedInUrl: null,
+                    phoneNumber: "(123) 456-7890",
+                    location: "Miami, FL",
+                    websiteUrl: "johndoe.com",
+                    linkedInUrl: "linkedin.com/in/johndoe",
                     gitHubUrl: null
                 },
                 skills: {
@@ -229,13 +230,16 @@ function ResumeBuilder() {
                                     <input 
                                         type="text" 
                                         onChange={(e) => handleChange("generalInformation", "firstName", e.target.value)}
+                                        value={resumeData.generalInformation.firstName}
+                                        placeholder="EX:  John"
                                     />
                                 </div>
                                 <div className="input-field">
-                                    <label>Middle Name</label>
+                                    <label>Middle Name / Initial</label>
                                     <input 
                                         type="text" 
                                         onChange={(e) => handleChange("generalInformation", "middleName", e.target.value)}
+                                        placeholder="EX:  Elizabeth / E"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -243,6 +247,8 @@ function ResumeBuilder() {
                                     <input 
                                         type="text" 
                                         onChange={(e) => handleChange("generalInformation", "lastName", e.target.value)} 
+                                        value={resumeData.generalInformation.lastName}
+                                        placeholder="EX:  Doe"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -250,6 +256,8 @@ function ResumeBuilder() {
                                     <input 
                                         type="email" 
                                         onChange={(e) => handleChange("generalInformation", "email", e.target.value)}
+                                        value={resumeData.generalInformation.email}
+                                        placeholder="EX:  john.doe@example.com"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -257,6 +265,17 @@ function ResumeBuilder() {
                                     <input
                                         type="text"
                                         onChange={(e) => handleChange("generalInformation", "phoneNumber", e.target.value)}
+                                        value={resumeData.generalInformation.phoneNumber}
+                                        placeholder="EX:  (123) 456-7890"
+                                    />
+                                </div>
+                                <div className="input-field">
+                                    <label>Location</label>
+                                    <input
+                                        type="text"
+                                        onChange={(e) => handleChange("generalInformation", "location", e.target.value)}
+                                        value={resumeData.generalInformation.location}
+                                        placeholder="EX:  Miami, FL"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -264,6 +283,8 @@ function ResumeBuilder() {
                                     <input 
                                         type="text" 
                                         onChange={(e) => handleChange("generalInformation", "websiteUrl", e.target.value)}
+                                        value={resumeData.generalInformation.websiteUrl}
+                                        placeholder="EX:  johndoe.com"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -271,6 +292,8 @@ function ResumeBuilder() {
                                     <input 
                                         type="text" 
                                         onChange={(e) => handleChange("generalInformation", "linkedInUrl", e.target.value)}
+                                        value={resumeData.generalInformation.linkedInUrl}
+                                        placeholder="EX:  linkedin.com/in/johndoe"
                                     />
                                 </div>
                                 <div className="input-field">
@@ -278,6 +301,7 @@ function ResumeBuilder() {
                                     <input
                                         type="text"
                                         onChange={(e) => handleChange("generalInformation", "gitHubUrl", e.target.value)}
+                                        placeholder="EX:  github.com/johndoe"
                                     />
                                 </div>
                             </div>

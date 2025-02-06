@@ -26,6 +26,20 @@ section {
     }
 }
 
+.urls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+
+        img { max-width: 1rem; }
+    }
+}
+
 .skill-row {
     display: flex;
     align-items: center;

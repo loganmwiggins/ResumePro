@@ -5,17 +5,42 @@ function Template_Minimal({ resumeData }) {
     // console.log(resumeData);
     return (
         <div className="resume-paper">
+            {/* GENERAL INFORMATION */}
             <header>
                 <div className="header-left">
                     <h1 className="text-3xl font-bold">
                         {resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}
                     </h1>
-                    <p className="text-sm text-gray-600">{resumeData.generalInformation.email} | (123) 456-7890</p>
+                    <p>{resumeData.generalInformation.email} | (123) 456-7890</p>
                 </div>
                 <div className="header-right">
-                    <p>Deerfield Beach, FL</p>
+                    <p>{resumeData.generalInformation.location}</p>
                 </div>
             </header>
+
+            {/* URLS */}
+            <section>
+                <div className="urls">
+                    {resumeData.generalInformation.websiteUrl && (
+                        <span>
+                            <img src="/assets/icons/web-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.websiteUrl}</p>
+                        </span>
+                    )}
+                    {resumeData.generalInformation.linkedInUrl && (
+                        <span>
+                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.linkedInUrl}</p>
+                        </span>
+                    )}
+                    {resumeData.generalInformation.gitHubUrl && (
+                        <span>
+                            <img src="/assets/icons/github-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.gitHubUrl}</p>
+                        </span>
+                    )}
+                </div>
+            </section>
             
             <section>
                 <h2>EXPERIENCE</h2>
