@@ -5,6 +5,7 @@ import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
+import Select from "react-select";
 import AllTemplates from '../components/Templates/AllTemplates';
 
 function ResumeBuilder() {
@@ -147,9 +148,24 @@ function ResumeBuilder() {
         showToast("Resume abandoned.", "info");
         navigate("/home");
     }
-
+    const degreeOptions = [
+        { value: 0, label: "Undergraduate" },
+        { value: 1, label: "Graduate" },
+        { value: 2, label: "Doctorate" }
+    ];
+    const officeTypeOptions = [
+        { value: 0, label: "Fully On-site" },
+        { value: 2, label: "Hybrid" },
+        { value: 1, label: "Remote" }
+    ];
+    const jobTypeOptions = [
+        { value: 0, label: "Full-Time" },
+        { value: 1, label: "Part-Time" },
+        { value: 3, label: "Internship" },
+        { value: 2, label: "Volunteer" }
+    ];
     // [POST] to Create Resume from form
-    const handleSubmit = async () => {
+    const handleSubmit = async (s) => {
         const processedResumeData = {
             ...resumeData,
             skills: {
@@ -293,6 +309,12 @@ function ResumeBuilder() {
                                                 onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
                                             />
                                         </div>
+
+                                        <Select
+                                        options={jobTypeOptions}
+                                        defaultValue={jobTypeOptions[0]}
+                                        onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
+                                        />
                                         <div className="input-field">
                                             <label>Start Date <span className="req">*</span></label>
                                             <input 
@@ -320,6 +342,14 @@ function ResumeBuilder() {
                                                 type="text" 
                                                 onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
                                             />
+                                         <Select
+                                        options={officeTypeOptions}
+                                        defaultValue={officeTypeOptions[0]}
+                                        onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
+                                        />
+
+                                            
+                                            
                                         </div>
                                     </div>
                                 ))}
@@ -356,14 +386,11 @@ function ResumeBuilder() {
                                                 onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
                                             />
                                         </div>
-                                        <div className="input-field">
-                                            <label>Degree Type <span className="req">*</span></label>
-                                            <select onChange={(e) => handleChange("educations", "degreeType", e.target.value, index)}>
-                                                <option value={0}>Undergraduate</option>
-                                                <option value={1}>Graduate</option>
-                                                <option value={2}>Doctorate</option>
-                                            </select>
-                                        </div>
+                                        <Select
+                                        options={degreeOptions}
+                                        defaultValue={degreeOptions[0]}
+                                        onChange={(selectedOption) => handleChange("educations", "degreeType", selectedOption.value, index)}
+                                        />
                                         <div className="input-field">
                                             <label>GPA</label>
                                             <input 
