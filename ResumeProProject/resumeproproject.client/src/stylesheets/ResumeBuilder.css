@@ -14,17 +14,42 @@
 
 /* TEMPLATE VIEW (LEFT SIDE) */
 .template-view {
+    align-items: center;
     padding: 2rem;
     gap: 1rem;
 }
 
 .resume-ctnr {
-    background: white;
-    border: 1px solid grey;
-    width: 100%;
-    height: 95%;
-    max-width: 10px !important;
+    /* background: white; */
+    /* border: 1px solid red; */
+    /* width: 100%; */
+    /* height: 100%; */
+    /* height: 700px !important; */
+    max-width: 479px !important;
+    /* max-height: 550px !important; */
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    overflow: hidden;
+    position: relative;
 }
+
+.resume-scale-ctnr {
+    width: 850px;
+    height: 1100px;
+    transform-origin: top left;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* overflow: hidden; */
+    /* position: relative; */
+}
+
+/* .resume-paper {
+    transform-origin: top left;
+    transform: scale(1);
+} */
+
 
 .resume-actions {
     width: 100%;

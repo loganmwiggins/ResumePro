@@ -7,11 +7,28 @@ function AllTemplates({ selectedTemplate, resumeData }) { // Planning to possibl
     { id: "minimal", name: "Minimal", component: Template_Minimal }
   ];
 
-  // Find template -- not sure if we are doing it by id still?
   const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
 
+  // Original template size
+  const originalWidth = 850;
+  const originalHeight = 1100;
+
+  // Target container size
+  const containerWidth = 500;
+  const containerHeight =  619;
+
+  // Compute the scale factor while maintaining aspect ratio
+  const scale = Math.min(containerWidth / originalWidth, containerHeight / originalHeight);
+
   return (
-    <selectedTemplateObj.component resumeData={resumeData} />
+    <div className="resume-scale-ctnr" style={{ 
+        transform: `scale(${scale})`, 
+        transformOrigin: "top left",
+        // width: `${originalWidth}px`,
+        // height: `${originalHeight}px`
+    }}>
+        <selectedTemplateObj.component resumeData={resumeData} />
+    </div>
   );
 }
 

@@ -28,7 +28,7 @@ function ResumeBuilder() {
                 id: user.id,
                 resumeName: "Untitled Document",
                 currentDate: new Date(),
-                templateId: "4b5aac66-6e72-4ffe-a6fc-ca6c76c31270",
+                templateId: templateId,
                 generalInformation: {
                     firstName: "John",
                     middleName: null,
@@ -211,7 +211,10 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         <div className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
+                            <AllTemplates 
+                                selectedTemplate={templateId} 
+                                resumeData={resumeData}>
+                            </AllTemplates>
                         </div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
