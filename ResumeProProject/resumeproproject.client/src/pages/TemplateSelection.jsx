@@ -4,38 +4,39 @@ import { useNavigate } from 'react-router-dom';
 import '../stylesheets/TemplateSelection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
+import AllTemplates from '../components/Templates/AllTemplates';
 
 function TemplateSelection() {
   const navigate = useNavigate();
-  const [templates, setTemplates] = useState([]);
+  // const [templates, setTemplates] = useState([]);
 
-  useEffect(() => {
-    const getAllTemplates = async () => {
-      try {
-        const response = await fetch("https://localhost:7035/api/Template/", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+  // useEffect(() => {
+  //   const getAllTemplates = async () => {
+  //     try {
+  //       const response = await fetch("https://localhost:7035/api/Template/", {
+  //         method: "GET",
+  //         headers: { "Content-Type": "application/json" },
+  //       });
 
-        if (response.ok) {
-          const data = await response.json();
-          setTemplates(data); // Store fetched templates in state
-          // showToast("Templates retrieved successfully.", "success");
-        } else {
-          showToast("Failed to fetch templates.", "error");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        showToast("An error occurred.", "error");
-      }
-    };
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setTemplates(data); // Store fetched templates in state
+  //         // showToast("Templates retrieved successfully.", "success");
+  //       } else {
+  //         showToast("Failed to fetch templates.", "error");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       showToast("An error occurred.", "error");
+  //     }
+  //   };
 
-    getAllTemplates();
-  }, []);
+  //   getAllTemplates();
+  // }, []);
 
   const handleTemplateSelect = (templateId) => {
     navigate(`/builder/${templateId}`);
-    // showToast(templateId, "info");
+    showToast(templateId, "info");
   }
 
   return (
@@ -45,7 +46,7 @@ function TemplateSelection() {
         <p>Let's get started!</p>
       </div>
 
-      <div className="template-list">
+      {/* <div className="template-list">
         {templates.length > 0 ? (
           templates.map((template, index) => (
             <div key={index} className="template-item" onClick={() => handleTemplateSelect(template.templateId)}>
@@ -62,7 +63,11 @@ function TemplateSelection() {
         ) : (
           <p>Loading templates...</p>
         )}
-      </div>
+      </div> */}
+
+      <button onClick={() => handleTemplateSelect("minimal")}>Minimal</button>
+      <button>Template 2</button>
+      <button>Template 3</button>
     </AuthorizeView>
   );
 }
