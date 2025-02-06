@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import html2pdf from "html2pdf.js";  // Import PDF library
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
@@ -12,7 +13,7 @@ function ResumeBuilder() {
     const navigate = useNavigate();
     const params = useParams();
     const { user, loading } = useUser();
-
+    const resumeRef = useRef(null);
     const [template, setTemplate] = useState([]);
     const [resumeData, setResumeData] = useState(null);
 
@@ -148,6 +149,14 @@ function ResumeBuilder() {
         showToast("Resume abandoned.", "info");
         navigate("/home");
     }
+
+    const generatePDF = () => {
+        const element = resumeRef.current; // Target resume container
+        html2pdf()
+            .from(element)
+            .save(`${resumeData.resumeName || "Resume"}.pdf`);
+    };
+
     const officeTypeOptions = [
         { value: 0, label: "On-site" },
         { value: 2, label: "Hybrid" },
@@ -205,13 +214,14 @@ function ResumeBuilder() {
                 <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     {/* LEFT SIDE */}
                     <div className="template-view">
-                        <div className="resume-ctnr">
+                        <div ref={resumeRef} className="resume-ctnr">
                             <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
                         </div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
                             <button type="button" onClick={handleCancel}>Cancel</button>
                             <button type="submit">Save Resume</button>
+                            <button type="button" onClick={generatePDF}>Download PDF</button>
                         </div>
                     </div>
 
