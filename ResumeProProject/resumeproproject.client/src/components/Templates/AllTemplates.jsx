@@ -11,13 +11,7 @@ function AllTemplates({ selectedTemplate, resumeData }) { // Planning to possibl
   const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
 
   return (
-    <div className="template-list"> 
-        <div className="template-item">
-            <div className="template-preview">
-                <selectedTemplateObj.component resumeData={resumeData} />
-            </div>
-        </div>
-    </div>
+    <selectedTemplateObj.component resumeData={resumeData} />
   );
 }
 

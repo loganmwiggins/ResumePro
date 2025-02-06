@@ -2,12 +2,15 @@ import React from 'react';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
+    // console.log(resumeData);
     return (
         <div className="resume-paper">
         <header>
             <div className="header-left">
-                <h1 className="text-3xl font-bold">John Doe</h1>
-                <p className="text-sm text-gray-600">john.doe@example.com | (123) 456-7890</p>
+                <h1 className="text-3xl font-bold">
+                    {resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}
+                </h1>
+                <p className="text-sm text-gray-600">{resumeData.generalInformation.email} | (123) 456-7890</p>
             </div>
             <div className="header-right">
                 <p>Deerfield Beach, FL</p>
@@ -30,9 +33,9 @@ function Template_Minimal({ resumeData }) {
         <section>
             <h2>PROJECTS</h2>
             <div>
-            <h3>Open Source Dashboard</h3>
-            <p>November 2021</p>
-            <p>Developed a lightweight analytics dashboard with React and D3.js.</p>
+                <h3>Open Source Dashboard</h3>
+                <p>November 2021</p>
+                <p>Developed a lightweight analytics dashboard with React and D3.js.</p>
             </div>
         </section>
 
@@ -69,8 +72,8 @@ function Template_Minimal({ resumeData }) {
         <section>
             <h2>EDUCATION</h2>
             <div>
-            <h3 className="font-semibold">Bachelor of Science in Computer Science</h3>
-            <p>University of Example | 2016 - 2020</p>
+                <h3 className="font-semibold">Bachelor of Science in Computer Science</h3>
+                <p>University of Example | 2016 - 2020</p>
             </div>
         </section>
         </div>

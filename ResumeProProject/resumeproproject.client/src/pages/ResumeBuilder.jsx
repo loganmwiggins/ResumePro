@@ -30,10 +30,10 @@ function ResumeBuilder() {
                 currentDate: new Date(),
                 templateId: "4b5aac66-6e72-4ffe-a6fc-ca6c76c31270",
                 generalInformation: {
-                    firstName: null,
+                    firstName: "John",
                     middleName: null,
-                    lastName: null,
-                    email: null,
+                    lastName: "Doe",
+                    email: "john.doe@example.com",
                     phoneNumber: null,
                     websiteUrl: null,
                     linkedInUrl: null,
@@ -154,13 +154,13 @@ function ResumeBuilder() {
         { value: 2, label: "Doctorate" }
     ];
     const officeTypeOptions = [
-        { value: 0, label: "Fully On-site" },
+        { value: 0, label: "On-site" },
         { value: 2, label: "Hybrid" },
         { value: 1, label: "Remote" }
     ];
     const jobTypeOptions = [
-        { value: 0, label: "Full-Time" },
-        { value: 1, label: "Part-Time" },
+        { value: 0, label: "Full-time" },
+        { value: 1, label: "Part-time" },
         { value: 3, label: "Internship" },
         { value: 2, label: "Volunteer" }
     ];
@@ -211,7 +211,7 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         <div className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId}></AllTemplates>
+                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
                         </div>
                         <div className="resume-actions">
                             <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />

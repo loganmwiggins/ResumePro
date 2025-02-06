@@ -23,6 +23,7 @@
     border: 1px solid grey;
     width: 100%;
     height: 95%;
+    max-width: 10px !important;
 }
 
 .resume-actions {
