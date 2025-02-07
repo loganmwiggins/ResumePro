@@ -118,18 +118,30 @@ function ResumeBuilder() {
             };
         });
     };
-    
+
+    const handleRemoveSkillCategory = (category) => {
+        setResumeData((prevResume) => {
+            const updatedSkills = { ...prevResume.skills.skillsDataJson };
+
+            // Delete the entire category and its skills
+            delete updatedSkills[category];
+
+            return {
+                ...prevResume,
+                skills: {
+                    ...prevResume.skills,
+                    skillsDataJson: updatedSkills
+                }
+            };
+        });
+    };
+
     const handleRemoveSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
     
             if (updatedSkills[category]) {
                 updatedSkills[category].delete(skill);
-    
-                // Remove category if empty
-                if (updatedSkills[category].size === 0) {
-                    delete updatedSkills[category];
-                }
             }
     
             return {
@@ -147,7 +159,14 @@ function ResumeBuilder() {
           ...prevResume,
           [section]: [...prevResume[section], entry],
         }));
-      };
+    };
+
+    const handleRemoveEntry = (section, index) => {
+        setResumeData((prevResume) => ({
+            ...prevResume,
+            [section]: prevResume[section].filter((_, i) => i !== index),
+        }));
+    };
     
     const handleShowSection = (section) => {
         if (!visibleSections.includes(section)) {
@@ -367,6 +386,9 @@ function ResumeBuilder() {
                                 {resumeData.experiences.map((exp, index) => (
                                     <div className="inputs-ctnr" key={index}>
                                         <h4>#{index + 1} - {resumeData.experiences[index].companyName}</h4>
+                                        <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
+                                            <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                        </button>
                                         <div className="input-field">
                                             <label>Company / Employer <span className="req">*</span></label>
                                             <input
@@ -447,7 +469,10 @@ function ResumeBuilder() {
                                 {/* Education entry */}
                                 {resumeData.educations.map((edu, index) => (
                                     <div className="inputs-ctnr" key={index}>
-                                        <h4>#{index+1}</h4>
+                                        <h4>#{index + 1}</h4>
+                                        <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("educations", index)}>
+                                            <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                        </button>
                                         <div className="input-field">
                                             <label>School / University <span className="req">*</span></label>
                                             <input 
@@ -523,7 +548,10 @@ function ResumeBuilder() {
                                 {/* Certification entry */}
                                 {resumeData.certifications.map((cert, index) => (
                                     <div className="inputs-ctnr" key={index}>
-                                        <h4>#{index+1} - {resumeData.certifications[index].name}</h4>
+                                        <h4>#{index + 1} - {resumeData.certifications[index].name}</h4>
+                                        <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("certifications", index)}>
+                                            <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                        </button>
                                         <div className="input-field">
                                             <label>Name <span className="req">*</span></label>
                                             <input 
@@ -576,7 +604,10 @@ function ResumeBuilder() {
                                 {/* Project entry */}
                                 {resumeData.projects.map((proj, index) => (
                                     <div className="inputs-ctnr" key={index}>
-                                        <h4>#{index+1}</h4>
+                                        <h4>#{index + 1}</h4>
+                                        <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("projects", index)}>
+                                            <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                        </button>
                                         <div className="input-field">
                                             <label>Title <span className="req">*</span></label>
                                             <input 
@@ -625,13 +656,15 @@ function ResumeBuilder() {
                         {visibleSections.includes("skills") && (
                             <section>
                                 <h3>Skills</h3>
-                                
+
                                 {/* Add new category */}
                                 <div className="input-field">
-                                    <label>New Skill Category</label>
+                                    <div className="skill-header">
+                                        <label>New Skill Category</label>
+                                    </div>
                                     <input type="text" id="newCategoryInput" />
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => {
                                             const category = document.getElementById("newCategoryInput").value;
                                             if (category) {
@@ -644,15 +677,21 @@ function ResumeBuilder() {
                                     </button>
                                 </div>
 
-                                {/* Render categories and skills */}
+                                {/* List Existing Skill Categories */}
                                 {Object.entries(resumeData.skills.skillsDataJson).map(([category, skills]) => (
                                     <div key={category} className="skill-category">
-                                        <h4>{category}</h4>
-                                        
-                                        {/* Add skill input */}
+                                        <div className="skill-header">
+                                            <h4>{category}</h4>
+                                            {/* DELETE CATEGORY BUTTON */}
+                                            <button type="button" className="delete-btn" onClick={() => handleRemoveSkillCategory(category)}>
+                                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                            </button>
+                                        </div>
+
+                                        {/* Add Skill Input */}
                                         <div className="input-field">
                                             <input type="text" id={`skillInput-${category}`} />
-                                            <button 
+                                            <button
                                                 type="button"
                                                 onClick={() => {
                                                     const skill = document.getElementById(`skillInput-${category}`).value;
@@ -666,12 +705,16 @@ function ResumeBuilder() {
                                             </button>
                                         </div>
 
-                                        {/* Display Skills */}
+                                        {/* Display Skills in Each Category */}
                                         <ul>
                                             {[...skills].map((skill) => (
                                                 <li key={skill}>
-                                                    {skill} 
-                                                    <button onClick={() => handleRemoveSkill(category, skill)}>Remove</button>
+                                                    {skill}
+                                                    {/* DELETE INDIVIDUAL SKILL BUTTON */}
+                                                    <button className="delete-x-btn" onClick={() => handleRemoveSkill(category, skill)}>
+                                                        &#128939;
+                                                    </button>
+
                                                 </li>
                                             ))}
                                         </ul>
