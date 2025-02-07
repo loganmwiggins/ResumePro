@@ -10,9 +10,11 @@ namespace ResumeProProject.Server.Data.Models
         [Key]
         [JsonIgnore]
         public Guid SkillId { get; set; }
+
         [JsonIgnore]
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
+
         [JsonIgnore]
         public virtual Resume? Resume { get; set; }
 

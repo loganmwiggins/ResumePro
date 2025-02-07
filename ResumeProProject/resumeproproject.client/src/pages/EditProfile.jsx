@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import '../stylesheets/Profile.css';
@@ -7,16 +7,54 @@ import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext"; 
 
 function EditProfile() {
-    const { user, loading } = useUser();
     const navigate = useNavigate();
+    const { user, loading, setUser } = useUser();
+
+    const [formData, setFormData] = useState({
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        email: user?.email || "",
+        phoneNumber: user?.phoneNumber || "",
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const handleCancel = () => {
         navigate("/profile");
-    }
+    };
 
-    const handleSave = () => {
-        showToast("Implement logic for save", "info");
-    }
+    const handleSave = async () => {
+        try {
+            const response = await fetch("https://localhost:7035/api/user/update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({
+                    UserId: user.id,
+                    Email: formData.email,
+                    FirstName: formData.firstName,
+                    LastName: formData.lastName,
+                    CoreResumeId: null,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to update profile");
+            }
+
+            showToast("Profile updated successfully!", "success");
+
+            window.location.href = "/profile";
+        } catch (error) {
+            console.error("Error saving profile:", error);
+            showToast("Error updating profile. Please try again.", "error");
+        }
+    };
+
 
     return (
         <AuthorizeView>
@@ -29,50 +67,49 @@ function EditProfile() {
                     <button type="button" onClick={handleSave}>Save</button>
                 </div>
             </div>
-            
 
             {loading ? (
                 <div className="loading-spinner"></div>
             ) : (
-            <form action="" className="edit-profile-form">
-                {/* Full Name field */}
-                <div className="field-row">
-                    <div className="label-ctnr">
-                        <p>Name</p>
+                <form className="edit-profile-form">
+                    {/* Full Name field */}
+                    <div className="field-row">
+                        <div className="label-ctnr">
+                            <p>Name</p>
+                        </div>
+                        <div className="input-ctnr">
+                            <input
+                                type="text"
+                                name="firstName"
+                                placeholder="First Name"
+                                value={formData.firstName}
+                                onChange={handleChange}
+                            />
+                            <input
+                                type="text"
+                                name="lastName"
+                                placeholder="Last Name"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                            />
+                        </div>
                     </div>
-                    <div className="input-ctnr">   
-                        <input 
-                            type="text" 
-                            id="firstname" 
-                            name="firstname" 
-                            placeholder="First Name"
-                            value={user.firstName}
-                        />
-                        <input 
-                            type="text" 
-                            id="lastname" 
-                            name="lastname" 
-                            placeholder="Last Name"
-                            value={user.lastName}
-                        />
-                    </div>
-                </div>
 
-                {/* Email field */}
-                <div className="field-row">
-                    <div className="label-ctnr">
-                        <p>Email</p>
+                    {/* Email field */}
+                    <div className="field-row">
+                        <div className="label-ctnr">
+                            <p>Email</p>
+                        </div>
+                        <div className="input-ctnr">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email address"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </div>
                     </div>
-                    <div className="input-ctnr">   
-                        <input 
-                            type="text" 
-                            id="email" 
-                            name="email" 
-                            placeholder="Email address"
-                            value={user.email}
-                        />
-                    </div>
-                </div>
 
                 {/* Profile Picture field */}
                 <div className="field-row">

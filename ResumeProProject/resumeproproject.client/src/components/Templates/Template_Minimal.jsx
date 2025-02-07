@@ -2,80 +2,207 @@ import React from 'react';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
-    // console.log(resumeData);
+
+    const officeTypeOptions = [
+        { value: 0, label: "On-site" },
+        { value: 1, label: "Remote" },
+        { value: 2, label: "Hybrid" }
+    ];
+
+    const jobTypeOptions = [
+        { value: 0, label: "Full-time" },
+        { value: 1, label: "Part-time" },
+        { value: 2, label: "Volunteer" },
+        { value: 3, label: "Internship" }
+    ];
+
+    const formatDate = (dateString, options = { month: true, day: true, year: true }) => {
+        const [year, month, day] = dateString.split("-").map(Number);
+        const date = new Date(year, month - 1, day); // Month is zero-based
+        
+        // Determine the format based on the options provided
+        const formatOptions = {
+            ...(options.month && { month: "short" }),
+            ...(options.day && { day: "numeric" }),
+            ...(options.year && { year: "numeric" }),
+        };
+        
+        return date.toLocaleDateString("en-US", formatOptions);
+    };
+
+
     return (
         <div className="resume-paper">
+            {/* GENERAL INFORMATION */}
             <header>
                 <div className="header-left">
-                    <h1 className="text-3xl font-bold">
-                        {resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}
-                    </h1>
-                    <p className="text-sm text-gray-600">{resumeData.generalInformation.email} | (123) 456-7890</p>
+                    <h1>{resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}</h1>
+                    <p>{resumeData.generalInformation.location}</p>
                 </div>
                 <div className="header-right">
-                    <p>Deerfield Beach, FL</p>
+                    <p>{resumeData.generalInformation.email}</p>
+                    <p>{resumeData.generalInformation.phoneNumber}</p>
                 </div>
             </header>
-            
-            <section>
-                <h2>EXPERIENCE</h2>
-                <div className="experience">
-                    <h3 className="font-semibold">Senior Software Engineer</h3>
-                    <p>TechCorp | Aug 2020 - Present</p>
-                    <div className="list-disc pl-5 text-sm text-gray-800">
-                        <p>Developed scalable web apppcations using React and Node.js.</p>
-                        <p>Led a team of 5 engineers to build enterprise-grade software.</p>
-                        <p>Implemented performance optimizations, reducing load times by 30%.</p>
-                    </div>
-                </div>
-            </section>
 
-            <section>
-                <h2>PROJECTS</h2>
-                <div>
-                    <h3>Open Source Dashboard</h3>
-                    <p>November 2021</p>
-                    <p>Developed a lightweight analytics dashboard with React and D3.js.</p>
-                </div>
-            </section>
 
+            {/* URLS */}
             <section>
-                <h2>CERTIFICATIONS</h2>
-                <div>
-                    <h3>Azure Developer Associate</h3>
-                    <p>Microsoft | Issued: May 12, 2024 | Expires: May 12, 2026</p>
-                </div>
-                <div>
-                    <h3>Azure Fundamentals</h3>
-                    <p>Microsoft | Issued: March 31, 2024</p>
+                <div className="urls">
+                    {resumeData.generalInformation.websiteUrl && (
+                        <span>
+                            <img src="/assets/icons/web-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.websiteUrl}</p>
+                        </span>
+                    )}
+                    {resumeData.generalInformation.linkedInUrl && (
+                        <span>
+                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.linkedInUrl}</p>
+                        </span>
+                    )}
+                    {resumeData.generalInformation.gitHubUrl && (
+                        <span>
+                            <img src="/assets/icons/github-circle.svg" draggable="false" />
+                            <p>{resumeData.generalInformation.gitHubUrl}</p>
+                        </span>
+                    )}
                 </div>
             </section>
             
-            <section>
-                <h2>SKILLS</h2>
-                <div className="list-disc pl-5 text-sm text-gray-800">
-                    <div className="skill-row">
-                        <h4>Frontend:</h4>
-                        <p>React, TypeScript, JavaScript</p>
-                    </div>
-                    <div className="skill-row">
-                        <h4>Backend:</h4>
-                        <p>Node.js, Express, MongoDB, REST APIs, GraphQL</p>
-                    </div>
-                    <div className="skill-row">
-                        <h4>Methodlogies:</h4>
-                        <p>Agile Development, Code Reviews</p>
-                    </div>
-                </div>
-            </section>
 
-            <section>
-                <h2>EDUCATION</h2>
-                <div>
-                    <h3 className="font-semibold">Bachelor of Science in Computer Science</h3>
-                    <p>University of Example | 2016 - 2020</p>
-                </div>
-            </section>
+            {/* EXPERIENCES */}
+            {resumeData.experiences.length > 0 && (
+                <section>
+                    <h2>EXPERIENCE</h2>
+                    {resumeData.experiences.map(exp => (
+                        <div key={exp.description}>
+                            <div className="entry-head">
+                                <div>
+                                    <h3>{exp.role}</h3>
+                                    <p>
+                                        {exp.companyName} {exp.jobType != null && (
+                                            `| ${jobTypeOptions[exp.jobType].label}`
+                                        )} {exp.officeType != null && (
+                                            `| ${officeTypeOptions[exp.officeType].label}`
+                                        )}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        {exp.startDate && (
+                                            `${formatDate(exp.startDate, {month:true, year:true})}`
+                                        )} {exp.endDate && (
+                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                        ) || "- Present"}
+                                    </p>
+                                    <p>{exp.location}</p>
+                                </div>
+                            </div>
+                            <p>{exp.description}</p>
+                        </div>
+                    ))}
+                </section>
+            )}
+
+
+            {/* PROJECTS */}
+            {resumeData.projects.length > 0 && (
+                <section>
+                    <h2>PROJECTS</h2>
+                    {resumeData.projects.map(proj => (
+                        <div key={proj.title}>
+                            <h3>{proj.title}</h3>
+                            <p>
+                                {proj.startDate && (
+                                    `${formatDate(proj.startDate)}`
+                                )} {proj.endDate && (
+                                    `- ${formatDate(proj.endDate)}`
+                                )}
+                            </p>
+                            <p>{proj.description}</p>
+                        </div>
+                    ))}
+                </section>
+            )}
+            
+
+            {/* CERTIFICATIONS */}
+            {resumeData.certifications.length > 0 && (
+                <section>
+                    <h2>CERTIFICATIONS</h2>
+                    {resumeData.certifications.map(cert => (
+                        <div key={cert.name}>
+                            <h3>{cert.name}</h3>
+                            <p>
+                                {cert.issuer} {cert.issueDate && (
+                                    `| Issued: ${formatDate(cert.issueDate)}` 
+                                )} {cert.expireDate && (
+                                    `| Expires: ${formatDate(cert.expireDate)}`
+                                )}
+                            </p>
+                        </div>
+                    ))}
+                </section>
+            )}
+            
+            
+            {/* SKILLS */}
+            {resumeData.skills?.skillsDataJson && Object.keys(resumeData.skills.skillsDataJson).length > 0 && (
+                <section>
+                    <h2>SKILLS</h2>
+                    <div>
+                        {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => {
+                            <div className="skill-row" key={category}>
+                                <h4>{category}:</h4>
+                                <p>{Array.from(skillsObj).join(", ")}</p>
+                            </div>
+                        })}
+                    </div>
+                </section>
+            )}
+
+
+            {/* EDUCATION */}
+            {resumeData.educations.length > 0 && (
+                <section>
+                    <h2>EDUCATION</h2>
+                    {resumeData.educations.map(edu => (
+                        <div key={edu.startDate}>
+                            <div className="entry-head">
+                                <div>
+                                    <h3>
+                                        {edu.degreeType} {edu.major && (`in ${edu.major}`)}
+                                    </h3>
+                                    <h4>
+                                        {edu.minor && (`Minor in ${edu.minor}`)}
+                                    </h4>
+                                    <p>
+                                        {edu.schoolName} {edu.gpa && (
+                                            `| GPA: ${edu.gpa} / 4.0`
+                                        )}
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <p>
+                                        {edu.startDate && (
+                                            `${formatDate(edu.startDate, {month:true, year:true})}`
+                                        )} {edu.endDate && (
+                                            `- ${formatDate(edu.endDate, {month:true, year:true})}`
+                                        )}
+                                    </p>
+                                    <p>
+                                        {edu.schoolLocation && (
+                                            `${edu.schoolLocation}`
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </section>
+            )}
         </div>
     );
 }
