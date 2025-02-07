@@ -123,7 +123,6 @@ function ResumeBuilder() {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
 
-            // Delete the entire category and its skills
             delete updatedSkills[category];
 
             return {
