@@ -248,14 +248,12 @@ namespace ResumeProProject.Server.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("JobType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<string>("OfficeType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("ResumeId")

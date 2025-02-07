@@ -215,15 +215,17 @@ function ResumeBuilder() {
 
     const officeTypeOptions = [
         { value: 0, label: "On-site" },
-        { value: 2, label: "Hybrid" },
-        { value: 1, label: "Remote" }
+        { value: 1, label: "Remote" },
+        { value: 2, label: "Hybrid" }
     ];
     const jobTypeOptions = [
         { value: 0, label: "Full-time" },
         { value: 1, label: "Part-time" },
-        { value: 3, label: "Internship" },
-        { value: 2, label: "Volunteer" }
+        { value: 2, label: "Volunteer" },
+        { value: 3, label: "Internship" }
     ];
+
+
     // [POST] to Create Resume from form
     const handleSubmit = async (s) => {
         const processedResumeData = {
@@ -402,12 +404,22 @@ function ResumeBuilder() {
                                                 onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
                                             />
                                         </div>
-
-                                        <Select
-                                            options={jobTypeOptions}
-                                            defaultValue={jobTypeOptions[0]}
-                                            onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
-                                        />
+                                        <div className="input-field">
+                                            <label>Job Type</label>
+                                            <Select
+                                                options={jobTypeOptions}
+                                                placeholder="Select a job type"
+                                                onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Office Type</label>
+                                            <Select
+                                                options={officeTypeOptions}
+                                                placeholder="Select an office type"
+                                                onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
+                                            />
+                                        </div>
                                         <div className="input-field">
                                             <label>Start Date <span className="req">*</span></label>
                                             <input 
@@ -436,25 +448,20 @@ function ResumeBuilder() {
                                                 onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
                                             />
                                         </div>
-                                        <Select
-                                            options={officeTypeOptions}
-                                            defaultValue={officeTypeOptions[0]}
-                                            onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
-                                        />
                                     </div>
                                 ))}
                                 
                                 {/* Add Experience button */}
                                 <button type="button" onClick={() => handleAddEntry("experiences", {
-                                    companyName: "",
-                                    role: "",
-                                    startDate: new Date(),
+                                    companyName: null,
+                                    role: null,
+                                    startDate: null,
                                     endDate: null,
                                     isCurrent: null,
-                                    description: "",
+                                    description: null,
                                     location: null,
-                                    officeType: 0,
-                                    jobType: 0
+                                    officeType: null,
+                                    jobType: null
                                 })}>Add Experience</button>
                             </section>
                         )}

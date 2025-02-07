@@ -3,6 +3,19 @@ import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
 
+    const officeTypeOptions = [
+        { value: 0, label: "On-site" },
+        { value: 1, label: "Remote" },
+        { value: 2, label: "Hybrid" }
+    ];
+
+    const jobTypeOptions = [
+        { value: 0, label: "Full-time" },
+        { value: 1, label: "Part-time" },
+        { value: 2, label: "Volunteer" },
+        { value: 3, label: "Internship" }
+    ];
+
     const formatDate = (dateString, options = { month: true, day: true, year: true }) => {
         const [year, month, day] = dateString.split("-").map(Number);
         const date = new Date(year, month - 1, day); // Month is zero-based
@@ -55,18 +68,40 @@ function Template_Minimal({ resumeData }) {
                 </div>
             </section>
             
-            <section>
-                <h2>EXPERIENCE</h2>
-                <div className="experience">
-                    <h3 className="font-semibold">Senior Software Engineer</h3>
-                    <p>TechCorp | Aug 2020 - Present</p>
-                    <div className="list-disc pl-5 text-sm text-gray-800">
-                        <p>Developed scalable web apppcations using React and Node.js.</p>
-                        <p>Led a team of 5 engineers to build enterprise-grade software.</p>
-                        <p>Implemented performance optimizations, reducing load times by 30%.</p>
-                    </div>
-                </div>
-            </section>
+
+            {/* EXPERIENCES */}
+            {resumeData.experiences.length > 0 && (
+                <section>
+                    <h2>EXPERIENCE</h2>
+                    {resumeData.experiences.map(exp => (
+                        <div key={exp.description}>
+                            <div className="entry-head">
+                                <div>
+                                    <h3>{exp.role}</h3>
+                                    <p>
+                                        {exp.companyName} {exp.jobType != null && (
+                                            `| ${jobTypeOptions[exp.jobType].label}`
+                                        )} {exp.officeType != null && (
+                                            `| ${officeTypeOptions[exp.officeType].label}`
+                                        )}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        {exp.startDate && (
+                                            `${formatDate(exp.startDate, {month:true, year:true})}`
+                                        )} {exp.endDate && (
+                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                        ) || "- Present"}
+                                    </p>
+                                    <p>{exp.location}</p>
+                                </div>
+                            </div>
+                            <p>{exp.description}</p>
+                        </div>
+                    ))}
+                </section>
+            )}
 
 
             {/* PROJECTS */}
