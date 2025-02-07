@@ -349,6 +349,8 @@ namespace ResumeProProject.Server.Controllers
                 Content = content
             };
             if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            return Ok(new { message = "Insight added successfully." });
         }
 
         }

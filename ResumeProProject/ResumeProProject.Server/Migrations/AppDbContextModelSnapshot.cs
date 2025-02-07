@@ -311,6 +311,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid?>("ResumeId1")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ResumeId2")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("WebsiteUrl")
                         .HasColumnType("text");
 
@@ -322,7 +325,30 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId1")
                         .IsUnique();
 
+                    b.HasIndex("ResumeId2")
+                        .IsUnique();
+
                     b.ToTable("GeneralInformation");
+                });
+
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Insight", b =>
+                {
+                    b.Property<Guid>("InsightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ResumeId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("InsightId");
+
+                    b.HasIndex("ResumeId")
+                        .IsUnique();
+
+                    b.ToTable("Insights");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Project", b =>
@@ -574,6 +600,21 @@ namespace ResumeProProject.Server.Migrations
                         .WithOne("GeneralInformation")
                         .HasForeignKey("ResumeProProject.Server.Data.Models.GeneralInformation", "ResumeId1");
 
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", null)
+                        .WithOne("Insights")
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.GeneralInformation", "ResumeId2");
+
+                    b.Navigation("Resume");
+                });
+
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Insight", b =>
+                {
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
+                        .WithOne()
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.Insight", "ResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Resume");
                 });
 
@@ -618,6 +659,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Navigation("Experiences");
 
                     b.Navigation("GeneralInformation")
+                        .IsRequired();
+
+                    b.Navigation("Insights")
                         .IsRequired();
 
                     b.Navigation("Projects");
