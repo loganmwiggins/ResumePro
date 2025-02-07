@@ -66,14 +66,27 @@ function Template_Minimal({ resumeData }) {
                 </div>
             </section>
 
-            <section>
-                <h2>PROJECTS</h2>
-                <div>
-                    <h3>Open Source Dashboard</h3>
-                    <p>November 2021</p>
-                    <p>Developed a lightweight analytics dashboard with React and D3.js.</p>
-                </div>
-            </section>
+
+            {/* PROJECTS */}
+            {resumeData.projects.length > 0 && (
+                <section>
+                    <h2>PROJECTS</h2>
+                    {resumeData.projects.map(proj => (
+                        <div key={proj.title}>
+                            <h3>{proj.title}</h3>
+                            <p>
+                                {proj.startDate && (
+                                    `${formatDate(proj.startDate)}`
+                                )} {proj.endDate && (
+                                    `- ${formatDate(proj.endDate)}`
+                                )}
+                            </p>
+                            <p>{proj.description}</p>
+                        </div>
+                    ))}
+                </section>
+            )}
+            
 
             {/* CERTIFICATIONS */}
             {resumeData.certifications.length > 0 && (

@@ -616,14 +616,6 @@ function ResumeBuilder() {
                                             />
                                         </div>
                                         <div className="input-field">
-                                            <label>Description <span className="req">*</span></label>
-                                            <input 
-                                                type="textarea"
-                                                placeholder="What did you do?"
-                                                onChange={(e) => handleChange("projects", "description", e.target.value, index)}
-                                            />
-                                        </div>
-                                        <div className="input-field">
                                             <label>Start Date <span className="req">*</span></label>
                                             <input 
                                                 type="date" 
@@ -635,6 +627,14 @@ function ResumeBuilder() {
                                             <input 
                                                 type="date" 
                                                 onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
+                                            />
+                                        </div>
+                                        <div className="input-field">
+                                            <label>Description <span className="req">*</span></label>
+                                            <input 
+                                                type="textarea"
+                                                placeholder="What did you do?"
+                                                onChange={(e) => handleChange("projects", "description", e.target.value, index)}
                                             />
                                         </div>
                                     </div>
