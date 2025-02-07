@@ -17,6 +17,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Template_Minimal from './components/Templates/Template_Minimal';
+import ResumePreview from './pages/ResumePreview';
 
 function App() {
   const location = useLocation();
@@ -42,6 +43,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/builder/:templateId" element={<ResumeBuilder />} />
+        <Route path="/resume-preview/:resumeId" element={<ResumePreview />} />
         <Route path="/insights" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />

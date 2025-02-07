@@ -226,8 +226,7 @@ function ResumeBuilder() {
     ];
 
 
-    // [POST] to Create Resume from form
-    const handleSubmit = async (s) => {
+    const handleSubmit = async () => {
         const processedResumeData = {
             ...resumeData,
             skills: {
@@ -248,21 +247,36 @@ function ResumeBuilder() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(processedResumeData),
             });
-            
-            if (response.ok) {
-                // const data = await response.json();
-                showToast("Resume created successfully!", "success");
-                navigate("/insights");
-            } 
-            else {
-                showToast("Failed to create resume.", "error");
+
+            if (!response.ok) {
+                throw new Error(`Failed to create resume. Status: ${response.status}`);
             }
-        } 
-        catch (error) {
+
+            const responseText = await response.text(); // Read response as text
+            console.log("Raw API Response:", responseText);
+
+            let responseData;
+            try {
+                responseData = JSON.parse(responseText); // Convert to JSON
+            } catch (error) {
+                throw new Error("API did not return valid JSON.");
+            }
+
+            console.log("Parsed API Response:", responseData);
+
+            if (!responseData.resumeId) {
+                throw new Error("resumeId is missing in API response.");
+            }
+
+            showToast("Resume created successfully!", "success");
+            navigate(`/resume-preview/${responseData.resumeId}`);
+
+        } catch (error) {
             console.error("Error:", error);
-            showToast("An error occurred.", "error");
+            showToast(error.message, "error");
         }
     };
+
 
     if (loading || !resumeData) {
         return <div className="loading-spinner"></div>;

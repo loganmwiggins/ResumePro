@@ -1,0 +1,53 @@
+/* Ensure the page is properly styled */
+.resume-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* The outer wrapper for the resume preview */
+.resume-preview-view {
+    transform: none !important;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Properly scale the resume template */
+.resume-paper {
+    width: 800px !important; /* A4 width */
+    height: 1100px !important; /* A4 width */
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transform: none !important;
+    display: flex;
+}
+
+.resume-scale-ctnr {
+    transform: none !important;
+}
+
+/* Button styles */
+.resume-preview-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+    .resume-preview-actions button {
+        padding: 10px 15px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+        .resume-preview-actions button:hover {
+            background-color: #0056b3;
+        }
