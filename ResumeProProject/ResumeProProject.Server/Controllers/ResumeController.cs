@@ -59,7 +59,7 @@ namespace ResumeProProject.Server.Controllers
             _db.Resumes.Add(NewResume);
             await _db.SaveChangesAsync();
 
-            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate && r.Id == request.Id);
 
             var NewGeneralInformation = new GeneralInformation
             {
@@ -257,8 +257,85 @@ namespace ResumeProProject.Server.Controllers
             return Ok(new { message = "Resume deleted successfully." });
         }
 
+
+        [HttpGet("GetResumeById/{resumeId}")]
+        public async Task<IActionResult> GetResume(Guid resumeId)
+        {
+            var resume = await _db.Resumes
+                .Where(r => r.ResumeId == resumeId)
+                .Include(r => r.GeneralInformation)
+                .Include(r => r.Educations)
+                .Include(r => r.Certifications)
+                .Include(r => r.Experiences)
+                .Include(r => r.Projects)
+                .Include(r => r.Skills)
+                .FirstOrDefaultAsync();
+
+            if (resume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+
+            var result = new
+            {
+                ResumeId = resume.ResumeId,
+                ResumeName = resume.Name,
+                UpdatedDateTime = resume.UpdatedDateTime,
+                TemplateId = resume.TemplateId,
+
+                GeneralInformation = await _db.GeneralInformation
+           .Where(g => g.ResumeId == resumeId)
+           .FirstOrDefaultAsync(),
+
+
+                Educations = resume.Educations.Select(e => new
+                {
+                    e.SchoolName,
+                    e.DegreeType,
+                    e.GPA,
+                    e.Major,
+                    e.Minor,
+                    e.StartDate,
+                    e.EndDate
+                }).ToList(),
+
+                Certifications = resume.Certifications.Select(c => new
+                {
+                    c.Name,
+                    c.Issuer,
+                    c.IssueDate,
+                    c.ExpireDate
+                }).ToList(),
+
+                Experiences = resume.Experiences.Select(ex => new
+                {
+                    ex.CompanyName,
+                    ex.Role,
+                    ex.StartDate,
+                    ex.EndDate,
+                    ex.IsCurrent,
+                    ex.Description,
+                    ex.Location,
+                    ex.OfficeType,
+                    ex.JobType
+                }).ToList(),
+
+                Projects = resume.Projects.Select(p => new
+                {
+                    p.Title,
+                    p.Description,
+                    p.StartDate,
+                    p.EndDate
+                }).ToList(),
+
+                Skills = resume.Skills != null ? new
+                {
+                    resume.Skills
+                } : null
+            };
+
+            return Ok(result);
+        }
+
     }
-
-
 }
-
