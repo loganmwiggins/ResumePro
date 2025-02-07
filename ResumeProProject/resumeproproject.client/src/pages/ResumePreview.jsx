@@ -37,7 +37,7 @@ const ResumePreview = () => {
             .set({
                 filename: `${resumeData?.resumeName || "Resume"}.pdf`,
                 image: { type: "jpeg", quality: 5 },
-                html2canvas: { scale: 2 },
+                html2canvas: { scale: 1 },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
             })
             .from(element)
@@ -53,7 +53,7 @@ const ResumePreview = () => {
 
             <div className="resume-preview-view">
             <div ref={resumeRef}>
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
                 </div>
             </div>
 

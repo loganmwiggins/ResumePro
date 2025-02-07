@@ -288,7 +288,7 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         <div ref={resumeRef} className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
+                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData} viewMode="builder" />
                         </div>
                         <div className="resume-actions">
                             <input 

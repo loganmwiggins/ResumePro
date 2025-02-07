@@ -27,9 +27,6 @@
     display: flex;
 }
 
-.resume-scale-ctnr {
-    transform: none !important;
-}
 
 /* Button styles */
 .resume-preview-actions {
