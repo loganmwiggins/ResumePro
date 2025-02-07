@@ -337,5 +337,21 @@ namespace ResumeProProject.Server.Controllers
             return Ok(result);
         }
 
-    }
+
+        [HttpPost("AddInsight")]
+        public async Task<IActionResult> AddInsight([FromBody] Guid resumeId, string content)
+        {
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == resumeId);
+
+            var NewInsight = new Insight
+            {
+                ResumeId = fetchedResume.ResumeId,
+                Content = content
+            };
+            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            return Ok(new { message = "Insight added successfully." });
+        }
+
+        }
 }
