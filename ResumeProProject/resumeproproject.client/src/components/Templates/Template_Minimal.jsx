@@ -30,6 +30,7 @@ function Template_Minimal({ resumeData }) {
         return date.toLocaleDateString("en-US", formatOptions);
     };
 
+
     return (
         <div className="resume-paper">
             {/* GENERAL INFORMATION */}
@@ -43,6 +44,7 @@ function Template_Minimal({ resumeData }) {
                     <p>{resumeData.generalInformation.phoneNumber}</p>
                 </div>
             </header>
+
 
             {/* URLS */}
             <section>
@@ -145,23 +147,20 @@ function Template_Minimal({ resumeData }) {
             )}
             
             
-            <section>
-                <h2>SKILLS</h2>
-                <div className="list-disc pl-5 text-sm text-gray-800">
-                    <div className="skill-row">
-                        <h4>Frontend:</h4>
-                        <p>React, TypeScript, JavaScript</p>
+            {/* SKILLS */}
+            {resumeData.skills?.skillsDataJson && Object.keys(resumeData.skills.skillsDataJson).length > 0 && (
+                <section>
+                    <h2>SKILLS</h2>
+                    <div>
+                        {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => {
+                            <div className="skill-row" key={category}>
+                                <h4>{category}:</h4>
+                                <p>{Array.from(skillsObj).join(", ")}</p>
+                            </div>
+                        })}
                     </div>
-                    <div className="skill-row">
-                        <h4>Backend:</h4>
-                        <p>Node.js, Express, MongoDB, REST APIs, GraphQL</p>
-                    </div>
-                    <div className="skill-row">
-                        <h4>Methodlogies:</h4>
-                        <p>Agile Development, Code Reviews</p>
-                    </div>
-                </div>
-            </section>
+                </section>
+            )}
 
 
             {/* EDUCATION */}

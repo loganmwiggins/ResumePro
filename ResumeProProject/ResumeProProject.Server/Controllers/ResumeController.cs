@@ -54,12 +54,10 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId
-
             };
 
             _db.Resumes.Add(NewResume);
             await _db.SaveChangesAsync();
-
 
             Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
 
