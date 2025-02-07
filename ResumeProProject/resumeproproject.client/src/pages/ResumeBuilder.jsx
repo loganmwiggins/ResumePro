@@ -285,7 +285,7 @@ function ResumeBuilder() {
                             />
                             <button type="button" onClick={handleCancel}>Cancel</button>
                             <button type="submit">Save Resume</button>
-                            <button type="button" onClick={generatePDF}>Download PDF</button>
+                            {/* <button type="button" onClick={generatePDF}>Download PDF</button> */}
                         </div>
                     </div>
 
