@@ -82,6 +82,9 @@ function Home() {
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
+    // Handle navigation to resume insights
+    const handleInsights = (resumeId) => navigate(`/insights/${resumeId}`);
+
     // Handle editing a resume
     const handleEditResume = (resumeId) => navigate(`/edit-resume/${resumeId}`);
 
@@ -146,6 +149,9 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
+                                                <button onClick={() => handleInsights(resume.resumeId)}>
+                                                    <img src="assets/icons/sparkles.svg" draggable="false" />
+                                                </button>
                                                 <button onClick={() => handleEditResume(resume.resumeId)}>
                                                     <img src="assets/icons/pencil.svg" draggable="false" />
                                                 </button>

@@ -1,0 +1,23 @@
+form {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: left;
+}
+
+.resume-insights-ctnr {
+    padding: 2rem 0;
+
+    button {
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: .25rem;
+        padding: .5rem .75rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+}

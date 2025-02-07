@@ -1,14 +1,20 @@
+import { useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+
 import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
-import { useState } from 'react';
 
 function ResumeInsights() {
-  const [resumeId, setResumeId] = useState('');
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const [resumeId, setResumeId] = useState(params.resumeId || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(''); // New state to store AI response
 
+  console.log(resumeId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,10 +58,13 @@ function ResumeInsights() {
 
   return (
     <AuthorizeView>
-      <div className="resume-insights">
-        <h2>Resume Insights</h2>
+      <div className="page-header">
+        <h1>Resume Insights</h1>
+        <p>Use Artificial Intelligence to evaluate your resume</p>
+      </div>
+
+      <div className="resume-insights-ctnr">
         <form onSubmit={handleSubmit}>
-          <label htmlFor="resumeInput">Get AI to grade your resume</label>
           <input
             type="text"
             id="resumeInput"
@@ -68,13 +77,15 @@ function ResumeInsights() {
 
         {loading && <div className='loading-spinner'></div>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
+
         {/* Display AI response */}
         {aiResult && (
-  <div className="ai-result">
-    <h3>AI Scoring Results</h3>
-    <p dangerouslySetInnerHTML={{ __html: aiResult }} />
-  </div>
-)}
+          <div className="ai-result">
+            <h3>AI Scoring Results</h3>
+            <p dangerouslySetInnerHTML={{ __html: aiResult }} />
+          </div>
+        )}
+
         {/* {resumeData && <pre>{JSON.stringify(resumeData, null, 2)}</pre>} */}
       </div>
     </AuthorizeView>
