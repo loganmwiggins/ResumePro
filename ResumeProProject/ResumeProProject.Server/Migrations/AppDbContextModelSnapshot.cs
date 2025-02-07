@@ -194,7 +194,7 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("EndDate")
+                    b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
                     b.Property<double?>("GPA")
@@ -209,6 +209,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("SchoolLocation")
+                        .HasColumnType("text");
 
                     b.Property<string>("SchoolName")
                         .IsRequired()

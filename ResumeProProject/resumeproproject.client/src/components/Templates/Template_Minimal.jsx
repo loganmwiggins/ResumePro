@@ -2,18 +2,20 @@ import React from 'react';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
-    // console.log(resumeData);
 
-    const formatDate = (dateString) => {
+    const formatDate = (dateString, options = { month: true, day: true, year: true }) => {
         const [year, month, day] = dateString.split("-").map(Number);
-        const date = new Date(year, month - 1, day); // Month is zero-based in JavaScript Date()
+        const date = new Date(year, month - 1, day); // Month is zero-based
         
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-        });
-    }
+        // Determine the format based on the options provided
+        const formatOptions = {
+            ...(options.month && { month: "short" }),
+            ...(options.day && { day: "numeric" }),
+            ...(options.year && { year: "numeric" }),
+        };
+        
+        return date.toLocaleDateString("en-US", formatOptions);
+    };
 
     return (
         <div className="resume-paper">
@@ -126,13 +128,47 @@ function Template_Minimal({ resumeData }) {
                 </div>
             </section>
 
-            <section>
-                <h2>EDUCATION</h2>
-                <div>
-                    <h3 className="font-semibold">Bachelor of Science in Computer Science</h3>
-                    <p>University of Example | 2016 - 2020</p>
-                </div>
-            </section>
+
+            {/* EDUCATION */}
+            {resumeData.educations.length > 0 && (
+                <section>
+                    <h2>EDUCATION</h2>
+                    {resumeData.educations.map(edu => (
+                        <div key={edu.startDate}>
+                            <div className="entry-head">
+                                <div>
+                                    <h3>
+                                        {edu.degreeType} {edu.major && (`in ${edu.major}`)}
+                                    </h3>
+                                    <h4>
+                                        {edu.minor && (`Minor in ${edu.minor}`)}
+                                    </h4>
+                                    <p>
+                                        {edu.schoolName} {edu.gpa && (
+                                            `| GPA: ${edu.gpa} / 4.0`
+                                        )}
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <p>
+                                        {edu.startDate && (
+                                            `${formatDate(edu.startDate, {month:true, year:true})}`
+                                        )} {edu.endDate && (
+                                            `- ${formatDate(edu.endDate, {month:true, year:true})}`
+                                        )}
+                                    </p>
+                                    <p>
+                                        {edu.schoolLocation && (
+                                            `${edu.schoolLocation}`
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </section>
+            )}
         </div>
     );
 }
