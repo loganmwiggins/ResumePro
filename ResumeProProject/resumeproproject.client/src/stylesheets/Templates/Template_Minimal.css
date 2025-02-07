@@ -4,8 +4,7 @@
     width: 850px;
     height: 1100px;
     padding: 50px;
-    font-size: .8rem;
-
+    font-size: .9rem;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -14,7 +13,14 @@
 
 header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
 }
 
 section {
@@ -24,7 +30,21 @@ section {
     h2 {
         border-bottom: 1px solid #555;
     }
+}
 
+.urls {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    gap: 1rem;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+
+        img { max-width: 1rem; }
+    }
 }
 
 .skill-row {

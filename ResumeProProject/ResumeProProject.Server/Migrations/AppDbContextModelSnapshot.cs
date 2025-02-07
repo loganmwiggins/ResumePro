@@ -295,6 +295,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<string>("LinkedInUrl")
                         .HasColumnType("text");
 
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
                     b.Property<string>("MiddleName")
                         .HasColumnType("text");
 
