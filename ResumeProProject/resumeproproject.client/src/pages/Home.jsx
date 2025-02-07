@@ -14,7 +14,7 @@ function Home() {
     // Array of possible greetings
     const greetings = [
         "Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy",
-        "Good to see you", "Hey there", "Hello there", "Good Morrow"
+        "Good to see you", "Hey there", "Hello there"
     ];
 
     // Array of possible messages
@@ -46,8 +46,6 @@ function Home() {
     // GET ALL RESUMES
     useEffect(() => {
         if (!user || !user.id) return;
-
-        console.log(user.id);
 
         const fetchResumes = async () => {
             try {
