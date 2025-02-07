@@ -61,7 +61,7 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
 
 
-            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate && r.Id == request.Id);
 
             var NewGeneralInformation = new GeneralInformation
             {
