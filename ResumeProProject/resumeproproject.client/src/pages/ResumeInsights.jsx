@@ -92,7 +92,7 @@ function ResumeInsights() {
         )}
         
 
-        {loading && (<div className="ai-spinner"></div>)}
+        {loading && (<div className="loading-spinner"></div>)}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* Display AI response */}
