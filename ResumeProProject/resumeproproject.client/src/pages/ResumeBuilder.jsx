@@ -72,6 +72,15 @@ function ResumeBuilder() {
         });
     };
 
+    const handleNameChange = (newName) => {
+        setResumeData((prevResume) => {
+            return {
+                ...prevResume,
+                resumeName: newName
+            }
+        })
+    }
+
     const handleAddSkillCategory = (category) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
@@ -147,7 +156,7 @@ function ResumeBuilder() {
     };
 
     const handleCancel = () => {
-        showToast("Resume abandoned.", "info");
+        showToast("Resume abandoned.", "warning");
         navigate("/home");
     }
 
@@ -223,6 +232,7 @@ function ResumeBuilder() {
             if (response.ok) {
                 // const data = await response.json();
                 showToast("Resume created successfully!", "success");
+                navigate("/insights");
             } 
             else {
                 showToast("Failed to create resume.", "error");
@@ -247,7 +257,12 @@ function ResumeBuilder() {
                             <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
                         </div>
                         <div className="resume-actions">
-                            <input type="text" name="resumeName" placeholder="Name of Document" value={resumeData.resumeName} onChange={handleChange} />
+                            <input 
+                                type="text"
+                                placeholder="Name your document!"
+                                value={resumeData.resumeName} 
+                                onChange={(e) => handleNameChange(e.target.value)} 
+                            />
                             <button type="button" onClick={handleCancel}>Cancel</button>
                             <button type="submit">Save Resume</button>
                             <button type="button" onClick={generatePDF}>Download PDF</button>
