@@ -55,25 +55,6 @@ namespace ResumeProProject.Server
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             }
 
-            //// ✅ Configure Authentication (JWT)
-            //var jwtKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
-            //    ?? throw new ArgumentNullException("Jwt:Key is missing from configuration."));
-
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            //            ValidAudience = builder.Configuration["Jwt:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(jwtKey)
-            //        };
-            //    });
-
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
             builder.Services.AddCors(options =>

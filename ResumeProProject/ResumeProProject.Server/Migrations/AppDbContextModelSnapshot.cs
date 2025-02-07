@@ -194,7 +194,7 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("EndDate")
+                    b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
                     b.Property<double?>("GPA")
@@ -209,6 +209,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("SchoolLocation")
+                        .HasColumnType("text");
 
                     b.Property<string>("SchoolName")
                         .IsRequired()
@@ -245,14 +248,12 @@ namespace ResumeProProject.Server.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("JobType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<string>("OfficeType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("ResumeId")
@@ -293,6 +294,9 @@ namespace ResumeProProject.Server.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LinkedInUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
@@ -364,8 +368,9 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("TemplateId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("TemplateId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedDateTime")
                         .HasColumnType("timestamp with time zone");
@@ -395,33 +400,6 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId");
 
                     b.ToTable("Skills");
-                });
-
-            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Template", b =>
-                {
-                    b.Property<Guid>("TemplateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("TemplateId");
-
-                    b.ToTable("Templates");
-
-                    b.HasData(
-                        new
-                        {
-                            TemplateId = new Guid("4f1d9d3f-09c3-4f3e-bb56-ffdc3d7b6ad0"),
-                            Content = "purr",
-                            Name = "Default Template"
-                        });
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>

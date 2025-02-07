@@ -29,9 +29,9 @@ namespace ResumeProProject.Server.Data.Models
 
         public string? Location { get; set; }
 
-        public OfficeType OfficeType { get; set; }
+        public OfficeType? OfficeType { get; set; }
 
-        public JobType JobType { get; set; }
+        public JobType? JobType { get; set; }
 
         //// ✅ Added Navigation Property
         [JsonIgnore]

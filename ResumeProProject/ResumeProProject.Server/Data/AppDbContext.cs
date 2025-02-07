@@ -85,7 +85,6 @@ namespace ResumeProProject.Server.Data
         //    // ✅ Use Hardcoded GUIDs
         //    var userId = "550e8400-e29b-41d4-a716-446655440000";
         //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
-        //    var templateId = Guid.Parse("660e8400-e29b-41d4-a716-446655440000");
         //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
 
         //    // ✅ Use Hardcoded DateTime
@@ -109,14 +108,6 @@ namespace ResumeProProject.Server.Data
         //        UpdatedDateTime = fixedDateTime
         //    });
 
-            // ✅ Seed Template
-            modelBuilder.Entity<Template>().HasData(new Template
-            {
-                TemplateId = Guid.Parse("4f1d9d3f-09c3-4f3e-bb56-ffdc3d7b6ad0"),
-                Name = "Default Template",
-                Content = "purr"
-            });
-
         //    // ✅ Seed Skills
         //    modelBuilder.Entity<Skills>().HasData(new Skills
         //    {s
@@ -132,11 +123,9 @@ namespace ResumeProProject.Server.Data
 
 
 
-
         // ✅ Define Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Resume> Resumes { get; set; }
-        public DbSet<Template> Templates { get; set; }
         public DbSet<GeneralInformation> GeneralInformation { get; set; }
         public DbSet<Education> Education { get; set; }
         public DbSet<Certification> Certifications { get; set; }

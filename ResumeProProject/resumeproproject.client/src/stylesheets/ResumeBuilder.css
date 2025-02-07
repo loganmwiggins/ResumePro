@@ -10,20 +10,47 @@
     flex-direction: column;
     align-items: start;
     height: 80svh;
+    width: 479px;
 }
 
 /* TEMPLATE VIEW (LEFT SIDE) */
 .template-view {
+    align-items: center;
     padding: 2rem;
     gap: 1rem;
 }
 
 .resume-ctnr {
-    background: white;
-    border: 1px solid grey;
-    width: 100%;
-    height: 95%;
+    /* background: white; */
+    /* border: 1px solid red; */
+     width: 100%; 
+    /* height: 100%; */
+    /* height: 700px !important; */
+    max-width: 980px; /*If this is changed then the resume to pdf is messed up for now so i included width in the template-view one to account for it but there is overflow in the text (still existed before but now its visible on top of other stuff*/
+    /* max-height: 550px !important; */
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    overflow: hidden;
+    position: relative;
 }
+
+.resume-scale-ctnr {
+    width: 980px;
+    height: 1100px;
+    transform-origin: top left;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* overflow: hidden; */
+    /* position: relative; */
+}
+
+/* .resume-paper {
+    transform-origin: top left;
+    transform: scale(1);
+} */
+
 
 .resume-actions {
     width: 100%;
@@ -86,3 +113,51 @@
 .section-btn {
     padding: .5rem;
 }
+
+.delete-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+}
+
+.trash-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    filter: invert(40%) sepia(0%) saturate(200%) hue-rotate(180deg); /* Makes it gray */
+}
+
+    .trash-icon:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.delete-x-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: gray;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 0.6;
+    padding: 0 5px;
+}
+
+    .delete-x-btn:hover {
+        opacity: 1;
+        transform: scale(1.1); 
+    }

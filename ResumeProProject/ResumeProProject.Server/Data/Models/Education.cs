@@ -19,30 +19,20 @@ namespace ResumeProProject.Server.Data.Models
         [JsonIgnore]
         public virtual Resume? Resume { get; set; }
 
-        [Required]
-        public string SchoolName { get; set; }
+        public required string SchoolName { get; set; }
 
-        // ✅ Store Enum as String
-        [Required]
-        public DegreeLevel DegreeType { get; set; }
+        public string? SchoolLocation { get; set; }
+
+        public required string DegreeType { get; set; }
 
         public double? GPA { get; set; }
 
-        [Required]
-        public string Major { get; set; }
+        public required string Major { get; set; }
 
         public string? Minor { get; set; }
 
-        [Required]
-        public DateOnly StartDate { get; set; }
+        public required DateOnly StartDate { get; set; }
 
-        public DateOnly? EndDate { get; set; }
-    }
-
-    public enum DegreeLevel
-    {
-        Undergraduate,
-        Graduate,
-        Doctorate
+        public required DateOnly EndDate { get; set; }
     }
 }

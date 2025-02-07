@@ -15,7 +15,7 @@ namespace ResumeProProject.Server.Controllers
         public required string Id { get; set; } // User ID
         public required string ResumeName { get; set; }
         public required DateTime CurrentDate { get; set; }
-        public required Guid TemplateId { get; set; }
+        public required string TemplateId { get; set; }
 
         // One-to-One Relationship
         public required GeneralInformation GeneralInformation { get; set; }
@@ -54,12 +54,10 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId
-
             };
 
             _db.Resumes.Add(NewResume);
             await _db.SaveChangesAsync();
-
 
             Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate);
 
@@ -176,7 +174,7 @@ namespace ResumeProProject.Server.Controllers
 
             if (!resumes.Any())
             {
-                return NotFound(new { message = "No resumes found for this user." });
+                return Ok(new List<object>());
             }
 
             // Fetch all GeneralInformation separately
