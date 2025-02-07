@@ -38,6 +38,7 @@
 }
 
 .resumes-row {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -105,7 +106,27 @@
 
         img { width: 1.15rem; }
     }
-    button:hover {
-        opacity: 1;
+    button:hover { opacity: 1; }
+}
+
+.no-resume {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    background: rgb(235, 235, 235);
+    width: 18rem;
+    height: 24rem;
+    cursor: pointer;
+    transition: all .5s ease;
+
+    img {
+        width: 1.25rem;
+        opacity: .8;
     }
+}
+.no-resume:hover {
+    transform: scale(1.025);
+    transition: all .5s ease;
 }

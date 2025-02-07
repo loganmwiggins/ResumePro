@@ -176,7 +176,7 @@ namespace ResumeProProject.Server.Controllers
 
             if (!resumes.Any())
             {
-                return NotFound(new { message = "No resumes found for this user." });
+                return Ok(new List<object>());
             }
 
             // Fetch all GeneralInformation separately

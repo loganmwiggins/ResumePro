@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
+import { showToast } from '../utils/Toast';
 import '../stylesheets/Home.css';
 
 function Home() {
-  const { user, loading } = useUser();
   const navigate = useNavigate();
+  const { user, loading } = useUser();
   const [resumes, setResumes] = useState([]);
 
-   // Array of possible greetings
-   const greetings = [
+  // Array of possible greetings
+  const greetings = [
     "Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy",
     "Good to see you", "Hey there", "Hello there", "Good Morrow"
   ];
@@ -40,17 +42,34 @@ function Home() {
 
   // Function to randomly pick a greeting and a message
   const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
+
+  // GET ALL RESUMES
   useEffect(() => {
     if (!user || !user.id) return;
- console.log(user.id)
+
+    console.log(user.id);
+
     const fetchResumes = async () => {
       try {
         const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
-        if (!response.ok) throw new Error('Failed to fetch resumes');
+
+        if (!response.ok) { 
+          showToast("Error fetching resumes.", "error");
+          throw new Error('Failed to fetch resumes');
+        }
+
         const data = await response.json();
+
+        if (data.length === 0) {
+          console.log("No resumes for this user.");
+          showToast("Create your first resume.", "info", "Let's get started!");
+        }
+
         setResumes(data); // Assuming API returns an array of resumes
-      } catch (error) {
-        console.error('Error fetching resumes:', error);
+      } 
+      catch (error) {
+        console.error('(catch) Error fetching resumes:', error);
+        showToast("An error occurred.", "error");
       }
     };
 
@@ -66,17 +85,23 @@ function Home() {
   // Handle deleting a resume
   const handleDeleteResume = async (resumeId) => {
     if (!window.confirm('Are you sure you want to delete this resume?')) return;
+
     console.log(resumeId);
+
     try {
       const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
-{
+      {
         method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Failed to delete resume');
+      if (!response.ok) {
+        showToast("Error deleting resume.", "error");
+        throw new Error('Failed to delete resume.');
+      }
 
       setResumes((prevResumes) => prevResumes.filter((r) => r.resumeId !== resumeId));
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error deleting resume:', error);
     }
   };
@@ -129,7 +154,14 @@ function Home() {
                   </div>
                 ))
               ) : (
-                <p>No resumes found. Create one now!</p>
+                <div 
+                  className="no-resume" 
+                  title="No resumes yet. Click to create one!"
+                  onClick={handleNewResume}
+                >
+                  <img src="assets/icons/plus.svg" draggable="false" />
+                  <p>Create a Resume</p>
+                </div>
               )}
             </div>
           </div>
