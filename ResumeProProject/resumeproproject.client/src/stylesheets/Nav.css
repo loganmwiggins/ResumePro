@@ -44,7 +44,7 @@
 .btn-ctnr {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .75rem;
 
     button {
         font-weight: 600;
