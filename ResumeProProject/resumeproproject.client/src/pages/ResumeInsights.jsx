@@ -15,6 +15,20 @@ function ResumeInsights() {
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(''); // New state to store AI response
 
+  const getScoreColorClass = (score) => {
+    if (!score) return ""; // Handle missing score
+
+    const [numerator, denominator] = score.split("/").map(Number); // Convert to numbers
+
+    if (isNaN(numerator) || isNaN(denominator)) return ""; // Ensure valid numbers
+
+    const percentage = (numerator / denominator) * 100; // Convert to percentage
+
+    if (percentage >= 80) return "circle-green";  
+    if (percentage >= 50) return "circle-yellow";  
+    return "circle-red";  // Ensure 0% falls in this range
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -49,18 +63,23 @@ function ResumeInsights() {
 
       const aiResult = await aiResponse.json();
       const aiContent = aiResult.choices[0]?.message?.content;
+      console.log(aiContent);
 
       if (aiContent) {
-        const formattedContent = aiContent.replace(/\n/g, '<br />');
-        setAiResult(formattedContent); // Store AI content
+        try {
+          const cleanedJson = aiContent.replace(/,\s*}/g, "}").replace(/,\s*\]/g, "]"); // Remove trailing commas before closing } and closing ]
+          const aiJsonObj = JSON.parse(cleanedJson);
+          console.log("JSON object:", aiJsonObj);
+          setAiResult(aiJsonObj); // Store AI content as JSON object
+        }
+        catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
       } 
       else {
         showToast("No AI content returned", "error", "Uh oh!");
         throw new Error("No AI content returned");
       }
-
-      console.log(resumeData)
-      console.log("AI Response:", aiResult); // Handle this as needed
     } 
     catch (err) {
       setError(err.message);
@@ -91,21 +110,28 @@ function ResumeInsights() {
           </form>
         )}
         
-
         {loading && (<div className="loading-spinner"></div>)}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {/* Display AI response */}
-        
+        {/* AI feedback */}
         {aiResult && (
-          <div className="ai-result">
+          <div className="feedback-ctnr">
             <h2>Evaluation for "{resumeData.resumeName}"</h2>
-            <br />
-            <p dangerouslySetInnerHTML={{ __html: aiResult }} />
+
+            {Object.entries(aiResult).map(([section, data]) => (
+              <div key={section} className="feedback-item">
+                <div>
+                  <h3>{section}</h3>
+                  <p>{data.comments}</p>
+                </div>
+                <div className="score">
+                  <h2>{data.score}</h2>
+                  <div className={`score-circle ${getScoreColorClass(data.score)}`}></div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
-
-        {/* {resumeData && <pre>{JSON.stringify(resumeData, null, 2)}</pre>} */}
       </div>
     </AuthorizeView>
   );

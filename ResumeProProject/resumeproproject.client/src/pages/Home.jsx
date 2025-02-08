@@ -100,13 +100,14 @@ function Home() {
 
             if (!response.ok) {
                 showToast("Error deleting resume.", "error");
-                throw new Error('Failed to delete resume.');
+                throw new Error("Failed to delete resume.");
             }
 
+            showToast("Resume deleted successfully", "success");
             setResumes((prevResumes) => prevResumes.filter((r) => r.resumeId !== resumeId));
         }
         catch (error) {
-            console.error('Error deleting resume:', error);
+            console.error("Error deleting resume:", error);
         }
     };
 
