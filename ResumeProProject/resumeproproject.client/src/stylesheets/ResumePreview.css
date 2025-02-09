@@ -12,6 +12,9 @@
     p { color: var(--text-secondary); }
 }
 
+.html2pdf__overlay { background-color: white !important; }
+.html2canvas-container { background-color: white !important; }
+
 /* The outer wrapper for the resume preview */
 .resume-view {
     transform: none !important;

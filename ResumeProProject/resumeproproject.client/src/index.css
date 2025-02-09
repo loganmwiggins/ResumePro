@@ -28,6 +28,9 @@ html {
   box-sizing: inherit;
 }
 
+.html2pdf__overlay { background-color: white !important; }
+.html2canvas-container { background-color: white !important; }
+
 .page-ctnr {
   display: flex;
   flex-direction: column;
