@@ -82,10 +82,11 @@ function Home() {
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
-    // Handle editing a resume
+    // Resume button functions
+    const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
+
     const handleEditResume = (resumeId) => navigate(`/edit-resume/${resumeId}`);
 
-    // Handle deleting a resume
     const handleDeleteResume = async (resumeId) => {
         if (!window.confirm('Are you sure you want to delete this resume?')) return;
 
@@ -109,6 +110,8 @@ function Home() {
         }
     };
 
+
+
     return (
         <AuthorizeView>
             {loading ? (
@@ -122,10 +125,7 @@ function Home() {
                             <p>{getRandomElement(messages)}</p>
                         </div>
                         <div>
-                            <button
-                                type="button"
-                                onClick={handleNewResume}
-                            >
+                            <button type="button" onClick={handleNewResume}>
                                 <img src="assets/icons/plus.svg" draggable="false" />
                                 <span>New Resume</span>
                             </button>
@@ -146,6 +146,9 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
+                                                <button onClick={() => handlePreviewResume(resume.resumeId)}>
+                                                    <img src="assets/icons/expand.svg" draggable="false" />
+                                                </button>
                                                 <button onClick={() => handleEditResume(resume.resumeId)}>
                                                     <img src="assets/icons/pencil.svg" draggable="false" />
                                                 </button>
