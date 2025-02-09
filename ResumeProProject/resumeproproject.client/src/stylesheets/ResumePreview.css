@@ -52,6 +52,7 @@
         color: white;
         border-radius: .5rem;
         cursor: pointer;
+        transition: all .2s ease;
 
         img {
             width: 1rem;
@@ -60,4 +61,6 @@
     }
     .preview-actions button:hover {
         background: #000;
+        transform: scale(1.05);
+        transition: all .2s ease;
     }

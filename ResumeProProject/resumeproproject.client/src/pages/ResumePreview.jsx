@@ -45,6 +45,8 @@ const ResumePreview = () => {
     }, [resumeId]);
 
     // Button functions
+    const handleHome = () => navigate("/home");
+
     const handleDownloadPDF = () => {
         const element = resumeRef.current;
         html2pdf()
@@ -58,9 +60,7 @@ const ResumePreview = () => {
             .save();
     };
 
-    const handleInsights = () => {
-        navigate(`/insights/${resumeId}`)
-    }
+    const handleInsights = () => navigate(`/insights/${resumeId}`);
 
 
 
@@ -74,6 +74,10 @@ const ResumePreview = () => {
             </div>
 
             <div className="preview-actions">
+                <button onClick={handleHome} title="Go back and edit your resume">
+                    <img src="/assets/icons/home.svg" draggable="false" />
+                    <span>Home</span>
+                </button>
                 <button onClick={() => alert("lol not working yet")} title="Go back and edit your resume">
                     <img src="/assets/icons/pencil.svg" draggable="false" />
                     <span>Edit Resume</span>
