@@ -137,8 +137,8 @@ function Home() {
                         <h2>My Resumes</h2>
                         <div className="resumes-row">
                             {Array.isArray(resumes) && resumes.length > 0 ? (
-                                resumes.map((resume) => (
-                                    <div className="resume" key={resume.resumeId}>
+                                resumes.map((resume, index) => (
+                                    <div className="resume" key={resume.resumeId} style={{ animationDelay: `${index * 0.2}s`}}>
                                         <div className="resume-img"></div>
                                         <div className="resume-info">
                                             <div className="resume-txt">
