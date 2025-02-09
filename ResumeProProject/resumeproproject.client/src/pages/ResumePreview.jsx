@@ -74,7 +74,7 @@ const ResumePreview = () => {
             </div>
 
             <div className="preview-actions">
-                <button onClick={handleHome} title="Go back and edit your resume">
+                <button onClick={handleHome} title="Go to home page">
                     <img src="/assets/icons/home.svg" draggable="false" />
                     <span>Home</span>
                 </button>
