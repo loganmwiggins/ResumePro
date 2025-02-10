@@ -29,7 +29,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                     <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
                         <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
                     </button>
-                    
+
                     <div className="input-field">
                         <label>Company / Employer <span className="req">*</span></label>
                         <input
@@ -100,17 +100,24 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
             ))}
             
             {/* Add Experience button */}
-            <button type="button" onClick={() => handleAddEntry("experiences", {
-                companyName: null,
-                role: null,
-                startDate: null,
-                endDate: null,
-                isCurrent: null,
-                description: null,
-                location: null,
-                officeType: null,
-                jobType: null
-            })}>Add Experience</button>
+            <button 
+                type="button" 
+                className="add-entry-btn" 
+                onClick={() => handleAddEntry("experiences", {
+                    companyName: null,
+                    role: null,
+                    startDate: null,
+                    endDate: null,
+                    isCurrent: null,
+                    description: null,
+                    location: null,
+                    officeType: null,
+                    jobType: null
+                })}
+            >
+                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <span>Add Experience</span>
+            </button>
         </section>
     );
 }

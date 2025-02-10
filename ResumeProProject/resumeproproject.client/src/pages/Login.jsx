@@ -72,7 +72,7 @@ function Login() {
                     <h3>ResumePro</h3>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-header">
                         <h3>Welcome Back</h3>
                         <p>Enter your email and password to access your account.</p>
