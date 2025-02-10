@@ -16,7 +16,7 @@ const ResumePreview = () => {
     const [successMessage, setSuccessMessage] = useState(""); // Ensures message doesn't change on re-render
 
     const successMessages = [
-        "Congratulations!", "Nice!", "Awesome!", "Amazing!", "Good Job!", "Nice Job!", 
+        "Congratulations!", "Nice!", "Awesome!", "Amazing!", "Good Job!", "Nice Job!",
         "Nice Work!", "Good Work!", "Yay!", "Sweet!", "Great Job!", "Done!"
     ];
 
@@ -35,12 +35,22 @@ const ResumePreview = () => {
                 }
 
                 const data = await response.json();
+
+                if (data.skills?.skillsDataJson) {
+                    try {
+                        data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
+                    } catch (error) {
+                        console.error("Error parsing skillsDataJson:", error);
+                        data.skills.skillsDataJson = {};
+                    }
+                }
+
                 setResumeData(data);
 
                 // Confetti !
                 setShowConfetti(true);
                 setTimeout(() => setShowConfetti(false), 3000);
-            } 
+            }
             catch (error) {
                 console.error("Error fetching resume:", error);
                 showToast("Failed to fetch resume", "error");
@@ -89,8 +99,8 @@ const ResumePreview = () => {
                 <p>Your "{resumeData.resumeName}" resume has been created. What's next?</p>
             </div>
 
-            { showConfetti ? 
-                <Fireworks autorun={{ speed: 1, duration: 2000 }}/>
+            {showConfetti ?
+                <Fireworks autorun={{ speed: 1, duration: 2000 }} />
                 : ''
             }
 
@@ -108,7 +118,7 @@ const ResumePreview = () => {
                     <span>Download PDF</span>
                 </button>
                 <button onClick={handleInsights} title="Get AI recommendations to improve your resume">
-                <img src="/assets/icons/sparkles.svg" draggable="false" />
+                    <img src="/assets/icons/sparkles.svg" draggable="false" />
                     <span>AI Insights</span>
                 </button>
             </div>
