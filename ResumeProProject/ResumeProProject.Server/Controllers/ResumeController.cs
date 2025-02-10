@@ -38,8 +38,6 @@ namespace ResumeProProject.Server.Controllers
         private readonly UserManager<User> _userManager;
 
 
-
-
         [HttpPost("Create")]
         public async Task<IActionResult> CreateResume([FromBody] CreateResumeDto request)
         {
@@ -155,8 +153,7 @@ namespace ResumeProProject.Server.Controllers
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();
             }
-
-            return Ok(new { message = "Resume created successfully." });
+            return Ok(new { message = "Resume created successfully.", resumeId = fetchedResume.ResumeId });
         }
 
         [HttpGet("GetResumes/{userId}")]
