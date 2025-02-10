@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
@@ -10,11 +11,14 @@ function Home() {
     const navigate = useNavigate();
     const { user, loading } = useUser();
     const [resumes, setResumes] = useState([]);
+    const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
+    const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
+    const [openMenuId, setOpenMenuId] = useState(null);
 
     // Array of possible greetings
     const greetings = [
         "Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy",
-        "Good to see you", "Hey there", "Hello there", "Good Morrow"
+        "Good to see you", "Hey there", "Hello there"
     ];
 
     // Array of possible messages
@@ -47,8 +51,6 @@ function Home() {
     useEffect(() => {
         if (!user || !user.id) return;
 
-        console.log(user.id);
-
         const fetchResumes = async () => {
             try {
                 const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
@@ -77,15 +79,34 @@ function Home() {
         };
 
         fetchResumes();
+        setHomeGreeting(getRandomElement(greetings)); // Set greeting once on mount
+        setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
 
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
-    // Handle editing a resume
+    // Resume 'more' menu functions
+    const toggleMenu = (resumeId) => {
+        setOpenMenuId(openMenuId === resumeId ? null : resumeId);
+    }
+
+    const handleClickOutside = (event) => {
+        if (!event.target.closest(".resume-btns")) {
+            setOpenMenuId(null);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
+    // Resume button functions
+    const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
+
     const handleEditResume = (resumeId) => navigate(`/edit-resume/${resumeId}`);
 
-    // Handle deleting a resume
     const handleDeleteResume = async (resumeId) => {
         if (!window.confirm('Are you sure you want to delete this resume?')) return;
 
@@ -109,6 +130,8 @@ function Home() {
         }
     };
 
+
+
     return (
         <AuthorizeView>
             {loading ? (
@@ -118,14 +141,11 @@ function Home() {
                     {/* Home header */}
                     <div className="home-header">
                         <div className="page-header">
-                            <h1>{getRandomElement(greetings)}, {user.firstName}</h1>
-                            <p>{getRandomElement(messages)}</p>
+                            <h1>{homeGreeting}, {user.firstName}</h1>
+                            <p>{homeMessage}</p>
                         </div>
                         <div>
-                            <button
-                                type="button"
-                                onClick={handleNewResume}
-                            >
+                            <button type="button" onClick={handleNewResume}>
                                 <img src="assets/icons/plus.svg" draggable="false" />
                                 <span>New Resume</span>
                             </button>
@@ -137,8 +157,8 @@ function Home() {
                         <h2>My Resumes</h2>
                         <div className="resumes-row">
                             {Array.isArray(resumes) && resumes.length > 0 ? (
-                                resumes.map((resume) => (
-                                    <div className="resume" key={resume.resumeId}>
+                                resumes.map((resume, index) => (
+                                    <div className="resume" key={resume.resumeId} style={{ animationDelay: `${index * 0.2}s`}}>
                                         <div className="resume-img"></div>
                                         <div className="resume-info">
                                             <div className="resume-txt">
@@ -146,12 +166,33 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
-                                                <button onClick={() => handleEditResume(resume.resumeId)}>
-                                                    <img src="assets/icons/pencil.svg" draggable="false" />
+                                                {/* Ellipsis button */}
+                                                <button onClick={() => toggleMenu(resume.resumeId)}>
+                                                    <img src="assets/icons/ellipsis.svg" draggable="false" />
                                                 </button>
-                                                <button onClick={() => handleDeleteResume(resume.resumeId)}>
-                                                    <img src="assets/icons/trash.svg" draggable="false" />
-                                                </button>
+
+                                                {/* Animated dropdown menu */}
+                                                <AnimatePresence>
+                                                    {openMenuId === resume.resumeId && (
+                                                        <motion.div
+                                                            className="btns-menu"
+                                                            initial={{ opacity: 0, y: -10 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            exit={{ opacity: 0, y: -10 }}
+                                                            transition={{ duration: 0.2, ease: "easeOut" }}
+                                                        >
+                                                            <button onClick={() => handlePreviewResume(resume.resumeId)}>
+                                                                <img src="assets/icons/expand.svg" draggable="false" />
+                                                            </button>
+                                                            <button onClick={() => handleEditResume(resume.resumeId)}>
+                                                                <img src="assets/icons/pencil.svg" draggable="false" />
+                                                            </button>
+                                                            <button onClick={() => handleDeleteResume(resume.resumeId)}>
+                                                                <img src="assets/icons/trash.svg" draggable="false" />
+                                                            </button>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
                                             </div>
                                         </div>
                                     </div>
