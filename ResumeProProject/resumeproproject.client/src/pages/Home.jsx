@@ -91,13 +91,13 @@ function Home() {
         setOpenMenuId(openMenuId === resumeId ? null : resumeId);
     }
 
-    const handleClickOutside = (event) => {
-        if (!event.target.closest(".resume-btns")) {
-            setOpenMenuId(null);
-        }
-    }
-
     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".resume-btns")) {
+                setOpenMenuId(null);
+            }
+        }
+
         document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
