@@ -28,5 +28,6 @@ namespace ResumeProProject.Server.Data.Models
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual Skills Skills { get; set; }
         public virtual GeneralInformation GeneralInformation { get; set; }
+        public virtual GeneralInformation Insights { get; set; }
     }
 }

@@ -1,0 +1,64 @@
+form {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: left;
+}
+
+.resume-insights-ctnr {
+    padding: 2rem 0;
+
+    button {
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: .25rem;
+        padding: .5rem .75rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+}
+
+.ai-result {
+    text-align: left;
+}
+
+.feedback-ctnr {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 1rem;
+}
+
+.feedback-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    gap: 4rem;
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 .25rem rgba(0, 0, 0, .25);
+    padding: 1rem;
+    border-radius: .5rem;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.score-circle {
+    width: .75rem;
+    height: .75rem;
+    background: grey;
+    border-radius: 100%;
+}
+
+.circle-green { background: rgb(0, 180, 0); }
+.circle-yellow { background: rgb(243, 207, 0); }
+.circle-red { background: var(--text-danger); }

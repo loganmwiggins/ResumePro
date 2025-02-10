@@ -12,6 +12,7 @@ function Nav() {
 
     const handleTitleClick = () => { navigate("/home"); };
     const handleProfileClick = () => { navigate("/profile"); };
+    const handleEditProfileClick = () => { navigate("/edit-profile"); };
     const handleLoginClick = () => { navigate("/login"); }
     const handleSignUpClick = () => { navigate("/signup"); }
 
@@ -57,7 +58,8 @@ function Nav() {
 
                             {/* Dropdown Menu */}
                             <div className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
-                                <button onClick={handleProfileClick}>View Profile</button>
+                                <button onClick={handleProfileClick}>My Profile</button>
+                                <button onClick={handleEditProfileClick}>Edit Profile</button>
                                 <LogoutLink>Logout</LogoutLink>
                             </div>
                         </div>

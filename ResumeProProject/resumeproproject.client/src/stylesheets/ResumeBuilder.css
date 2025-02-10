@@ -1,6 +1,6 @@
 .builder-ctnr {
     display: flex;
-    flex-direction: row;
+    flex-direction: row !important;
     background: rgb(250, 250, 250);
 }
 
