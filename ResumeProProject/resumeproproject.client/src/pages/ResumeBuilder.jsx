@@ -228,6 +228,8 @@ function ResumeBuilder() {
 
     // [POST] to Create Resume from form
     const handleSubmit = async (s) => {
+        console.log("resumeData.skills.skillsDataJson:", resumeData.skills.skillsDataJson);
+
         const processedResumeData = {
             ...resumeData,
             skills: {
