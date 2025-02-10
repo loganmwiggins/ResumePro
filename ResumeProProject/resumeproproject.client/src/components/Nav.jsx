@@ -14,6 +14,7 @@ function Nav() {
     const handleProfileClick = () => { navigate("/profile"); };
     const handleEditProfileClick = () => { navigate("/edit-profile"); };
     const handleLoginClick = () => { navigate("/login"); }
+    const handleSignUpClick = () => { navigate("/signup"); }
 
     // Toggle dropdown
     const toggleDropdown = () => {
@@ -44,13 +45,14 @@ function Nav() {
 
                 <div className="directory">
                     {loading ? (
-                        <div className="loading-spinner"></div>  // Replace with a spinner or skeleton
+                        <div className="loading-spinner"></div>
                     ) : user ? (
+                    // If user is logged in...
                         <div className="profile-container" ref={dropdownRef}>
                             {/* Profile Button */}
                             <button className="user-btn" onClick={toggleDropdown} title="Profile">
-                                    <img src="/assets/icons/user.svg" draggable="false" />
-                                     {/*<span>{user.firstName}</span> */}
+                                <img src="/assets/icons/user.svg" draggable="false" />
+                                {/*<span>{user.firstName}</span> */}
                                 <img src="/assets/icons/angle-down.svg" draggable="false" />
                             </button>
 
@@ -62,9 +64,15 @@ function Nav() {
                             </div>
                         </div>
                     ) : (
-                        <button onClick={handleLoginClick}>
-                            <span>Login</span>
-                        </button>
+                    // If user is NOT logged in...
+                        <div className="btn-ctnr">
+                            <button onClick={handleSignUpClick}>
+                                <span>Sign Up</span>
+                            </button>
+                            <button onClick={handleLoginClick}>
+                                <span>Login</span>
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

@@ -226,43 +226,56 @@ function ResumeBuilder() {
     ];
 
 
-    // [POST] to Create Resume from form
-    const handleSubmit = async (s) => {
-        const processedResumeData = {
-            ...resumeData,
-            skills: {
-                ...resumeData.skills,
-                skillsDataJson: JSON.stringify(
-                    Object.fromEntries(
-                        Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
-                    )
-                )
-            }
-        };
-
-        console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
-
+    const handleSubmit = async () => {
         try {
+            const processedResumeData = {
+                ...resumeData,
+                skills: {
+                    ...resumeData.skills,
+                    skillsDataJson: JSON.stringify(
+                        Object.fromEntries(
+                            Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
+                        )
+                    )
+                }
+            };
+
+            console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+
             const response = await fetch("https://localhost:7035/api/Resume/Create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(processedResumeData),
             });
-            
-            if (response.ok) {
-                // const data = await response.json();
-                showToast("Resume created successfully!", "success");
-                navigate("/insights");
-            } 
-            else {
-                showToast("Failed to create resume.", "error");
+
+            if (!response.ok) {
+                throw new Error(`Failed to create resume. Status: ${response.status}`);
             }
-        } 
-        catch (error) {
+
+            const responseText = await response.text(); // Read response as text
+            console.log("Raw API Response:", responseText);
+
+            let responseData;
+            try {
+                responseData = JSON.parse(responseText); // Convert to JSON
+            } catch (error) {
+                throw new Error("API did not return valid JSON.");
+            }
+
+            console.log("Parsed API Response:", responseData);
+
+            if (!responseData.resumeId) {
+                throw new Error("resumeId is missing in API response.");
+            }
+
+            navigate(`/preview/${responseData.resumeId}`);
+
+        } catch (error) {
             console.error("Error:", error);
-            showToast("An error occurred.", "error");
+            showToast(error.message, "error");
         }
     };
+
 
     if (loading || !resumeData) {
         return <div className="loading-spinner"></div>;
@@ -274,7 +287,7 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         <div ref={resumeRef} className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData}></AllTemplates>
+                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData} viewMode="builder" />
                         </div>
                         <div className="resume-actions">
                             <input 

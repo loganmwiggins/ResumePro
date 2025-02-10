@@ -1,11 +1,10 @@
 .resume-paper {
     background: white;
-    border: 1px solid grey;
+/*    border: 1px solid grey;*/
     width: 850px;
     height: 1100px;
     padding: 50px;
     font-size: .9rem;
-    display: flex;
     flex-direction: column;
     text-align: left;
     gap: 1rem;
