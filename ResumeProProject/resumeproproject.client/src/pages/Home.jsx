@@ -11,6 +11,8 @@ function Home() {
     const navigate = useNavigate();
     const { user, loading } = useUser();
     const [resumes, setResumes] = useState([]);
+    const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
+    const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
 
     // Array of possible greetings
@@ -77,6 +79,8 @@ function Home() {
         };
 
         fetchResumes();
+        setHomeGreeting(getRandomElement(greetings)); // Set greeting once on mount
+        setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
 
     // Handle navigation to create a new resume
@@ -137,8 +141,8 @@ function Home() {
                     {/* Home header */}
                     <div className="home-header">
                         <div className="page-header">
-                            <h1>{getRandomElement(greetings)}, {user.firstName}</h1>
-                            <p>{getRandomElement(messages)}</p>
+                            <h1>{homeGreeting}, {user.firstName}</h1>
+                            <p>{homeMessage}</p>
                         </div>
                         <div>
                             <button type="button" onClick={handleNewResume}>
