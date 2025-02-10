@@ -180,6 +180,10 @@ namespace ResumeProProject.Server.Controllers
                 .Where(g => resumeIds.Contains(g.ResumeId))
                 .ToDictionaryAsync(g => g.ResumeId);
 
+            var skillsDict = await _db.Skills
+                .Where(g => resumeIds.Contains(g.ResumeId))
+                .ToDictionaryAsync(g => g.ResumeId);
+
             var result = resumes.Select(resume => new
             {
                 ResumeId = resume.ResumeId,
@@ -229,10 +233,8 @@ namespace ResumeProProject.Server.Controllers
                     p.EndDate
                 }).ToList(),
 
-                Skills = resume.Skills != null ? new
-                {
-                    resume.Skills
-                } : null
+                Skills = generalInfoDict.TryGetValue(resume.ResumeId, out var skill) ? skill : null,
+
             }).ToList();
 
             return Ok(result);
@@ -325,10 +327,9 @@ namespace ResumeProProject.Server.Controllers
                     p.EndDate
                 }).ToList(),
 
-                Skills = resume.Skills != null ? new
-                {
-                    resume.Skills
-                } : null
+                Skills = await _db.Skills
+           .Where(g => g.ResumeId == resumeId)
+           .FirstOrDefaultAsync(),
             };
 
             return Ok(result);

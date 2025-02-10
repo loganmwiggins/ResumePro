@@ -152,12 +152,12 @@ function Template_Minimal({ resumeData }) {
                 <section>
                     <h2>SKILLS</h2>
                     <div>
-                        {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => {
+                        {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => (
                             <div className="skill-row" key={category}>
                                 <h4>{category}:</h4>
                                 <p>{Array.from(skillsObj).join(", ")}</p>
                             </div>
-                        })}
+                        ))}
                     </div>
                 </section>
             )}

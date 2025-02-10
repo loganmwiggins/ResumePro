@@ -78,47 +78,47 @@ namespace ResumeProProject.Server.Data
             // Resume → Skills (One-to-Many)
             modelBuilder.Entity<Skills>()
                 .HasOne(s => s.Resume)
-                .WithMany(r => r.Skills)
-                .HasForeignKey(s => s.ResumeId)
+                .WithOne()
+                .HasForeignKey<Skills>(s => s.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-        //    // ✅ Use Hardcoded GUIDs
-        //    var userId = "550e8400-e29b-41d4-a716-446655440000";
-        //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
-        //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
+            //    // ✅ Use Hardcoded GUIDs
+            //    var userId = "550e8400-e29b-41d4-a716-446655440000";
+            //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
+            //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
 
-        //    // ✅ Use Hardcoded DateTime
-        //    var fixedDateTime = new DateTime(2024, 2, 1, 12, 0, 0, DateTimeKind.Utc);
+            //    // ✅ Use Hardcoded DateTime
+            //    var fixedDateTime = new DateTime(2024, 2, 1, 12, 0, 0, DateTimeKind.Utc);
 
-        //    // ✅ Seed User
-        //    modelBuilder.Entity<User>().HasData(new User
-        //    {
-        //        Id = userId,
-        //        Username = "testuser",
-        //        Password = "hashedpassword123",
-        //        DateJoined = fixedDateTime
-        //    });
+            //    // ✅ Seed User
+            //    modelBuilder.Entity<User>().HasData(new User
+            //    {
+            //        Id = userId,
+            //        Username = "testuser",
+            //        Password = "hashedpassword123",
+            //        DateJoined = fixedDateTime
+            //    });
 
-        //    // ✅ Seed Resume
-        //    modelBuilder.Entity<Resume>().HasData(new Resume
-        //    {
-        //        ResumeId = resumeId,
-        //        Id = userId,
-        //        Name = "Software Engineer Resume",
-        //        UpdatedDateTime = fixedDateTime
-        //    });
+            //    // ✅ Seed Resume
+            //    modelBuilder.Entity<Resume>().HasData(new Resume
+            //    {
+            //        ResumeId = resumeId,
+            //        Id = userId,
+            //        Name = "Software Engineer Resume",
+            //        UpdatedDateTime = fixedDateTime
+            //    });
 
-        //    // ✅ Seed Skills
-        //    modelBuilder.Entity<Skills>().HasData(new Skills
-        //    {s
-        //        SkillId = skillId,
-        //        ResumeId = resumeId,
-        //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>
-        //{
-        //    "C#", "JavaScript", "Python", "SQL", "ASP.NET Core",
-        //    "React.js", "Docker", "REST APIs", "Machine Learning", "Azure", "Git"
-        //})
-        //    });
+            //    // ✅ Seed Skills
+            //    modelBuilder.Entity<Skills>().HasData(new Skills
+            //    {s
+            //        SkillId = skillId,
+            //        ResumeId = resumeId,
+            //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>
+            //{
+            //    "C#", "JavaScript", "Python", "SQL", "ASP.NET Core",
+            //    "React.js", "Docker", "REST APIs", "Machine Learning", "Azure", "Git"
+            //})
+            //    });
         }
 
 
