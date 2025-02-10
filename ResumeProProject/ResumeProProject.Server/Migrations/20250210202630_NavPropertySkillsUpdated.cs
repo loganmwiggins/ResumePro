@@ -6,11 +6,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ResumeProProject.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedDBContext : Migration
+    public partial class NavPropertySkillsUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropIndex(
+                name: "IX_Skills_ResumeId",
+                table: "Skills");
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "ResumeId1",
+                table: "Skills",
+                type: "uuid",
+                nullable: true);
+
             migrationBuilder.AddColumn<Guid>(
                 name: "ResumeId2",
                 table: "GeneralInformation",
@@ -37,6 +47,18 @@ namespace ResumeProProject.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Skills_ResumeId",
+                table: "Skills",
+                column: "ResumeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_ResumeId1",
+                table: "Skills",
+                column: "ResumeId1",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GeneralInformation_ResumeId2",
                 table: "GeneralInformation",
                 column: "ResumeId2",
@@ -54,6 +76,13 @@ namespace ResumeProProject.Server.Migrations
                 column: "ResumeId2",
                 principalTable: "Resumes",
                 principalColumn: "ResumeId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Skills_Resumes_ResumeId1",
+                table: "Skills",
+                column: "ResumeId1",
+                principalTable: "Resumes",
+                principalColumn: "ResumeId");
         }
 
         /// <inheritdoc />
@@ -63,16 +92,37 @@ namespace ResumeProProject.Server.Migrations
                 name: "FK_GeneralInformation_Resumes_ResumeId2",
                 table: "GeneralInformation");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_Skills_Resumes_ResumeId1",
+                table: "Skills");
+
             migrationBuilder.DropTable(
                 name: "Insights");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Skills_ResumeId",
+                table: "Skills");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Skills_ResumeId1",
+                table: "Skills");
 
             migrationBuilder.DropIndex(
                 name: "IX_GeneralInformation_ResumeId2",
                 table: "GeneralInformation");
 
             migrationBuilder.DropColumn(
+                name: "ResumeId1",
+                table: "Skills");
+
+            migrationBuilder.DropColumn(
                 name: "ResumeId2",
                 table: "GeneralInformation");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_ResumeId",
+                table: "Skills",
+                column: "ResumeId");
         }
     }
 }

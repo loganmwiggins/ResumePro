@@ -12,8 +12,8 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250207203120_updatedDBContext")]
-    partial class updatedDBContext
+    [Migration("20250210202630_NavPropertySkillsUpdated")]
+    partial class NavPropertySkillsUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -420,13 +420,20 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ResumeId1")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SkillsDataJson")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("SkillId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .IsUnique();
+
+                    b.HasIndex("ResumeId1")
+                        .IsUnique();
 
                     b.ToTable("Skills");
                 });
@@ -645,10 +652,14 @@ namespace ResumeProProject.Server.Migrations
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Skills", b =>
                 {
                     b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
-                        .WithMany("Skills")
-                        .HasForeignKey("ResumeId")
+                        .WithOne()
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.Skills", "ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", null)
+                        .WithOne("Skills")
+                        .HasForeignKey("ResumeProProject.Server.Data.Models.Skills", "ResumeId1");
 
                     b.Navigation("Resume");
                 });
@@ -669,7 +680,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Navigation("Projects");
 
-                    b.Navigation("Skills");
+                    b.Navigation("Skills")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>
