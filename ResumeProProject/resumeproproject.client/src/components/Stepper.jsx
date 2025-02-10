@@ -1,11 +1,11 @@
 import React from "react";
 import "../stylesheets/Stepper.css";
 
-const steps = ["General Info", "Experience", "Education", "Certifications", "Projects", "Skills"];
+const steps = ["General", "Experience", "Education", "Certifications", "Projects", "Skills"];
 
 function Stepper({ currentStep, setCurrentStep }) {
   return (
-    <div className="stepper-container">
+    <div className="stepper">
       {steps.map((step, index) => (
         <div
           key={index}

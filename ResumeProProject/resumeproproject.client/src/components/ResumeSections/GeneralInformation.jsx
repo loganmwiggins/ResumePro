@@ -1,15 +1,16 @@
 import React from 'react';
 import '../../stylesheets/ResumeBuilder.css';
 
-
 function GeneralInformation({ data, handleChange }) {
     return (
         <section>
+            {/* Header */}
             <div className="section-head">
                 <h3>General Information</h3>
                 <p>Include your personal details in this section.</p>
             </div>
 
+            {/* Inputs */}
             <div className="inputs-ctnr">
                 <div className="input-row">
                     <div className="input-field">
@@ -45,7 +46,7 @@ function GeneralInformation({ data, handleChange }) {
                         <label>Email</label>
                         <input 
                             type="email" 
-                            placeholder="EX:  john.doe@example.com"
+                            placeholder="(e.g.,  john.doe@example.com)"
                             onChange={(e) => handleChange("generalInformation", "email", e.target.value)}
                             value={data.email}
                         />
@@ -54,7 +55,7 @@ function GeneralInformation({ data, handleChange }) {
                         <label>Phone Number</label>
                         <input
                             type="text"
-                            placeholder="EX:  (123) 456-7890"
+                            placeholder="(e.g.,  (123) 456-7890)"
                             onChange={(e) => handleChange("generalInformation", "phoneNumber", e.target.value)}
                             value={data.phoneNumber}
                         />
@@ -65,7 +66,7 @@ function GeneralInformation({ data, handleChange }) {
                         <label>Role</label>
                         <input
                             type="text"
-                            placeholder="(e.g., Software Engineer)"
+                            placeholder="(e.g.,  Software Engineer)"
                             onChange={(e) => handleChange("generalInformation", "role", e.target.value)}
                             value={data.role}
                         />
@@ -74,7 +75,7 @@ function GeneralInformation({ data, handleChange }) {
                         <label>Location</label>
                         <input
                             type="text"
-                            placeholder="(e.g., Miami, FL)"
+                            placeholder="(e.g.,  Miami, FL)"
                             onChange={(e) => handleChange("generalInformation", "location", e.target.value)}
                             value={data.location}
                         />
@@ -84,7 +85,7 @@ function GeneralInformation({ data, handleChange }) {
                     <label>Website URL</label>
                     <input 
                         type="text" 
-                        placeholder="EX:  johndoe.com"
+                        placeholder="(e.g.,  johndoe.com)"
                         onChange={(e) => handleChange("generalInformation", "websiteUrl", e.target.value)}
                         value={data.websiteUrl}
                     />
@@ -93,7 +94,7 @@ function GeneralInformation({ data, handleChange }) {
                     <label>LinkedIn URL</label>
                     <input 
                         type="text" 
-                        placeholder="EX:  linkedin.com/in/johndoe"
+                        placeholder="(e.g.,  linkedin.com/in/johndoe)"
                         onChange={(e) => handleChange("generalInformation", "linkedInUrl", e.target.value)}
                         value={data.linkedInUrl}
                     />
@@ -102,7 +103,7 @@ function GeneralInformation({ data, handleChange }) {
                     <label>GitHub URL</label>
                     <input
                         type="text"
-                        placeholder="EX:  github.com/johndoe"
+                        placeholder="(e.g.,  github.com/johndoe)"
                         onChange={(e) => handleChange("generalInformation", "gitHubUrl", e.target.value)}
                         value={data.gitHubUrl}
                     />

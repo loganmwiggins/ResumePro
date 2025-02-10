@@ -53,12 +53,19 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}
             ))}
 
             {/* Add Certification button */}
-            <button type="button" onClick={() => handleAddEntry("certifications", {
-                name: null,
-                issuer: null,
-                issueDate: null,
-                expireDate: null
-            })}>Add Certification</button>
+            <button 
+                type="button" 
+                className="add-entry-btn"
+                onClick={() => handleAddEntry("certifications", {
+                    name: null,
+                    issuer: null,
+                    issueDate: null,
+                    expireDate: null
+                })}
+            >
+                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <span>Add Certification</span>
+            </button>
         </section>
     )
 }

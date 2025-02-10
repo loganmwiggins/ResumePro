@@ -88,16 +88,23 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
             ))}
 
             {/* Add Education button */}
-            <button type="button" onClick={() => handleAddEntry("educations", {
-                schoolName: null,
-                schoolLocation: null,
-                degreeType: null,
-                gpa: null,
-                major: null,
-                minor: null,
-                startDate: null,
-                endDate: null,
-            })}>Add Education</button>
+            <button 
+                type="button" 
+                className="add-entry-btn"
+                onClick={() => handleAddEntry("educations", {
+                    schoolName: null,
+                    schoolLocation: null,
+                    degreeType: null,
+                    gpa: null,
+                    major: null,
+                    minor: null,
+                    startDate: null,
+                    endDate: null,
+                })}
+            >
+                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <span>Add Education</span>
+            </button>
         </section>
     );
 }

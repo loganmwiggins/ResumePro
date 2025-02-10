@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import html2pdf from "html2pdf.js";
+import { motion } from "framer-motion";
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
@@ -263,7 +263,9 @@ function ResumeBuilder() {
                     {/* RIGHT SIDE */}
                     <div className="build-view">
                         {/* Stepper section buttons */}
-                        <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+                        <div className="stepper-ctnr">
+                            <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+                        </div>
 
                         {/* Stepper content */}
                         <div className="step-content">
@@ -275,9 +277,24 @@ function ResumeBuilder() {
                             {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
-                        <div>
-                            <button type="button" onClick={handleBack}>Back</button>
-                            <button type="button" onClick={handleNext}>Next</button>
+                        <div className="build-footer">
+                            <motion.button
+                                type="button"
+                                className={currentStep === 0 ? "btn-disabled" : ""}
+                                onClick={handleBack}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                Back
+                            </motion.button>
+
+                            <motion.button
+                                type="button"
+                                className={currentStep === 5 ? "btn-disabled" : ""}
+                                onClick={handleNext}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                Next
+                            </motion.button>
                         </div>
                     </div>
                 </form>

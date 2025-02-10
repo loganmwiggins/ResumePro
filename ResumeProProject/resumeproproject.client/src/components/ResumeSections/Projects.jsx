@@ -53,12 +53,19 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
             ))}
 
             {/* Add Project button */}
-            <button type="button" onClick={() => handleAddEntry("projects", {
-                title: null,
-                description: null,
-                startDate: null,
-                endDate: null
-            })}>Add Project</button>
+            <button 
+                type="button"
+                className="add-entry-btn"
+                onClick={() => handleAddEntry("projects", {
+                    title: null,
+                    description: null,
+                    startDate: null,
+                    endDate: null
+                })}
+            >
+                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <span>Add Project</span>
+            </button>
         </section>
     );
 }

@@ -36,7 +36,6 @@
     transform-origin: top left;
 }
 
-
 .resume-actions {
     width: 100%;
     display: flex;
@@ -63,15 +62,16 @@
     width: 100%;
     text-align: left;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgb(210, 210, 210);
+    /* border-bottom: 1px solid rgb(210, 210, 210); */
 
     p { color: var(--text-third); }
 }
 
 .build-view {
+    position: relative;
     border-left: 1px solid lightgrey;
     overflow-y: scroll;
-    padding: 0 2rem;
+    padding-bottom: 4rem;
 
     section {
         width: 100%;
@@ -82,20 +82,31 @@
         padding: 2rem 0;
     }
 }
-.build-view::-webkit-scrollbar { width: 10px; }
-.build-view::-webkit-scrollbar-track { 
+.build-view::-webkit-scrollbar { display: none; }
+
+.stepper-ctnr {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 2rem;
+}
+
+.step-content {
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+.step-content::-webkit-scrollbar { width: 8px; }
+.step-content::-webkit-scrollbar-track { 
     background: rgb(235, 235, 235); 
     border-radius: .25rem;
 }
-.build-view::-webkit-scrollbar-thumb { 
+.step-content::-webkit-scrollbar-thumb { 
     background: rgb(215, 215, 215); 
     border-radius: .25rem;
     cursor: grab;
 }
-.build-view::-webkit-scrollbar-thumb:hover { background: rgb(200, 200, 200); }
-
-
-.step-content { width: 100%; }
+.step-content::-webkit-scrollbar-thumb:hover { background: rgb(200, 200, 200); }
 
 .inputs-ctnr {
     width: 100%;
@@ -172,6 +183,40 @@
     transform: scale(1.1); 
 }
 
+.build-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+
+    button {
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 2rem;
+        padding: .5rem 1rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+
+    button:first-child {
+        background: none;
+        color: var(--text-primary);
+        border: 1px solid var(--text-fourth);
+    }
+    button:last-child {
+        /* background: rgb(79, 208, 255); */
+        background: rgb(44, 111, 255);
+    }
+}
+
 .add-entry-btn {
     display: flex;
     align-items: center;
@@ -181,6 +226,7 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
+    /* color: rgb(44, 111, 255); */
     cursor: pointer;
     
     img { 
