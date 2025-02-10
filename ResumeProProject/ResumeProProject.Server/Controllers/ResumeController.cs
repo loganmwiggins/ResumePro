@@ -28,6 +28,12 @@ namespace ResumeProProject.Server.Controllers
         public List<Project> Projects { get; set; } = new();
     }
 
+    public class addInsightDTO
+    {
+        public required Guid resumeId { get; set; }
+        public required string content { get; set; }
+    }
+
 
     [ApiController]
     [Route("/api/[controller]")]
@@ -333,6 +339,39 @@ namespace ResumeProProject.Server.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpPost("AddInsight")]
+        public async Task<IActionResult> AddInsight([FromBody] addInsightDTO request)
+        {
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            var NewInsight = new Insight
+            {
+                ResumeId = fetchedResume.ResumeId,
+                Content = request.content
+            };
+            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            return Ok(new { message = "Insight added successfully." });
+        }
+
+        [HttpGet("GetInsight/{resumeId}")]
+        public async Task<IActionResult> GetInsight(Guid resumeId)
+        {
+            var insight = await _db.Insights
+                .Where(i => i.ResumeId == resumeId)
+                .Select(i => i.Content) 
+                .FirstOrDefaultAsync();
+
+            if (insight == null)
+            {
+                return NotFound("No insights found for this resume.");
+            }
+
+            return Ok(insight);
+        }
+
 
     }
 }

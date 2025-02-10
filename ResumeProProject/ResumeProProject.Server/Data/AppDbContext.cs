@@ -54,6 +54,13 @@ namespace ResumeProProject.Server.Data
                 .HasForeignKey<GeneralInformation>(g => g.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Resume → Insights (One-to-One)
+            modelBuilder.Entity<Insight>()
+                .HasOne(g => g.Resume)
+                .WithOne()
+                .HasForeignKey<Insight>(g => g.ResumeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Resume → Certifications (One-to-Many)
             modelBuilder.Entity<Certification>()
                 .HasOne(c => c.Resume)
@@ -132,5 +139,6 @@ namespace ResumeProProject.Server.Data
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Skills> Skills { get; set; }
+        public DbSet<Insight> Insights { get; set; }
     }
 }

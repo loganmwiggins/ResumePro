@@ -44,6 +44,7 @@ function App() {
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/builder/:templateId" element={<ResumeBuilder />} />
         <Route path="/preview/:resumeId" element={<ResumePreview />} />
+
         <Route path="/insights/:resumeId" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
