@@ -311,6 +311,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid?>("ResumeId1")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
                     b.Property<string>("WebsiteUrl")
                         .HasColumnType("text");
 

@@ -60,15 +60,25 @@ function GeneralInformation({ data, handleChange }) {
                         />
                     </div>
                 </div>
-                
-                <div className="input-field">
-                    <label>Location</label>
-                    <input
-                        type="text"
-                        placeholder="EX:  Miami, FL"
-                        onChange={(e) => handleChange("generalInformation", "location", e.target.value)}
-                        value={data.location}
-                    />
+                <div className="input-row">
+                    <div className="input-field">
+                        <label>Role</label>
+                        <input
+                            type="text"
+                            placeholder="(e.g., Software Engineer)"
+                            onChange={(e) => handleChange("generalInformation", "role", e.target.value)}
+                            value={data.role}
+                        />
+                    </div>
+                    <div className="input-field">
+                        <label>Location</label>
+                        <input
+                            type="text"
+                            placeholder="(e.g., Miami, FL)"
+                            onChange={(e) => handleChange("generalInformation", "location", e.target.value)}
+                            value={data.location}
+                        />
+                    </div>
                 </div>
                 <div className="input-field">
                     <label>Website URL</label>

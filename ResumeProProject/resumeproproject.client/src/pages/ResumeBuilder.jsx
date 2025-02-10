@@ -44,6 +44,7 @@ function ResumeBuilder() {
                     email: "john.doe@example.com",
                     phoneNumber: "(123) 456-7890",
                     location: "Miami, FL",
+                    role: "Software Engineer",
                     websiteUrl: "johndoe.com",
                     linkedInUrl: "linkedin.com/in/johndoe",
                     gitHubUrl: null
