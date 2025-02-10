@@ -18,7 +18,7 @@ Completeness: Are all key sections filled out with relevant information? Ensure 
 
 For each section, provide a detailed score on a scale of 1 to 10, where 1 is poor and 10 is excellent. Include comments on why you assigned the score, with specific feedback on what could be improved. Do not automatically give a perfect score just for having fields filled out – detail, relevance, and quality of content matter more.
 
-Finally, provide an overall score out of 100, reflecting the overall quality of the resume. Your feedback should be raw, candid, and focus on areas for improvement. Do not sugarcoat your comments, as the goal is to help the applicant enhance their resume to a higher standard.
+Finally, provide an overall score out of 100, reflecting the overall quality of the resume. Your feedback should be raw, candid, and focus on areas for improvement. Do not sugarcoat your comments, as the goal is to help the applicant enhance their resume to a higher standard. 
 
 Adhere to the following instructions for what your output should look like:
 

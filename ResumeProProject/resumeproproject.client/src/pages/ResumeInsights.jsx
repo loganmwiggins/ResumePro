@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
 import '../stylesheets/ResumeInsights.css';
@@ -15,6 +15,12 @@ function ResumeInsights() {
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(''); // New state to store AI response
 
+  useEffect(() => {
+    if (resumeId) {
+      handleSubmit(); // Call handleSubmit to automatically trigger the process
+    }
+  }, [resumeId]);
+
   const getScoreColorClass = (score) => {
     if (!score) return ""; // Handle missing score
 
@@ -30,7 +36,7 @@ function ResumeInsights() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setError('');
     setLoading(true);
     setAiResult(''); // Clear previous AI result
@@ -49,7 +55,14 @@ function ResumeInsights() {
       
       const resumeString = JSON.stringify(resumeJson);
 
-      // Step 2: Send the JSON to another API
+      const insightResponse = await fetch(`https://localhost:7035/api/Resume/GetInsight/${resumeId}`);
+      if (!response.ok) {
+        showToast("Failed to fetch Insights", "error");
+        throw new Error("Failed to fetch Insights"); 
+      }
+     
+      if(!insightResponse.ok){
+         // Step 2: Send the JSON to another API
       const aiResponse = await fetch(`https://localhost:7035/api/Chat/ScoreResume`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,6 +84,23 @@ function ResumeInsights() {
           const aiJsonObj = JSON.parse(cleanedJson);
           console.log("JSON object:", aiJsonObj);
           setAiResult(aiJsonObj); // Store AI content as JSON object
+
+          const saveResponse = await fetch(`https://localhost:7035/api/Resume/AddInsight`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              resumeId: resumeId,
+              content: JSON.stringify(aiJsonObj)
+            }),
+            
+          });
+          console.log(saveResponse);
+          if (!saveResponse.ok) {
+            showToast("Failed to save AI insights", "error", "Database Error");
+            throw new Error("Failed to save AI insights");
+          }
+
+          showToast("AI insights saved successfully", "success", "Done!");
         }
         catch (error) {
           console.error("Error parsing JSON:", error);
@@ -79,7 +109,18 @@ function ResumeInsights() {
       else {
         showToast("No AI content returned", "error", "Uh oh!");
         throw new Error("No AI content returned");
+      } 
+      }else{
+        const insightContent = await insightResponse.text()
+        try {
+          const parsedInsight = JSON.parse(insightContent); 
+          console.log("Parsed Insight JSON:", parsedInsight);
+          setAiResult(parsedInsight); 
+        } catch (error) {
+          console.error("Error parsing insight content:", error);
+        }
       }
+      
     } 
     catch (err) {
       setError(err.message);
@@ -97,19 +138,6 @@ function ResumeInsights() {
       </div>
 
       <div className="resume-insights-ctnr">
-        {!loading && !aiResult && (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              id="resumeInput"
-              value={resumeId}
-              onChange={(e) => setResumeId(e.target.value)}
-              placeholder="Enter Resume ID"
-            />
-            <button type="submit" disabled={loading}>Submit</button>
-          </form>
-        )}
-        
         {loading && (<div className="loading-spinner"></div>)}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
