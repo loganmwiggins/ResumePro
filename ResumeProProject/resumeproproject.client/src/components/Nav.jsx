@@ -46,11 +46,12 @@ function Nav() {
                     {loading ? (
                         <div className="loading-spinner"></div>
                     ) : user ? (
+                    // If user is logged in...
                         <div className="profile-container" ref={dropdownRef}>
                             {/* Profile Button */}
                             <button className="user-btn" onClick={toggleDropdown} title="Profile">
-                                    <img src="/assets/icons/user.svg" draggable="false" />
-                                     {/*<span>{user.firstName}</span> */}
+                                <img src="/assets/icons/user.svg" draggable="false" />
+                                {/*<span>{user.firstName}</span> */}
                                 <img src="/assets/icons/angle-down.svg" draggable="false" />
                             </button>
 
@@ -61,6 +62,7 @@ function Nav() {
                             </div>
                         </div>
                     ) : (
+                    // If user is NOT logged in...
                         <div className="btn-ctnr">
                             <button onClick={handleSignUpClick}>
                                 <span>Sign Up</span>
