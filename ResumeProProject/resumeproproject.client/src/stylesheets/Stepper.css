@@ -1,0 +1,17 @@
+.stepper-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    gap: 1rem;
+    border: 1px solid grey;
+    padding: .5rem;
+}
+
+.step {
+    cursor: pointer;
+}
+
+.step-active {
+    font-weight: 600;
+}

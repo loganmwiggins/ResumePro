@@ -110,8 +110,6 @@ function Home() {
     const handleDeleteResume = async (resumeId) => {
         if (!window.confirm('Are you sure you want to delete this resume?')) return;
 
-        console.log(resumeId);
-
         try {
             const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
                 {

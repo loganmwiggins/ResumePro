@@ -21,16 +21,10 @@
 }
 
 .resume-ctnr {
-    /* background: white; */
-    /* border: 1px solid red; */
      width: 100%; 
-    /* height: 100%; */
      height: 700px !important; 
     max-width: 980px; /*If this is changed then the resume to pdf is messed up for now so i included width in the template-view one to account for it but there is overflow in the text (still existed before but now its visible on top of other stuff*/
-    /* max-height: 550px !important; */
     display: flex;
-    /* justify-content: center; */
-    /* align-items: center; */
     overflow: hidden;
     position: relative;
 }
@@ -39,17 +33,7 @@
     width: 800px;
     height: 1100px;
     transform-origin: top left;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* overflow: hidden; */
-    /* position: relative; */
 }
-
-/* .resume-paper {
-    transform-origin: top left;
-    transform: scale(1);
-} */
 
 
 .resume-actions {
@@ -90,6 +74,10 @@
     }
 }
 
+.step-content {
+    width: 100%;
+}
+
 .inputs-ctnr, .experience-entry {
     width: 100%;
     display: flex;
@@ -108,10 +96,6 @@
 
 .req {
     color: var(--text-danger);
-}
-
-.section-btn {
-    padding: .5rem;
 }
 
 .delete-btn {
@@ -156,8 +140,7 @@
     opacity: 0.6;
     padding: 0 5px;
 }
-
-    .delete-x-btn:hover {
-        opacity: 1;
-        transform: scale(1.1); 
-    }
+.delete-x-btn:hover {
+    opacity: 1;
+    transform: scale(1.1); 
+}
