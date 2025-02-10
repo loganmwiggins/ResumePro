@@ -56,15 +56,24 @@ const ResumePreview = () => {
 
     const handleDownloadPDF = () => {
         const element = resumeRef.current;
+
+        element.style.width = "100%";
+        element.style.maxWidth = "800px";
+        element.style.height = "auto";
+        element.style.transform = "scale(1)";
+
         html2pdf()
             .set({
                 filename: `${resumeData?.resumeName || "Resume"}.pdf`,
                 image: { type: "jpeg", quality: 5 },
-                html2canvas: { scale: 1 },
+                html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
             })
             .from(element)
-            .save();
+            .save()
+            .then(() => {
+                console.log("PDF Download Complete");
+            });
     };
 
     const handleInsights = () => navigate(`/insights/${resumeId}`);

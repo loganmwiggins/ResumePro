@@ -38,8 +38,6 @@ namespace ResumeProProject.Server.Controllers
         private readonly UserManager<User> _userManager;
 
 
-
-
         [HttpPost("Create")]
         public async Task<IActionResult> CreateResume([FromBody] CreateResumeDto request)
         {

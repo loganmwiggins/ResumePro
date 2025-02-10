@@ -227,21 +227,21 @@ function ResumeBuilder() {
 
 
     const handleSubmit = async () => {
-        const processedResumeData = {
-            ...resumeData,
-            skills: {
-                ...resumeData.skills,
-                skillsDataJson: JSON.stringify(
-                    Object.fromEntries(
-                        Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
-                    )
-                )
-            }
-        };
-
-        console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
-
         try {
+            const processedResumeData = {
+                ...resumeData,
+                skills: {
+                    ...resumeData.skills,
+                    skillsDataJson: JSON.stringify(
+                        Object.fromEntries(
+                            Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
+                        )
+                    )
+                }
+            };
+
+            console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+
             const response = await fetch("https://localhost:7035/api/Resume/Create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -268,8 +268,7 @@ function ResumeBuilder() {
                 throw new Error("resumeId is missing in API response.");
             }
 
-            showToast("Resume created successfully!", "success");
-            navigate(`/resume-preview/${responseData.resumeId}`);
+            navigate(`/preview/${responseData.resumeId}`);
 
         } catch (error) {
             console.error("Error:", error);
