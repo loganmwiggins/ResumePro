@@ -3,11 +3,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import { showToast } from "../utils/Toast";
 import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
-
+//import { PDFDocument } from "pdf-lib";
+//import mammoth from "mammoth";
+import { saveAs } from "file-saver";
 import AllTemplates from "../components/Templates/AllTemplates";
 import "../stylesheets/ResumePreview.css";
+//import pdfOfficegen from "pdf-officegen";
+//import { saveAs } from "file-saver";
+import html2canvas from "html2canvas";
 
 const ResumePreview = () => {
+    //pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    //    "pdfjs-dist/build/pdf.worker.min.js",
+    //    import.meta.url
+    //).href;
     const { resumeId } = useParams();
     const navigate = useNavigate();
     const resumeRef = useRef(null);
@@ -88,7 +97,113 @@ const ResumePreview = () => {
 
     const handleInsights = () => navigate(`/insights/${resumeId}`);
 
+    const handleDownloadHTML = () => {
+        if (!resumeRef.current) return;
 
+        const htmlContent = resumeRef.current.innerHTML;
+        const blob = new Blob([htmlContent], { type: "text/html" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${resumeData?.resumeName || "Resume"}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleShareToLinkedIn = () => {
+        try {
+            const postMessage = "Check out the resume I just created with ResumePro! #Career #ResumeBuilder";
+
+            const attachmentUrl = resumeData.PdfUrl ? resumeData.PdfUrl : resumeData.Thumbnail;
+
+            navigator.clipboard.writeText(postMessage);
+            showToast("Message copied! Paste it when you create your post.", "info");
+
+            handleDownloadPDF();
+            //setTimeout(0,10000)
+
+            const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(attachmentUrl)}`;
+
+            window.open(linkedInShareUrl, "_blank");
+
+        } catch (error) {
+            console.error("Error sharing to LinkedIn:", error);
+            showToast("Failed to share on LinkedIn.", "error");
+        }
+    };
+
+
+    const handleDownloadWord = () => {
+        if (!resumeRef.current) return;
+
+        const contentElement = resumeRef.current.cloneNode(true);
+
+        const imgElements = contentElement.querySelectorAll("img");
+        imgElements.forEach((img) => {
+            if (img.src.startsWith("data:image")) {
+                img.style.maxWidth = "10px";
+                img.style.maxHeight = "10px";
+            } else {
+                img.src = img.src; 
+                img.style.maxWidth = "10px";
+                img.style.maxHeight = "10px";
+            }
+        });
+
+        const header = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:w="urn:schemas-microsoft-com:office:word"
+          xmlns="http://www.w3.org/TR/REC-html40">
+    <head>
+        <meta charset="UTF-8">
+        <title>Resume Document</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 12pt;
+                line-height: 1.5;
+                color: #333;
+            }
+            h1, h2, h3 { font-weight: bold; }
+            p { margin-bottom: 10px; }
+            img { display: block; margin: 10px 0; max-width: 10px; max-height: 10px; }
+        </style>
+    </head>
+    <body>
+`;
+
+        const footer = "</body></html>";
+
+        const sourceHTML = header + contentElement.innerHTML + footer;
+
+        const blob = new Blob([sourceHTML], { type: "application/msword" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${resumeData?.resumeName || "Resume"}.doc`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleDownloadImage = async () => {
+        if (!resumeRef.current) return;
+
+        const canvas = await html2canvas(resumeRef.current, {
+            backgroundColor: "#FFFFFF", 
+            scale: 3,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = `${resumeData?.resumeName || "Resume"}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     if (!resumeData) return <div className="loading-spinner"></div>;
 
@@ -117,10 +232,24 @@ const ResumePreview = () => {
                     <img src="/assets/icons/document.svg" draggable="false" />
                     <span>Download PDF</span>
                 </button>
+                <button onClick={handleDownloadHTML} title="Save your resume to your device">
+                    <img src="/assets/icons/document.svg" draggable="false" />
+                    <span>Download DOCX</span>
+                </button>
+                <button onClick={handleDownloadImage} title="Save your resume to your device">
+                    <img src="/assets/icons/document.svg" draggable="false" />
+                    <span>Download PNG</span>
+                </button>
+                <button onClick={handleShareToLinkedIn} title="Share resume to LinkedIn">
+                    <img src="/assets/icons/linkedin.svg" draggable="false" />
+                    <span>Share to LinkedIn</span>
+                </button>
                 <button onClick={handleInsights} title="Get AI recommendations to improve your resume">
                     <img src="/assets/icons/sparkles.svg" draggable="false" />
                     <span>AI Insights</span>
                 </button>
+
+
             </div>
 
             <div className="resume-view">
