@@ -3,6 +3,8 @@
     flex-direction: row;
     background: rgb(250, 250, 250);
     border-radius: .5rem;
+    border: 1px solid lightgrey;
+    /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
 }
 
 .template-view, .build-view {
@@ -24,10 +26,12 @@
 .resume-ctnr {
     width: 100%; 
     height: 700px !important; 
-    max-width: 980px; /*If this is changed then the resume to pdf is messed up for now so i included width in the template-view one to account for it but there is overflow in the text (still existed before but now its visible on top of other stuff*/
+    max-width: 450.18px;
     display: flex;
     overflow: hidden;
     position: relative;
+    border: 1px solid lightgrey;
+    /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
 }
 
 .resume-scale-ctnr {
@@ -159,7 +163,7 @@
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid lightgrey;
 
     button { transition: none; }
     button:hover { transition: none; }
