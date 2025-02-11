@@ -166,7 +166,14 @@ function Home() {
                             {Array.isArray(resumes) && resumes.length > 0 ? (
                                 resumes.map((resume, index) => (
                                     <div className="resume" key={resume.resumeId} style={{ animationDelay: `${index * 0.2}s`}}>
-                                        <div className="resume-img"></div>
+                                        {/*<div className="resume-img"></div>*/}
+                                        <div className="resume-img">
+                                        {resume.thumbnail ? (
+                                            <img src={resume.thumbnail} alt="Resume Thumbnail" />
+                                        ) : (
+                                            <p>No Preview Available</p>
+                                            )}
+                                        </div>
                                         <div className="resume-info">
                                             <div className="resume-txt">
                                                 <p>{resume.resumeName}</p>
