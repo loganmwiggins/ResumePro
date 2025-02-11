@@ -16,6 +16,7 @@ namespace ResumeProProject.Server.Controllers
         public required string ResumeName { get; set; }
         public required DateTime CurrentDate { get; set; }
         public required string TemplateId { get; set; }
+        public string Thumbnail { get; set; } // Base64-encoded image
 
         // One-to-One Relationship
         public required GeneralInformation GeneralInformation { get; set; }
@@ -26,6 +27,12 @@ namespace ResumeProProject.Server.Controllers
         public List<Certification> Certifications { get; set; } = new();
         public List<Experience> Experiences { get; set; } = new();
         public List<Project> Projects { get; set; } = new();
+    }
+
+    public class addInsightDTO
+    {
+        public required Guid resumeId { get; set; }
+        public required string content { get; set; }
     }
 
 
@@ -51,7 +58,8 @@ namespace ResumeProProject.Server.Controllers
                 Name = request.ResumeName,
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
-                TemplateId = request.TemplateId
+                TemplateId = request.TemplateId,
+                Thumbnail = request.Thumbnail // Store Thumbnail
             };
 
             _db.Resumes.Add(NewResume);
@@ -61,9 +69,9 @@ namespace ResumeProProject.Server.Controllers
 
             var NewGeneralInformation = new GeneralInformation
             {
-                
+
                 ResumeId = fetchedResume.ResumeId,
-                
+
                 FirstName = request.GeneralInformation.FirstName,
                 MiddleName = request.GeneralInformation.MiddleName,
                 LastName = request.GeneralInformation.LastName,
@@ -182,12 +190,17 @@ namespace ResumeProProject.Server.Controllers
                 .Where(g => resumeIds.Contains(g.ResumeId))
                 .ToDictionaryAsync(g => g.ResumeId);
 
+            var skillsDict = await _db.Skills
+                .Where(g => resumeIds.Contains(g.ResumeId))
+                .ToDictionaryAsync(g => g.ResumeId);
+
             var result = resumes.Select(resume => new
             {
                 ResumeId = resume.ResumeId,
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = generalInfoDict.TryGetValue(resume.ResumeId, out var genInfo) ? genInfo : null,
 
@@ -231,10 +244,8 @@ namespace ResumeProProject.Server.Controllers
                     p.EndDate
                 }).ToList(),
 
-                Skills = resume.Skills != null ? new
-                {
-                    resume.Skills
-                } : null
+                Skills = skillsDict.TryGetValue(resume.ResumeId, out var skill) ? skill : null,
+
             }).ToList();
 
             return Ok(result);
@@ -327,14 +338,46 @@ namespace ResumeProProject.Server.Controllers
                     p.EndDate
                 }).ToList(),
 
-                Skills = resume.Skills != null ? new
-                {
-                    resume.Skills
-                } : null
+                Skills = await _db.Skills
+           .Where(g => g.ResumeId == resumeId)
+           .FirstOrDefaultAsync(),
             };
 
             return Ok(result);
         }
+
+
+        [HttpPost("AddInsight")]
+        public async Task<IActionResult> AddInsight([FromBody] addInsightDTO request)
+        {
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            var NewInsight = new Insight
+            {
+                ResumeId = fetchedResume.ResumeId,
+                Content = request.content
+            };
+            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            return Ok(new { message = "Insight added successfully." });
+        }
+
+        [HttpGet("GetInsight/{resumeId}")]
+        public async Task<IActionResult> GetInsight(Guid resumeId)
+        {
+            var insight = await _db.Insights
+                .Where(i => i.ResumeId == resumeId)
+                .Select(i => i.Content) 
+                .FirstOrDefaultAsync();
+
+            if (insight == null)
+            {
+                return NotFound("No insights found for this resume.");
+            }
+
+            return Ok(insight);
+        }
+
 
     }
 }

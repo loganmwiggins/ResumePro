@@ -99,6 +99,10 @@ html {
 
 
 /* Forms */
+form {
+  display: flex;
+  flex-direction: column !important;
+}
 form input {
   width: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -118,7 +122,7 @@ form input {
   cursor: default !important;
 }
 
-/* Loading animation */
+/* Loading spinner */
 .loading-spinner {
   width: 20px;
   height: 20px;

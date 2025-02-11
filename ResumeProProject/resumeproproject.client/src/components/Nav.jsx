@@ -16,6 +16,7 @@ function Nav() {
         navigate("/profile"); 
         setIsDropdownOpen(false);
     };
+    const handleEditProfileClick = () => { navigate("/edit-profile"); };
     const handleLoginClick = () => { navigate("/login"); }
     const handleSignUpClick = () => { navigate("/signup"); }
 
@@ -67,6 +68,7 @@ function Nav() {
                                         transition={{ duration: 0.2, ease: "easeOut" }}
                                     >
                                         <button onClick={handleProfileClick}>My Profile</button>
+                                        <button onClick={handleEditProfileClick}>Edit Profile</button>
                                         <LogoutLink>Logout</LogoutLink>
                                     </motion.div>
                                 )}

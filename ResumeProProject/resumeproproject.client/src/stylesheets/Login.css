@@ -90,6 +90,7 @@ a {
 a:hover { font-weight: 600; }
 
 .remember-forgot-ctnr {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;

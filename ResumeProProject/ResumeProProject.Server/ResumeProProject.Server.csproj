@@ -16,13 +16,6 @@
 
   <ItemGroup>
     <None Remove="Data\Models\NewFile.txt" />
-    <None Remove="Data\TemplateHTML\DefaultTemplate.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Data\TemplateHTML\DefaultTemplate.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

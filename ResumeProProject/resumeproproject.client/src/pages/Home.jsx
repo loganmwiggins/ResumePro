@@ -86,6 +86,12 @@ function Home() {
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
+
+    // Handle navigation to resume insights
+    const handleInsights = (resumeId) => navigate(`/insights/${resumeId}`);
+
+    // Handle editing a resume
+
     // Resume 'more' menu functions
     const toggleMenu = (resumeId) => {
         setOpenMenuId(openMenuId === resumeId ? null : resumeId);
@@ -118,13 +124,14 @@ function Home() {
 
             if (!response.ok) {
                 showToast("Error deleting resume.", "error");
-                throw new Error('Failed to delete resume.');
+                throw new Error("Failed to delete resume.");
             }
 
+            showToast("Resume deleted successfully", "success");
             setResumes((prevResumes) => prevResumes.filter((r) => r.resumeId !== resumeId));
         }
         catch (error) {
-            console.error('Error deleting resume:', error);
+            console.error("Error deleting resume:", error);
         }
     };
 
@@ -157,13 +164,21 @@ function Home() {
                             {Array.isArray(resumes) && resumes.length > 0 ? (
                                 resumes.map((resume, index) => (
                                     <div className="resume" key={resume.resumeId} style={{ animationDelay: `${index * 0.2}s`}}>
-                                        <div className="resume-img"></div>
+                                        {/*<div className="resume-img"></div>*/}
+                                        <div className="resume-img">
+                                        {resume.thumbnail ? (
+                                            <img src={resume.thumbnail} alt="Resume Thumbnail" />
+                                        ) : (
+                                            <p>No Preview Available</p>
+                                            )}
+                                        </div>
                                         <div className="resume-info">
                                             <div className="resume-txt">
                                                 <p>{resume.resumeName}</p>
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
+                                            
                                                 {/* Ellipsis button */}
                                                 <button onClick={() => toggleMenu(resume.resumeId)}>
                                                     <img src="assets/icons/ellipsis.svg" draggable="false" />

@@ -7,6 +7,7 @@ import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
 import AllTemplates from '../components/Templates/AllTemplates';
+import html2canvas from "html2canvas";
 
 // import: Stepper + Resume Sections
 import Stepper from "../components/Stepper";
@@ -190,6 +191,26 @@ function ResumeBuilder() {
 
     const handleSubmit = async () => {
         try {
+            //  Create hidden clone to prevent layout shifts
+            const clone = resumeRef.current.cloneNode(true);
+            clone.style.transform = "scale(1)";
+            clone.style.width = "450px";
+            clone.style.height = "auto";
+            clone.style.position = "absolute";
+            clone.style.left = "-9999px";
+            document.body.appendChild(clone);
+
+            const canvas = await html2canvas(clone, {
+                backgroundColor: "#FFFFFF",
+                scale: 5,
+                useCORS: true,
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            //  Remove  clone 
+            document.body.removeChild(clone);
+
             const processedResumeData = {
                 ...resumeData,
                 skills: {
@@ -199,7 +220,7 @@ function ResumeBuilder() {
                             Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
                         )
                     )
-                }
+                }, thumbnail: imgData,
             };
 
             console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));

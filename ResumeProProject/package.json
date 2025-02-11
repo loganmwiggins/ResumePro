@@ -1,6 +1,5 @@
 {
-  "dependencies": {
-    "html2pdf.js": "^0.10.2",
-    "react-select": "^5.10.0"
+  "devDependencies": {
+    "vite-plugin-static-copy": "^2.2.0"
   }
 }
