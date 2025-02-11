@@ -80,6 +80,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <label>Company / Employer <span className="req">*</span></label>
                                 <input
                                     type="text"
+                                    placeholder="(e.g.,  Walmart)"
                                     onChange={(e) => handleChange("experiences", "companyName", e.target.value, index)}
                                     value={data[index].companyName}
                                 />
@@ -88,6 +89,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <label>Job Title <span className="req">*</span></label>
                                 <input
                                     type="text"
+                                    placeholder="(e.g.,  Store Manager)"
                                     onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
                                     value={data[index].role}
                                 />
@@ -136,6 +138,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                             <label>Description <span className="req">*</span></label>
                             <input 
                                 type="textarea" 
+                                placeholder="What did you do there?"
                                 onChange={(e) => handleChange("experiences", "description", e.target.value, index)}
                                 value={data[index].description}
                             />
@@ -144,6 +147,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                             <label>Location</label>
                             <input 
                                 type="text" 
+                                placeholder="(e.g.,  Manhattan, NY)"
                                 onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
                                 value={data[index].location}
                             />

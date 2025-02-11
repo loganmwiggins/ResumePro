@@ -241,17 +241,39 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
-    /* color: rgb(44, 111, 255); */
     cursor: pointer;
+    transition: all .2s ease-in-out;
     
     img { 
         width: 1.25rem; 
         opacity: .85;
+        transition: all .2s ease-in-out;
+    }
+}
+.add-entry-btn:hover {
+    color: #000;
+    transition: all .2s ease-in-out;
+
+    img {
+        opacity: 1;
+        transition: all .2s ease-in-out;
     }
 }
 
+/* EXPERIENCES section */
+/* Select containers */
+.css-b62m3t-container { width: 100%; }
+.css-13cymwt-control { 
+    border-radius: .5rem !important; 
+    font-size: .85rem !important;
+}
+.css-1nmdiq5-menu {
+    text-align: left;
+    font-size: .85rem !important;
+}
 
-/* Skills section */
+
+/* SKILLS section */
 .new-category-ctnr {
     display: flex;
     align-items: center;
@@ -335,7 +357,6 @@
     max-width: 6rem;
     padding: .15rem .75rem;
     background: none;
-    /* border: none; */
     border-radius: 2rem;
 }
 
