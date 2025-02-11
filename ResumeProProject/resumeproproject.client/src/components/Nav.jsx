@@ -1,17 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import { useUser } from "../context/UserContext"; 
 import LogoutLink from "../components/LogoutLink";
 import '../stylesheets/Nav.css';
 
 function Nav() {
-    const { user, loading } = useUser();
     const navigate = useNavigate();
+    const { user, loading } = useUser();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
 
     const handleTitleClick = () => { navigate("/home"); };
-    const handleProfileClick = () => { navigate("/profile"); };
+    const handleProfileClick = () => { 
+        navigate("/profile"); 
+        setIsDropdownOpen(false);
+    };
     const handleEditProfileClick = () => { navigate("/edit-profile"); };
     const handleLoginClick = () => { navigate("/login"); }
     const handleSignUpClick = () => { navigate("/signup"); }
@@ -24,15 +28,13 @@ function Nav() {
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (!event.target.closest(".profile-ctnr")) {
                 setIsDropdownOpen(false);
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
     return (
@@ -48,20 +50,29 @@ function Nav() {
                         <div className="loading-spinner"></div>
                     ) : user ? (
                     // If user is logged in...
-                        <div className="profile-container" ref={dropdownRef}>
+                        <div className="profile-ctnr">
                             {/* Profile Button */}
                             <button className="user-btn" onClick={toggleDropdown} title="Profile">
                                 <img src="/assets/icons/user.svg" draggable="false" />
-                                {/*<span>{user.firstName}</span> */}
                                 <img src="/assets/icons/angle-down.svg" draggable="false" />
                             </button>
 
-                            {/* Dropdown Menu */}
-                            <div className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
-                                <button onClick={handleProfileClick}>My Profile</button>
-                                <button onClick={handleEditProfileClick}>Edit Profile</button>
-                                <LogoutLink>Logout</LogoutLink>
-                            </div>
+                            {/* User dropdown menu */}
+                            <AnimatePresence>
+                                {isDropdownOpen && (
+                                    <motion.div
+                                        className="dropdown-menu"
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                    >
+                                        <button onClick={handleProfileClick}>My Profile</button>
+                                        <button onClick={handleEditProfileClick}>Edit Profile</button>
+                                        <LogoutLink>Logout</LogoutLink>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     ) : (
                     // If user is NOT logged in...

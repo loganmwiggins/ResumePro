@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: row !important;
     background: rgb(250, 250, 250);
+    border-radius: .5rem;
+    border: 1px solid lightgrey;
+    /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
 }
 
 .template-view, .build-view {
@@ -21,128 +24,307 @@
 }
 
 .resume-ctnr {
-    /* background: white; */
-    /* border: 1px solid red; */
-     width: 100%; 
-    /* height: 100%; */
-     height: 700px !important; 
-    max-width: 980px; /*If this is changed then the resume to pdf is messed up for now so i included width in the template-view one to account for it but there is overflow in the text (still existed before but now its visible on top of other stuff*/
-    /* max-height: 550px !important; */
+    width: 100%; 
+    height: 700px !important; 
+    max-width: 450.18px;
     display: flex;
-    /* justify-content: center; */
-    /* align-items: center; */
     overflow: hidden;
     position: relative;
+    border: 1px solid lightgrey;
+    /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
 }
 
 .resume-scale-ctnr {
     width: 800px;
     height: 1100px;
     transform-origin: top left;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* overflow: hidden; */
-    /* position: relative; */
 }
-
-/* .resume-paper {
-    transform-origin: top left;
-    transform: scale(1);
-} */
-
 
 .resume-actions {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
 
-    button {
-        background: #111;
-        color: white;
-        border: none;
-        border-radius: .25rem;
-        padding: .5rem .75rem;
-        text-wrap: nowrap;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #000;
-    }
+    button { transition: none; }
+    button:hover { transition: none; }
 }
 
 
 /* BUILD VIEW (RIGHT SIDE) */
 .build-view {
+    position: relative;
     border-left: 1px solid lightgrey;
     overflow-y: scroll;
-    padding: 0 2rem;
+    padding-bottom: 4rem;
 
     section {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: start;
-        gap: 1rem;
-        padding: 2rem 0;
-        border-bottom: 1px solid lightgrey;
+        gap: 2rem;
+        padding: 2rem 0 4rem 0;
+    }
+}
+.build-view::-webkit-scrollbar { display: none; }
+
+.stepper-ctnr {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 2rem;
+}
+
+.step-content {
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
+.step-content::-webkit-scrollbar { width: 8px; }
+.step-content::-webkit-scrollbar-track { 
+    background: rgb(235, 235, 235); 
+    border-radius: .25rem;
+}
+.step-content::-webkit-scrollbar-thumb { 
+    background: rgb(215, 215, 215); 
+    border-radius: .25rem;
+    cursor: grab;
+}
+.step-content::-webkit-scrollbar-thumb:hover { background: rgb(200, 200, 200); }
+
+.section-head {
+    width: 100%;
+    text-align: left;
+
+    p { 
+        font-size: .9rem;
+        color: var(--text-fourth); 
     }
 }
 
-.inputs-ctnr, .experience-entry {
+.inputs-ctnr {
     width: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputs-row {
+    display: flex;
     flex-flow: wrap;
     gap: 1rem;
 }
 
 .input-field {
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: .25rem;
+
+    label { 
+        color: var(--text-third); 
+        font-size: .85rem;
+    }
 }
 
-.req {
-    color: var(--text-danger);
+.build-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid lightgrey;
+
+    button { transition: none; }
+    button:hover { transition: none; }
 }
 
-.section-btn {
-    padding: .5rem;
-}
 
+/* Entries */
 .delete-btn {
     background: none;
     border: none;
-    padding: 5px;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-}
+    cursor: pointer;
 
-.trash-icon {
-    width: 18px;
-    height: 18px;
-    opacity: 0.6;
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-    filter: invert(40%) sepia(0%) saturate(200%) hue-rotate(180deg); /* Makes it gray */
-}
-
-    .trash-icon:hover {
-        opacity: 1;
-        transform: scale(1.1);
+    img {
+        width: 1.15rem;
+        height: 1.15rem;
+        opacity: 0.5;
+        transition: all .2s ease-in-out;
     }
+}
+.delete-btn:hover {
+    img {
+        opacity: 0.8;
+        filter: var(--filter-red);
+        transform: scale(1.1);
+        transition: all .2s ease-in-out;
+    }
+}
 
-.skill-header {
+.entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.entry-info {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.entry-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--text-primary);
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 100%;
+    color: white;
+    font-weight: 600;
+}
+
+.entry-info-txt {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    p { color: var(--text-third); }
+}
+
+.add-entry-btn {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    
+    img { 
+        width: 1.25rem; 
+        opacity: .85;
+        transition: all .2s ease-in-out;
+    }
+}
+.add-entry-btn:hover {
+    color: #000;
+    transition: all .2s ease-in-out;
+
+    img {
+        opacity: 1;
+        transition: all .2s ease-in-out;
+    }
+}
+
+/* EXPERIENCES section */
+/* Select containers */
+.css-b62m3t-container { width: 100%; }
+
+.css-13cymwt-control { 
+    border-radius: .5rem !important; 
+    /* padding: .75rem !important; */
+    font-size: .85rem !important;
+}
+
+.css-hlgwow { padding: .563rem !important; }
+
+.css-1nmdiq5-menu {
+    text-align: left;
+    font-size: .85rem !important;
+}
+
+
+/* SKILLS section */
+.new-category-ctnr {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    button { transition: none; }
+    button:hover { transition: none; }
+}
+
+.skill-category-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+.skill-category-ctnr {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.skills-ctnr {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap;
+    gap: .5rem;
+}
+
+.skill {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgb(220, 220, 220);
+    max-width: fit-content;
+    padding: .15rem .75rem;
+    border-radius: 2rem;
+}
+
+.skill-input-ctnr {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        img { 
+            width: 1.15rem; 
+            opacity: .35;
+            transition: all .2s ease-in-out;
+        }
+    }
+    button:hover {
+        img {
+            opacity: .5;
+            transform: scale(1.05);
+        }
+    }
+}
+
+.skill-input {
+    font-size: 1rem;
+    width: fit-content;
+    max-width: 6rem;
+    padding: .15rem .75rem;
+    background: none;
+    border-radius: 2rem;
 }
 
 .delete-x-btn {
@@ -154,10 +336,8 @@
     cursor: pointer;
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
     opacity: 0.6;
-    padding: 0 5px;
 }
-
-    .delete-x-btn:hover {
-        opacity: 1;
-        transform: scale(1.1); 
-    }
+.delete-x-btn:hover {
+    opacity: 1;
+    transform: scale(1.1); 
+}

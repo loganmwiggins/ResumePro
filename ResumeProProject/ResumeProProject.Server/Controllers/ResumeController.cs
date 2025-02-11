@@ -80,6 +80,8 @@ namespace ResumeProProject.Server.Controllers
                 WebsiteUrl = request.GeneralInformation.WebsiteUrl,
                 LinkedInUrl = request.GeneralInformation.LinkedInUrl,
                 GitHubUrl = request.GeneralInformation.GitHubUrl,
+                Location = request.GeneralInformation.Location,
+                Role = request.GeneralInformation.Role
                 //Resume = fetchedResume,
 
             };

@@ -53,7 +53,7 @@ function Welcome() {
 
                 <button
                     onClick={() => navigate("/templates")}
-                    className="btn-accent"
+                    className="btn btn-accent"
                 >
                     <img src="assets/icons/new-document.svg" draggable="false" />
                     <span>Get Started</span>

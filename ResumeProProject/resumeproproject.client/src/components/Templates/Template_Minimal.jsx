@@ -37,7 +37,9 @@ function Template_Minimal({ resumeData }) {
             <header>
                 <div className="header-left">
                     <h1>{resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}</h1>
-                    <p>{resumeData.generalInformation.location}</p>
+                    <p>
+                        {resumeData.generalInformation.role} {resumeData.generalInformation.role && resumeData.generalInformation.location && " | "} {resumeData.generalInformation.location}
+                    </p>
                 </div>
                 <div className="header-right">
                     <p>{resumeData.generalInformation.email}</p>
