@@ -255,8 +255,21 @@ function ResumeBuilder() {
                                 value={resumeData.resumeName} 
                                 onChange={(e) => handleNameChange(e.target.value)} 
                             />
-                            <button type="button" onClick={handleCancel}>Cancel</button>
-                            <button type="submit">Save Resume</button>
+                            <motion.button 
+                                type="button" 
+                                className="btn btn-outline" 
+                                onClick={handleCancel}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                <span>Cancel</span>
+                            </motion.button>
+                            <motion.button 
+                                type="submit" 
+                                className="btn btn-blue"
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                <span>Save Resume</span>
+                            </motion.button>
                         </div>
                     </div>
 
@@ -280,7 +293,7 @@ function ResumeBuilder() {
                         <div className="build-footer">
                             <motion.button
                                 type="button"
-                                className={currentStep === 0 ? "btn-disabled" : ""}
+                                className={`btn btn-outline ${currentStep === 0 ? "btn-disabled" : ""}`}
                                 onClick={handleBack}
                                 whileTap={{ scale: 0.9 }}
                             >
@@ -289,7 +302,7 @@ function ResumeBuilder() {
 
                             <motion.button
                                 type="button"
-                                className={currentStep === 5 ? "btn-disabled" : ""}
+                                className={`btn btn-black ${currentStep === 5 ? "btn-disabled" : ""}`}
                                 onClick={handleNext}
                                 whileTap={{ scale: 0.9 }}
                             >

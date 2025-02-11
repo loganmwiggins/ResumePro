@@ -40,20 +40,10 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
 
-    button {
-        background: #111;
-        color: white;
-        border: none;
-        border-radius: .25rem;
-        padding: .5rem .75rem;
-        text-wrap: nowrap;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #000;
-    }
+    button { transition: none; }
+    button:hover { transition: none; }
 }
 
 
@@ -171,28 +161,8 @@
     justify-content: space-between;
     border-top: 1px solid #ddd;
 
-    button {
-        background: #111;
-        color: white;
-        border: none;
-        border-radius: 2rem;
-        padding: .5rem 1rem;
-        text-wrap: nowrap;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #000;
-    }
-
-    button:first-child {
-        background: none;
-        color: var(--text-primary);
-        border: 1px solid var(--text-fourth);
-    }
-    button:last-child {
-        /* background: rgb(79, 208, 255); */
-        background: rgb(44, 111, 255);
-    }
+    button { transition: none; }
+    button:hover { transition: none; }
 }
 
 

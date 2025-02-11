@@ -30,7 +30,9 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}
                                 <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
                                     <h4>
-                                        {data[index].issuer} {data[index].name}
+                                        {data[index].issuer || data[index].name
+                                            ? `${data[index].issuer || data[index].name}${data[index].issuer && data[index].issuer ? " " + data[index].name : ""}`
+                                            : "Untitled"}
                                     </h4>
                                     <p>
                                         {data[index].issueDate && `Issued: ${formatDate(data[index].issueDate)}`}

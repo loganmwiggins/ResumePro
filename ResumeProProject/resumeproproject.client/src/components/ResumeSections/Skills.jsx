@@ -28,7 +28,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                         }
                     }}
                 />
-                <button
+                <motion.button
                     type="button"
                     onClick={() => {
                         const category = document.getElementById("newCategoryInput").value;
@@ -37,9 +37,10 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                             document.getElementById("newCategoryInput").value = "";
                         }
                     }}
+                    whileTap={{ scale: 0.9 }}
                 >
-                    Add Category
-                </button>
+                    <span>Add</span>
+                </motion.button>
             </div>
 
             {/* List Existing Skill Categories */}
@@ -109,7 +110,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                                         }
                                     }}
                                 />
-                                <button
+                                <motion.button
                                     type="button"
                                     onClick={() => {
                                         const skill = document.getElementById(`skillInput-${category}`).value;
@@ -118,9 +119,10 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                                             document.getElementById(`skillInput-${category}`).value = "";
                                         }
                                     }}
+                                    whileTap={{ scale: 0.9 }}
                                 >
                                     <img src="/assets/icons/plus.svg" draggable="false" />
-                                </button>
+                                </motion.button>
                             </div>
                         </div>
                     </motion.div>
