@@ -53,11 +53,10 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                         transition={{ duration: 0.3 }}
                         layout
                     >
+                        {/* Entry header */}
                         <div className="entry-header">
                             <div className="entry-info">
-                                <div className="entry-icon">
-                                    {index + 1}
-                                </div>
+                                <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
                                     <h4>
                                         {data[index].role || data[index].companyName
@@ -68,13 +67,13 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                         {data[index].startDate && formatDate(data[index].startDate, {month: true, year: true}) || "Start"} - {data[index].endDate && formatDate(data[index].endDate, {month: true, year: true}) || "Present"}
                                     </p>
                                 </div>
-                                
                             </div>
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
                                 <img src="/assets/icons/trash.svg" draggable="false" className="trash-icon" />
                             </button>
                         </div>
 
+                        {/* Inputs */}
                         <div className="input-row">
                             <div className="input-field">
                                 <label>Company / Employer <span className="req">*</span></label>
@@ -157,7 +156,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
             </AnimatePresence>
             
             {/* Add Experience button */}
-            <button 
+            <motion.button 
                 type="button" 
                 className="add-entry-btn" 
                 onClick={() => handleAddEntry("experiences", {
@@ -171,10 +170,11 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                     officeType: null,
                     jobType: null
                 })}
+                whileTap={{ scale: 0.9 }}
             >
                 <img src="/assets/icons/plus-filled.svg" draggable="false" />
                 <span>Add Experience</span>
-            </button>
+            </motion.button>
         </section>
     );
 }
