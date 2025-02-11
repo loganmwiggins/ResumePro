@@ -8,6 +8,7 @@ import { useUser } from "../context/UserContext";
 import { showToast } from '../utils/Toast';
 import Select from "react-select";
 import AllTemplates from '../components/Templates/AllTemplates';
+import html2canvas from "html2canvas";
 
 function ResumeBuilder() {
     const navigate = useNavigate();
@@ -178,41 +179,6 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
-    const generatePDF = () => {
-        const element = resumeRef.current;
-
-        // Clone the resume element in memory (NOT appending it to the DOM)
-        const clonedElement = element.cloneNode(true);
-
-        const printStyles = document.createElement("style");
-        printStyles.innerHTML = `
-        .resume-paper {
-            width: 980px  important; /* A4 width */
-            height: 400px !important; /* A4 width */
-            transform: scale(1.3) !important; /* Prevent unexpected resizing */
-            transform-origin: top left !important;
-        }
-    `;
-
-        clonedElement.appendChild(printStyles);
-
-        html2pdf()
-            .set({
-                filename: `${resumeData.resumeName || "Resume"}.pdf`,
-                image: { type: "jpeg", quality: 1 },
-                html2canvas: {
-                    scale: 5, 
-                    dpi: 300,
-                    useCORS: true
-                },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-            })
-            .from(clonedElement)
-            .toPdf()
-            .save();
-    };
-
-
     const officeTypeOptions = [
         { value: 0, label: "On-site" },
         { value: 1, label: "Remote" },
@@ -228,6 +194,26 @@ function ResumeBuilder() {
 
     const handleSubmit = async () => {
         try {
+            //  Create hidden clone to prevent layout shifts
+            const clone = resumeRef.current.cloneNode(true);
+            clone.style.transform = "scale(1)";
+            clone.style.width = "450px";
+            clone.style.height = "auto";
+            clone.style.position = "absolute";
+            clone.style.left = "-9999px";
+            document.body.appendChild(clone);
+
+            const canvas = await html2canvas(clone, {
+                backgroundColor: "#FFFFFF",
+                scale: 5,
+                useCORS: true,
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            //  Remove  clone 
+            document.body.removeChild(clone);
+
             const processedResumeData = {
                 ...resumeData,
                 skills: {
@@ -237,7 +223,7 @@ function ResumeBuilder() {
                             Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
                         )
                     )
-                }
+                }, thumbnail: imgData,
             };
 
             console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));

@@ -16,6 +16,7 @@ namespace ResumeProProject.Server.Controllers
         public required string ResumeName { get; set; }
         public required DateTime CurrentDate { get; set; }
         public required string TemplateId { get; set; }
+        public string Thumbnail { get; set; } // Base64-encoded image
 
         // One-to-One Relationship
         public required GeneralInformation GeneralInformation { get; set; }
@@ -57,7 +58,8 @@ namespace ResumeProProject.Server.Controllers
                 Name = request.ResumeName,
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
-                TemplateId = request.TemplateId
+                TemplateId = request.TemplateId,
+                Thumbnail = request.Thumbnail // Store Thumbnail
             };
 
             _db.Resumes.Add(NewResume);
@@ -196,6 +198,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = generalInfoDict.TryGetValue(resume.ResumeId, out var genInfo) ? genInfo : null,
 
