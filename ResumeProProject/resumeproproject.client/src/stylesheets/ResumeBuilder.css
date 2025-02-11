@@ -70,7 +70,7 @@
         flex-direction: column;
         align-items: start;
         gap: 2rem;
-        padding: 2rem 0;
+        padding: 2rem 0 4rem 0;
     }
 }
 .build-view::-webkit-scrollbar { display: none; }
@@ -161,29 +161,6 @@
     }
 }
 
-.skill-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.delete-x-btn {
-    background: none;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    color: gray;
-    cursor: pointer;
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-    opacity: 0.6;
-    padding: 0 5px;
-}
-.delete-x-btn:hover {
-    opacity: 1;
-    transform: scale(1.1); 
-}
-
 .build-footer {
     position: absolute;
     bottom: 0;
@@ -271,4 +248,108 @@
         width: 1.25rem; 
         opacity: .85;
     }
+}
+
+
+/* Skills section */
+.new-category-ctnr {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    button {
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 2rem;
+        padding: .5rem 1rem;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #000;
+    }
+}
+
+.skill-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.skill-category-ctnr {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.skills-ctnr {
+    width: 100%;
+    display: flex;
+    flex-flow: wrap;
+    gap: .5rem;
+}
+
+.skill {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgb(220, 220, 220);
+    max-width: fit-content;
+    padding: .15rem .75rem;
+    border-radius: 2rem;
+}
+
+.skill-input-ctnr {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        img { 
+            width: 1.15rem; 
+            opacity: .35;
+            transition: all .2s ease-in-out;
+        }
+    }
+    button:hover {
+        img {
+            opacity: .5;
+            transform: scale(1.05);
+        }
+    }
+}
+
+.skill-input {
+    font-size: 1rem;
+    width: fit-content;
+    max-width: 6rem;
+    padding: .15rem .75rem;
+    background: none;
+    /* border: none; */
+    border-radius: 2rem;
+}
+
+.delete-x-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: gray;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 0.6;
+}
+.delete-x-btn:hover {
+    opacity: 1;
+    transform: scale(1.1); 
 }

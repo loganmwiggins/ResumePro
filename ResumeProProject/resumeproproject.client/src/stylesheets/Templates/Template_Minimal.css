@@ -66,6 +66,6 @@ section {
 /* Skills specific */
 .skill-row {
     display: flex;
-    align-items: center;
-    gap: .25rem;
+    align-items: start;
+    gap: .5rem;
 }
