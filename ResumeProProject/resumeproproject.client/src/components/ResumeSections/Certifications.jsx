@@ -5,7 +5,10 @@ import '../../stylesheets/ResumeBuilder.css';
 function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
     return (
         <section>
-            <h3>Certifications</h3>
+            <div className="section-head">
+                <h3>Certifications</h3>
+                <p>List any certifications that add credibility to your skills and make you stand out.</p>
+            </div>
 
             {/* Certification entry */}
             {data.map((cert, index) => (

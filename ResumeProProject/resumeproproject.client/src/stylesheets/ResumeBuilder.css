@@ -58,15 +58,6 @@
 
 
 /* BUILD VIEW (RIGHT SIDE) */
-.section-head {
-    width: 100%;
-    text-align: left;
-    padding-bottom: 1rem;
-    /* border-bottom: 1px solid rgb(210, 210, 210); */
-
-    p { color: var(--text-third); }
-}
-
 .build-view {
     position: relative;
     border-left: 1px solid lightgrey;
@@ -78,7 +69,7 @@
         display: flex;
         flex-direction: column;
         align-items: start;
-        gap: 1rem;
+        gap: 2rem;
         padding: 2rem 0;
     }
 }
@@ -107,6 +98,16 @@
     cursor: grab;
 }
 .step-content::-webkit-scrollbar-thumb:hover { background: rgb(200, 200, 200); }
+
+.section-head {
+    width: 100%;
+    text-align: left;
+
+    p { 
+        font-size: .9rem;
+        color: var(--text-fourth); 
+    }
+}
 
 .inputs-ctnr {
     width: 100%;
@@ -139,26 +140,26 @@
 .delete-btn {
     background: none;
     border: none;
-    padding: 5px;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-}
+    cursor: pointer;
 
-.trash-icon {
-    width: 18px;
-    height: 18px;
-    opacity: 0.6;
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-    filter: invert(40%) sepia(0%) saturate(200%) hue-rotate(180deg); /* Makes it gray */
-}
-
-    .trash-icon:hover {
-        opacity: 1;
-        transform: scale(1.1);
+    img {
+        width: 1.15rem;
+        height: 1.15rem;
+        opacity: 0.5;
+        transition: all .2s ease-in-out;
     }
+}
+.delete-btn:hover {
+    img {
+        opacity: 0.8;
+        filter: var(--filter-red);
+        transform: scale(1.1);
+        transition: all .2s ease-in-out;
+    }
+}
 
 .skill-header {
     display: flex;
@@ -215,6 +216,43 @@
         /* background: rgb(79, 208, 255); */
         background: rgb(44, 111, 255);
     }
+}
+
+
+/* Entries */
+.entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.entry-info {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.entry-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--text-primary);
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 100%;
+    color: white;
+    font-weight: 600;
+}
+
+.entry-info-txt {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    p { color: var(--text-third); }
 }
 
 .add-entry-btn {

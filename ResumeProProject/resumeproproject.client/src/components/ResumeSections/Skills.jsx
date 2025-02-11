@@ -4,7 +4,10 @@ import '../../stylesheets/ResumeBuilder.css';
 function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handleAddSkill, handleRemoveSkill }) {
     return (
         <section>
-            <h3>Skills</h3>
+            <div className="section-head">
+                <h3>Skills</h3>
+                <p>Highlight your key technical and soft skills that are relevant to your industry and role. Help employers quickly understand your strengths.</p>
+            </div>
 
             {/* Add new category */}
             <div className="input-field">

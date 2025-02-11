@@ -4,7 +4,10 @@ import '../../stylesheets/ResumeBuilder.css';
 function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
     return (
         <section>
-            <h3>Education</h3>
+            <div className="section-head">
+                <h3>Education</h3>
+                <p>Include your academic background to demonstrate your qualifications and expertise. Generally, only degrees from universities or colleges are listed.</p>
+            </div>
 
             {/* Education entry */}
             {data.map((edu, index) => (

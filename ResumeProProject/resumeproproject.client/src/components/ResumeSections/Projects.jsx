@@ -5,7 +5,10 @@ import '../../stylesheets/ResumeBuilder.css';
 function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
     return (
         <section>
-            <h3>Projects</h3>
+            <div className="section-head">
+                <h3>Projects</h3>
+                <p>Showcase notable projects you have worked on, including personal, academic, or professional projects. Highlight key achievements and technologies used.</p>
+            </div>
 
             {/* Project entry */}
             {data.map((proj, index) => (

@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+
 import '../../stylesheets/ResumeBuilder.css';
 
 function GeneralInformation({ data, handleChange }) {
@@ -7,11 +9,18 @@ function GeneralInformation({ data, handleChange }) {
             {/* Header */}
             <div className="section-head">
                 <h3>General Information</h3>
-                <p>Include your personal details in this section.</p>
+                <p>Start by adding your personal details and contact information to introduce yourself to potential employers.</p>
             </div>
 
             {/* Inputs */}
-            <div className="inputs-ctnr">
+            <motion.div 
+                className="inputs-ctnr" 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                layout
+            >
                 <div className="input-row">
                     <div className="input-field">
                         <label>First Name <span className="req">*</span></label>
@@ -108,7 +117,7 @@ function GeneralInformation({ data, handleChange }) {
                         value={data.gitHubUrl}
                     />
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 }
