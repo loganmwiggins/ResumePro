@@ -129,8 +129,22 @@
     }
 }
 
-.req { color: var(--text-danger); }
+.build-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid lightgrey;
 
+    button { transition: none; }
+    button:hover { transition: none; }
+}
+
+
+/* Entries */
 .delete-btn {
     background: none;
     border: none;
@@ -155,22 +169,6 @@
     }
 }
 
-.build-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid lightgrey;
-
-    button { transition: none; }
-    button:hover { transition: none; }
-}
-
-
-/* Entries */
 .entry-header {
     display: flex;
     align-items: center;
@@ -237,10 +235,15 @@
 /* EXPERIENCES section */
 /* Select containers */
 .css-b62m3t-container { width: 100%; }
+
 .css-13cymwt-control { 
     border-radius: .5rem !important; 
+    /* padding: .75rem !important; */
     font-size: .85rem !important;
 }
+
+.css-hlgwow { padding: .563rem !important; }
+
 .css-1nmdiq5-menu {
     text-align: left;
     font-size: .85rem !important;

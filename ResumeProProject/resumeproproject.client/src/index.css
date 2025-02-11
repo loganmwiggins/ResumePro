@@ -111,6 +111,8 @@ form input {
   text-overflow: ellipsis;
 }
 
+.req { color: var(--text-danger); }
+
 .btn-disabled {
   opacity: .25;
   cursor: default !important;
