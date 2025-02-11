@@ -30,6 +30,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                 />
                 <motion.button
                     type="button"
+                    className="btn btn-black"
                     onClick={() => {
                         const category = document.getElementById("newCategoryInput").value;
                         if (category) {

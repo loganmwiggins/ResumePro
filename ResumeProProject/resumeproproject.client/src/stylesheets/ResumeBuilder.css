@@ -253,18 +253,8 @@
     align-items: center;
     gap: .5rem;
 
-    button {
-        background: #111;
-        color: white;
-        border: none;
-        border-radius: 2rem;
-        padding: .5rem 1rem;
-        text-wrap: nowrap;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #000;
-    }
+    button { transition: none; }
+    button:hover { transition: none; }
 }
 
 .skill-category-header {
