@@ -30,6 +30,13 @@
     font-size: .85rem;
 }
 
+/* Placeholder text */
+.public-DraftEditorPlaceholder-root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: .85rem;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
 /* Hide certain button groups:
  * 2nd child = text-align buttons
  * 4th child = hyperlink

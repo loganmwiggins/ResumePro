@@ -122,15 +122,10 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                         </div>
                         <div className="input-field">
                             <label>Description <span className="req">*</span></label>
-                            {/* <input 
-                                type="textarea" 
-                                placeholder="What did you do there?"
-                                onChange={(e) => handleChange("experiences", "description", e.target.value, index)}
-                                value={data[index].description}
-                            /> */}
                             <DescriptionEditor 
                                 value={data[index].description || ""}
                                 handleChange={(newValue) => handleChange("experiences", "description", newValue, index)}
+                                placeholder={"Describe your role, achievements, and skills used in bulleted format"}
                             />
                         </div>
                         <div className="input-field">

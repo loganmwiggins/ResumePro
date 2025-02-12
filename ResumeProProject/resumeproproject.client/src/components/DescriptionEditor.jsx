@@ -3,7 +3,7 @@ import RichTextEditor from 'react-rte';
 
 import '../stylesheets/DescriptionEditor.css';
 
-function DescriptionEditor({ value, handleChange }) {
+function DescriptionEditor({ value, handleChange, placeholder }) {
     // Ensure value is initialized properly when passed back
     const [editorValue, setEditorValue] = useState(
         value ? RichTextEditor.createValueFromString(value, "html") : 
@@ -24,7 +24,7 @@ function DescriptionEditor({ value, handleChange }) {
 
     return (
         <>
-            <RichTextEditor value={editorValue} onChange={onChange} />
+            <RichTextEditor value={editorValue} onChange={onChange} placeholder={placeholder} />
         </>
     )
 }

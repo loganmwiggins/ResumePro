@@ -107,19 +107,25 @@ function Template_Minimal({ resumeData }) {
             {resumeData.projects.length > 0 && (
                 <section>
                     <h2>PROJECTS</h2>
-                    {resumeData.projects.map(proj => (
-                        <div key={proj.title}>
-                            <h3>{proj.title}</h3>
-                            <p>
-                                {proj.startDate && (
-                                    `${formatDate(proj.startDate)}`
-                                )} {proj.endDate && (
-                                    `- ${formatDate(proj.endDate)}`
-                                )}
-                            </p>
-                            <p>{proj.description}</p>
-                        </div>
-                    ))}
+                    {resumeData.projects.map(proj => {
+                        let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
+                            ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                        });
+
+                        return(
+                            <div key={proj.title}>
+                                <h3>{proj.title}</h3>
+                                <p>
+                                    {proj.startDate && (
+                                        `${formatDate(proj.startDate)}`
+                                    )} {proj.endDate && (
+                                        `- ${formatDate(proj.endDate)}`
+                                    )}
+                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                            </div>
+                        );
+                    })}
                 </section>
             )}
             
