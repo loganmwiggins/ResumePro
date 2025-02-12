@@ -111,8 +111,11 @@ form input {
   background: var(--bg-primary);
   border: 1px solid rgb(204, 204, 204);
   border-radius: .5rem;
-  /* border-color: rgb(215, 215, 215); */
   text-overflow: ellipsis;
+}
+form input:focus {
+  outline: 1px solid #2684ff;
+  border-color: #2684ff;
 }
 
 .req { color: var(--text-danger); }

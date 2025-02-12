@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
@@ -66,11 +67,10 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                         </div>
                         <div className="input-field">
                             <label>Description <span className="req">*</span></label>
-                            <input 
-                                type="textarea"
-                                placeholder="What did you do?"
-                                onChange={(e) => handleChange("projects", "description", e.target.value, index)}
-                                value={data[index].description}
+                            <DescriptionEditor 
+                                value={data[index].description || ""}
+                                handleChange={(newValue) => handleChange("projects", "description", newValue, index)}
+                                placeholder={"Summarize the project's purpose, your role, and key results in bulleted format"}
                             />
                         </div>
                     </motion.div>

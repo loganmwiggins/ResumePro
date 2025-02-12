@@ -36,6 +36,7 @@ section {
 .entry-head {
     display: flex;
     justify-content: space-between;
+    margin-bottom: .25rem;
 
     div {
         display: flex;
@@ -63,9 +64,5 @@ section {
 }
 
 
-/* Skills specific */
-.skill-row {
-    display: flex;
-    align-items: start;
-    gap: .5rem;
-}
+/* Experience specific  */
+ul { padding-left: 1.25rem }

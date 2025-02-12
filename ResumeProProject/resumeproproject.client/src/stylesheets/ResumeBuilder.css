@@ -234,11 +234,18 @@
 
 /* EXPERIENCES section */
 /* Select containers */
-.css-b62m3t-container { width: 100%; }
+.css-b62m3t-container { width: 100%; outline: none !important; }
 
+/* Input box */
 .css-13cymwt-control { 
     border-radius: .5rem !important; 
-    /* padding: .75rem !important; */
+    font-size: .85rem !important;
+}
+
+/* Input box selected */
+.css-t3ipsp-control {
+    border-radius: .5rem !important; 
+    /* box-shadow: none !important; */
     font-size: .85rem !important;
 }
 
@@ -247,6 +254,7 @@
 .css-1nmdiq5-menu {
     text-align: left;
     font-size: .85rem !important;
+    z-index: 50 !important;
 }
 
 
