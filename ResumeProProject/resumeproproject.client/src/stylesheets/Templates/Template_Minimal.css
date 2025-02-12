@@ -66,11 +66,3 @@ section {
 
 /* Experience specific  */
 ul { padding-left: 1.25rem }
-
-
-/* Skills specific */
-.skill-row {
-    display: flex;
-    align-items: start;
-    gap: .5rem;
-}
