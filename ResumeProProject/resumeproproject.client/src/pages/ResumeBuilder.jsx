@@ -1,22 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import html2canvas from 'html2canvas';
+import { EditorState } from 'react-rte';
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
-import { useUser } from "../context/UserContext";
+import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import AllTemplates from '../components/Templates/AllTemplates';
-import html2canvas from "html2canvas";
 
 // import: Stepper + Resume Sections
-import Stepper from "../components/Stepper";
-import GeneralInformation from "../components/ResumeSections/GeneralInformation";
-import Experiences from "../components/ResumeSections/Experiences";
-import Educations from "../components/ResumeSections/Educations";
-import Certifications from "../components/ResumeSections/Certifications";
-import Projects from "../components/ResumeSections/Projects";
-import Skills from "../components/ResumeSections/Skills";
+import Stepper from '../components/Stepper';
+import GeneralInformation from '../components/ResumeSections/GeneralInformation';
+import Experiences from '../components/ResumeSections/Experiences';
+import Educations from '../components/ResumeSections/Educations';
+import Certifications from '../components/ResumeSections/Certifications';
+import Projects from '../components/ResumeSections/Projects';
+import Skills from '../components/ResumeSections/Skills';
 
 
 function ResumeBuilder() {

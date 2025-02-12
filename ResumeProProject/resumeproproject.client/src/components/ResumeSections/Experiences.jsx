@@ -1,7 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
+import RichTextEditor from 'react-rte';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
@@ -119,14 +121,17 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 />
                             </div>
                         </div>
-                        
                         <div className="input-field">
                             <label>Description <span className="req">*</span></label>
-                            <input 
+                            {/* <input 
                                 type="textarea" 
                                 placeholder="What did you do there?"
                                 onChange={(e) => handleChange("experiences", "description", e.target.value, index)}
                                 value={data[index].description}
+                            /> */}
+                            <DescriptionEditor 
+                                value={data[index].description || ""}
+                                handleChange={(newValue) => handleChange("experiences", "description", newValue, index)}
                             />
                         </div>
                         <div className="input-field">

@@ -101,7 +101,7 @@ function Template_Minimal({ resumeData }) {
                                     <p>{exp.location}</p>
                                 </div>
                             </div>
-                            <p>{exp.description}</p>
+                            <p dangerouslySetInnerHTML={{ __html: exp.description || "Error rendering rich text." }}></p>
                         </div>
                     ))}
                 </section>

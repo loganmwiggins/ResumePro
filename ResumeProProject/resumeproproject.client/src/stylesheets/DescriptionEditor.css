@@ -1,0 +1,58 @@
+/* Parent container */
+.RichTextEditor__root___2QXK- {
+    width: 100%;
+    border: 1px solid rgb(204, 204, 204) !important;
+    border-radius: .5rem !important;
+}
+
+/* Toolbar container */
+.EditorToolbar__root___3_Aqz {
+    display: flex;
+    flex-flow: wrap;
+    gap: .75rem;
+    border-color: rgb(204, 204, 204) !important;
+}
+
+/* Toolbar buttons */
+.ButtonGroup__root___3lEAn {
+    display: flex !important;
+    /* gap: .25rem; */
+    margin-right: 0 !important; 
+}
+
+.ButtonWrap__root___1EO_R {
+    button { border-radius: .5rem !important; }
+}
+
+/* Text box */
+.DraftEditor-editorContainer {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: .85rem;
+}
+
+/* Hide certain button groups:
+ * 2nd child = text-align buttons
+ * 4th child = hyperlink
+ * 5th child = image upload
+ * 6th child = text type formatting
+*/
+.ButtonGroup__root___3lEAn:nth-child(2), 
+.ButtonGroup__root___3lEAn:nth-child(4), 
+.ButtonGroup__root___3lEAn:nth-child(5), 
+.ButtonGroup__root___3lEAn:nth-child(6) {
+    display: none !important;
+}
+
+/* Hide specific buttons:
+ * Group 1 - strikethrough and monospace
+*/
+.ButtonGroup__root___3lEAn:first-child {
+    .ButtonWrap__root___1EO_R:nth-child(3),
+    .ButtonWrap__root___1EO_R:nth-child(4) {
+        display: none;
+    }
+}
+
+.ButtonGroup__root___3lEAn:nth-child(3) {
+    .ButtonWrap__root___1EO_R:nth-child(3) { display: none; }
+}

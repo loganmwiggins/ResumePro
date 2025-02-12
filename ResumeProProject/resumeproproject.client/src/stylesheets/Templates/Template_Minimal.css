@@ -36,6 +36,7 @@ section {
 .entry-head {
     display: flex;
     justify-content: space-between;
+    margin-bottom: .25rem;
 
     div {
         display: flex;
@@ -61,6 +62,10 @@ section {
         img { max-width: 1rem; }
     }
 }
+
+
+/* Experience specific  */
+ul { padding-left: 1.25rem }
 
 
 /* Skills specific */
