@@ -1,4 +1,7 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
+
+import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
@@ -15,20 +18,6 @@ function Template_Minimal({ resumeData }) {
         { value: 2, label: "Volunteer" },
         { value: 3, label: "Internship" }
     ];
-
-    const formatDate = (dateString, options = { month: true, day: true, year: true }) => {
-        const [year, month, day] = dateString.split("-").map(Number);
-        const date = new Date(year, month - 1, day); // Month is zero-based
-        
-        // Determine the format based on the options provided
-        const formatOptions = {
-            ...(options.month && { month: "short" }),
-            ...(options.day && { day: "numeric" }),
-            ...(options.year && { year: "numeric" }),
-        };
-        
-        return date.toLocaleDateString("en-US", formatOptions);
-    };
 
 
     return (
@@ -77,33 +66,39 @@ function Template_Minimal({ resumeData }) {
             {resumeData.experiences.length > 0 && (
                 <section>
                     <h2>EXPERIENCE</h2>
-                    {resumeData.experiences.map(exp => (
-                        <div key={exp.description}>
-                            <div className="entry-head">
-                                <div>
-                                    <h3>{exp.role}</h3>
-                                    <p>
-                                        {exp.companyName} {exp.jobType != null && (
-                                            `| ${jobTypeOptions[exp.jobType].label}`
-                                        )} {exp.officeType != null && (
-                                            `| ${officeTypeOptions[exp.officeType].label}`
-                                        )}
-                                    </p>
+                    {resumeData.experiences.map(exp => {
+                        let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
+                            ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                        });
+
+                        return(
+                            <div key={exp.description}>
+                                <div className="entry-head">
+                                    <div>
+                                        <h3>{exp.role}</h3>
+                                        <p>
+                                            {exp.companyName} {exp.jobType != null && (
+                                                `| ${jobTypeOptions[exp.jobType].label}`
+                                            )} {exp.officeType != null && (
+                                                `| ${officeTypeOptions[exp.officeType].label}`
+                                            )}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            {exp.startDate && (
+                                                `${formatDate(exp.startDate, {month:true, year:true})}`
+                                            )} {exp.endDate && (
+                                                `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                            ) || "- Present"}
+                                        </p>
+                                        <p>{exp.location}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p>
-                                        {exp.startDate && (
-                                            `${formatDate(exp.startDate, {month:true, year:true})}`
-                                        )} {exp.endDate && (
-                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                        ) || "- Present"}
-                                    </p>
-                                    <p>{exp.location}</p>
-                                </div>
+                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
                             </div>
-                            <p dangerouslySetInnerHTML={{ __html: exp.description || "Error rendering rich text." }}></p>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </section>
             )}
 

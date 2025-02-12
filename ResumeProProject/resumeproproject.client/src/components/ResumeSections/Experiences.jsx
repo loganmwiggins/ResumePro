@@ -1,6 +1,5 @@
 import React from 'react';
 import Select from 'react-select';
-import RichTextEditor from 'react-rte';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import DescriptionEditor from '../DescriptionEditor';
