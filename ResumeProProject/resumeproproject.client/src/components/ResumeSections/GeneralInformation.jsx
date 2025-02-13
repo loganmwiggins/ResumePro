@@ -29,7 +29,6 @@ function GeneralInformation({ data, handleChange }) {
                             placeholder="(e.g.,  John)"
                             onChange={(e) => handleChange("generalInformation", "firstName", e.target.value)}
                             value={data.firstName}
-                            required
                         />
                     </div>
                     <div className="input-field">
@@ -49,7 +48,6 @@ function GeneralInformation({ data, handleChange }) {
                         placeholder="(e.g.,  Doe)"
                         onChange={(e) => handleChange("generalInformation", "lastName", e.target.value)} 
                         value={data.lastName}
-                        required
                     />
                 </div>
                 <div className="input-row">

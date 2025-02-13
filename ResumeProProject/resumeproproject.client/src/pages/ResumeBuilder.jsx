@@ -8,6 +8,7 @@ import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
+import { validateResume } from '../utils/ResumeValidator';
 import AllTemplates from '../components/Templates/AllTemplates';
 
 // import: Stepper + Resume Sections
@@ -34,8 +35,6 @@ function ResumeBuilder() {
 
     // When user data is available, initialize resumeData with default values
     useEffect(() => {
-        console.log("Update Resume ID:", updateResumeId);
-
         if (user?.id) {
             // If creating a new resume...
             if (updateResumeId == undefined) {
@@ -82,8 +81,6 @@ function ResumeBuilder() {
             }
 
             const data = await response.json();
-            // data.currentDate = new Date();
-            // console.log("New data:", data);
 
             if (data.skills?.skillsDataJson) {
                 try {
@@ -252,6 +249,9 @@ function ResumeBuilder() {
             //  Remove  clone 
             document.body.removeChild(clone);
 
+            // Validate the resume and stop execution if invalid
+            if (!validateResume(resumeData)) return;
+
             const processedResumeData = {
                 ...resumeData,
                 skills: {
@@ -264,7 +264,7 @@ function ResumeBuilder() {
                 }, thumbnail: imgData,
             };
 
-            console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+            // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
             // If new resume...
             if (updateResumeId == undefined) {
@@ -333,7 +333,8 @@ function ResumeBuilder() {
                                 type="text"
                                 placeholder="Name your document!"
                                 value={resumeData.resumeName} 
-                                onChange={(e) => handleNameChange(e.target.value)} 
+                                onChange={(e) => handleNameChange(e.target.value)}
+                                required
                             />
                             <motion.button 
                                 type="button" 
