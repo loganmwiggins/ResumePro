@@ -45,28 +45,6 @@
     display: flex;
     align-items: center;
     gap: .75rem;
-
-    button {
-        font-weight: 600;
-        padding: .5rem 1rem;
-        border: none;
-        border-radius: .5rem;
-        cursor: pointer;
-        transition: all .2s ease-in-out;
-    }
-    button:hover {
-        transform: scale(1.1);
-        transition: all .5s ease;
-    }
-    button:first-child {
-        background: none;
-        border: 1px solid rgb(190, 190, 190);
-        color: var(--text-third);
-    }
-    button:last-child {
-        background: #111;
-        color: white;
-    }
 }
 
 
@@ -95,7 +73,7 @@
 }
 
 /*Drop-down (gotta tweak)*/
-.profile-container {
+.profile-ctnr {
     position: relative;
     display: inline-block;
 }
@@ -103,36 +81,33 @@
 .dropdown-menu {
     position: absolute;
     right: 0;
+    top: 2.25rem;
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     min-width: 140px;
-    z-index: -100;
+    z-index: 10;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
-    .dropdown-menu.show {
-        z-index: 100;
-        opacity: 1;
-        transform: translateY(0);
-    }
 
-    .dropdown-menu button {
-        background: none;
-        border: none;
-        /* border: 1px solid light grey !important; */
-        padding: 10px 15px;
-        text-align: left;
-        width: 100%;
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
-        display: flex;
-        align-items: center;
-        transition: background 0.2s ease-in-out;
-    }
-    .dropdown-menu button:hover { background: rgba(0, 0, 0, 0.05); }
+.dropdown-menu button {
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    padding: 10px 15px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-menu button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}

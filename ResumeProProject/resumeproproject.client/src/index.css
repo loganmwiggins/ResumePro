@@ -6,16 +6,19 @@
   /* background-color: #242424; */
 
   /* Color variables */
-  --text-primary: #000;
+  --text-primary: #222;
   --text-secondary: #333;
   --text-third: #666;
   --text-fourth: #999;
-  --text-danger: rgb(230, 0, 0);
+  --text-danger: #e60000;
   --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
+  --bg-primary: #fff;
+
   --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+  --filter-red: invert(11%) sepia(71%) saturate(7272%) hue-rotate(0deg) brightness(96%) contrast(115%);
 }
 
 html {
@@ -44,29 +47,56 @@ html {
   p { color: var(--text-third); }
 }
 
-.btn-accent {
+/* Buttons */
+.btn {
   display: flex;
   align-items: center;
   gap: .5rem;
+  border: none;
+  border-radius: 2rem;
+  padding: .5rem 1rem;
+  text-wrap: nowrap;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+.btn:hover { transition: all .2s ease-in-out; }
 
+.btn-black {
+  background: #111;
+  color: white;
+}
+.btn-black:hover { 
+  background: #000;
+}
+
+.btn-outline {
+  background: none;
+  color: var(--text-secondary);
+  border: 1px solid var(--text-fourth);
+}
+.btn-outline:hover {
+  color: #000;
+  border-color: var(--text-secondary);
+}
+
+.btn-blue {
+  background: rgb(44, 111, 255);
+  color: white;
+}
+.btn-blue:hover { background: rgb(39, 98, 224); }
+
+.btn-accent {
   background: var(--accent-blue);
   color: white;
-  border: none;
-  border-radius: .5rem;
-  padding: .5rem 1rem;
   max-width: fit-content;
-  cursor: pointer;
-  transition: all .2s ease;
 
   img {
     width: 1rem;
     filter: var(--filter-white);
   }
 }
-.btn-accent:hover {
-  transform: scale(1.1);
-  transition: all .2s ease;
-}
+.btn-accent:hover { transform: scale(1.1); }
+
 
 /* Forms */
 form {
@@ -74,7 +104,25 @@ form {
   flex-direction: column !important;
 }
 form input {
+  width: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: .85rem;
+  padding: .75rem;
+  background: var(--bg-primary);
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: .5rem;
+  text-overflow: ellipsis;
+}
+form input:focus {
+  outline: 1px solid #2684ff;
+  border-color: #2684ff;
+}
+
+.req { color: var(--text-danger); }
+
+.btn-disabled {
+  opacity: .25;
+  cursor: default !important;
 }
 
 /* Loading spinner */

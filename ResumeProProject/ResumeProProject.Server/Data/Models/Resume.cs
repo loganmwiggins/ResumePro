@@ -21,6 +21,7 @@ namespace ResumeProProject.Server.Data.Models
         public required string Id { get; set; } //THIS IS THE USER ID
         [JsonIgnore]
         public virtual User User { get; set; }
+        public string Thumbnail { get; set; }
 
         public virtual ICollection<Education> Educations { get; set; } = new List<Education>();
         public virtual ICollection<Experience> Experiences { get; set; } = new List<Experience>();

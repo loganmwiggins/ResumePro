@@ -386,6 +386,10 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("UpdatedDateTime")
                         .HasColumnType("timestamp with time zone");
 

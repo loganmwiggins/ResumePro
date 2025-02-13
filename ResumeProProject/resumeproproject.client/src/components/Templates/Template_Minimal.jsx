@@ -1,4 +1,7 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
+
+import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ resumeData }) {
@@ -16,20 +19,6 @@ function Template_Minimal({ resumeData }) {
         { value: 3, label: "Internship" }
     ];
 
-    const formatDate = (dateString, options = { month: true, day: true, year: true }) => {
-        const [year, month, day] = dateString.split("-").map(Number);
-        const date = new Date(year, month - 1, day); // Month is zero-based
-        
-        // Determine the format based on the options provided
-        const formatOptions = {
-            ...(options.month && { month: "short" }),
-            ...(options.day && { day: "numeric" }),
-            ...(options.year && { year: "numeric" }),
-        };
-        
-        return date.toLocaleDateString("en-US", formatOptions);
-    };
-
 
     return (
         <div className="resume-paper">
@@ -37,7 +26,9 @@ function Template_Minimal({ resumeData }) {
             <header>
                 <div className="header-left">
                     <h1>{resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}</h1>
-                    <p>{resumeData.generalInformation.location}</p>
+                    <p>
+                        {resumeData.generalInformation.role} {resumeData.generalInformation.role && resumeData.generalInformation.location && " | "} {resumeData.generalInformation.location}
+                    </p>
                 </div>
                 <div className="header-right">
                     <p>{resumeData.generalInformation.email}</p>
@@ -75,33 +66,39 @@ function Template_Minimal({ resumeData }) {
             {resumeData.experiences.length > 0 && (
                 <section>
                     <h2>EXPERIENCE</h2>
-                    {resumeData.experiences.map(exp => (
-                        <div key={exp.description}>
-                            <div className="entry-head">
-                                <div>
-                                    <h3>{exp.role}</h3>
-                                    <p>
-                                        {exp.companyName} {exp.jobType != null && (
-                                            `| ${jobTypeOptions[exp.jobType].label}`
-                                        )} {exp.officeType != null && (
-                                            `| ${officeTypeOptions[exp.officeType].label}`
-                                        )}
-                                    </p>
+                    {resumeData.experiences.map(exp => {
+                        let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
+                            ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                        });
+
+                        return(
+                            <div key={exp.description}>
+                                <div className="entry-head">
+                                    <div>
+                                        <h3>{exp.role}</h3>
+                                        <p>
+                                            {exp.companyName} {exp.jobType != null && (
+                                                `| ${jobTypeOptions[exp.jobType].label}`
+                                            )} {exp.officeType != null && (
+                                                `| ${officeTypeOptions[exp.officeType].label}`
+                                            )}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            {exp.startDate && (
+                                                `${formatDate(exp.startDate, {month:true, year:true})}`
+                                            )} {exp.endDate && (
+                                                `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                            ) || "- Present"}
+                                        </p>
+                                        <p>{exp.location}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p>
-                                        {exp.startDate && (
-                                            `${formatDate(exp.startDate, {month:true, year:true})}`
-                                        )} {exp.endDate && (
-                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                        ) || "- Present"}
-                                    </p>
-                                    <p>{exp.location}</p>
-                                </div>
+                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
                             </div>
-                            <p>{exp.description}</p>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </section>
             )}
 
@@ -110,19 +107,25 @@ function Template_Minimal({ resumeData }) {
             {resumeData.projects.length > 0 && (
                 <section>
                     <h2>PROJECTS</h2>
-                    {resumeData.projects.map(proj => (
-                        <div key={proj.title}>
-                            <h3>{proj.title}</h3>
-                            <p>
-                                {proj.startDate && (
-                                    `${formatDate(proj.startDate)}`
-                                )} {proj.endDate && (
-                                    `- ${formatDate(proj.endDate)}`
-                                )}
-                            </p>
-                            <p>{proj.description}</p>
-                        </div>
-                    ))}
+                    {resumeData.projects.map(proj => {
+                        let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
+                            ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                        });
+
+                        return(
+                            <div key={proj.title}>
+                                <h3>{proj.title}</h3>
+                                <p>
+                                    {proj.startDate && (
+                                        `${formatDate(proj.startDate)}`
+                                    )} {proj.endDate && (
+                                        `- ${formatDate(proj.endDate)}`
+                                    )}
+                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                            </div>
+                        );
+                    })}
                 </section>
             )}
             
@@ -154,8 +157,7 @@ function Template_Minimal({ resumeData }) {
                     <div>
                         {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => (
                             <div className="skill-row" key={category}>
-                                <h4>{category}:</h4>
-                                <p>{Array.from(skillsObj).join(", ")}</p>
+                                <p><b>{category}:</b> {Array.from(skillsObj).join(", ")}</p>
                             </div>
                         ))}
                     </div>

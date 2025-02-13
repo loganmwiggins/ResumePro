@@ -27,8 +27,10 @@ The following dependencies power ResumePro:
 - `react-router-dom`
 - `toastify` (for user-friendly alerts)
 - `html2pdf.js` (for generating PDF exports)
-- `canvas-confetti` (for beautiful success animations)
-- `framer-motion` (for simple CSS animations)
+- `canvas-confetti` (for rendering confetti animations)
+- `framer-motion` (for CSS animations)
+- `react-rte` (for rich text editing)
+- `dompurify` (for input sanitization)
 
 ### Back-end:
 - `ASP.NET Core`

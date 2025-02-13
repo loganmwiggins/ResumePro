@@ -87,7 +87,7 @@ function SignUp() {
                     <h3>ResumePro</h3>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-header">
                         <h3>Create an Account</h3>
                         <p>Enter the following information to sign up and create your account.</p>
