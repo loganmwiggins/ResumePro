@@ -1,13 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import '../stylesheets/Welcome.css';
 
 function Welcome() {
     const navigate = useNavigate();
 
+    const handleStart = () => navigate("/home"); 
+
     return (
         <div className="welcome-container">
+            {/* Header */}
             <div className="welcome-header-ctnr">
                 <img src="/assets/images/blue-grad-2.jpg" draggable="false" />
                 <div className="welcome-header">
@@ -18,9 +22,16 @@ function Welcome() {
                     <p>
                         Creating a professional resume has never been easier! ResumePro is your all-in-one resume builder, designed to help you craft an eye-catching, industry-ready resume in minutes.
                     </p>
-                    <button className="btn btn-black">Get Started</button>
+                    <button 
+                        className="btn btn-black"
+                        onClick={handleStart}
+                    >
+                        Get Started
+                    </button>
                 </div>
             </div>
+
+            {/* Mission */}
             <div className="section-ctnr">
                 <div className="section-header">
                     <p>Our Mission</p>
@@ -30,7 +41,7 @@ function Welcome() {
                     <div className="card">
                         <img src="/assets/icons/Home/pack-1/artwork.svg" draggable="false" />
                         <h3>Stunning Templates</h3>
-                        <p>Select from multiple expertly designed resume templates to match your style and industry.</p>
+                        <p>Select from multiple resume templates to match your style and industry.</p>
                     </div>
                     <div className="card">
                         <img src="/assets/icons/Home/pack-1/intuitive.svg" draggable="false" />
