@@ -11,6 +11,7 @@ function Home() {
     const navigate = useNavigate();
     const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
+    const [resumesLoading, setResumesLoading] = useState(true);
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -52,6 +53,8 @@ function Home() {
         if (!user || !user.id) return;
 
         const fetchResumes = async () => {
+            setResumesLoading(true); // Start loading
+
             try {
                 const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
 
@@ -68,13 +71,17 @@ function Home() {
                     setResumes([]);
                     return;
                 }
-
-                setResumes(data); // Assuming API returns an array of resumes
+                else {
+                    setResumes(data); // Assuming API returns an array of resumes
+                }
             }
             catch (error) {
                 console.error('(catch) Error fetching resumes:', error);
                 showToast("An error occurred.", "error");
                 setResumes([]);
+            }
+            finally {
+                setResumesLoading(false);   // Stop loading
             }
         };
 
@@ -169,7 +176,9 @@ function Home() {
                     <div className="my-resumes-ctnr">
                         <h2>My Resumes</h2>
                         <div className="resumes-row">
-                            {Array.isArray(resumes) && resumes.length > 0 ? (
+                            {resumesLoading ? (
+                                <div className="loading-spinner"></div>
+                            ) : Array.isArray(resumes) && resumes.length > 0 ? (
                                 resumes.map((resume, index) => (
                                     <div 
                                         key={resume.resumeId} 
