@@ -14,12 +14,23 @@ function ResumeInsights() {
   const [error, setError] = useState('');
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(''); // New state to store AI response
+  const [jobTitle, setJobTitle] = useState('');
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+  // Messages for the loading state
+  const loadingMessages = [
+    "Fetching resume...",
+    "Analyzing your resume...",
+    "Getting insights from AI...",
+    "Fine-tuning your feedback...",
+    "Initializing flux capacitor..."
+  ];
 
-  useEffect(() => {
-    if (resumeId) {
-      handleSubmit(); // Call handleSubmit to automatically trigger the process
-    }
-  }, [resumeId]);
+
+  // useEffect(() => {
+  //   if (resumeId) {
+  //     handleSubmit(); // Call handleSubmit to automatically trigger the process
+  //   }
+  // }, [resumeId]);
 
   const getScoreColorClass = (score) => {
     if (!score) return ""; // Handle missing score
@@ -34,6 +45,17 @@ function ResumeInsights() {
     if (percentage >= 50) return "circle-yellow";  
     return "circle-red";  // Ensure 0% falls in this range
   };
+
+    // Change loading messages every 4 seconds
+    useEffect(() => {
+      if (loading) {
+        const interval = setInterval(() => {
+          setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
+        }, 4000); // Change message every 4 seconds
+  
+        return () => clearInterval(interval); // Clean up the interval when the component is unmounted
+      }
+    }, [loading]);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -66,7 +88,7 @@ function ResumeInsights() {
       const aiResponse = await fetch(`https://localhost:7035/api/Chat/ScoreResume`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({resumeData: resumeString}),
+        body: JSON.stringify({resumeData: resumeString, jobTitle: jobTitle}),
       });
 
       if (!aiResponse.ok) {
@@ -137,8 +159,34 @@ function ResumeInsights() {
         <p>Use Artificial Intelligence to evaluate your resume.</p>
       </div>
 
-      <div className="resume-insights-ctnr">
-        {loading && (<div className="loading-spinner"></div>)}
+
+      <div className="job-title-container">
+  <label htmlFor="jobTitleInput">
+    Applying for a specific role? Let us know, and we'll fine-tune your feedback for that position!
+  </label>
+  <input
+    id="jobTitleInput"
+    type="text"
+    value={jobTitle}
+    onChange={(e) => setJobTitle(e.target.value)}
+    placeholder="ex. Software Engineer"
+  />
+  <button onClick={handleSubmit} disabled={loading} className="submit-button">
+          {loading ? "Processing..." : "Go!"}
+        </button>
+</div>
+
+
+    
+<div className="resume-insights-ctnr">
+        {loading && (
+          <div className="loading-spinner-container">
+            <div className="loading-spinner"></div>
+            <div className="loading-message">
+              <span>{loadingMessages[loadingMessageIndex]}</span>
+            </div>
+          </div>
+        )}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* AI feedback */}
