@@ -9,7 +9,7 @@ import '../stylesheets/Home.css';
 
 function Home() {
     const navigate = useNavigate();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
@@ -145,7 +145,7 @@ function Home() {
 
     return (
         <AuthorizeView>
-            {loading ? (
+            {userLoading ? (
                 <div className="loading-spinner"></div>
             ) : (
                 <div className="page-ctnr">

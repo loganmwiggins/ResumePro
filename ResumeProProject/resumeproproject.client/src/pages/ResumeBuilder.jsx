@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
-import { EditorState } from 'react-rte';
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
@@ -24,7 +23,7 @@ import Skills from '../components/ResumeSections/Skills';
 function ResumeBuilder() {
     const navigate = useNavigate();
     const params = useParams();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const resumeRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
@@ -316,7 +315,7 @@ function ResumeBuilder() {
     };
 
 
-    if (loading || !resumeData) {
+    if (userLoading || !resumeData) {
         return <div className="loading-spinner"></div>;
     }
     else {
