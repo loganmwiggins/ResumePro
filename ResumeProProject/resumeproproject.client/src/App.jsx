@@ -42,7 +42,8 @@ function App() {
         {/* Authorized routes */}
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
-        <Route path="/builder/:templateId" element={<ResumeBuilder />} />
+        {/* <Route path="/builder/:templateId" element={<ResumeBuilder />} /> */}
+        <Route path="/builder/:templateId/:resumeId?" element={<ResumeBuilder />} />
         <Route path="/preview/:resumeId" element={<ResumePreview />} />
 
         <Route path="/insights/:resumeId" element={<ResumeInsights />} />

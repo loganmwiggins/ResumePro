@@ -112,9 +112,9 @@ function Home() {
         navigate(`/insights/${resumeId}`);
     }
 
-    const handleEditResume = (resumeId, event) => {
+    const handleEditResume = (templateId, resumeId, event) => {
         event.stopPropagation();
-        navigate(`/edit-resume/${resumeId}`);
+        navigate(`/builder/${templateId}/${resumeId}`);
     }
 
     const handleDeleteResume = async (resumeId, event) => {
@@ -190,7 +190,6 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
-                                            
                                                 {/* Ellipsis button */}
                                                 <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
                                                     <img src="assets/icons/ellipsis.svg" draggable="false" />
@@ -209,7 +208,7 @@ function Home() {
                                                             <button onClick={(event) => handleInsights(resume.resumeId, event)}>
                                                                 <img src="assets/icons/sparkles.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={(event) => handleEditResume(resume.resumeId, event)}>
+                                                            <button onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}>
                                                                 <img src="assets/icons/pencil.svg" draggable="false" />
                                                             </button>
                                                             <button onClick={(event) => handleDeleteResume(resume.resumeId, event)}>

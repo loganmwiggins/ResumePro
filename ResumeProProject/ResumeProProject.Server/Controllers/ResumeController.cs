@@ -33,8 +33,9 @@ namespace ResumeProProject.Server.Controllers
     {
         public required Guid resumeId { get; set; }
         public required string ResumeName { get; set; }
-        public required DateTime updatedDate { get; set; }
+        public required DateTime updatedDateTime { get; set; }
         public required string templateId { get; set; }
+        public string thumbnail { get; set; } // Base64-encoded image
 
         public required GeneralInformation GeneralInformation { get; set; }
         public Skills Skills { get; set; }
@@ -382,8 +383,9 @@ namespace ResumeProProject.Server.Controllers
 
             // Update Resume properties
             existingResume.Name = request.ResumeName;
-            existingResume.UpdatedDateTime = request.updatedDate;
+            existingResume.UpdatedDateTime = request.updatedDateTime;
             existingResume.TemplateId = request.templateId;
+            existingResume.Thumbnail = request.thumbnail;
 
             // Update General Information
             if (existingResume.GeneralInformation != null)

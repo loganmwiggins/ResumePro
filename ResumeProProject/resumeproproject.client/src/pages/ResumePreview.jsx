@@ -64,6 +64,10 @@ const ResumePreview = () => {
     // Button functions
     const handleHome = () => navigate("/home");
 
+    const handleEditResume = (templateId, resumeId) => {
+        navigate(`/builder/${templateId}/${resumeId}`);
+    }
+
     const handleDownloadPDF = () => {
         const element = resumeRef.current;
 
@@ -109,7 +113,7 @@ const ResumePreview = () => {
                     <img src="/assets/icons/home.svg" draggable="false" />
                     <span>Home</span>
                 </button>
-                <button onClick={() => setShowConfetti(!showConfetti)} title="Go back and edit your resume">
+                <button onClick={() => handleEditResume(resumeData.templateId, resumeId)} title="Go back and edit your resume">
                     <img src="/assets/icons/pencil.svg" draggable="false" />
                     <span>Edit Resume</span>
                 </button>
