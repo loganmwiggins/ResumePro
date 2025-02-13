@@ -81,4 +81,6 @@
     text-align: left;
     gap: .5rem;
     cursor: default;
+
+    img { width: 2.5rem; }
 }
