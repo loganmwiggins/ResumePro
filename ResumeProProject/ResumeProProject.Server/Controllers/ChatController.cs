@@ -37,7 +37,8 @@ public class ChatController : ControllerBase
         if(request.jobTitle != null)
         {
              toSend = request.resumeData + "   This person is applying for this position :  " + request.jobTitle + ", so make sure the feeback for all sections is tailored for that position. Please note also, that since they" +
-                "are applying for a specific job type, you must review their resume with extreme scrutiny; do NOT award points for simply having sections filled out, you need to evaluate if they are even fit to be working in the field they listed.";
+                "are applying for a specific job type, you must review their resume with extreme scrutiny; do NOT award points for simply having sections filled out, you need to evaluate if they are even fit to be working in the field they listed." +
+                "Also take into consideration the role they are applying for and their credentials. If a role is outlandish based on their experience/education do not mince your words.";
         }else {  toSend = request.resumeData; }
         var requestBody = new
         {

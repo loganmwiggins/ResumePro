@@ -136,7 +136,7 @@
   
   .loading-message span {
     display: block;
-    animation: fadeInOutText 6s ease-in-out infinite;
+    animation: fadeInOutText 3s ease-in-out infinite;
   }
   
   @keyframes fadeInOutText {
@@ -144,13 +144,13 @@
       opacity: 1;
     }
     25% {
-      opacity: 0;
+      opacity: 1;
     }
     50% {
       opacity: 1;
     }
     75% {
-      opacity: 0;
+      opacity: 1;
     }
     100% {
       opacity: 1;
