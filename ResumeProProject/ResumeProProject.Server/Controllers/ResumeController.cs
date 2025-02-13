@@ -309,6 +309,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = await _db.GeneralInformation
            .Where(g => g.ResumeId == resumeId)
@@ -387,6 +388,7 @@ namespace ResumeProProject.Server.Controllers
             existingResume.TemplateId = request.templateId;
             existingResume.Thumbnail = request.thumbnail;
 
+            existingResume.TemplateId = request.templateId;
             // Update General Information
             if (existingResume.GeneralInformation != null)
             {
