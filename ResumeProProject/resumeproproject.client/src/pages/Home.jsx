@@ -152,7 +152,9 @@ function Home() {
                     {/* Home header */}
                     <div className="home-header">
                         <div className="page-header">
-                            <h1>{homeGreeting}, {user.firstName}</h1>
+                            {user?.firstName && (
+                                <h1>{homeGreeting}, {user.firstName}</h1>
+                            )}
                             <p>{homeMessage}</p>
                         </div>
                         <div>

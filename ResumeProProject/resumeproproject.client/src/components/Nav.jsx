@@ -77,10 +77,10 @@ function Nav() {
                     ) : (
                     // If user is NOT logged in...
                         <div className="btn-ctnr">
-                            <button onClick={handleSignUpClick}>
+                            <button onClick={handleSignUpClick} className="btn btn-outline">
                                 <span>Sign Up</span>
                             </button>
-                            <button onClick={handleLoginClick}>
+                            <button onClick={handleLoginClick} className="btn btn-black">
                                 <span>Login</span>
                             </button>
                         </div>
