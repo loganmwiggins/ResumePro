@@ -51,66 +51,71 @@ function ResumeInsights() {
       }
 
       const resumeJson = await response.json();
+      const resumeJsonNoThumbnail = resumeJson;
+      resumeJsonNoThumbnail.thumbnail = "";
+
       setResumeData(resumeJson);
       
       const resumeString = JSON.stringify(resumeJson);
 
       const insightResponse = await fetch(`https://localhost:7035/api/Resume/GetInsight/${resumeId}`);
+
       if (!response.ok) {
         showToast("Failed to fetch Insights", "error");
         throw new Error("Failed to fetch Insights"); 
       }
      
-      if(!insightResponse.ok){
-         // Step 2: Send the JSON to another API
-      const aiResponse = await fetch(`https://localhost:7035/api/Chat/ScoreResume`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({resumeData: resumeString}),
-      });
+      if (!insightResponse.ok) {
+        // Step 2: Send the JSON to another API
+        const aiResponse = await fetch(`https://localhost:7035/api/Chat/ScoreResume`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({resumeData: resumeString}),
+        });
 
-      if (!aiResponse.ok) {
-        showToast("Failed to send resume to AI", "error", "Oh no!");
-        throw new Error("Failed to send resume to AI");
-      }
+        if (!aiResponse.ok) {
+          showToast("Failed to send resume to AI", "error", "Oh no!");
+          throw new Error("Failed to send resume to AI");
+        }
 
-      const aiResult = await aiResponse.json();
-      const aiContent = aiResult.choices[0]?.message?.content;
-      console.log(aiContent);
+        const aiResult = await aiResponse.json();
+        const aiContent = aiResult.choices[0]?.message?.content;
+        console.log(aiContent);
 
-      if (aiContent) {
-        try {
-          const cleanedJson = aiContent.replace(/,\s*}/g, "}").replace(/,\s*\]/g, "]"); // Remove trailing commas before closing } and closing ]
-          const aiJsonObj = JSON.parse(cleanedJson);
-          console.log("JSON object:", aiJsonObj);
-          setAiResult(aiJsonObj); // Store AI content as JSON object
+        if (aiContent) {
+          try {
+            const cleanedJson = aiContent.replace(/,\s*}/g, "}").replace(/,\s*\]/g, "]"); // Remove trailing commas before closing } and closing ]
+            const aiJsonObj = JSON.parse(cleanedJson);
+            console.log("JSON object:", aiJsonObj);
+            setAiResult(aiJsonObj); // Store AI content as JSON object
 
-          const saveResponse = await fetch(`https://localhost:7035/api/Resume/AddInsight`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              resumeId: resumeId,
-              content: JSON.stringify(aiJsonObj)
-            }),
-            
-          });
-          console.log(saveResponse);
-          if (!saveResponse.ok) {
-            showToast("Failed to save AI insights", "error", "Database Error");
-            throw new Error("Failed to save AI insights");
+            const saveResponse = await fetch(`https://localhost:7035/api/Resume/AddInsight`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                resumeId: resumeId,
+                content: JSON.stringify(aiJsonObj)
+              }),
+              
+            });
+            console.log(saveResponse);
+            if (!saveResponse.ok) {
+              showToast("Failed to save AI insights", "error", "Database Error");
+              throw new Error("Failed to save AI insights");
+            }
+
+            showToast("AI insights saved successfully", "success", "Done!");
           }
-
-          showToast("AI insights saved successfully", "success", "Done!");
-        }
-        catch (error) {
-          console.error("Error parsing JSON:", error);
-        }
-      } 
+          catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        } 
+        else {
+          showToast("No AI content returned", "error", "Uh oh!");
+          throw new Error("No AI content returned");
+        } 
+      }
       else {
-        showToast("No AI content returned", "error", "Uh oh!");
-        throw new Error("No AI content returned");
-      } 
-      }else{
         const insightContent = await insightResponse.text()
         try {
           const parsedInsight = JSON.parse(insightContent); 
@@ -144,7 +149,7 @@ function ResumeInsights() {
         {/* AI feedback */}
         {aiResult && (
           <div className="feedback-ctnr">
-            <h2>Evaluation for "{resumeData.resumeName}"</h2>
+            <h2>"{resumeData.resumeName}"</h2>
 
             {Object.entries(aiResult).map(([section, data]) => (
               <div key={section} className="feedback-item">
