@@ -1,0 +1,101 @@
+.resume-paper {
+    background: white;
+    width: 850px;
+    height: 1100px;
+    padding: 50px;
+    font-size: .9rem;
+    flex-direction: column;
+    text-align: left;
+    gap: 1rem;
+}
+
+.Template_BoldNavy {
+    /* Layout specific */
+    .split-ctnr {
+        display: flex;
+        align-items: start;
+        gap: 2rem;
+    }
+    
+    .split-left, .split-right {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid lightgrey; */
+        gap: 2rem;
+    }
+    
+    .split-left { flex: .5; }
+    .split-right { flex: 1; }
+    
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .entry-head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: .25rem;
+    
+        div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        div:first-child { text-align: left; }
+        div:last-child { text-align: right; }
+    }
+
+
+    /* Text */
+    .p-sec {
+        color: navy;
+        border-bottom: 2px solid navy;
+        padding-bottom: .25rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        /* text-transform: uppercase; */
+    }
+
+    .p-main {
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .p-date { font-weight: 600; }
+
+    ul { padding-left: 1.25rem }
+
+
+    /* Header */
+    .resume-header {
+        background: navy;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        
+        /* h1 { font-family:Georgia, 'Times New Roman', Times, serif; } */
+        p { text-transform: uppercase; }
+    }
+    
+    
+    /* Contact specific */
+    .contact-list {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+    }
+    .contact {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    
+        img {
+            max-width: 1rem;
+            opacity: .9;
+        }
+    }
+}

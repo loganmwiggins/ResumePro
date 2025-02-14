@@ -17,7 +17,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Template_Minimal from './components/Templates/Template_Minimal';
-import Template_Bold from './components/Templates/Template_Bold';
+import Template_Bold from './components/Templates/Template_BoldNavy';
 import ResumePreview from './pages/ResumePreview';
 
 function App() {
