@@ -1,11 +1,12 @@
 import React from 'react';
 import Template_Minimal from './Template_Minimal';
-
+import Template_Classic from './Template_Classic';
 function AllTemplates({ selectedTemplate, resumeData, viewMode }) { // Planning to possibly include condition to change resume template on the resume builder page
 
     // We can add more templates here as we create them
     const templates = [
-        { id: "minimal", name: "Minimal", component: Template_Minimal }
+        { id: "minimal", name: "Minimal", component: Template_Minimal },
+        { id: "classic", name: "Classic", component: Template_Classic }
     ];
 
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
