@@ -17,13 +17,14 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Template_Minimal from './components/Templates/Template_Minimal';
+import Template_Bold from './components/Templates/Template_Bold';
 import ResumePreview from './pages/ResumePreview';
 
 function App() {
   const location = useLocation();
   
   // Define routes where Nav should be hidden
-  const hideNavRoutes = ["/login", "/signup"];
+  const hideNavRoutes = ["/login", "/signup", "/template-bold"];
   
   return (
     < UserProvider>
@@ -42,7 +43,6 @@ function App() {
         {/* Authorized routes */}
         <Route path="/home" element={<Home />} />
         <Route path="/templates" element={<TemplateSelection />} />
-        {/* <Route path="/builder/:templateId" element={<ResumeBuilder />} /> */}
         <Route path="/builder/:templateId/:resumeId?" element={<ResumeBuilder />} />
         <Route path="/preview/:resumeId" element={<ResumePreview />} />
 
@@ -58,6 +58,8 @@ function App() {
 
         {/* WILL REMOVE LATER: Templates for viewing */}
         <Route path="/template-minimal" element={<Template_Minimal />} />
+        <Route path="/template-bold" element={<Template_Bold />} />
+
 
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Navigate to="/home" />} />

@@ -19,7 +19,6 @@ function Template_Minimal({ resumeData }) {
         { value: 3, label: "Internship" }
     ];
 
-
     return (
         <div className="resume-paper">
             {/* GENERAL INFORMATION */}

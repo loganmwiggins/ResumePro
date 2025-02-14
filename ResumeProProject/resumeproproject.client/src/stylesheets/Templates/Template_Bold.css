@@ -1,0 +1,56 @@
+.resume-paper {
+    background: white;
+   /* border: 1px solid grey; */
+    width: 850px;
+    height: 1100px;
+    padding: 50px;
+    font-size: .9rem;
+    flex-direction: column;
+    text-align: left;
+    gap: 1rem;
+}
+
+.resume-header {
+    background: navy;
+    color: wheat;
+    padding: 1rem 2rem;
+}
+
+.split-ctnr {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+}
+
+.split-left, .split-right {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgrey;
+    gap: 2rem;
+    /* padding: 0 1rem; */
+}
+
+.split-left {
+    flex: .5;
+}
+
+.split-right {
+    flex: 1;
+}
+
+section {
+    h2 {
+        color: navy;
+        border-color: navy;
+    }
+}
+
+
+/* Contact specific */
+.contact {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    img { max-width: 1rem; }
+}
