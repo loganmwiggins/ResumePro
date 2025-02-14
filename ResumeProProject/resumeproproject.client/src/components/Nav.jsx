@@ -8,7 +8,7 @@ import '../stylesheets/Nav.css';
 
 function Nav() {
     const navigate = useNavigate();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleTitleClick = () => { navigate("/home"); };
@@ -46,7 +46,7 @@ function Nav() {
                 </div>
 
                 <div className="directory">
-                    {loading ? (
+                    {userLoading ? (
                         <div className="loading-spinner"></div>
                     ) : user ? (
                     // If user is logged in...

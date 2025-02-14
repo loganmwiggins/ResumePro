@@ -21,14 +21,14 @@ function AuthorizeView({ children }) {
             try {
                 let response = await fetch(url, options);
                 if (response.status === 200) {
-                    console.log("Authorized");
+                    // console.log("Authorized");
                     let data = await response.json();
                     setUser({ email: data.email });
                     setAuthorized(true);
                     return response;
                 }
                 else if (response.status === 401) {
-                    console.log("Unauthorized");
+                    // console.log("Unauthorized");
                     return response;
                 }
                 else {

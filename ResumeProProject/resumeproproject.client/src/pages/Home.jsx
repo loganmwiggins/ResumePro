@@ -9,8 +9,9 @@ import '../stylesheets/Home.css';
 
 function Home() {
     const navigate = useNavigate();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
+    const [resumesLoading, setResumesLoading] = useState(true);
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -52,6 +53,8 @@ function Home() {
         if (!user || !user.id) return;
 
         const fetchResumes = async () => {
+            setResumesLoading(true); // Start loading
+
             try {
                 const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
 
@@ -68,13 +71,17 @@ function Home() {
                     setResumes([]);
                     return;
                 }
-
-                setResumes(data); // Assuming API returns an array of resumes
+                else {
+                    setResumes(data); // Assuming API returns an array of resumes
+                }
             }
             catch (error) {
                 console.error('(catch) Error fetching resumes:', error);
                 showToast("An error occurred.", "error");
                 setResumes([]);
+            }
+            finally {
+                setResumesLoading(false);   // Stop loading
             }
         };
 
@@ -112,9 +119,9 @@ function Home() {
         navigate(`/insights/${resumeId}`);
     }
 
-    const handleEditResume = (resumeId, event) => {
+    const handleEditResume = (templateId, resumeId, event) => {
         event.stopPropagation();
-        navigate(`/edit-resume/${resumeId}`);
+        navigate(`/builder/${templateId}/${resumeId}`);
     }
 
     const handleDeleteResume = async (resumeId, event) => {
@@ -145,7 +152,7 @@ function Home() {
 
     return (
         <AuthorizeView>
-            {loading ? (
+            {userLoading ? (
                 <div className="loading-spinner"></div>
             ) : (
                 <div className="page-ctnr">
@@ -169,7 +176,9 @@ function Home() {
                     <div className="my-resumes-ctnr">
                         <h2>My Resumes</h2>
                         <div className="resumes-row">
-                            {Array.isArray(resumes) && resumes.length > 0 ? (
+                            {resumesLoading ? (
+                                <div className="loading-spinner"></div>
+                            ) : Array.isArray(resumes) && resumes.length > 0 ? (
                                 resumes.map((resume, index) => (
                                     <div 
                                         key={resume.resumeId} 
@@ -190,7 +199,6 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
-                                            
                                                 {/* Ellipsis button */}
                                                 <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
                                                     <img src="assets/icons/ellipsis.svg" draggable="false" />
@@ -209,7 +217,7 @@ function Home() {
                                                             <button onClick={(event) => handleInsights(resume.resumeId, event)}>
                                                                 <img src="assets/icons/sparkles.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={(event) => handleEditResume(resume.resumeId, event)}>
+                                                            <button onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}>
                                                                 <img src="assets/icons/pencil.svg" draggable="false" />
                                                             </button>
                                                             <button onClick={(event) => handleDeleteResume(resume.resumeId, event)}>

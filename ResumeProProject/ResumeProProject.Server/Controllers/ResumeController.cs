@@ -29,6 +29,23 @@ namespace ResumeProProject.Server.Controllers
         public List<Project> Projects { get; set; } = new();
     }
 
+    public class UpdateResumeDto
+    {
+        public required Guid resumeId { get; set; }
+        public required string ResumeName { get; set; }
+        public required DateTime updatedDateTime { get; set; }
+        public required string templateId { get; set; }
+        public string thumbnail { get; set; } // Base64-encoded image
+
+        public required GeneralInformation GeneralInformation { get; set; }
+        public Skills Skills { get; set; }
+        public List<Education> Educations { get; set; } = new();
+        public List<Certification> Certifications { get; set; } = new();
+        public List<Experience> Experiences { get; set; } = new();
+        public List<Project> Projects { get; set; } = new();
+
+    }
+
     public class addInsightDTO
     {
         public required Guid resumeId { get; set; }
@@ -292,6 +309,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = await _db.GeneralInformation
            .Where(g => g.ResumeId == resumeId)
@@ -347,6 +365,146 @@ namespace ResumeProProject.Server.Controllers
         }
 
 
+        [HttpPut("Update/{resumeId}")]
+        public async Task<IActionResult> UpdateResume([FromBody] UpdateResumeDto request)
+        {
+            var existingResume = await _db.Resumes
+                .Include(r => r.GeneralInformation)
+                .Include(r => r.Skills)
+                .Include(r => r.Educations)
+                .Include(r => r.Certifications)
+                .Include(r => r.Experiences)
+                .Include(r => r.Projects)
+                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            if (existingResume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+
+            // Update Resume properties
+            existingResume.Name = request.ResumeName;
+            existingResume.UpdatedDateTime = request.updatedDateTime;
+            existingResume.TemplateId = request.templateId;
+            existingResume.Thumbnail = request.thumbnail;
+
+            existingResume.TemplateId = request.templateId;
+            // Update General Information
+            if (existingResume.GeneralInformation != null)
+            {
+                existingResume.GeneralInformation.FirstName = request.GeneralInformation.FirstName;
+                existingResume.GeneralInformation.MiddleName = request.GeneralInformation.MiddleName;
+                existingResume.GeneralInformation.LastName = request.GeneralInformation.LastName;
+                existingResume.GeneralInformation.Email = request.GeneralInformation.Email;
+                existingResume.GeneralInformation.PhoneNumber = request.GeneralInformation.PhoneNumber;
+                existingResume.GeneralInformation.WebsiteUrl = request.GeneralInformation.WebsiteUrl;
+                existingResume.GeneralInformation.LinkedInUrl = request.GeneralInformation.LinkedInUrl;
+                existingResume.GeneralInformation.GitHubUrl = request.GeneralInformation.GitHubUrl;
+            }
+            else
+            {
+                existingResume.GeneralInformation = request.GeneralInformation;
+            }
+
+            if (existingResume.Skills != null)
+            {
+                existingResume.Skills.SkillsDataJson = request.Skills.SkillsDataJson;
+            }
+            else
+            {
+                existingResume.Skills = request.Skills;
+            }
+
+            _db.Education.RemoveRange(existingResume.Educations);
+            await _db.SaveChangesAsync();
+
+            existingResume.Educations.Clear(); 
+            foreach (var edu in request.Educations)
+            {
+                existingResume.Educations.Add(new Education
+                {
+                    ResumeId = request.resumeId,
+                    SchoolName = edu.SchoolName,
+                    DegreeType = edu.DegreeType,
+                    GPA = edu.GPA,
+                    Major = edu.Major,
+                    Minor = edu.Minor,
+                    StartDate = edu.StartDate,
+                    EndDate = edu.EndDate
+                });
+            }
+
+            _db.Certifications.RemoveRange(existingResume.Certifications);
+            await _db.SaveChangesAsync();
+            existingResume.Certifications.Clear(); 
+            foreach (var cert in request.Certifications)
+            {
+                existingResume.Certifications.Add(new Certification
+                {
+                    ResumeId = request.resumeId,
+                    Issuer = cert.Issuer,
+                    IssueDate = cert.IssueDate,
+                    Name = cert.Name
+                });
+            }
+
+            _db.Experiences.RemoveRange(existingResume.Experiences);
+            await _db.SaveChangesAsync(); 
+            existingResume.Experiences.Clear();
+            foreach (var exp in request.Experiences)
+            {
+                existingResume.Experiences.Add(new Experience
+                {
+                    ResumeId = request.resumeId,
+                    CompanyName = exp.CompanyName,
+                    OfficeType = exp.OfficeType,
+                    JobType = exp.JobType,
+                    Description = exp.Description,
+                    Role = exp.Role,
+                    Location = exp.Location,
+                    IsCurrent = exp.IsCurrent,
+                    StartDate = exp.StartDate,
+                    EndDate = exp.EndDate       
+                });
+            }
+
+
+            _db.Projects.RemoveRange(existingResume.Projects);
+            await _db.SaveChangesAsync(); 
+            existingResume.Projects.Clear(); 
+            foreach (var proj in request.Projects)
+            {
+                existingResume.Projects.Add(new Project
+                {
+                    ResumeId = request.resumeId,
+                    Title = proj.Title,
+                    Description = proj.Description,
+                    StartDate = proj.StartDate,
+                    EndDate = proj.EndDate
+                });
+            }
+
+        
+            await _db.SaveChangesAsync();
+            return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // INSIGHTS CONTROLLER ACTIONS
         [HttpPost("AddInsight")]
         public async Task<IActionResult> AddInsight([FromBody] addInsightDTO request)
         {

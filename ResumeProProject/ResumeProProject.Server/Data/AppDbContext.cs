@@ -50,14 +50,14 @@ namespace ResumeProProject.Server.Data
             // Resume → GeneralInformation (One-to-One)
             modelBuilder.Entity<GeneralInformation>()
                 .HasOne(g => g.Resume)
-                .WithOne()
+                .WithOne(Resume => Resume.GeneralInformation)
                 .HasForeignKey<GeneralInformation>(g => g.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Resume → Insights (One-to-One)
             modelBuilder.Entity<Insight>()
                 .HasOne(g => g.Resume)
-                .WithOne()
+                .WithOne(Resume => Resume.Insights)
                 .HasForeignKey<Insight>(g => g.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -85,7 +85,7 @@ namespace ResumeProProject.Server.Data
             // Resume → Skills (One-to-Many)
             modelBuilder.Entity<Skills>()
                 .HasOne(s => s.Resume)
-                .WithOne()
+                .WithOne(Resume => Resume.Skills)
                 .HasForeignKey<Skills>(s => s.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 

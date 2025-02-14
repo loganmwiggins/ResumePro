@@ -8,7 +8,7 @@ import { useUser } from "../context/UserContext";
 
 function EditProfile() {
     const navigate = useNavigate();
-    const { user, loading, setUser } = useUser();
+    const { user, userLoading } = useUser();
 
     const [formData, setFormData] = useState({
         firstName: user?.firstName || "",
@@ -68,7 +68,7 @@ function EditProfile() {
                 </div>
             </div>
 
-            {loading ? (
+            {userLoading ? (
                 <div className="loading-spinner"></div>
             ) : (
                 <form className="edit-profile-form">
