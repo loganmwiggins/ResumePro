@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
@@ -15,12 +16,30 @@ function ResumeInsights() {
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(''); // New state to store AI response
 
+  const [showTitleInfo, setShowTitleInfo] = useState(false);
+  const [showInputInfo, setShowInputInfo] = useState(false);
+
   // Call fetchResumeInsights (on mount) to automatically trigger the process
   useEffect(() => {
     if (resumeId) {
       fetchResumeInsights(); 
     }
+
+    // Logic for info textboxes
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".info-item")) {
+          setShowInputInfo(false);
+          setShowTitleInfo(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [resumeId]);
+
+  useEffect(() => {
+    
+}, []);
 
   // Helper function to determine color based on score
   const getScoreColorClass = (score) => {
@@ -32,10 +51,19 @@ function ResumeInsights() {
 
     const percentage = (numerator / denominator) * 100; // Convert to percentage
 
-    if (percentage >= 80) return "circle-green";  
-    if (percentage >= 50) return "circle-yellow";  
-    return "circle-red";  // Ensure 0% falls in this range
+    if (percentage >= 80) return "score-green";  
+    if (percentage >= 50) return "score-yellow";  
+    return "score-red";  // Ensure 0% falls in this range
   };
+
+  const toggleInfoText = (type) => {
+    if (type == "title") {
+      setShowTitleInfo(!showTitleInfo);
+    }
+    else if (type == "input") {
+      setShowInputInfo(!showInputInfo);
+    }
+  }
 
   const fetchResumeInsights = async () => {
     setError('');
@@ -183,19 +211,60 @@ function ResumeInsights() {
         {/* AI feedback */}
         {aiResult && (
           <div className="feedback-ctnr">
-            <h2>Evaluation for "{resumeData.resumeName}"</h2>
+            <div className="feedback-head">
+              <div className="feedback-title">
+                <img src="/assets/icons/sparkles.svg" draggable="false" />
+                <h2>"{resumeData.resumeName}"</h2>
+              </div>
+              <div className="feedback-title">
+                <div className="info-item">
+                  <img 
+                    src="/assets/icons/info.svg" 
+                    draggable="false" 
+                    className="info-icon"
+                    title=""
+                    onClick={() => toggleInfoText("input")}
+                  />
+                  <AnimatePresence>
+                    {showInputInfo && (
+                      <motion.div
+                        className="info-txt"
+                        initial={{ opacity: 0, y: 10}}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
+                        <span>Enter a job title if you want to tailor your results to a specific role. Re-analyze any time you want (even without a job title).</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
-            {Object.entries(aiResult).map(([section, data]) => (
-              <div key={section} className="feedback-item">
+                <input
+                  type="text" 
+                  placeholder="Desired job title (optional)" 
+                />
+                <button className="btn btn-black">Re-analyze</button>
+              </div>
+            </div>
+
+            {Object.entries(aiResult).map(([section, data], index) => (
+              <motion.div 
+                key={section} 
+                className="feedback-item"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: `${index * 0.2}` }}
+              >
                 <div>
                   <h3>{section}</h3>
                   <p>{data.comments}</p>
                 </div>
-                <div className="score">
-                  <h2>{data.score}</h2>
-                  <div className={`score-circle ${getScoreColorClass(data.score)}`}></div>
+                <div className={`score ${getScoreColorClass(data.score)}`}>
+                  <div className="score-circle"></div>
+                  <p>{data.score}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

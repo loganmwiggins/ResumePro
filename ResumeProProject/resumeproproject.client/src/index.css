@@ -103,7 +103,7 @@ form {
   display: flex;
   flex-direction: column !important;
 }
-form input {
+form input, input {
   width: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: .85rem;
