@@ -103,6 +103,7 @@ form {
   display: flex;
   flex-direction: column !important;
 }
+
 form input, select {
   width: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
