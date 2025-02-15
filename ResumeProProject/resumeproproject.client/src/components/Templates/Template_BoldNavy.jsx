@@ -98,7 +98,7 @@ function Template_BoldNavy({ data }) {
                     {data.skills?.skillsDataJson && Object.keys(data.skills.skillsDataJson).length > 0 && (
                         <section>
                             <p className="p-sec">Skills</p>
-                            <div>
+                            <div className="skills-list">
                                 {Object.entries(data.skills.skillsDataJson).map(([category, skillsObj]) => (
                                     <div key={category}>
                                         <p className="p-main">{category}:</p>
