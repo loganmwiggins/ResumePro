@@ -9,6 +9,7 @@ import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
 import AllTemplates from '../components/Templates/AllTemplates';
+import { templates } from '../utils/TemplateList';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
@@ -27,9 +28,8 @@ function ResumeBuilder() {
     const resumeRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
+    const [templateId, setTemplateId] = useState(params.templateId);
 
-    // Extract templateId from URL
-    const templateId = params.templateId;
     const updateResumeId = params.resumeId;
 
     // When user data is available, initialize resumeData with default values
@@ -98,6 +98,16 @@ function ResumeBuilder() {
         }
     };
 
+    const handleTemplateChange = (template) => {
+        setTemplateId(template);
+        setResumeData((prevResume) => {
+            return {
+                ...prevResume,
+                templateId: template
+            }
+        });
+    }
+
     const handleNext = () => {
         setCurrentStep((prev) => Math.min(prev + 1, 5));
     };
@@ -132,7 +142,7 @@ function ResumeBuilder() {
                 ...prevResume,
                 resumeName: newName
             }
-        })
+        });
     }
 
     const handleAddSkillCategory = (category) => {
@@ -222,7 +232,7 @@ function ResumeBuilder() {
     };
     
     const handleCancel = () => {
-        showToast("Resume abandoned.", "warning");
+        showToast("Changes were not saved", "warning", "Resume abandoned");
         navigate("/home");
     }
 
@@ -335,6 +345,15 @@ function ResumeBuilder() {
                                 onChange={(e) => handleNameChange(e.target.value)}
                                 required
                             />
+                            <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
+                                {/* Dynamically populated from TemplateList.jsx */}
+                                {templates.map((template) => (
+                                    <option key={template.id} value={template.id}>
+                                        {template.name}
+                                    </option>
+                                ))}
+                            </select>
+
                             <motion.button 
                                 type="button" 
                                 className="btn btn-outline" 
