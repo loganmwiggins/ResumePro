@@ -35,7 +35,7 @@ function TemplateSelection() {
         </div>
 
         {/* Bold Navy template */}
-        <div className="template" onClick={() => handleTemplateSelect("bold navy", "Bold Navy")}>
+        <div className="template" onClick={() => handleTemplateSelect("bold-navy", "Bold Navy")}>
           <div className="template-img">
             <img src="/assets/template-thumbnails/boldNavy-thumbnail.png" draggable="false" />
           </div>

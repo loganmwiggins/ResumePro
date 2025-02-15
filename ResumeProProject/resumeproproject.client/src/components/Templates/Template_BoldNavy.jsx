@@ -95,69 +95,63 @@ function Template_BoldNavy({ data }) {
                     )}
 
                     {/* SKILLS */}
-                    <section>
-                        <p className="p-sec">Skills</p>
-                        <div>
-                            <p className="p-main">Languages & Frameworks</p>
-                            <p>C#, ASP.NET, Entity Framework, SQL, Angular, React, HTML, CSS, JavaScript</p>
-                        </div>
-                        <div>
-                            <p className="p-main">Development Tools</p>
-                            <p>C#, ASP.NET, Entity Framework, SQL, Angular, React, HTML, CSS, JavaScript</p>
-                        </div>
-                    </section>
+                    {data.skills?.skillsDataJson && Object.keys(data.skills.skillsDataJson).length > 0 && (
+                        <section>
+                            <p className="p-sec">Skills</p>
+                            <div>
+                                {Object.entries(data.skills.skillsDataJson).map(([category, skillsObj]) => (
+                                    <div key={category}>
+                                        <p className="p-main">{category}:</p>
+                                        <p>{Array.from(skillsObj).join(", ")}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
                 </div>
 
 
                 <div className="split-right">
                     {/* EXPERIENCE */}
-                    <section>
-                        <p className="p-sec">Experience</p>
-                        <div>
-                            <div className="entry-head">
-                                <div>
-                                    <p className="p-main">Software Engineer</p>
-                                    <p>Microsoft | Full-time | Hybrid</p>
-                                </div>
-                                <div>
-                                    <p className="p-date">Jun 2021 - Jul 2025</p>
-                                    <p>Tallahassee, FL</p>
-                                </div>
-                            </div>
-                            <p>
-                                <ul>
-                                    <li>Hello</li>
-                                    <li>Hello</li>
-                                    <li>Hello</li>
-                                </ul>
-                            </p>
-                        </div>
-                        {/* <div key={exp.description}>
-                            <div className="entry-head">
-                                <div>
-                                    <h3>{exp.role}</h3>
-                                    <p>
-                                        {exp.companyName} {exp.jobType != null && (
-                                            `| ${jobTypeOptions[exp.jobType].label}`
-                                        )} {exp.officeType != null && (
-                                            `| ${officeTypeOptions[exp.officeType].label}`
-                                        )}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p>
-                                        {exp.startDate && (
-                                            `${formatDate(exp.startDate, {month:true, year:true})}`
-                                        )} {exp.endDate && (
-                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                        ) || "- Present"}
-                                    </p>
-                                    <p>{exp.location}</p>
-                                </div>
-                            </div>
-                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
-                        </div> */}
-                    </section>
+                    {data.experiences.length > 0 && (
+                        <section>
+                            <p className="p-sec">Experience</p>
+                            {data.experiences.map(exp => {
+                                let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
+                                    ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                                });
+
+                                return(
+                                    <div key={exp.description}>
+                                        <div className="entry-head">
+                                            <div>
+                                                <p className="p-main">{exp.role}</p>
+                                                <p>
+                                                    {exp.companyName} {exp.jobType != null && (
+                                                        `| ${jobTypeOptions[exp.jobType].label}`
+                                                    )} {exp.officeType != null && (
+                                                        `| ${officeTypeOptions[exp.officeType].label}`
+                                                    )}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p className="p-date">
+                                                    {exp.startDate && (
+                                                        `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                    )} {exp.endDate && (
+                                                        `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                    ) || "- Present"}
+                                                </p>
+                                                <p>{exp.location}</p>
+                                            </div>
+                                        </div>
+
+                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    </div>
+                                );
+                            })}
+                        </section>
+                    )}
 
                     {/* PROJECTS */}
                     {data.projects.length > 0 && (

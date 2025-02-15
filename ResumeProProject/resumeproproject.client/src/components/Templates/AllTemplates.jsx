@@ -8,7 +8,7 @@ function AllTemplates({ selectedTemplate, resumeData, viewMode }) { // Planning 
     // Add more templates here as we create them
     const templates = [
         { id: "minimal", name: "Minimal", component: Template_Minimal },
-        { id: "bold navy", name: "Bold Navy", component: Template_BoldNavy },
+        { id: "bold-navy", name: "Bold Navy", component: Template_BoldNavy },
     ];
 
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
