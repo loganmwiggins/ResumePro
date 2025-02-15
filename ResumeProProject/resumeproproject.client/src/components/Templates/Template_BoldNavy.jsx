@@ -72,14 +72,27 @@ function Template_BoldNavy({ data }) {
                     </section>
 
                     {/* CERTIFICATIONS */}
-                    <section>
-                        <p className="p-sec">Certifications</p>
-                        <div>
-                            <p className="p-main">Azure Fundamentals</p>
-                            <p className="p-date">Issued by Microsoft</p>
-                            <p>Dec 2024 - Dec 2026</p>
-                        </div>
-                    </section>
+                    {data.certifications.length > 0 && (
+                        <section>
+                            <p className="p-sec">Certifications</p>
+                            {data.certifications.map(cert => (
+                                <div key={cert.name}>
+                                    <p className="p-main">{cert.name}</p>
+                                    {cert.issuer && (
+                                        <p className="p-date">Issued by {cert.issuer}</p>
+                                    )}
+                                    
+                                    <p>
+                                        {cert.issueDate && (
+                                            `${formatDate(cert.issueDate, {month:true, year:true})}` 
+                                        )} {cert.expireDate && (
+                                            `- ${formatDate(cert.expireDate, {month:true, year:true})}`
+                                        )}
+                                    </p>
+                                </div>
+                            ))}
+                        </section>
+                    )}
 
                     {/* SKILLS */}
                     <section>
@@ -94,6 +107,8 @@ function Template_BoldNavy({ data }) {
                         </div>
                     </section>
                 </div>
+
+
                 <div className="split-right">
                     {/* EXPERIENCE */}
                     <section>
@@ -145,44 +160,76 @@ function Template_BoldNavy({ data }) {
                     </section>
 
                     {/* PROJECTS */}
-                    <section>
-                        <p className="p-sec">Projects</p>
-                        <div>
-                            <div className="entry-head">
-                                <div>
-                                    <p className="p-main">Project Name</p>
-                                </div>
-                                <div>
-                                    <p className="p-date">Jun 2021 - Jul 2025</p>
-                                </div>
-                            </div>
-                            <p>
-                                <ul>
-                                    <li>Hello</li>
-                                    <li>Hello</li>
-                                    <li>Hello</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </section>
+                    {data.projects.length > 0 && (
+                        <section>
+                            <p className="p-sec">Projects</p>
+                            {data.projects.map(proj => {
+                                let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
+                                    ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                                });
+
+                                return(
+                                    <div key={proj.title}>
+                                        <div className="entry-head">
+                                            <div>
+                                                <p className="p-main">{proj.title}</p>
+                                            </div>
+                                            <div>
+                                            <p className="p-date">
+                                                {proj.startDate && (
+                                                    `${formatDate(proj.startDate, {month:true, year:true})}`
+                                                )} {proj.endDate && (
+                                                    `- ${formatDate(proj.endDate, {month:true, year:true})}`
+                                                )}
+                                            </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    </div>
+                                );
+                            })}
+                        </section>
+                    )}
                     
                     {/* EDUCATION */}
-                    <section>
-                        <p className="p-sec">Education</p>
-                        <div>
-                            <div className="entry-head">
-                                <div>
-                                    <p className="p-main">Bachelor of Science in computer science</p>
+                    {data.educations.length > 0 && (
+                        <section>
+                            <p className="p-sec">Education</p>
+                            {data.educations.map(edu => (
+                                <div key={edu.startDate}>
+                                    <div className="entry-head">
+                                        <div>
+                                            <p className="p-main">
+                                                {edu.degreeType} {edu.major && (`in ${edu.major}`)}
+                                            </p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p className="p-date">
+                                                {edu.startDate && (
+                                                    `${formatDate(edu.startDate, {month:true, year:true})}`
+                                                )} {edu.endDate && (
+                                                    `- ${formatDate(edu.endDate, {month:true, year:true})}`
+                                                )}
+                                            </p>
+                                            <p>
+                                                {edu.schoolLocation && (
+                                                    `${edu.schoolLocation}`
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>{edu.minor && (`Minor in ${edu.minor}`)}</p>
+                                    <p>
+                                        {edu.schoolName} {edu.gpa && (
+                                            `| GPA: ${edu.gpa} / 4.0`
+                                        )}
+                                    </p>
                                 </div>
-                                <div>
-                                    <p className="p-date">Aug 2020 - May 2024</p>
-                                    <p>Tallahassee, FL</p>
-                                </div>
-                            </div>
-                            <p className="p-date">Minor in Computer Science</p>
-                            <p>Florida State University | GPA: 4.0 / 4.0</p>
-                        </div>
-                    </section>
+                            ))}
+                        </section>
+                    )}
                 </div>
             </div>
         </div>
