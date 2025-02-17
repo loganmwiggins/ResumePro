@@ -2,23 +2,10 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
 function Template_Minimal({ data }) {
-
-    const officeTypeOptions = [
-        { value: 0, label: "On-site" },
-        { value: 1, label: "Remote" },
-        { value: 2, label: "Hybrid" }
-    ];
-
-    const jobTypeOptions = [
-        { value: 0, label: "Full-time" },
-        { value: 1, label: "Part-time" },
-        { value: 2, label: "Volunteer" },
-        { value: 3, label: "Internship" }
-    ];
-
     return (
         <div className="resume-paper Template_Minimal">
             {/* GENERAL INFORMATION */}

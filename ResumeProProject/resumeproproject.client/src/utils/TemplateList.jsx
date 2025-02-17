@@ -1,7 +1,8 @@
 // Add more templates here when they are created
 
-import Template_Minimal from "../components/Templates/Template_Minimal";
-import Template_BoldNavy from "../components/Templates/Template_BoldNavy";
+import Template_Minimal from '../components/Templates/Template_Minimal';
+import Template_BoldNavy from '../components/Templates/Template_BoldNavy';
+import Template_Skyline from '../components/Templates/Template_Skyline'
 
 export const templates = [
     // Minimal
@@ -19,6 +20,15 @@ export const templates = [
         tagline: "Strong lines, bold type, and a commanding navy presence",
         imgPath: "/assets/template-thumbnails/boldNavy-thumbnail.png",
         component: Template_BoldNavy 
+    },
+    // Skyline
+    {
+        id: "skyline",
+        name: "Skyline",
+        // tagline: "Light, airy, and professional like a clear blue sky",
+        tagline: "A strong yet calming presence",
+        imgPath: "/assets/template-thumbnails/skyline-thumbnail.png",
+        component: Template_Skyline
     },
     
     // Add more ...

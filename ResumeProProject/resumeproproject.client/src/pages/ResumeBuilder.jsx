@@ -232,7 +232,7 @@ function ResumeBuilder() {
     };
     
     const handleCancel = () => {
-        showToast("Changes were not saved", "warning", "Resume abandoned");
+        showToast("Changes were not saved", "warning", "Resume Abandoned");
         navigate("/home");
     }
 
