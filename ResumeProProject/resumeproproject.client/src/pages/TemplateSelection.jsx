@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../stylesheets/TemplateSelection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
+import { templates } from '../utils/TemplateList';
 
 function TemplateSelection() {
   const navigate = useNavigate();
@@ -17,35 +18,24 @@ function TemplateSelection() {
     <AuthorizeView>
       <div className="page-header">
         <h1>Choose a Template</h1>
-        <p>Let's get started! Click on a template to start editing.</p>
+        <p>Let's get started! Pick a template to start editing.</p>
       </div>
 
       <div className="templates-row">
-        {/* Minimal template */}
-        <div className="template" onClick={() => handleTemplateSelect("minimal", "Minimal")}>
-          <div className="template-img">
-            <img src="/assets/template-thumbnails/minimal-thumbnail.png" draggable="false" />
-          </div>
-          <div className="template-info">
-            <div className="template-txt">
-              <p>Minimal</p>
-              <p>A simple and easy resume that promotes professionalism</p>
+        {/* Dynamically populated from TemplateList.jsx */}
+        {templates.map((template, index) => (
+          <div className="template" onClick={() => handleTemplateSelect(`${template.id}`, `${template.name}`)}>
+            <div className="template-img">
+              <img src={template.imgPath} draggable="false" />
+            </div>
+            <div className="template-info">
+              <div className="template-txt">
+                <p>{template.name}</p>
+                <p>{template.tagline}</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Bold Navy template */}
-        <div className="template" onClick={() => handleTemplateSelect("bold-navy", "Bold Navy")}>
-          <div className="template-img">
-            <img src="/assets/template-thumbnails/boldNavy-thumbnail.png" draggable="false" />
-          </div>
-          <div className="template-info">
-            <div className="template-txt">
-              <p>Bold Navy</p>
-              <p>A bold navy blue based template with solid colors and capitalization</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </AuthorizeView>
   );
