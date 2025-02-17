@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../stylesheets/TemplateSelection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
+import { templates } from '../utils/TemplateList';
 
 function TemplateSelection() {
   const navigate = useNavigate();
@@ -21,6 +22,13 @@ function TemplateSelection() {
       </div>
 
       <div className="templates-row">
+        {/* Dynamically populated from TemplateList.jsx */}
+        {/* {templates.map((template, index) => {
+          <div className="template">
+            <h2>{template.name}</h2>
+          </div>
+        })} */}
+
         {/* Minimal template */}
         <div className="template" onClick={() => handleTemplateSelect("minimal", "Minimal")}>
           <div className="template-img">
