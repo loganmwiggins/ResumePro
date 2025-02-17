@@ -7,7 +7,7 @@ import LogoutLink from '../components/LogoutLink';
 import { useUser } from "../context/UserContext"; 
 
 function Profile() {
-  const { user, loading } = useUser();
+  const { user, userLoading } = useUser();
   const navigate = useNavigate();
 
   // Function to format DateTime
@@ -24,7 +24,7 @@ function Profile() {
 
   return (
   <AuthorizeView>
-    {loading ? (
+    {userLoading ? (
         <div className="loading-spinner"></div>
     ) : (
       <div className="profile-ctnr">

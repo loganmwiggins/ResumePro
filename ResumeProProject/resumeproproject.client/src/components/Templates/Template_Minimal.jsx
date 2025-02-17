@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/Templates/Template_Minimal.css';
 
-function Template_Minimal({ resumeData }) {
+function Template_Minimal({ data }) {
 
     const officeTypeOptions = [
         { value: 0, label: "On-site" },
@@ -19,20 +19,19 @@ function Template_Minimal({ resumeData }) {
         { value: 3, label: "Internship" }
     ];
 
-
     return (
-        <div className="resume-paper">
+        <div className="resume-paper Template_Minimal">
             {/* GENERAL INFORMATION */}
             <header>
                 <div className="header-left">
-                    <h1>{resumeData.generalInformation.firstName} {resumeData.generalInformation.middleName} {resumeData.generalInformation.lastName}</h1>
+                    <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                     <p>
-                        {resumeData.generalInformation.role} {resumeData.generalInformation.role && resumeData.generalInformation.location && " | "} {resumeData.generalInformation.location}
+                        {data.generalInformation.role} {data.generalInformation.role && data.generalInformation.location && " | "} {data.generalInformation.location}
                     </p>
                 </div>
                 <div className="header-right">
-                    <p>{resumeData.generalInformation.email}</p>
-                    <p>{resumeData.generalInformation.phoneNumber}</p>
+                    <p>{data.generalInformation.email}</p>
+                    <p>{data.generalInformation.phoneNumber}</p>
                 </div>
             </header>
 
@@ -40,22 +39,22 @@ function Template_Minimal({ resumeData }) {
             {/* URLS */}
             <section>
                 <div className="urls">
-                    {resumeData.generalInformation.websiteUrl && (
+                    {data.generalInformation.websiteUrl && (
                         <span>
                             <img src="/assets/icons/web-circle.svg" draggable="false" />
-                            <p>{resumeData.generalInformation.websiteUrl}</p>
+                            <p>{data.generalInformation.websiteUrl}</p>
                         </span>
                     )}
-                    {resumeData.generalInformation.linkedInUrl && (
+                    {data.generalInformation.linkedInUrl && (
                         <span>
                             <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
-                            <p>{resumeData.generalInformation.linkedInUrl}</p>
+                            <p>{data.generalInformation.linkedInUrl}</p>
                         </span>
                     )}
-                    {resumeData.generalInformation.gitHubUrl && (
+                    {data.generalInformation.gitHubUrl && (
                         <span>
                             <img src="/assets/icons/github-circle.svg" draggable="false" />
-                            <p>{resumeData.generalInformation.gitHubUrl}</p>
+                            <p>{data.generalInformation.gitHubUrl}</p>
                         </span>
                     )}
                 </div>
@@ -63,10 +62,10 @@ function Template_Minimal({ resumeData }) {
             
 
             {/* EXPERIENCES */}
-            {resumeData.experiences.length > 0 && (
+            {data.experiences.length > 0 && (
                 <section>
                     <h2>EXPERIENCE</h2>
-                    {resumeData.experiences.map(exp => {
+                    {data.experiences.map(exp => {
                         let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                             ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                         });
@@ -104,10 +103,10 @@ function Template_Minimal({ resumeData }) {
 
 
             {/* PROJECTS */}
-            {resumeData.projects.length > 0 && (
+            {data.projects.length > 0 && (
                 <section>
                     <h2>PROJECTS</h2>
-                    {resumeData.projects.map(proj => {
+                    {data.projects.map(proj => {
                         let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                             ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                         });
@@ -131,10 +130,10 @@ function Template_Minimal({ resumeData }) {
             
 
             {/* CERTIFICATIONS */}
-            {resumeData.certifications.length > 0 && (
+            {data.certifications.length > 0 && (
                 <section>
                     <h2>CERTIFICATIONS</h2>
-                    {resumeData.certifications.map(cert => (
+                    {data.certifications.map(cert => (
                         <div key={cert.name}>
                             <h3>{cert.name}</h3>
                             <p>
@@ -151,11 +150,11 @@ function Template_Minimal({ resumeData }) {
             
             
             {/* SKILLS */}
-            {resumeData.skills?.skillsDataJson && Object.keys(resumeData.skills.skillsDataJson).length > 0 && (
+            {data.skills?.skillsDataJson && Object.keys(data.skills.skillsDataJson).length > 0 && (
                 <section>
                     <h2>SKILLS</h2>
                     <div>
-                        {Object.entries(resumeData.skills.skillsDataJson).map(([category, skillsObj]) => (
+                        {Object.entries(data.skills.skillsDataJson).map(([category, skillsObj]) => (
                             <div className="skill-row" key={category}>
                                 <p><b>{category}:</b> {Array.from(skillsObj).join(", ")}</p>
                             </div>
@@ -166,10 +165,10 @@ function Template_Minimal({ resumeData }) {
 
 
             {/* EDUCATION */}
-            {resumeData.educations.length > 0 && (
+            {data.educations.length > 0 && (
                 <section>
                     <h2>EDUCATION</h2>
-                    {resumeData.educations.map(edu => (
+                    {data.educations.map(edu => (
                         <div key={edu.startDate}>
                             <div className="entry-head">
                                 <div>

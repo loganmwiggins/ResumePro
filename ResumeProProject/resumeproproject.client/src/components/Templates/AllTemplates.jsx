@@ -1,12 +1,7 @@
 import React from 'react';
-import Template_Minimal from './Template_Minimal';
+import { templates } from '../../utils/TemplateList';   // Update this file to add a new template
 
-function AllTemplates({ selectedTemplate, resumeData, viewMode }) { // Planning to possibly include condition to change resume template on the resume builder page
-
-    // We can add more templates here as we create them
-    const templates = [
-        { id: "minimal", name: "Minimal", component: Template_Minimal }
-    ];
+function AllTemplates({ selectedTemplate, resumeData, viewMode }) {
 
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
 
@@ -33,7 +28,8 @@ function AllTemplates({ selectedTemplate, resumeData, viewMode }) { // Planning 
             transform: `scale(${scale})`,
             transformOrigin: "top left",
         };
-    } else if (viewMode === "preview") {
+    } 
+    else if (viewMode === "preview") {
         scaleStyle = {
             transform: "none",
             width: "100%",
@@ -43,7 +39,7 @@ function AllTemplates({ selectedTemplate, resumeData, viewMode }) { // Planning 
 
     return (
         <div className="resume-scale-ctnr" style={scaleStyle}>
-            <selectedTemplateObj.component resumeData={resumeData} />
+            <selectedTemplateObj.component data={resumeData} />
         </div>
     );
 }

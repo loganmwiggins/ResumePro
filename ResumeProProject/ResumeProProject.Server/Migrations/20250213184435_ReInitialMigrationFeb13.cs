@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ResumeProProject.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrationWithIdentity : Migration
+    public partial class ReInitialMigrationFeb13 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,8 @@ namespace ResumeProProject.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
                     DateJoined = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CoreResumeId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -51,19 +53,6 @@ namespace ResumeProProject.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Templates",
-                columns: table => new
-                {
-                    TemplateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Templates", x => x.TemplateId);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,7 +168,9 @@ namespace ResumeProProject.Server.Migrations
                     ResumeId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     UpdatedDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Id = table.Column<string>(type: "text", nullable: true)
+                    TemplateId = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: true),
+                    Thumbnail = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,12 +212,13 @@ namespace ResumeProProject.Server.Migrations
                     EducationId = table.Column<Guid>(type: "uuid", nullable: false),
                     ResumeId = table.Column<Guid>(type: "uuid", nullable: false),
                     SchoolName = table.Column<string>(type: "text", nullable: false),
+                    SchoolLocation = table.Column<string>(type: "text", nullable: true),
                     DegreeType = table.Column<string>(type: "text", nullable: false),
                     GPA = table.Column<double>(type: "double precision", nullable: true),
                     Major = table.Column<string>(type: "text", nullable: false),
                     Minor = table.Column<string>(type: "text", nullable: true),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: true)
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,11 +241,11 @@ namespace ResumeProProject.Server.Migrations
                     Role = table.Column<string>(type: "text", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    IsCurrent = table.Column<bool>(type: "boolean", nullable: false),
+                    IsCurrent = table.Column<bool>(type: "boolean", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: true),
-                    OfficeType = table.Column<string>(type: "text", nullable: false),
-                    JobType = table.Column<string>(type: "text", nullable: false)
+                    OfficeType = table.Column<string>(type: "text", nullable: true),
+                    JobType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -277,6 +269,8 @@ namespace ResumeProProject.Server.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    Role = table.Column<string>(type: "text", nullable: true),
+                    Location = table.Column<string>(type: "text", nullable: true),
                     WebsiteUrl = table.Column<string>(type: "text", nullable: true),
                     LinkedInUrl = table.Column<string>(type: "text", nullable: true),
                     GitHubUrl = table.Column<string>(type: "text", nullable: true)
@@ -293,12 +287,34 @@ namespace ResumeProProject.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Insights",
+                columns: table => new
+                {
+                    InsightId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ResumeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insights", x => x.InsightId);
+                    table.ForeignKey(
+                        name: "FK_Insights_Resumes_ResumeId",
+                        column: x => x.ResumeId,
+                        principalTable: "Resumes",
+                        principalColumn: "ResumeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
                     ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
                     ResumeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -389,6 +405,12 @@ namespace ResumeProProject.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Insights_ResumeId",
+                table: "Insights",
+                column: "ResumeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_ResumeId",
                 table: "Projects",
                 column: "ResumeId");
@@ -401,7 +423,8 @@ namespace ResumeProProject.Server.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_ResumeId",
                 table: "Skills",
-                column: "ResumeId");
+                column: "ResumeId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -435,13 +458,13 @@ namespace ResumeProProject.Server.Migrations
                 name: "GeneralInformation");
 
             migrationBuilder.DropTable(
+                name: "Insights");
+
+            migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "Skills");
-
-            migrationBuilder.DropTable(
-                name: "Templates");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
