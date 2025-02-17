@@ -418,7 +418,7 @@ namespace ResumeProProject.Server.Controllers
             _db.Education.RemoveRange(existingResume.Educations);
             await _db.SaveChangesAsync();
 
-            existingResume.Educations.Clear(); 
+            existingResume.Educations.Clear();
             foreach (var edu in request.Educations)
             {
                 existingResume.Educations.Add(new Education
@@ -436,7 +436,7 @@ namespace ResumeProProject.Server.Controllers
 
             _db.Certifications.RemoveRange(existingResume.Certifications);
             await _db.SaveChangesAsync();
-            existingResume.Certifications.Clear(); 
+            existingResume.Certifications.Clear();
             foreach (var cert in request.Certifications)
             {
                 existingResume.Certifications.Add(new Certification
@@ -449,7 +449,7 @@ namespace ResumeProProject.Server.Controllers
             }
 
             _db.Experiences.RemoveRange(existingResume.Experiences);
-            await _db.SaveChangesAsync(); 
+            await _db.SaveChangesAsync();
             existingResume.Experiences.Clear();
             foreach (var exp in request.Experiences)
             {
@@ -464,14 +464,14 @@ namespace ResumeProProject.Server.Controllers
                     Location = exp.Location,
                     IsCurrent = exp.IsCurrent,
                     StartDate = exp.StartDate,
-                    EndDate = exp.EndDate       
+                    EndDate = exp.EndDate
                 });
             }
 
 
             _db.Projects.RemoveRange(existingResume.Projects);
-            await _db.SaveChangesAsync(); 
-            existingResume.Projects.Clear(); 
+            await _db.SaveChangesAsync();
+            existingResume.Projects.Clear();
             foreach (var proj in request.Projects)
             {
                 existingResume.Projects.Add(new Project
@@ -484,7 +484,7 @@ namespace ResumeProProject.Server.Controllers
                 });
             }
 
-        
+
             await _db.SaveChangesAsync();
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
@@ -525,7 +525,7 @@ namespace ResumeProProject.Server.Controllers
         {
             var insight = await _db.Insights
                 .Where(i => i.ResumeId == resumeId)
-                .Select(i => i.Content) 
+                .Select(i => i.Content)
                 .FirstOrDefaultAsync();
 
             if (insight == null)
@@ -536,6 +536,23 @@ namespace ResumeProProject.Server.Controllers
             return Ok(insight);
         }
 
+
+        [HttpDelete("DeleteInsight/{resumeId}")]
+
+        public async Task<IActionResult> DeleteInsight(Guid resumeId)
+        {
+            var finsight = await _db.Insights
+                .Where(i => i.ResumeId == resumeId)
+                .FirstOrDefaultAsync();
+
+            if (finsight == null)
+            {
+                return NotFound("No insights found for this resume.");
+            }
+            _db.Insights.Remove(finsight);
+            await _db.SaveChangesAsync();
+            return Ok(new { message = "Insight deleted successfully." });
+        }
 
     }
 }

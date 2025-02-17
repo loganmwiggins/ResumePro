@@ -23,7 +23,7 @@ public class ChatController : ControllerBase
     [HttpPost("ScoreResume")]
     public async Task<IActionResult> ScoreResume([FromBody] OpenAiRequest request)
     {
-        System.Diagnostics.Debug.WriteLine("NORMALIZED:  " +    request.resumeData);
+        System.Diagnostics.Debug.WriteLine("|" +    request.jobTitle + "|");
         var apiUrl = "https://api.openai.com/v1/chat/completions";
 
         //string stringifiedPayload= JsonConvert.SerializeObject(request.Message);
@@ -34,7 +34,7 @@ public class ChatController : ControllerBase
         string promptText = System.IO.File.ReadAllText(filePath);
         //System.Diagnostics.Debug.WriteLine(promptText);
         string toSend = "";
-        if(request.jobTitle != null)
+        if(request.jobTitle.Length > 0)
         {
              toSend = request.resumeData + "   This person is applying for this position :  " + request.jobTitle + ", so make sure the feeback for all sections is tailored for that position. Please note also, that since they" +
                 "are applying for a specific job type, you must review their resume with extreme scrutiny; do NOT award points for simply having sections filled out, you need to evaluate if they are even fit to be working in the field they listed." +
