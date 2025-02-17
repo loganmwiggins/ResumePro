@@ -65,6 +65,13 @@ html {
   p { color: var(--text-third); }
 }
 
+.header-with-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
 /* Buttons */
 .btn {
   display: flex;
@@ -82,6 +89,11 @@ html {
 .btn-black {
   background: #111;
   color: white;
+
+  img {
+    width: 1rem;
+    filter: var(--filter-white);
+  }
 }
 .btn-black:hover { 
   background: #000;
@@ -137,7 +149,7 @@ form {
   flex-direction: column !important;
 }
 
-form input, select {
+form input, input, select {
   width: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: .85rem;

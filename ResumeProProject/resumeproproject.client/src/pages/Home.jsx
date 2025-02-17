@@ -153,9 +153,9 @@ function Home() {
 
         try {
             const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
-                {
-                    method: 'DELETE',
-                });
+            {
+                method: 'DELETE',
+            });
 
             if (!response.ok) {
                 showToast("Error deleting resume.", "error");

@@ -6,6 +6,7 @@ using System.Text.Json;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 [ApiController]
 [Route("/api/[controller]")]
@@ -22,7 +23,7 @@ public class ChatController : ControllerBase
     [HttpPost("ScoreResume")]
     public async Task<IActionResult> ScoreResume([FromBody] OpenAiRequest request)
     {
-        System.Diagnostics.Debug.WriteLine("NORMALIZED:  " +    request.resumeData);
+        System.Diagnostics.Debug.WriteLine("|" +    request.jobTitle + "|");
         var apiUrl = "https://api.openai.com/v1/chat/completions";
 
         //string stringifiedPayload= JsonConvert.SerializeObject(request.Message);
@@ -31,14 +32,21 @@ public class ChatController : ControllerBase
         //string killQuotes = request.Message.Trim('"');
         string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Prompt", "ChadPrompt.txt");
         string promptText = System.IO.File.ReadAllText(filePath);
-        System.Diagnostics.Debug.WriteLine(promptText);
+        //System.Diagnostics.Debug.WriteLine(promptText);
+        string toSend = "";
+        if(request.jobTitle.Length > 0)
+        {
+             toSend = request.resumeData + "   This person is applying for this position :  " + request.jobTitle + ", so make sure the feeback for all sections is tailored for that position. Please note also, that since they" +
+                "are applying for a specific job type, you must review their resume with extreme scrutiny; do NOT award points for simply having sections filled out, you need to evaluate if they are even fit to be working in the field they listed." +
+                "Also take into consideration the role they are applying for and their credentials. If a role is outlandish based on their experience/education do not mince your words.";
+        }else {  toSend = request.resumeData; }
         var requestBody = new
         {
             model = "gpt-4",
             messages = new[]
             {
                  new { role = "system", content = promptText },
-                new { role = "user", content = request.resumeData}
+                new { role = "user", content = toSend}
             }
         };
 
@@ -50,7 +58,7 @@ public class ChatController : ControllerBase
 
         var response = await _httpClient.PostAsync(apiUrl, content1);
         var responseString = await response.Content.ReadAsStringAsync();
-       
+        System.Diagnostics.Debug.WriteLine(responseString);
         return Content(responseString, "text/plain");
     }
 }
@@ -58,4 +66,5 @@ public class ChatController : ControllerBase
 public class OpenAiRequest
 {
     public string resumeData { get; set; }
+    public string jobTitle { get; set; }
 }
