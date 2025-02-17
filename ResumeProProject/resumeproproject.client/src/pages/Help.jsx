@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import '../stylesheets/Help.css';
 
@@ -10,25 +10,34 @@ function Help({ setShowWalkthrough }) {
 
     const steps = [
         {
-            title: "Welcome to ResumePro",
-            description: "Let's get you started by teaching you a little bit about the app.",
+            title: "Welcome to ResumePro!",
+            description: "Let’s take a quick tour of ResumePro to help you get started and make the most of its features.",
+            imgPath: ""
         },
         {
-            title: "Check out the Home page",
-            description: "The Home page is where you can access all of your created resumes. This is also where you will create new resumes.",
+            title: "Manage Resumes on the Home Page",
+            description: "The Home page is your hub for all things resumes. Create, edit, and manage your existing resumes with ease.",
+            imgPath: ""
         },
         {
-            title: "Check out your Profile",
-            description: `The Profile page contains your user information. 
-                          You can edit information pertaining to your account, such as your username, password, and profile picture. 
-                          Access your profile page by clicking the user dropdown in the top right of the navigation bar.`,
+            title: "Customize Your Profile",
+            description: `Your Profile page stores all your personal information. 
+                          Here, you can update your username, password, and profile picture. 
+                          Access it anytime via the user dropdown in the top-right corner.`,
+            imgPath: ""
         },
         {
-            title: "Setting a Default Resume",
-            description: `One of the many useful features in ResumePro is the ability to set a default resume. 
-                          When you set a resume as the default, whenever you create a new resume, it will pre-populate with that information.`,
-        }
-    ];
+            title: "Set a Default Resume",
+            description: `Speed up your workflow by setting a default resume. 
+                          This ensures new resumes start with your preferred template and details pre-filled.`,
+            imgPath: ""
+        },
+        {
+            title: "You're All Set!",
+            description: "That’s it! Now you’re ready to start building and managing your resumes like a pro.",
+            imgPath: ""
+        },
+    ];    
 
     const handleContinue = () => {
         if (currentStep < steps.length - 1) 
@@ -48,13 +57,25 @@ function Help({ setShowWalkthrough }) {
         <div className="page-ctnr-center WalkthroughMenu">
             <div className="help-modal">
                 {/* Step Content */}
-                <div className="step-ctnr">
-                    <h2>{steps[currentStep].title}</h2>
-                    <p>{steps[currentStep].description}</p>
-                    <div className="img-ctnr">
-                        x
-                    </div>
-                </div>
+                <AnimatePresence mode="wait">
+                    <motion.div 
+                        className="step-ctnr"
+                        key={currentStep}
+                        initial={{ opacity: 0, x: 50}}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -50 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                        <div className="step-header">
+                            <h2>{steps[currentStep].title}</h2>
+                            <p>{steps[currentStep].description}</p>
+                        </div>
+                        
+                        <div className="img-ctnr">
+                            Add image
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Actions */}
                 <div className="walkthrough-actions">
@@ -104,6 +125,7 @@ function Help({ setShowWalkthrough }) {
                         <motion.button 
                             type="button" 
                             className="btn btn-outline"
+                            onClick={handleDone}
                             whileTap={{scale: 0.9}}
                         >
                             Skip Walkthrough
