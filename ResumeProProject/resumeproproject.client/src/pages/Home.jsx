@@ -52,6 +52,12 @@ function Home() {
     useEffect(() => {
         if (!user || !user.id) return;
 
+        // Handle first login help walkthrough
+        if (user.isFirstLogin) {
+            handleFirstLogin();
+            return;
+        }
+
         const fetchResumes = async () => {
             setResumesLoading(true); // Start loading
 
@@ -66,14 +72,10 @@ function Home() {
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
-                    console.log("No resumes for this user.");
-                    showToast("Create your first resume.", "info", "Let's get started!");
                     setResumes([]);
                     return;
                 }
-                else {
-                    setResumes(data); // Assuming API returns an array of resumes
-                }
+                else { setResumes(data); }
             }
             catch (error) {
                 console.error('(catch) Error fetching resumes:', error);
@@ -89,6 +91,26 @@ function Home() {
         setHomeGreeting(getRandomElement(greetings)); // Set greeting once on mount
         setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
+
+
+    const handleFirstLogin = () => {
+        navigate("/help");
+
+        // Call API to update isFirstLogin to false
+        fetch(`https://localhost:7035/api/User/UpdateFirstLogin/${user.id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to update first login");
+                return response.json();
+            })
+            .then(() => {
+                // Update user data so state reflects the change
+                user.isFirstLogin = false;
+            })
+            .catch(error => console.error("Error updating first login:", error));
+    }
 
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');

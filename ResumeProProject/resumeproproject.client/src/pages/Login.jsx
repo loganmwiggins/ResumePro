@@ -59,67 +59,69 @@ function Login() {
     };
 
     return (
-        <div className="login-ctnr">
-            {/* GRAPHIC SIDE */}
-            <div className="graphic-ctnr">
-                <img src="assets/images/resume-2.webp" draggable="false" />
-            </div>
-
-            {/* FORM SIDE */}
-            <div className="form-ctnr">
-                <div className="form-title">
-                    <img src="assets/icons/resume-logo.svg" draggable="false" />
-                    <h3>ResumePro</h3>
+        <div className="page-ctnr-center">
+            <div className="login-modal">
+                {/* GRAPHIC SIDE */}
+                <div className="graphic-ctnr">
+                    <img src="assets/images/resume-2.webp" draggable="false" />
                 </div>
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div className="form-header">
-                        <h3>Welcome Back</h3>
-                        <p>Enter your email and password to access your account.</p>
+                {/* FORM SIDE */}
+                <div className="form-ctnr">
+                    <div className="form-title">
+                        <img src="assets/icons/resume-logo.svg" draggable="false" />
+                        <h3>ResumePro</h3>
                     </div>
 
-                    {/* Email input */}
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="Email"
-                        value={email} 
-                        onChange={handleChange} 
-                    />
-
-                    {/* Password input */}
-                    <PasswordInput
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        value={password}
-                        handleChange={handleChange}
-                    />
-                    
-                    <div className="remember-forgot-ctnr">
-                        {/* Remember Me input */}
-                        <div className="checkbox-ctnr">
-                            <input 
-                                type="checkbox" 
-                                id="rememberme" 
-                                name="rememberme" 
-                                title="If checked, your login will persist through browser sessions."
-                                checked={rememberme} 
-                                onChange={handleChange} 
-                            />
-                            <span>Remember me</span>
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <div className="form-header">
+                            <h3>Welcome Back</h3>
+                            <p>Enter your email and password to access your account.</p>
                         </div>
-                        {/* Forgot password link */}
-                        <a href="#">Forgot password?</a>
-                    </div>
-                    
-                    <button type="submit" className="btn-login">Login</button>
-                </form>
 
-                <div className="signup-ctnr">
-                    <p>Don't have an account?</p>
-                    <a href="#" onClick={handleRegisterClick}>Sign up</a>
+                        {/* Email input */}
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Email"
+                            value={email} 
+                            onChange={handleChange} 
+                        />
+
+                        {/* Password input */}
+                        <PasswordInput
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            value={password}
+                            handleChange={handleChange}
+                        />
+                        
+                        <div className="remember-forgot-ctnr">
+                            {/* Remember Me input */}
+                            <div className="checkbox-ctnr">
+                                <input 
+                                    type="checkbox" 
+                                    id="rememberme" 
+                                    name="rememberme" 
+                                    title="If checked, your login will persist through browser sessions."
+                                    checked={rememberme} 
+                                    onChange={handleChange} 
+                                />
+                                <span>Remember me</span>
+                            </div>
+                            {/* Forgot password link */}
+                            <a href="#">Forgot password?</a>
+                        </div>
+                        
+                        <button type="submit" className="btn-login">Login</button>
+                    </form>
+
+                    <div className="signup-ctnr">
+                        <p>Don't have an account?</p>
+                        <a href="#" onClick={handleRegisterClick}>Sign up</a>
+                    </div>
                 </div>
             </div>
         </div>

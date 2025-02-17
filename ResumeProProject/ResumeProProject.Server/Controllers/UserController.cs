@@ -35,6 +35,7 @@ namespace ResumeProProject.Server.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateJoined = DateTime.UtcNow,
+                IsFirstLogin = true
                 //CoreResumeId = model.CoreResumeId
             };
 
@@ -66,6 +67,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
 
@@ -88,6 +90,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
         }
@@ -156,10 +159,28 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
         }
 
+        [HttpPost("UpdateFirstLogin/{userId}")]
+        public async Task<IActionResult> UpdateFirstLogin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            user.IsFirstLogin = false;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok(new { message = "User first login updated" });
+        }
     }
 
     // DTOs
@@ -169,6 +190,7 @@ namespace ResumeProProject.Server.Controllers
         public required string Password { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public bool IsFirstLogin { get; set; } = true;
         public Guid? CoreResumeId { get; set; }
     }
 
