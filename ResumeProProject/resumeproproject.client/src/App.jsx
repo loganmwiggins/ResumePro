@@ -11,20 +11,22 @@ import Welcome from './pages/Welcome';
 import Home from './pages/Home';
 import TemplateSelection from './pages/TemplateSelection';
 import ResumeBuilder from './pages/ResumeBuilder';
+import ResumePreview from './pages/ResumePreview';
 import ResumeInsights from './pages/ResumeInsights';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Help from './pages/Help';
+
 import Template_Minimal from './components/Templates/Template_Minimal';
 import Template_Bold from './components/Templates/Template_BoldNavy';
-import ResumePreview from './pages/ResumePreview';
 
 function App() {
   const location = useLocation();
   
   // Define routes where Nav should be hidden
-  const hideNavRoutes = ["/login", "/signup", "/template-bold"];
+  const hideNavRoutes = ["/login", "/signup", "/help" ];
   
   return (
     < UserProvider>
@@ -45,10 +47,10 @@ function App() {
         <Route path="/templates" element={<TemplateSelection />} />
         <Route path="/builder/:templateId/:resumeId?" element={<ResumeBuilder />} />
         <Route path="/preview/:resumeId" element={<ResumePreview />} />
-
         <Route path="/insights/:resumeId" element={<ResumeInsights />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/help" element={<Help />} />
         
         {/* Unauthorized routes */}
         <Route path="/" element={<Welcome />} />

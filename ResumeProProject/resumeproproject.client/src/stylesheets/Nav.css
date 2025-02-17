@@ -1,7 +1,7 @@
 .nav-container {
     width: 100%;
     border-bottom: 1px solid rgba(211, 211, 211, .5);
-    padding-bottom: 1rem;
+    padding: 2rem 0 1rem 0;
     margin-bottom: 2rem;
 
     display: flex;

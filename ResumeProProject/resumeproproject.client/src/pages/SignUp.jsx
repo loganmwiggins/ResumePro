@@ -74,83 +74,86 @@ function SignUp() {
     };
 
     return (
-        <div className="login-ctnr">
-            {/* GRAPHIC SIDE */}
-            <div className="graphic-ctnr">
-                <img src="assets/images/resume-1.webp" draggable="false" />
-            </div>
-
-            {/* FORM SIDE */}
-            <div className="form-ctnr">
-                <div className="form-title">
-                    <img src="assets/icons/resume-logo.svg" draggable="false" />
-                    <h3>ResumePro</h3>
+        <div className="page-ctnr-center">
+            <div className="login-modal">
+                {/* GRAPHIC SIDE */}
+                <div className="graphic-ctnr">
+                    <img src="assets/images/resume-1.webp" draggable="false" />
                 </div>
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div className="form-header">
-                        <h3>Create an Account</h3>
-                        <p>Enter the following information to sign up and create your account.</p>
+                {/* FORM SIDE */}
+                <div className="form-ctnr">
+                    <div className="form-title">
+                        <img src="assets/icons/resume-logo.svg" draggable="false" />
+                        <h3>ResumePro</h3>
                     </div>
 
-                    <div className="input-row">
-                        {/* First Name input */}
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <div className="form-header">
+                            <h3>Create an Account</h3>
+                            <p>Enter the following information to sign up and create your account.</p>
+                        </div>
+
+                        <div className="input-row">
+                            {/* First Name input */}
+                            <input 
+                                type="text" 
+                                id="firstname" 
+                                name="firstname" 
+                                placeholder="First Name"
+                                value={firstName} 
+                                onChange={handleChange} 
+                            />
+                            {/* Last Name input */}
+                            <input 
+                                type="text" 
+                                id="lastname" 
+                                name="lastname" 
+                                placeholder="Last Name"
+                                value={lastName} 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                        
+                        {/* Email input */}
                         <input 
-                            type="text" 
-                            id="firstname" 
-                            name="firstname" 
-                            placeholder="First Name"
-                            value={firstName} 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Email"
+                            value={email} 
                             onChange={handleChange} 
                         />
-                        {/* Last Name input */}
-                        <input 
-                            type="text" 
-                            id="lastname" 
-                            name="lastname" 
-                            placeholder="Last Name"
-                            value={lastName} 
-                            onChange={handleChange} 
+
+                        {/* Password input */}
+                        <PasswordInput
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            value={password}
+                            handleChange={handleChange}
                         />
+
+                        {/* Confirm Password input */}
+                        <PasswordInput
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            handleChange={handleChange}
+                        />
+
+                        <button type="submit" className="btn-login">Sign Up</button>
+                    </form>
+
+                    <div className="signup-ctnr">
+                        <p>Already have an account?</p>
+                        <a href="#" onClick={handleLoginClick}>Login</a>
                     </div>
-                    
-                    {/* Email input */}
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="Email"
-                        value={email} 
-                        onChange={handleChange} 
-                    />
-
-                    {/* Password input */}
-                    <PasswordInput
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        value={password}
-                        handleChange={handleChange}
-                    />
-
-                    {/* Confirm Password input */}
-                    <PasswordInput
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        handleChange={handleChange}
-                    />
-
-                    <button type="submit" className="btn-login">Sign Up</button>
-                </form>
-
-                <div className="signup-ctnr">
-                    <p>Already have an account?</p>
-                    <a href="#" onClick={handleLoginClick}>Login</a>
                 </div>
             </div>
         </div>
+
     );
 }
 
