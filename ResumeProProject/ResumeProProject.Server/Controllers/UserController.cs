@@ -35,6 +35,7 @@ namespace ResumeProProject.Server.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateJoined = DateTime.UtcNow,
+                IsFirstLogin = true
                 //CoreResumeId = model.CoreResumeId
             };
 
@@ -66,6 +67,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
 
@@ -88,6 +90,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
         }
@@ -156,10 +159,10 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
+                user.IsFirstLogin,
                 user.CoreResumeId
             });
         }
-
     }
 
     // DTOs
@@ -169,6 +172,7 @@ namespace ResumeProProject.Server.Controllers
         public required string Password { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public bool IsFirstLogin { get; set; } = true;
         public Guid? CoreResumeId { get; set; }
     }
 

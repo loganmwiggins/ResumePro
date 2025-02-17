@@ -12,8 +12,8 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250213184435_ReInitialMigrationFeb13")]
-    partial class ReInitialMigrationFeb13
+    [Migration("20250217164232_InitialMigrationFeb17")]
+    partial class InitialMigrationFeb17
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -454,6 +454,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsFirstLogin")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");

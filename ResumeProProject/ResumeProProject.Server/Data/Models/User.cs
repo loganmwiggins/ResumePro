@@ -1,25 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace ResumeProProject.Server.Data.Models
 {
     public class User : IdentityUser
     {
-        //[Key]
-        //public Guid UserId { get; set; }
-
-        //public string Username { get; set; }
-
-        //public string Password { get; set; }
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
 
         public DateTime? DateJoined { get; set; }
 
-        //public bool IsFirstLogin { get; set; } = true;
+        public bool IsFirstLogin { get; set; } = true;
 
         public virtual ICollection<Resume> Resumes { get; set; } = new List<Resume>();
 

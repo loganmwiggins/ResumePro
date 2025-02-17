@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ResumeProProject.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class ReInitialMigrationFeb13 : Migration
+    public partial class InitialMigrationFeb17 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,6 +34,7 @@ namespace ResumeProProject.Server.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     DateJoined = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsFirstLogin = table.Column<bool>(type: "boolean", nullable: false),
                     CoreResumeId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
