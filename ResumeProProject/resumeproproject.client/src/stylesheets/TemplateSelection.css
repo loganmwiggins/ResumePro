@@ -1,7 +1,6 @@
 .templates-row {
     width: 100%;
     display: flex;
-    align-items: center;
     gap: 2rem;
     flex-flow: wrap;
     margin-top: 2rem;
