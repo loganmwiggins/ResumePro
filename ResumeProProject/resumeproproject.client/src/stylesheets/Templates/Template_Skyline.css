@@ -10,7 +10,9 @@
 }
 
 .Template_Skyline {
+    --accent: #a5cef1;
     font-family: 'Times New Roman', Times, serif;
+
 
     /* Layout specific */
     .split-ctnr {
@@ -22,7 +24,6 @@
     .split-left, .split-right {
         display: flex;
         flex-direction: column;
-        /* border: 1px solid lightgrey; */
         gap: 2rem;
     }
     
@@ -43,11 +44,11 @@
     }
 
 
-    /* Text */
+    /* Text specific */
     .p-sec {
         display: flex;
         justify-content: center;
-        background: rgb(165, 206, 241);
+        background: var(--accent);
         padding: .25rem;
         font-size: 1.1rem;
         font-weight: 600;
@@ -61,14 +62,12 @@
         text-transform: uppercase;
     }
 
-    .p-date {
-        font-style: italic;
-    }
+    .p-date { font-style: italic; }
 
     ul { padding-left: 2.25rem }
 
 
-    /* Header */
+    /* Header specific */
     .resume-header {
         display: flex;
         flex-direction: column;
@@ -96,6 +95,7 @@
             opacity: .8;
         }
     }
+
 
     /* Skills specific */
     .skills-list {

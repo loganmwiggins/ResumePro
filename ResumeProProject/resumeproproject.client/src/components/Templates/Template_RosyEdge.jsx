@@ -6,14 +6,6 @@ import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/Templates/Template_RosyEdge.css';
 
 function Template_RosyEdge({ data }) {
-
-    const formatCertsDate = (dateString) => {
-        if (!dateString) return '';
-        const [year, month, day] = dateString.split("-").map(Number);
-        const date = new Date(year, month - 1, day || 1);
-        return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-    };
-
     return (
         <div className="resume-paper Template_RosyEdge">
             <header>
@@ -26,47 +18,55 @@ function Template_RosyEdge({ data }) {
 
             <div className="resume-body">
                 <aside className="left-column">
-                    <div className="contact-info">
+                    {/* CONTACT */}
+                    <div>
                         <h2>Contact</h2>
-                        {data.generalInformation.email && (
-                            <span>
-                                <img src="/assets/icons/email-circle.svg" draggable="false" />
-                                <p>{data.generalInformation.email}</p>
-                            </span>
-                        )}
-                        {data.generalInformation.phoneNumber && (
-                            <span>
-                                <img src="/assets/icons/phone-circle.svg" draggable="false" />
-                                <p>{data.generalInformation.phoneNumber}</p>
-                            </span>
-                        )}
-                        {data.generalInformation.websiteUrl && (
-                            <span>
-                                <img src="/assets/icons/web-circle.svg" draggable="false" />
-                                <p>{data.generalInformation.websiteUrl}</p>
-                            </span>
-                        )}
-                        {data.generalInformation.linkedInUrl && (
-                            <span>
-                                <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
-                                <p>{data.generalInformation.linkedInUrl}</p>
-                            </span>
-                        )}
-                        {data.generalInformation.gitHubUrl && (
-                            <span>
-                                <img src="/assets/icons/github-circle.svg" draggable="false" />
-                                <p>{data.generalInformation.gitHubUrl}</p>
-                            </span>
-                        )}
+                        <div className="contact-info">
+                            {data.generalInformation.email && (
+                                <span>
+                                    <img src="/assets/icons/email-circle.svg" draggable="false" />
+                                    <p>{data.generalInformation.email}</p>
+                                </span>
+                            )}
+                            {data.generalInformation.phoneNumber && (
+                                <span>
+                                    <img src="/assets/icons/phone-circle.svg" draggable="false" />
+                                    <p>{data.generalInformation.phoneNumber}</p>
+                                </span>
+                            )}
+                            {data.generalInformation.websiteUrl && (
+                                <span>
+                                    <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                    <p>{data.generalInformation.websiteUrl}</p>
+                                </span>
+                            )}
+                            {data.generalInformation.linkedInUrl && (
+                                <span>
+                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                    <p>{data.generalInformation.linkedInUrl}</p>
+                                </span>
+                            )}
+                            {data.generalInformation.gitHubUrl && (
+                                <span>
+                                    <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                    <p>{data.generalInformation.gitHubUrl}</p>
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     {/* SKILLS */}
                     {data.skills?.skillsDataJson && Object.keys(data.skills.skillsDataJson).length > 0 && (
                         <div className="skills">
                             <h2>Skills</h2>
-                            {Object.entries(data.skills.skillsDataJson).map(([category, skillsObj]) => (
-                                <p key={category}><strong>{category}:</strong> {Array.from(skillsObj).join(", ")}</p>
-                            ))}
+                            <div className="skills-ctnr">
+                                {Object.entries(data.skills.skillsDataJson).map(([category, skillsObj]) => (
+                                    <div key={category} className="skill-sec">
+                                        <p><strong>{category}</strong></p>
+                                        <p>{Array.from(skillsObj).join(", ")}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
@@ -74,20 +74,22 @@ function Template_RosyEdge({ data }) {
                     {data.certifications.length > 0 && (
                         <div className="certifications">
                             <h2>Certifications</h2>
-                            {data.certifications.map(cert => (
-                                <div key={cert.name} className="cert-item">
-                                    <p>
-                                        <strong>{cert.name}</strong> - {cert.issuer}
-                                        {cert.issueDate && cert.expireDate
-                                            ? ` (${formatDate(cert.issueDate, { month: true, year: true })} - ${formatDate(cert.expireDate, { month: true, year: true })})`
-                                            : cert.issueDate
-                                                ? ` (Issued: ${formatDate(cert.issueDate, { month: true, year: true })})`
-                                                : cert.expireDate
-                                                    ? ` | Expires: ${formatDate(cert.expireDate, { month: true, year: true })}`
-                                                    : ""}
-                                    </p>
-                                </div>
-                            ))}
+                            <div className="cert-ctnr">
+                                {data.certifications.map(cert => (
+                                    <div key={cert.name} className="cert-item">
+                                        <p><strong>{cert.name}</strong></p>
+                                        <p>
+                                            {cert.issuer} {cert.issueDate && cert.expireDate
+                                                ? ` (${formatDate(cert.issueDate, { month: true, year: true })} - ${formatDate(cert.expireDate, { month: true, year: true })})`
+                                                : cert.issueDate
+                                                    ? ` (Issued: ${formatDate(cert.issueDate, { month: true, year: true })})`
+                                                    : cert.expireDate
+                                                        ? ` | Expires: ${formatDate(cert.expireDate, { month: true, year: true })}`
+                                                        : ""}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </aside>
@@ -95,7 +97,7 @@ function Template_RosyEdge({ data }) {
                 <main className="right-column">
                     {/* EXPERIENCE */}
                     {data.experiences.length > 0 && (
-                        <div className="experience-item">
+                        <section>
                             <h2>Experience</h2>
                             {data.experiences.map(exp => {
                                 let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
@@ -107,8 +109,11 @@ function Template_RosyEdge({ data }) {
                                         <div className="entry-head">
                                             <div>
                                                 <h3>{exp.role}</h3>
-                                                <p className="company">
-                                                    {exp.companyName} {exp.jobType != null && `| ${jobTypeOptions[exp.jobType].label}`} {exp.officeType != null && `| ${officeTypeOptions[exp.officeType].label}`}
+                                                <p className="subtitle">{exp.companyName}</p>
+                                                <p className="subtitle">
+                                                    {exp.jobType != null && (jobTypeOptions[exp.jobType].label)}
+                                                    {exp.jobType != null && exp.officeType != null && ` | `}
+                                                    {exp.officeType != null && (officeTypeOptions[exp.officeType].label)}
                                                 </p>
                                             </div>
                                             <div>
@@ -124,55 +129,76 @@ function Template_RosyEdge({ data }) {
                                     </div>
                                 );
                             })}
-                        </div>
+                        </section>
                     )}
 
                     {/* PROJECTS */}
                     {data.projects.length > 0 && (
-                        <section className="projects">
+                        <section>
                             <h2>Projects</h2>
-                            {data.projects.map(proj => (
-                                <div key={proj.title} className="project-item">
-                                    <h3>{proj.title}</h3>
-                                    <p className="date">
-                                        {proj.startDate && formatDate(proj.startDate)} -
-                                        {proj.endDate ? formatDate(proj.endDate) : " Present"}
-                                    </p>
-                                    <p>{proj.description}</p>
-                                </div>
-                            ))}
+                            {data.projects.map(proj => {
+                                let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
+                                    ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                                });
+
+                                return(
+                                    <div key={proj.title} className="project-item">
+                                        <div className="entry-head">
+                                            <div>
+                                                <h3>{proj.title}</h3>
+                                            </div>
+                                            <div>
+                                                <p className="p-date">
+                                                    {proj.startDate && (
+                                                        `${formatDate(proj.startDate, {month: true, year: true})}`
+                                                    )} {proj.endDate && (
+                                                        `- ${formatDate(proj.endDate, {month: true, year: true})}`
+                                                    )}
+                                                </p>
+                                            </div>
+                                        </div>
+                                                    
+                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    </div>
+                                );
+                                
+                            })}
                         </section>
                     )}
 
                     {/* EDUCATION */}
                     {data.educations.length > 0 && (
-                        <div className="education-item">
+                        <section>
                             <h2>Education</h2>
                             {data.educations.map(edu => (
                                 <div key={edu.startDate}>
-                                    <div className="entry-head">
+                                    <div className="edu-head">
                                         <div>
                                             <h3>
                                                 {edu.degreeType} {edu.major && `in ${edu.major}`}
                                             </h3>
-                                            <h4>
-                                                {edu.minor && `Minor in ${edu.minor}`}
-                                            </h4>
-                                            <p className="school">
-                                                {edu.schoolName} {edu.gpa && `| GPA: ${edu.gpa} / 4.0`}
-                                            </p>
                                         </div>
                                         <div>
                                             <p>
-                                                {edu.startDate && formatDate(edu.startDate)}
-                                                {edu.endDate ? ` - ${formatDate(edu.endDate)}` : " - Present"}
+                                                {edu.startDate && (
+                                                    `${formatDate(edu.startDate, {month:true, year:true})}`
+                                                )} {edu.endDate && (
+                                                    `- ${formatDate(edu.endDate, {month:true, year:true})}`
+                                                )}
                                             </p>
                                             <p>{edu.schoolLocation}</p>
                                         </div>
                                     </div>
+
+                                    <p className="subtitle">
+                                        {edu.minor && `Minor in ${edu.minor}`}
+                                    </p>
+                                    <p>
+                                        {edu.schoolName} {edu.gpa && `| GPA: ${edu.gpa} / 4.0`}
+                                    </p>
                                 </div>
                             ))}
-                        </div>
+                        </section>
                     )}
                 </main>
             </div>

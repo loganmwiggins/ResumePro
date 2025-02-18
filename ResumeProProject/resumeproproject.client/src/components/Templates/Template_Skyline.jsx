@@ -157,13 +157,13 @@ function Template_Skyline({ data }) {
                                                 <p className="p-main">{proj.title}</p>
                                             </div>
                                             <div>
-                                            <p className="p-date">
-                                                {proj.startDate && (
-                                                    `${formatDate(proj.startDate, {month:true, year:true})}`
-                                                )} {proj.endDate && (
-                                                    `- ${formatDate(proj.endDate, {month:true, year:true})}`
-                                                )}
-                                            </p>
+                                                <p className="p-date">
+                                                    {proj.startDate && (
+                                                        `${formatDate(proj.startDate, {month:true, year:true})}`
+                                                    )} {proj.endDate && (
+                                                        `- ${formatDate(proj.endDate, {month:true, year:true})}`
+                                                    )}
+                                                </p>
                                             </div>
                                         </div>
                                         
@@ -193,7 +193,7 @@ function Template_Skyline({ data }) {
 
                                     <p>
                                         {edu.minor && `Minor in ${edu.minor}`}
-                                        {edu.minor && edu.gpa ? ` • ` : ""}
+                                        {edu.minor && edu.gpa && ` • `}
                                         {edu.gpa && `GPA: ${edu.gpa} / 4.0`}
                                     </p>
 
