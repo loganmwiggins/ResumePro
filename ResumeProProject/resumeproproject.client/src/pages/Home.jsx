@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
+import { allGreetings, messages } from '../utils/Greetings';
 import '../stylesheets/Home.css';
 
 function Home() {
@@ -15,37 +16,6 @@ function Home() {
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
-    const [duplicatedResumeId, setDuplicatedResumeId] = useState(null);
-
-
-    // Array of possible greetings
-    const greetings = [
-        "Hi", "Hey", "Hello", "Welcome", "Greetings", "What's up", "Howdy",
-        "Good to see you", "Hey there", "Hello there"
-    ];
-
-    // Array of possible messages
-    const messages = [
-        "Create your own custom resume to apply for jobs.",
-        "Ready to make a resume?",
-        "Your dream job starts with a great resume!",
-        "Showcase your skills with a professional resume.",
-        "Time to build a resume that stands out!",
-        "Make a resume that gets you hired.",
-        "Polish your resume and land that job!",
-        "Craft a resume that highlights your strengths.",
-        "Your next job is just a great resume away!",
-        "Let’s make your resume shine.",
-        "Stand out in the job market with a stellar resume.",
-        "Turn your skills into an opportunity with a great resume.",
-        "Get one step closer to your dream job.",
-        "Put your best foot forward with a top-notch resume.",
-        "Your career journey starts with a strong resume.",
-        "A resume that speaks for you – let's build it!",
-        "Let’s get that resume looking sharp!",
-        "Ready to impress recruiters? Let's start!",
-        "Make your resume as amazing as you are."
-    ];
 
     // Function to randomly pick a greeting and a message
     const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
@@ -90,7 +60,7 @@ function Home() {
         };
 
         fetchResumes();
-        setHomeGreeting(getRandomElement(greetings)); // Set greeting once on mount
+        setHomeGreeting(getRandomElement(allGreetings)); // Set greeting once on mount
         setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
 
