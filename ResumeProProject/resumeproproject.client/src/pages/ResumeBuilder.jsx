@@ -1,65 +1,112 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import html2canvas from 'html2canvas';
 
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
-import { useUser } from "../context/UserContext";
+import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
+import { validateResume } from '../utils/ResumeValidator';
 import AllTemplates from '../components/Templates/AllTemplates';
-import html2canvas from "html2canvas";
+import { templates } from '../utils/TemplateList';
 
 // import: Stepper + Resume Sections
-import Stepper from "../components/Stepper";
-import GeneralInformation from "../components/ResumeSections/GeneralInformation";
-import Experiences from "../components/ResumeSections/Experiences";
-import Educations from "../components/ResumeSections/Educations";
-import Certifications from "../components/ResumeSections/Certifications";
-import Projects from "../components/ResumeSections/Projects";
-import Skills from "../components/ResumeSections/Skills";
+import Stepper from '../components/Stepper';
+import GeneralInformation from '../components/ResumeSections/GeneralInformation';
+import Experiences from '../components/ResumeSections/Experiences';
+import Educations from '../components/ResumeSections/Educations';
+import Certifications from '../components/ResumeSections/Certifications';
+import Projects from '../components/ResumeSections/Projects';
+import Skills from '../components/ResumeSections/Skills';
 
 
 function ResumeBuilder() {
     const navigate = useNavigate();
     const params = useParams();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const resumeRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
+    const [templateId, setTemplateId] = useState(params.templateId);
 
-    // Extract templateId from URL
-    const templateId = params.templateId;
+    const updateResumeId = params.resumeId;
 
     // When user data is available, initialize resumeData with default values
     useEffect(() => {
         if (user?.id) {
-            setResumeData({
-                id: user.id,
-                resumeName: "Untitled Document",
-                currentDate: new Date(),
-                templateId: templateId,
-                generalInformation: {
-                    firstName: "John",
-                    middleName: null,
-                    lastName: "Doe",
-                    email: "john.doe@example.com",
-                    phoneNumber: "(123) 456-7890",
-                    location: "Miami, FL",
-                    role: "Software Engineer",
-                    websiteUrl: "johndoe.com",
-                    linkedInUrl: "linkedin.com/in/johndoe",
-                    gitHubUrl: null
-                },
-                skills: {
-                    skillsDataJson: {}
-                },
-                experiences: [],
-                educations: [],
-                certifications: [],
-                projects: []
-            });
+            // If creating a new resume...
+            if (updateResumeId == undefined) {
+                setResumeData({
+                    id: user.id,
+                    resumeName: "Untitled Document",
+                    currentDate: new Date(),
+                    templateId: templateId,
+                    generalInformation: {
+                        firstName: "John",
+                        middleName: null,
+                        lastName: "Doe",
+                        email: "john.doe@example.com",
+                        phoneNumber: "(123) 456-7890",
+                        location: "Miami, FL",
+                        role: "Software Engineer",
+                        websiteUrl: "johndoe.com",
+                        linkedInUrl: "linkedin.com/in/johndoe",
+                        gitHubUrl: null
+                    },
+                    skills: {
+                        skillsDataJson: {}
+                    },
+                    experiences: [],
+                    educations: [],
+                    certifications: [],
+                    projects: []
+                });
+            }
+            // If updating a resume...
+            else {
+                fetchResume();
+            }
         }
     }, [user]); // Runs whenever 'user' changes
+
+    const fetchResume = async () => {
+        try {
+            const response = await fetch(`https://localhost:7035/api/Resume/GetResumeById/${updateResumeId}`);
+
+            if (!response.ok) {
+                showToast("Failed to fetch resume", "error");
+                throw new Error(`Failed to fetch resume. Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.skills?.skillsDataJson) {
+                try {
+                    data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
+                } catch (error) {
+                    console.error("Error parsing skillsDataJson:", error);
+                    data.skills.skillsDataJson = {};
+                }
+            }
+
+            setResumeData(data);
+        }
+        catch (error) {
+            console.error("Error fetching resume:", error);
+            showToast("Failed to fetch resume", "error");
+        }
+    };
+
+    const handleTemplateChange = (template) => {
+        setTemplateId(template);
+        setResumeData((prevResume) => {
+            return {
+                ...prevResume,
+                templateId: template
+            }
+        });
+    }
 
     const handleNext = () => {
         setCurrentStep((prev) => Math.min(prev + 1, 5));
@@ -95,7 +142,7 @@ function ResumeBuilder() {
                 ...prevResume,
                 resumeName: newName
             }
-        })
+        });
     }
 
     const handleAddSkillCategory = (category) => {
@@ -185,7 +232,7 @@ function ResumeBuilder() {
     };
     
     const handleCancel = () => {
-        showToast("Resume abandoned.", "warning");
+        showToast("Changes were not saved", "warning", "Resume Abandoned");
         navigate("/home");
     }
 
@@ -211,6 +258,9 @@ function ResumeBuilder() {
             //  Remove  clone 
             document.body.removeChild(clone);
 
+            // Validate the resume and stop execution if invalid
+            if (!validateResume(resumeData)) return;
+
             const processedResumeData = {
                 ...resumeData,
                 skills: {
@@ -223,41 +273,59 @@ function ResumeBuilder() {
                 }, thumbnail: imgData,
             };
 
-            console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+            // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
-            const response = await fetch("https://localhost:7035/api/Resume/Create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(processedResumeData),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to create resume. Status: ${response.status}`);
+            // If new resume...
+            if (updateResumeId == undefined) {
+                const response = await fetch("https://localhost:7035/api/Resume/Create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(processedResumeData),
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Failed to create resume. Status: ${response.status}`);
+                }
+    
+                const responseText = await response.text(); // Read response as text
+    
+                let responseData;
+                try {
+                    responseData = JSON.parse(responseText); // Convert to JSON
+                } catch (error) {
+                    throw new Error("API did not return valid JSON.");
+                }
+    
+                if (!responseData.resumeId) {
+                    throw new Error("resumeId is missing in API response.");
+                }
+    
+                navigate(`/preview/${responseData.resumeId}`);
             }
+            // If updating...
+            else {
+                const response = await fetch(`https://localhost:7035/api/Resume/Update/${updateResumeId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(processedResumeData),
+                });
 
-            const responseText = await response.text(); // Read response as text
-
-            let responseData;
-            try {
-                responseData = JSON.parse(responseText); // Convert to JSON
-            } catch (error) {
-                throw new Error("API did not return valid JSON.");
+                if (!response.ok) {
+                    showToast("Failed to update resume.", "error");
+                    throw new Error(`Failed to update resume. Status: ${response.status}`);
+                }
+    
+                navigate(`/preview/${updateResumeId}`);
             }
-
-            if (!responseData.resumeId) {
-                throw new Error("resumeId is missing in API response.");
-            }
-
-            navigate(`/preview/${responseData.resumeId}`);
-
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error:", error);
             showToast(error.message, "error");
         }
     };
 
 
-    if (loading || !resumeData) {
+    if (userLoading || !resumeData) {
         return <div className="loading-spinner"></div>;
     }
     else {
@@ -274,8 +342,18 @@ function ResumeBuilder() {
                                 type="text"
                                 placeholder="Name your document!"
                                 value={resumeData.resumeName} 
-                                onChange={(e) => handleNameChange(e.target.value)} 
+                                onChange={(e) => handleNameChange(e.target.value)}
+                                required
                             />
+                            <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
+                                {/* Dynamically populated from TemplateList.jsx */}
+                                {templates.map((template) => (
+                                    <option key={template.id} value={template.id}>
+                                        {template.name}
+                                    </option>
+                                ))}
+                            </select>
+
                             <motion.button 
                                 type="button" 
                                 className="btn btn-outline" 
@@ -318,17 +396,31 @@ function ResumeBuilder() {
                                 onClick={handleBack}
                                 whileTap={{ scale: 0.9 }}
                             >
-                                Back
+                                <span>Back</span>
                             </motion.button>
-
-                            <motion.button
-                                type="button"
-                                className={`btn btn-black ${currentStep === 5 ? "btn-disabled" : ""}`}
-                                onClick={handleNext}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                Next
-                            </motion.button>
+                            
+                            {currentStep != 5 ? 
+                                (
+                                    <motion.button
+                                        type="button"
+                                        className="btn btn-black"
+                                        onClick={handleNext}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <span>Next</span>
+                                    </motion.button>
+                                ) : (
+                                    <motion.button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <img src="/assets/icons/check.svg" draggable="false" />
+                                        <span>Finish & Save</span>
+                                    </motion.button>
+                                )
+                            }
                         </div>
                     </div>
                 </form>

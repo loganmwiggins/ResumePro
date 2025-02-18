@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { showToast } from "../utils/Toast";
+import { motion } from "framer-motion";
 import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 
+import { showToast } from "../utils/Toast";
 import AllTemplates from "../components/Templates/AllTemplates";
 import "../stylesheets/ResumePreview.css";
 
@@ -47,9 +48,11 @@ const ResumePreview = () => {
 
                 setResumeData(data);
 
-                // Confetti !
-                setShowConfetti(true);
-                setTimeout(() => setShowConfetti(false), 3000);
+                // Confetti ! (delayed by 0.6s)
+                setTimeout(() => {
+                    setShowConfetti(true);
+                    setTimeout(() => setShowConfetti(false), 3000); // Stop after 3s
+                }, 600);
             }
             catch (error) {
                 console.error("Error fetching resume:", error);
@@ -63,6 +66,10 @@ const ResumePreview = () => {
 
     // Button functions
     const handleHome = () => navigate("/home");
+
+    const handleEditResume = (templateId, resumeId) => {
+        navigate(`/builder/${templateId}/${resumeId}`);
+    }
 
     const handleDownloadPDF = () => {
         const element = resumeRef.current;
@@ -93,23 +100,34 @@ const ResumePreview = () => {
     if (!resumeData) return <div className="loading-spinner"></div>;
 
     return (
+        
         <div className="preview-ctnr">
-            <div className="preview-header">
-                <h1>{successMessage}</h1>
-                <p>Your "{resumeData.resumeName}" resume has been created. What's next?</p>
-            </div>
-
             {showConfetti ?
                 <Fireworks autorun={{ speed: 1, duration: 2000 }} />
                 : ''
             }
 
-            <div className="preview-actions">
+            <motion.div 
+                className="preview-header"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0 }}
+            >
+                <h1>{successMessage}</h1>
+                <p>Your "{resumeData.resumeName}" resume has been saved. What's next?</p>
+            </motion.div>
+
+            <motion.div 
+                className="preview-actions"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+            >
                 <button onClick={handleHome} title="Go to home page">
                     <img src="/assets/icons/home.svg" draggable="false" />
                     <span>Home</span>
                 </button>
-                <button onClick={() => setShowConfetti(!showConfetti)} title="Go back and edit your resume">
+                <button onClick={() => handleEditResume(resumeData.templateId, resumeId)} title="Go back and edit your resume">
                     <img src="/assets/icons/pencil.svg" draggable="false" />
                     <span>Edit Resume</span>
                 </button>
@@ -121,13 +139,19 @@ const ResumePreview = () => {
                     <img src="/assets/icons/sparkles.svg" draggable="false" />
                     <span>AI Insights</span>
                 </button>
-            </div>
+            </motion.div>
 
-            <div className="resume-view">
+            <motion.div 
+                className="resume-view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+            >
                 <div ref={resumeRef}>
                     <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
                 </div>
-            </div>
+            </motion.div>
+
         </div>
     );
 };

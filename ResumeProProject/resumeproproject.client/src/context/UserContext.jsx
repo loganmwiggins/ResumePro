@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const UserContext = createContext({ user: null, loading: true });
+const UserContext = createContext({ user: null, userLoading: true });
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [userLoading, setUserLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
                 console.error("Error fetching user data:", error);
             }
             finally {
-                setLoading(false);
+                setUserLoading(false);
             }
         };
 
@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, loading }}>
+        <UserContext.Provider value={{ user, userLoading }}>
             {children}
         </UserContext.Provider>
     ); 

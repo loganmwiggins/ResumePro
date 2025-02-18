@@ -26,6 +26,32 @@
     gap: 1rem;
 }
 
+.feedback-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+}
+
+.feedback-title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    img {
+        width: 1.25rem;
+        opacity: .9;
+    }
+}
+.feedback-title:nth-child(2) {
+    justify-content: right;
+
+    img { opacity: .5; }
+    input { width: 50%; }
+    button { border-radius: 2rem; }
+}
+
 .feedback-item {
     width: 100%;
     display: flex;
@@ -42,7 +68,13 @@
 .score {
     display: flex;
     align-items: center;
-    gap: .75rem;
+    gap: .5rem;
+    background: lightgrey;
+    /* background: rgba(212, 9, 9, 0.2); */
+    padding: .25rem .5rem;
+    border-radius: 4rem;
+
+    p { font-weight: 600; }
 }
 
 .score-circle {
@@ -52,6 +84,182 @@
     border-radius: 100%;
 }
 
+.score-red { 
+    background: rgba(212, 9, 9, 0.2);
+    .score-circle { background: var(--text-danger); }
+}
+.score-yellow {
+    background: rgba(243, 207, 0, 0.2);
+    .score-circle { background: rgb(243, 207, 0); }
+}
+.score-green {
+    background: rgba(0, 180, 0, 0.2);
+    .score-circle { background: rgb(0, 180, 0); }
+}
+
+
+
+
+/* Info buttons */
+.info-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.job-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .job-title-container label {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .job-title-container input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .job-title-container input::placeholder {
+    color: gray;
+    font-style: italic;
+  }
+
+  .submit-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-top: 10px;
+  }
+  
+  .submit-button:hover {
+    background-color: #333; /* Darker black on hover */
+  }
+  
+  .submit-button:active {
+    transform: scale(0.95); /* Slight press effect */
+  }
+  
+  .submit-button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+  }
+
+  /* Add to your existing CSS file */
+
+.loading-message {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    opacity: 0;
+    animation: fadeInOut 4s infinite;
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .loading-message span {
+    display: block;
+    animation: fadeInOutText 3s ease-in-out infinite;
+  }
+  
+  @keyframes fadeInOutText {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  
+  
+
 .circle-green { background: rgb(0, 180, 0); }
 .circle-yellow { background: rgb(243, 207, 0); }
 .circle-red { background: var(--text-danger); }
+.info-icon { cursor: pointer; }
+
+.info-txt {
+    position: absolute;
+    top: 2rem;
+    padding: .5rem 1rem;
+    background: white;
+    /* border: 1px solid grey; */
+    border-radius: .5rem;
+    color: var(--text-third);
+    font-size: .85rem;
+    min-width: 25rem;
+    box-shadow: 0 0 .15rem rgba(0, 0, 0, .5);
+    cursor: default;
+}
+
+
+/* Refine container */
+.refine-ctnr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: rgb(245, 245, 245);
+  padding: 2rem;
+  border-radius: .5rem;
+  margin: 2rem 0;
+
+  h3, p {
+    color: var(--text-secondary);
+    width: 75%;
+  }
+  input {
+    width: 50%;
+  }
+}
+
+.reanalyze-text {
+  font-size: .85rem;
+  color: var(--text-third);
+  
+  a { cursor: pointer; }
+}

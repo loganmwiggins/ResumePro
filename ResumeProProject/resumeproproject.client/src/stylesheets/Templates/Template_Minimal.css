@@ -10,62 +10,61 @@
     gap: 1rem;
 }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header-right {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-}
-
-section {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-
-    h2 {
-        font-size: 1.25rem;
-        border-bottom: 1px solid #555;
-    }
-}
-
-.entry-head {
-    display: flex;
-    justify-content: space-between;
-
-    div {
-        display: flex;
-        flex-direction: column;
-    }
-    div:first-child { text-align: left; }
-    div:last-child { text-align: right; }
-}
-
-
-/* General info specific */
-.urls {
-    display: flex;
-    align-items: center;
-    flex-flow: wrap;
-    gap: 1rem;
-
-    span {
+.Template_Minimal {
+    header {
         display: flex;
         align-items: center;
-        gap: .25rem;
-
-        img { max-width: 1rem; }
+        justify-content: space-between;
     }
-}
-
-
-/* Skills specific */
-.skill-row {
-    display: flex;
-    align-items: start;
-    gap: .5rem;
+    
+    .header-right {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+    
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    
+        h2 {
+            font-size: 1.25rem;
+            border-bottom: 1px solid #555;
+        }
+    }
+    
+    .entry-head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: .25rem;
+    
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+        div:first-child { text-align: left; }
+        div:last-child { text-align: right; }
+    }
+    
+    
+    /* General info specific */
+    .urls {
+        display: flex;
+        align-items: center;
+        flex-flow: wrap;
+        gap: 1rem;
+    
+        span {
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+    
+            img { max-width: 1rem; }
+        }
+    }
+    
+    
+    /* Experience specific  */
+    ul { padding-left: 1.25rem }
 }

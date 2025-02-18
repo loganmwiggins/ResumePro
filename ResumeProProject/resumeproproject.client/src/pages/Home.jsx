@@ -9,8 +9,9 @@ import '../stylesheets/Home.css';
 
 function Home() {
     const navigate = useNavigate();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
+    const [resumesLoading, setResumesLoading] = useState(true);
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -51,7 +52,15 @@ function Home() {
     useEffect(() => {
         if (!user || !user.id) return;
 
+        // Handle first login help walkthrough
+        if (user.isFirstLogin) {
+            handleFirstLogin();
+            return;
+        }
+
         const fetchResumes = async () => {
+            setResumesLoading(true); // Start loading
+
             try {
                 const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
 
@@ -63,18 +72,18 @@ function Home() {
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
-                    console.log("No resumes for this user.");
-                    showToast("Create your first resume.", "info", "Let's get started!");
                     setResumes([]);
                     return;
                 }
-
-                setResumes(data); // Assuming API returns an array of resumes
+                else { setResumes(data); }
             }
             catch (error) {
                 console.error('(catch) Error fetching resumes:', error);
                 showToast("An error occurred.", "error");
                 setResumes([]);
+            }
+            finally {
+                setResumesLoading(false);   // Stop loading
             }
         };
 
@@ -83,17 +92,32 @@ function Home() {
         setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
 
+
+    const handleFirstLogin = () => {
+        navigate("/help");
+
+        // Call API to update isFirstLogin to false
+        fetch(`https://localhost:7035/api/User/UpdateFirstLogin/${user.id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to update first login");
+                return response.json();
+            })
+            .then(() => {
+                // Update user data so state reflects the change
+                user.isFirstLogin = false;
+            })
+            .catch(error => console.error("Error updating first login:", error));
+    }
+
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
-
-    // Handle navigation to resume insights
-    const handleInsights = (resumeId) => navigate(`/insights/${resumeId}`);
-
-    // Handle editing a resume
-
     // Resume 'more' menu functions
-    const toggleMenu = (resumeId) => {
+    const toggleMenu = (resumeId, event) => {
+        event.stopPropagation();
         setOpenMenuId(openMenuId === resumeId ? null : resumeId);
     }
 
@@ -108,19 +132,30 @@ function Home() {
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
+
     // Resume button functions
     const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
 
-    const handleEditResume = (resumeId) => navigate(`/edit-resume/${resumeId}`);
+    const handleInsights = (resumeId, event) => { 
+        event.stopPropagation();
+        navigate(`/insights/${resumeId}`);
+    }
 
-    const handleDeleteResume = async (resumeId) => {
+    const handleEditResume = (templateId, resumeId, event) => {
+        event.stopPropagation();
+        navigate(`/builder/${templateId}/${resumeId}`);
+    }
+
+    const handleDeleteResume = async (resumeId, event) => {
+        event.stopPropagation();
+
         if (!window.confirm('Are you sure you want to delete this resume?')) return;
 
         try {
             const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
-                {
-                    method: 'DELETE',
-                });
+            {
+                method: 'DELETE',
+            });
 
             if (!response.ok) {
                 showToast("Error deleting resume.", "error");
@@ -139,14 +174,16 @@ function Home() {
 
     return (
         <AuthorizeView>
-            {loading ? (
+            {userLoading ? (
                 <div className="loading-spinner"></div>
             ) : (
                 <div className="page-ctnr">
                     {/* Home header */}
                     <div className="home-header">
                         <div className="page-header">
-                            <h1>{homeGreeting}, {user.firstName}</h1>
+                            {user?.firstName && (
+                                <h1>{homeGreeting}, {user.firstName}</h1>
+                            )}
                             <p>{homeMessage}</p>
                         </div>
                         <div>
@@ -161,15 +198,21 @@ function Home() {
                     <div className="my-resumes-ctnr">
                         <h2>My Resumes</h2>
                         <div className="resumes-row">
-                            {Array.isArray(resumes) && resumes.length > 0 ? (
+                            {resumesLoading ? (
+                                <div className="loading-spinner"></div>
+                            ) : Array.isArray(resumes) && resumes.length > 0 ? (
                                 resumes.map((resume, index) => (
-                                    <div className="resume" key={resume.resumeId} style={{ animationDelay: `${index * 0.2}s`}}>
-                                        {/*<div className="resume-img"></div>*/}
+                                    <div 
+                                        key={resume.resumeId} 
+                                        className="resume" 
+                                        style={{ animationDelay: `${index * 0.2}s`}}
+                                        onClick={() => handlePreviewResume(resume.resumeId)}
+                                    >
                                         <div className="resume-img">
-                                        {resume.thumbnail ? (
-                                            <img src={resume.thumbnail} alt="Resume Thumbnail" />
-                                        ) : (
-                                            <p>No Preview Available</p>
+                                            {resume.thumbnail ? (
+                                                <img src={resume.thumbnail} draggable="false" />
+                                            ) : (
+                                                <p>No Preview Available</p>
                                             )}
                                         </div>
                                         <div className="resume-info">
@@ -178,9 +221,8 @@ function Home() {
                                                 <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
                                             </div>
                                             <div className="resume-btns">
-                                            
                                                 {/* Ellipsis button */}
-                                                <button onClick={() => toggleMenu(resume.resumeId)}>
+                                                <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
                                                     <img src="assets/icons/ellipsis.svg" draggable="false" />
                                                 </button>
 
@@ -194,13 +236,13 @@ function Home() {
                                                             exit={{ opacity: 0, y: -10 }}
                                                             transition={{ duration: 0.2, ease: "easeOut" }}
                                                         >
-                                                            <button onClick={() => handlePreviewResume(resume.resumeId)}>
-                                                                <img src="assets/icons/expand.svg" draggable="false" />
+                                                            <button onClick={(event) => handleInsights(resume.resumeId, event)}>
+                                                                <img src="assets/icons/sparkles.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={() => handleEditResume(resume.resumeId)}>
+                                                            <button onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}>
                                                                 <img src="assets/icons/pencil.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={() => handleDeleteResume(resume.resumeId)}>
+                                                            <button onClick={(event) => handleDeleteResume(resume.resumeId, event)}>
                                                                 <img src="assets/icons/trash.svg" draggable="false" />
                                                             </button>
                                                         </motion.div>

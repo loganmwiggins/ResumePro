@@ -8,15 +8,16 @@ import '../stylesheets/Nav.css';
 
 function Nav() {
     const navigate = useNavigate();
-    const { user, loading } = useUser();
+    const { user, userLoading } = useUser();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const handleTitleClick = () => { navigate("/home"); };
+    const handleHomeClick = () => { navigate("/home"); };
     const handleProfileClick = () => { 
         navigate("/profile"); 
         setIsDropdownOpen(false);
     };
-    const handleEditProfileClick = () => { navigate("/edit-profile"); };
+    const handleEditProfileClick = () => { navigate("/edit-profile"); }
+    const handleHelp = () => { navigate("/help"); }
     const handleLoginClick = () => { navigate("/login"); }
     const handleSignUpClick = () => { navigate("/signup"); }
 
@@ -40,47 +41,60 @@ function Nav() {
     return (
         <div className="nav-container">
             <div className="main-row">
-                <div className="title" onClick={handleTitleClick} title="Go Home">
+                <div className="title" onClick={handleHomeClick} title="Go Home">
                     <img src="/assets/icons/resume-logo.svg" draggable="false" />
                     <h3>ResumePro</h3>
                 </div>
 
                 <div className="directory">
-                    {loading ? (
+                    {userLoading ? (
                         <div className="loading-spinner"></div>
                     ) : user ? (
                     // If user is logged in...
-                        <div className="profile-ctnr">
-                            {/* Profile Button */}
-                            <button className="user-btn" onClick={toggleDropdown} title="Profile">
-                                <img src="/assets/icons/user.svg" draggable="false" />
-                                <img src="/assets/icons/angle-down.svg" draggable="false" />
-                            </button>
+                        <div className="btn-ctnr">
+                            {/* Home button */}
+                            <motion.button 
+                                className="btn btn-icon" 
+                                title="Home"
+                                onClick={handleHomeClick}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                <img src="/assets/icons/home.svg" draggable="false" />
+                            </motion.button>
+                            
+                            <div className="profile-ctnr">
+                                {/* Profile Button */}
+                                <button className="user-btn" onClick={toggleDropdown} title="Profile">
+                                    <img src="/assets/icons/user.svg" draggable="false" />
+                                    <img src="/assets/icons/angle-down.svg" draggable="false" />
+                                </button>
 
-                            {/* User dropdown menu */}
-                            <AnimatePresence>
-                                {isDropdownOpen && (
-                                    <motion.div
-                                        className="dropdown-menu"
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.2, ease: "easeOut" }}
-                                    >
-                                        <button onClick={handleProfileClick}>My Profile</button>
-                                        <button onClick={handleEditProfileClick}>Edit Profile</button>
-                                        <LogoutLink>Logout</LogoutLink>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                {/* User dropdown menu */}
+                                <AnimatePresence>
+                                    {isDropdownOpen && (
+                                        <motion.div
+                                            className="dropdown-menu"
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.2, ease: "easeOut" }}
+                                        >
+                                            <button onClick={handleProfileClick}>My Profile</button>
+                                            <button onClick={handleEditProfileClick}>Edit Profile</button>
+                                            <button onClick={handleHelp}>Help</button>
+                                            <LogoutLink>Logout</LogoutLink>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         </div>
                     ) : (
                     // If user is NOT logged in...
                         <div className="btn-ctnr">
-                            <button onClick={handleSignUpClick}>
+                            <button onClick={handleSignUpClick} className="btn btn-outline">
                                 <span>Sign Up</span>
                             </button>
-                            <button onClick={handleLoginClick}>
+                            <button onClick={handleLoginClick} className="btn btn-black">
                                 <span>Login</span>
                             </button>
                         </div>

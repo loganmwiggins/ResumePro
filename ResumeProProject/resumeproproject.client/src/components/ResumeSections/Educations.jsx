@@ -45,26 +45,6 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                         {/* Inputs */}
                         <div className="input-row">
                             <div className="input-field">
-                                <label>School / University <span className="req">*</span></label>
-                                <input 
-                                    type="text"
-                                    placeholder="(e.g.,  Florida State University)"
-                                    onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
-                                    value={data[index].schoolName}
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label>Location</label>
-                                <input 
-                                    type="text"
-                                    placeholder="(e.g.,  Tallahassee, FL)"
-                                    onChange={(e) => handleChange("educations", "schoolLocation", e.target.value, index)}
-                                    value={data[index].schoolLocation}
-                                />
-                            </div>
-                        </div>
-                        <div className="input-row">
-                            <div className="input-field">
                                 <label>Degree Type <span className="req">*</span></label>
                                 <input 
                                     type="text"
@@ -105,7 +85,26 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 />
                             </div>
                         </div>
-                        
+                        <div className="input-row">
+                            <div className="input-field">
+                                <label>School / University <span className="req">*</span></label>
+                                <input 
+                                    type="text"
+                                    placeholder="(e.g.,  Florida State University)"
+                                    onChange={(e) => handleChange("educations", "schoolName", e.target.value, index)}
+                                    value={data[index].schoolName}
+                                />
+                            </div>
+                            <div className="input-field">
+                                <label>Location</label>
+                                <input 
+                                    type="text"
+                                    placeholder="(e.g.,  Tallahassee, FL)"
+                                    onChange={(e) => handleChange("educations", "schoolLocation", e.target.value, index)}
+                                    value={data[index].schoolLocation}
+                                />
+                            </div>
+                        </div>
                         <div className="input-row">
                             <div className="input-field">
                                 <label>Start Date <span className="req">*</span></label>
