@@ -6,18 +6,17 @@ import PasswordInput from "../components/PasswordInput";
 import { showToast } from "../utils/Toast";
 
 function SignUp() {
+    const navigate = useNavigate();
+
     // State variables
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const navigate = useNavigate();
 
     // Navigate to login page
-    const handleLoginClick = () => {
-        navigate("/login");
-    };
+    const handleLoginClick = () => navigate("/login");
 
     // Handle input changes
     const handleChange = (e) => {
@@ -35,15 +34,15 @@ function SignUp() {
 
         // Validate input fields
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
-            showToast("Please fill in all fields.", "warning");
+            showToast("Please fill in all fields.", "error");
             return;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showToast("Please enter a valid email address.", "warning");
+            showToast("Please enter a valid email address.", "error");
             return;
         }
         if (password !== confirmPassword) {
-            showToast("Passwords do not match.", "warning");
+            showToast("Passwords do not match.", "error");
             return;
         }
 
@@ -64,11 +63,20 @@ function SignUp() {
                 navigate("/login");
             }
             else {
-                data.message || showToast("Error signing up.", "error");
+                // Check if response contains validation errors from ASP.NET Identity
+                if (Array.isArray(data)) {
+                    data.forEach(error => showToast(error.description, "error"));
+                } 
+                else if (data.message) {
+                    showToast(data.message, "error");
+                } 
+                else {
+                    showToast("Error signing up. Please try again.", "error");
+                }
             }
         }
         catch (error) {
-            showToast("Error signing up. Please try again.", "error");
+            showToast("An error occurred.", "error");
             console.error(error);
         }
     };
