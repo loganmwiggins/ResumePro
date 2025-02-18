@@ -116,6 +116,7 @@ namespace ResumeProProject.Server.Controllers
                     Minor = request.Educations[i].Minor,
                     StartDate = request.Educations[i].StartDate,
                     EndDate = request.Educations[i].EndDate,
+                    SchoolLocation = request.Educations[i].SchoolLocation
                     //Resume = fetchedResume,
                 };
                 if (NewEducation != null) { _db.Education.Add(NewEducation); }
@@ -324,7 +325,8 @@ namespace ResumeProProject.Server.Controllers
                     e.Major,
                     e.Minor,
                     e.StartDate,
-                    e.EndDate
+                    e.EndDate,
+                    e.SchoolLocation
                 }).ToList(),
 
                 Certifications = resume.Certifications.Select(c => new
@@ -400,6 +402,7 @@ namespace ResumeProProject.Server.Controllers
                 existingResume.GeneralInformation.WebsiteUrl = request.GeneralInformation.WebsiteUrl;
                 existingResume.GeneralInformation.LinkedInUrl = request.GeneralInformation.LinkedInUrl;
                 existingResume.GeneralInformation.GitHubUrl = request.GeneralInformation.GitHubUrl;
+                existingResume.GeneralInformation.Role = request.GeneralInformation.Role;
             }
             else
             {
@@ -430,10 +433,12 @@ namespace ResumeProProject.Server.Controllers
                     Major = edu.Major,
                     Minor = edu.Minor,
                     StartDate = edu.StartDate,
-                    EndDate = edu.EndDate
+                    EndDate = edu.EndDate,
+                    SchoolLocation = edu.SchoolLocation
                 });
+                System.Diagnostics.Debug.WriteLine("SCHOOL LOCATION IS: " + edu.SchoolLocation);
             }
-
+            
             _db.Certifications.RemoveRange(existingResume.Certifications);
             await _db.SaveChangesAsync();
             existingResume.Certifications.Clear();

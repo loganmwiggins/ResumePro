@@ -75,8 +75,9 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <Select
                                     options={jobTypeOptions}
                                     placeholder="Select a job type"
-                                    onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption.value, index)}
-                                    value={jobTypeOptions.find(option => option.value === data[index].jobType)}
+                                    onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption ? selectedOption.value : null, index)}
+                                    value={jobTypeOptions.find(option => option.value === data[index].jobType || null)}
+                                    isClearable
                                 />
                             </div>
                             <div className="input-field">
@@ -84,9 +85,11 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <Select
                                     options={officeTypeOptions}
                                     placeholder="Select an office type"
-                                    onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption.value, index)}
-                                    value={officeTypeOptions.find(option => option.value === data[index].officeType)}
+                                    onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption ? selectedOption.value : null, index)}
+                                    value={officeTypeOptions.find(option => option.value === data[index].officeType) || null}
+                                    isClearable
                                 />
+                               
                             </div>
                         </div>
                         <div className="input-row">
@@ -102,6 +105,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <label>End Date</label>
                                 <input 
                                     type="date" 
+                                    min = {data[index].startDate}
                                     onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)}
                                     value={data[index].endDate}
                                 />

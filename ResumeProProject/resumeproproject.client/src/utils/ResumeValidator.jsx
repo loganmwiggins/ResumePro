@@ -10,6 +10,16 @@ export const validateResume = (data) => {
         }
     };
 
+    // Helper function to validate date order
+    const validateDates = (startDate, endDate, section, index) => {
+        if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+            errors.push({
+                fieldName: `End Date must be after Start Date [${section}] - Entry ${index + 1}`,
+                section
+            });
+        }
+    };
+
     // General Information
     checkField(data.generalInformation.firstName, "First Name", "General Information");
     checkField(data.generalInformation.lastName, "Last Name", "General Information");
@@ -21,6 +31,8 @@ export const validateResume = (data) => {
             checkField(exp.role, `Job Title [${index + 1}]`, "Experience");
             checkField(exp.startDate, `Start Date [${index + 1}]`, "Experience");
             checkField(exp.description, `Description [${index + 1}]`, "Experience");
+
+            validateDates(exp.startDate, exp.endDate, "Experience", index);
         });
     }
 
@@ -32,6 +44,8 @@ export const validateResume = (data) => {
             checkField(edu.major, `Major [${index + 1}]`, "Education");
             checkField(edu.startDate, `Start Date [${index + 1}]`, "Education");
             checkField(edu.endDate, `End Date [${index + 1}]`, "Education");
+
+            validateDates(edu.startDate, edu.endDate, "Education", index);
         });
     }
 
@@ -40,7 +54,8 @@ export const validateResume = (data) => {
         data.certifications.forEach((cert, index) => {
             checkField(cert.name, `Name [${index + 1}]`, "Certifications");
             checkField(cert.issuer, `Issuer [${index + 1}]`, "Certifications");
-            checkField(cert.issueDate, `Major [${index + 1}]`, "Certifications");
+            checkField(cert.issueDate, `Issue Date [${index + 1}]`, "Certifications");
+            validateDates(cert.issueDate,cert.expireDate,"Certifications",index)
         });
     }
 
@@ -50,6 +65,8 @@ export const validateResume = (data) => {
             checkField(proj.title, `Title [${index + 1}]`, "Projects");
             checkField(proj.startDate, `Start Date [${index + 1}]`, "Projects");
             checkField(proj.description, `Description [${index + 1}]`, "Projects");
+
+            validateDates(proj.startDate, proj.endDate, "Projects", index);
         });
     }
 
