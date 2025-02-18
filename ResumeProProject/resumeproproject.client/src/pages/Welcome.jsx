@@ -12,7 +12,12 @@ function Welcome() {
     return (
         <div className="welcome-container">
             {/* Header */}
-            <div className="welcome-header-ctnr">
+            <motion.div 
+                className="welcome-header-ctnr"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0 }}
+            >
                 <img src="/assets/images/blue-grad-2.jpg" draggable="false" />
                 <div className="welcome-header">
                     <div className="section-header">
@@ -29,10 +34,15 @@ function Welcome() {
                         Get Started
                     </button>
                 </div>
-            </div>
+            </motion.div>
 
-            {/* Mission */}
-            <div className="section-ctnr">
+            {/* Our Mission */}
+            <motion.div 
+                className="section-ctnr"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+            >
                 <div className="section-header">
                     <p>Our Mission</p>
                     <h1>Why ResumePro?</h1>
@@ -59,7 +69,7 @@ function Welcome() {
                         <p>Use Artificial Intelligence to help you revise and improve your resumes.</p>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     )
 }
