@@ -2,7 +2,8 @@
 
 import Template_Minimal from '../components/Templates/Template_Minimal';
 import Template_BoldNavy from '../components/Templates/Template_BoldNavy';
-import Template_Skyline from '../components/Templates/Template_Skyline'
+import Template_Skyline from '../components/Templates/Template_Skyline';
+import Template_RosyEdge from '../components/Templates/Template_RosyEdge';
 
 export const templates = [
     // Minimal
@@ -30,6 +31,14 @@ export const templates = [
         imgPath: "/assets/template-thumbnails/skyline-thumbnail.png",
         component: Template_Skyline
     },
+    // Rosy Edge
+    {
+        id: "rosy-edge",
+        name: "Rosy Edge",
+        tagline: "Stand out with subtle elegance and structure",
+        imgPath: "",
+        component: Template_RosyEdge
+    }
     
     // Add more ...
 ];
