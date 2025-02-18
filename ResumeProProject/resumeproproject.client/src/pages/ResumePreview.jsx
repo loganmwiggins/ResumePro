@@ -65,8 +65,6 @@ const ResumePreview = () => {
     }, [resumeId]);
 
     // Button functions
-    const handleHome = () => navigate("/home");
-
     const handleEditResume = (templateId, resumeId) => {
         navigate(`/builder/${templateId}/${resumeId}`);
     }
@@ -123,10 +121,6 @@ const ResumePreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
             >
-                <button onClick={handleHome} title="Go to home page">
-                    <img src="/assets/icons/home.svg" draggable="false" />
-                    <span>Home</span>
-                </button>
                 <button onClick={() => handleEditResume(resumeData.templateId, resumeId)} title="Go back and edit your resume">
                     <img src="/assets/icons/pencil.svg" draggable="false" />
                     <span>Edit Resume</span>
@@ -151,7 +145,6 @@ const ResumePreview = () => {
                     <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
                 </div>
             </motion.div>
-
         </div>
     );
 };

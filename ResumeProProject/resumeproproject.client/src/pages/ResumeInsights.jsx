@@ -253,8 +253,6 @@ function ResumeInsights() {
 
     showToast("Insight removed successfully", "success");
     setAiResult(null);
-
-    // return response;
   }
 
   return (
@@ -265,7 +263,7 @@ function ResumeInsights() {
           <p>Use Artificial Intelligence to evaluate your resume.</p>
         </div>
         {aiResult && (
-          <div className="reanalyze-text">
+          <div className="reanalyze-ctnr">
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
                 <span>Reanalyze</span>
