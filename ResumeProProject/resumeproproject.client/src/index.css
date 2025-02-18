@@ -53,6 +53,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding-bottom: 4rem;
 }
 
 .page-header {
@@ -125,7 +126,10 @@ html {
   background: rgb(13, 174, 13);
   color: white;
 
-  img { filter: var(--filter-white); }
+  img {
+    width: .8rem;
+    filter: var(--filter-white);
+  }
 }
 .btn-success:hover { background: rgb(11, 153, 11); }
 

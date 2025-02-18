@@ -396,17 +396,31 @@ function ResumeBuilder() {
                                 onClick={handleBack}
                                 whileTap={{ scale: 0.9 }}
                             >
-                                Back
+                                <span>Back</span>
                             </motion.button>
-
-                            <motion.button
-                                type="button"
-                                className={`btn btn-black ${currentStep === 5 ? "btn-disabled" : ""}`}
-                                onClick={handleNext}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                Next
-                            </motion.button>
+                            
+                            {currentStep != 5 ? 
+                                (
+                                    <motion.button
+                                        type="button"
+                                        className="btn btn-black"
+                                        onClick={handleNext}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <span>Next</span>
+                                    </motion.button>
+                                ) : (
+                                    <motion.button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <img src="/assets/icons/check.svg" draggable="false" />
+                                        <span>Finish & Save</span>
+                                    </motion.button>
+                                )
+                            }
                         </div>
                     </div>
                 </form>
