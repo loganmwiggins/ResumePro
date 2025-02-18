@@ -36,7 +36,7 @@ export const templates = [
         id: "rosy-edge",
         name: "Rosy Edge",
         tagline: "Stand out with subtle elegance and structure",
-        imgPath: "",
+        imgPath: "/assets/template-thumbnails/rosyEdge-thumbnail.png",
         component: Template_RosyEdge
     }
     
