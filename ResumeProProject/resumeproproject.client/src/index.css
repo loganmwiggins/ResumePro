@@ -83,6 +83,8 @@ html {
   text-wrap: nowrap;
   cursor: pointer;
   transition: all .2s ease-in-out;
+
+  img { width: 1rem; }
 }
 .btn:hover { transition: all .2s ease-in-out; }
 
@@ -90,14 +92,9 @@ html {
   background: #111;
   color: white;
 
-  img {
-    width: 1rem;
-    filter: var(--filter-white);
-  }
+  img { filter: var(--filter-white); }
 }
-.btn-black:hover { 
-  background: #000;
-}
+.btn-black:hover { background: #000; }
 
 .btn-outline {
   background: none;
@@ -120,10 +117,7 @@ html {
   color: white;
   max-width: fit-content;
 
-  img {
-    width: 1rem;
-    filter: var(--filter-white);
-  }
+  img { filter: var(--filter-white); }
 }
 .btn-accent:hover { transform: scale(1.1); }
 
@@ -131,10 +125,14 @@ html {
   background: rgb(13, 174, 13);
   color: white;
 
-  img {
-    width: 1rem;
-    filter: var(--filter-white);
-  }
+  img { filter: var(--filter-white); }
+}
+.btn-success:hover { background: rgb(11, 153, 11); }
+
+.btn-icon {
+  padding: 0;
+
+  img { width: 1.25rem; }
 }
 
 .btn-disabled {

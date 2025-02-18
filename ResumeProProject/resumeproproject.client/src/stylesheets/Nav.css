@@ -46,6 +46,8 @@
     align-items: center;
     gap: .75rem;
 }
+.btn { transition: none; }
+.btn:hover { transition: none; }
 
 
 /* User profile button */
