@@ -136,6 +136,11 @@ function Home() {
     // Resume button functions
     const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
 
+    const handleDuplicateResume = (resumeId, event) => {
+        event.stopPropagation();
+        alert("Vraj is cute!");
+    }
+
     const handleInsights = (resumeId, event) => { 
         event.stopPropagation();
         navigate(`/insights/${resumeId}`);
@@ -236,13 +241,28 @@ function Home() {
                                                             exit={{ opacity: 0, y: -10 }}
                                                             transition={{ duration: 0.2, ease: "easeOut" }}
                                                         >
-                                                            <button onClick={(event) => handleInsights(resume.resumeId, event)}>
+                                                            <button 
+                                                                title="AI Insights"
+                                                                onClick={(event) => handleInsights(resume.resumeId, event)}
+                                                            >
                                                                 <img src="assets/icons/sparkles.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}>
+                                                            <button 
+                                                                title="Duplicate Resume"
+                                                                onClick={(event) => handleDuplicateResume(resume.resumeId, event)}
+                                                            >
+                                                                <img src="assets/icons/duplicate.svg" draggable="false" />
+                                                            </button>
+                                                            <button 
+                                                                title="Edit Resume"
+                                                                onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}
+                                                            >
                                                                 <img src="assets/icons/pencil.svg" draggable="false" />
                                                             </button>
-                                                            <button onClick={(event) => handleDeleteResume(resume.resumeId, event)}>
+                                                            <button 
+                                                                title="Delete Resume"
+                                                                onClick={(event) => handleDeleteResume(resume.resumeId, event)}
+                                                            >
                                                                 <img src="assets/icons/trash.svg" draggable="false" />
                                                             </button>
                                                         </motion.div>
