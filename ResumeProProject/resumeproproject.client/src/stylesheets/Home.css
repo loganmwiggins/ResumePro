@@ -40,7 +40,6 @@
 .resumes-row {
     width: 100%;
     display: flex;
-    align-items: center;
     gap: 2rem;
     flex-flow: wrap;
 }
@@ -87,9 +86,11 @@
 
 .resume-info {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
+    gap: 1.5rem;
     width: 100%;
+    max-width: 16rem;
 }
 
 .resume-txt {
@@ -110,9 +111,9 @@
 /* Resume buttons + menu */
 .resume-btns {
     display: flex;
-    align-items: center;
     gap: .5rem;
     position: relative;
+    padding-top: .4rem;
 
     button {
         background: none;

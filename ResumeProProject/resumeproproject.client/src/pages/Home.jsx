@@ -15,6 +15,8 @@ function Home() {
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [duplicatedResumeId, setDuplicatedResumeId] = useState(null);
+
 
     // Array of possible greetings
     const greetings = [
@@ -136,10 +138,35 @@ function Home() {
     // Resume button functions
     const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
 
-    const handleDuplicateResume = (resumeId, event) => {
+    const handleDuplicateResume = async (resumeId, event) => {
         event.stopPropagation();
-        alert("Vraj is cute!");
-    }
+        try {
+            const response = await fetch('https://localhost:7035/api/Resume/Duplicate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resumeId, CurrentDate: new Date() }),
+            });
+    
+            if (!response.ok) {
+                showToast("Failed to duplicate resume", "error");
+                throw new Error("Failed to duplicate resume.");
+            }
+    
+            showToast("Resume duplicated successfully", "success");
+    
+            // Re-fetch all resumes to ensure the UI updates correctly
+            const updatedResumesResponse = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
+            const updatedResumes = await updatedResumesResponse.json();
+    
+            setResumes(updatedResumes);
+    
+        } catch (error) {
+            showToast("Failed to duplicate resume.", "error");
+            console.error("Failed to duplicate resume.", error.message);
+        }
+    };
+    
+    
 
     const handleInsights = (resumeId, event) => { 
         event.stopPropagation();

@@ -46,6 +46,12 @@ namespace ResumeProProject.Server.Controllers
 
     }
 
+    public class DuplicateResumeDto
+    {
+        public required Guid resumeId { get; set; }
+        public required DateTime CurrentDate { get; set; }
+    }
+
     public class addInsightDTO
     {
         public required Guid resumeId { get; set; }
@@ -195,6 +201,7 @@ namespace ResumeProProject.Server.Controllers
                 .Include(r => r.Experiences)
                 .Include(r => r.Projects)
                 .Include(r => r.Skills)
+                .OrderByDescending(r => r.UpdatedDateTime)
                 .ToListAsync();
 
             if (!resumes.Any())
@@ -403,6 +410,7 @@ namespace ResumeProProject.Server.Controllers
                 existingResume.GeneralInformation.LinkedInUrl = request.GeneralInformation.LinkedInUrl;
                 existingResume.GeneralInformation.GitHubUrl = request.GeneralInformation.GitHubUrl;
                 existingResume.GeneralInformation.Role = request.GeneralInformation.Role;
+                existingResume.GeneralInformation.Location = request.GeneralInformation.Location;
             }
             else
             {
@@ -493,6 +501,161 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
+
+
+
+        [HttpPost("Duplicate")]
+        public async Task<IActionResult> DuplicateResume([FromBody] DuplicateResumeDto request)
+        {
+            var existingResume = await _db.Resumes
+                .Include(r => r.GeneralInformation)
+                .Include(r => r.Skills)
+                .Include(r => r.Educations)
+                .Include(r => r.Certifications)
+                .Include(r => r.Experiences)
+                .Include(r => r.Projects)
+                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            if (existingResume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+
+
+
+            var NewResume = new Resume
+            {
+                Name = existingResume.Name + " - Copy",
+                UpdatedDateTime = request.CurrentDate,
+                Id = existingResume.Id,
+                TemplateId = existingResume.TemplateId,
+                Thumbnail = existingResume.Thumbnail // Store Thumbnail
+            };
+
+            _db.Resumes.Add(NewResume);
+            await _db.SaveChangesAsync();
+
+            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate && r.Id == existingResume.Id);
+            var NewGeneralInformation = new GeneralInformation
+            {
+
+                ResumeId = fetchedResume.ResumeId,
+
+                FirstName = existingResume.GeneralInformation.FirstName,
+                MiddleName = existingResume.GeneralInformation.MiddleName,
+                LastName = existingResume.GeneralInformation.LastName,
+                Email = existingResume.GeneralInformation.Email,
+                PhoneNumber = existingResume.GeneralInformation.PhoneNumber,
+                WebsiteUrl = existingResume.GeneralInformation.WebsiteUrl,
+                LinkedInUrl = existingResume.GeneralInformation.LinkedInUrl,
+                GitHubUrl = existingResume.GeneralInformation.GitHubUrl,
+                Location = existingResume.GeneralInformation.Location,
+                Role = existingResume.GeneralInformation.Role
+                //Resume = fetchedResume,
+
+            };
+            if (NewGeneralInformation != null) { _db.GeneralInformation.Add(NewGeneralInformation); await _db.SaveChangesAsync(); }
+
+            foreach (var education in existingResume.Educations)
+            {
+                var NewEducation = new Education
+                {
+                    ResumeId = fetchedResume.ResumeId,
+                    SchoolName = education.SchoolName,
+                    DegreeType = education.DegreeType,
+                    GPA = education.GPA,
+                    Major = education.Major,
+                    Minor = education.Minor,
+                    StartDate = education.StartDate,
+                    EndDate = education.EndDate,
+                    SchoolLocation = education.SchoolLocation
+                    //Resume = fetchedResume,
+                };
+                if (NewEducation != null) { _db.Education.Add(NewEducation); }
+                await _db.SaveChangesAsync();
+            }
+            foreach (var certification in existingResume.Certifications)
+            {
+                var NewCertification = new Certification
+                {
+                    ResumeId = fetchedResume.ResumeId,
+                    Name = certification.Name,
+                    Issuer = certification.Issuer,
+                    IssueDate = certification.IssueDate,
+                    ExpireDate = certification.ExpireDate,
+                    //Resume = fetchedResume,
+
+                };
+                if (NewCertification != null) { _db.Certifications.Add(NewCertification); }
+                await _db.SaveChangesAsync();
+            }
+            foreach (var experience in existingResume.Experiences)
+            {
+                var NewExperience = new Experience
+                {
+                    ResumeId = fetchedResume.ResumeId,
+                    CompanyName = experience.CompanyName,
+                    Role = experience.Role,
+                    StartDate = experience.StartDate,
+                    EndDate = experience.EndDate,
+                    IsCurrent = experience.EndDate == null ? true : false,
+                    Description = experience.Description,
+                    Location = experience.Location,
+                    OfficeType = experience.OfficeType,
+                    JobType = experience.JobType,
+                    //Resume = fetchedResume,
+                };
+
+                if (NewExperience != null) { _db.Experiences.Add(NewExperience); }
+                await _db.SaveChangesAsync();
+            }
+            var NewSkill = new Skills
+            {
+                ResumeId = fetchedResume.ResumeId,
+                SkillsDataJson = existingResume.Skills.SkillsDataJson,
+                //Resume = fetchedResume,
+            };
+            if (NewSkill != null)
+            {
+                _db.Skills.Add(NewSkill);
+                await _db.SaveChangesAsync();
+            }
+            foreach (var project in existingResume.Projects)
+            {
+                var NewProject = new Project
+                {
+                    ResumeId = fetchedResume.ResumeId,
+                    Description = project.Description,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                    Title = project.Title
+                };
+                if (NewProject != null) { _db.Projects.Add(NewProject); }
+                await _db.SaveChangesAsync();
+            }
+            return Ok(new { message = "Resume duplicated successfully.", resumeId = fetchedResume.ResumeId });
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
