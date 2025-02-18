@@ -436,9 +436,6 @@ namespace ResumeProProject.Server.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CoreResumeId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("DateJoined")
                         .HasColumnType("timestamp with time zone");
 

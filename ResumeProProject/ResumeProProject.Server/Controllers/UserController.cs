@@ -36,7 +36,6 @@ namespace ResumeProProject.Server.Controllers
                 LastName = model.LastName,
                 DateJoined = DateTime.UtcNow,
                 IsFirstLogin = true
-                //CoreResumeId = model.CoreResumeId
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -67,8 +66,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
-                user.IsFirstLogin,
-                user.CoreResumeId
+                user.IsFirstLogin
             });
 
             return Ok(userList);
@@ -90,8 +88,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
-                user.IsFirstLogin,
-                user.CoreResumeId
+                user.IsFirstLogin
             });
         }
 
@@ -111,8 +108,7 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName = model.FirstName;
             if (!string.IsNullOrEmpty(model.LastName))
                 user.LastName = model.LastName;
-            if (model.CoreResumeId.HasValue)
-                user.CoreResumeId = model.CoreResumeId.Value;
+           
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -160,7 +156,6 @@ namespace ResumeProProject.Server.Controllers
                 user.LastName,
                 user.DateJoined,
                 user.IsFirstLogin,
-                user.CoreResumeId
             });
         }
 
