@@ -61,6 +61,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                             <label>End Date</label>
                             <input 
                                 type="date" 
+                                min = {data[index].startDate}
                                 onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
                                 value={data[index].endDate}
                             />
