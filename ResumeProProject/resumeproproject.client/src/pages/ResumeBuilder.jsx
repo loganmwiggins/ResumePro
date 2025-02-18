@@ -80,7 +80,7 @@ function ResumeBuilder() {
             }
 
             const data = await response.json();
-
+            data.updatedDateTime = new Date();
             if (data.skills?.skillsDataJson) {
                 try {
                     data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
@@ -117,6 +117,7 @@ function ResumeBuilder() {
     };
 
     const handleChange = (section, field, value, index = null) => {
+       // console.log(`Updating ${section}[${index}].${field} to:`, value);
         setResumeData((prevResume) => {
             if (index !== null) {
               return {
@@ -273,7 +274,7 @@ function ResumeBuilder() {
                 }, thumbnail: imgData,
             };
 
-            // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+             console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
             // If new resume...
             if (updateResumeId == undefined) {

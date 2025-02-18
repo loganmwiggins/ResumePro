@@ -76,6 +76,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}
                                 <label>Expire Date</label>
                                 <input 
                                     type="date" 
+                                    min = {data[index].issueDate}
                                     onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
                                     value={data[index].expireDate}
                                 />

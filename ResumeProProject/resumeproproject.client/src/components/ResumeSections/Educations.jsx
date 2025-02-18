@@ -80,6 +80,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     placeholder="Typically only include if above 3.0"
                                     min={0.0}
                                     max={4.0}
+                                    step="0.01"
                                     onChange={(e) => handleChange("educations", "gpa", e.target.value, index)}
                                     value={data[index].gpa}
                                 />
@@ -99,7 +100,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <label>Location</label>
                                 <input 
                                     type="text"
-                                    placeholder="(e.g.,  Tallahassee, FL)"
+                                    placeholder="(e.g.,  Manhattan, NY)"
                                     onChange={(e) => handleChange("educations", "schoolLocation", e.target.value, index)}
                                     value={data[index].schoolLocation}
                                 />
@@ -118,6 +119,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 <label>End Date <span className="req">*</span></label>
                                 <input 
                                     type="date" 
+                                    min = {data[index].startDate}
                                     onChange={(e) => handleChange("educations", "endDate", e.target.value, index)} 
                                     value={data[index].endDate}
                                 />
