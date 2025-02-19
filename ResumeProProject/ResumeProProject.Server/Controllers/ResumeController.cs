@@ -457,6 +457,7 @@ namespace ResumeProProject.Server.Controllers
                     ResumeId = request.resumeId,
                     Issuer = cert.Issuer,
                     IssueDate = cert.IssueDate,
+                    ExpireDate = cert.ExpireDate,
                     Name = cert.Name
                 });
             }
