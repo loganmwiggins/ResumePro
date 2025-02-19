@@ -35,6 +35,8 @@ function ResumeBuilder() {
     // When user data is available, initialize resumeData with default values
     useEffect(() => {
         if (user?.id) {
+            const username = user.firstName.toLowerCase() + user.lastName.toLowerCase();
+
             // If creating a new resume...
             if (updateResumeId == undefined) {
                 setResumeData({
@@ -43,15 +45,15 @@ function ResumeBuilder() {
                     currentDate: new Date(),
                     templateId: templateId,
                     generalInformation: {
-                        firstName: "John",
+                        firstName: user.firstName,
                         middleName: null,
-                        lastName: "Doe",
-                        email: "john.doe@example.com",
+                        lastName: user.lastName,
+                        email: user.email,
                         phoneNumber: "(123) 456-7890",
                         location: "Miami, FL",
-                        role: "Software Engineer",
-                        websiteUrl: "johndoe.com",
-                        linkedInUrl: "linkedin.com/in/johndoe",
+                        role: "Job Title",
+                        websiteUrl: `${username}.com`,
+                        linkedInUrl: `linkedin.com/in/${username}`,
                         gitHubUrl: null
                     },
                     skills: {

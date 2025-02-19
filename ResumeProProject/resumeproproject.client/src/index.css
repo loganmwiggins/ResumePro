@@ -61,6 +61,7 @@ html {
   flex-direction: column;
   text-align: left;
   gap: .25rem;
+  cursor: default;
 
   h1 { text-align: left; }
   p { color: var(--text-third); }
