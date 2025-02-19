@@ -1,6 +1,5 @@
-.resume-paper {
+/* .resume-paper {
     background: white;
-/*    border: 1px solid grey;*/
     width: 850px;
     height: 1100px;
     padding: 50px;
@@ -8,9 +7,32 @@
     flex-direction: column;
     text-align: left;
     gap: 1rem;
-}
+} */
 
 .Template_Minimal {
+    /* gap: 1.5rem !important; */
+
+    /* Layout */
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+    }
+    
+    .entry-head {
+        display: flex;
+        justify-content: space-between;
+    
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+        div:first-child { text-align: left; }
+        div:last-child { text-align: right; }
+    }
+
+
+    /* Header */
     header {
         display: flex;
         align-items: center;
@@ -22,33 +44,21 @@
         flex-direction: column;
         text-align: right;
     }
-    
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    
-        h2 {
-            font-size: 1.25rem;
-            border-bottom: 1px solid #555;
-        }
+
+
+    /* Text */
+    h1 { font-size: 1.5rem; }
+    section h2 {
+        font-size: 1rem;
+        border-bottom: 1px solid #555;
     }
-    
-    .entry-head {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: .25rem;
-    
-        div {
-            display: flex;
-            flex-direction: column;
-        }
-        div:first-child { text-align: left; }
-        div:last-child { text-align: right; }
-    }
+
+    .p-main { font-weight: 700; }
+
+    ul { padding-left: 1.25rem }
     
     
-    /* General info specific */
+    /* General Info */
     .urls {
         display: flex;
         align-items: center;
@@ -63,8 +73,4 @@
             img { max-width: 1rem; }
         }
     }
-    
-    
-    /* Experience specific  */
-    ul { padding-left: 1.25rem }
 }

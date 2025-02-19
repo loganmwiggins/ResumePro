@@ -61,7 +61,7 @@ function Template_Minimal({ data }) {
                             <div key={exp.description}>
                                 <div className="entry-head">
                                     <div>
-                                        <h3>{exp.role}</h3>
+                                        <p className="p-main">{exp.role}</p>
                                         <p>
                                             {exp.companyName} {exp.jobType != null && (
                                                 `| ${jobTypeOptions[exp.jobType].label}`
@@ -100,14 +100,21 @@ function Template_Minimal({ data }) {
 
                         return(
                             <div key={proj.title}>
-                                <h3>{proj.title}</h3>
-                                <p>
-                                    {proj.startDate && (
-                                        `${formatDate(proj.startDate)}`
-                                    )} {proj.endDate && (
-                                        `- ${formatDate(proj.endDate)}`
-                                    )}
-                                </p>
+                                <div className="entry-head">
+                                    <div>
+                                        <p className="p-main">{proj.title}</p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            {proj.startDate && (
+                                                `${formatDate(proj.startDate, {month: true, year: true})}`
+                                            )} {proj.endDate && (
+                                                `- ${formatDate(proj.endDate, {month: true, year: true})}`
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                                
                                 <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
                             </div>
                         );
@@ -122,13 +129,19 @@ function Template_Minimal({ data }) {
                     <h2>CERTIFICATIONS</h2>
                     {data.certifications.map(cert => (
                         <div key={cert.name}>
-                            <h3>{cert.name}</h3>
                             <p>
-                                {cert.issuer} {cert.issueDate && (
-                                    `| Issued: ${formatDate(cert.issueDate)}` 
-                                )} {cert.expireDate && (
-                                    `| Expires: ${formatDate(cert.expireDate)}`
-                                )}
+                                <span className="p-main">
+                                    {cert.issuer} {cert.name}
+                                </span>
+                                <span>
+                                    {cert.issueDate && cert.expireDate
+                                        ? ` • ${formatDate(cert.issueDate, { month: true, year: true })} - ${formatDate(cert.expireDate, { month: true, year: true })}`
+                                        : cert.issueDate
+                                            ? ` • Issued: ${formatDate(cert.issueDate, { month: true, year: true })}`
+                                            : cert.expireDate
+                                                ? ` • Expires: ${formatDate(cert.expireDate, { month: true, year: true })}`
+                                                : ""}
+                                </span>
                             </p>
                         </div>
                     ))}
@@ -159,9 +172,9 @@ function Template_Minimal({ data }) {
                         <div key={edu.startDate}>
                             <div className="entry-head">
                                 <div>
-                                    <h3>
+                                    <p className="p-main">
                                         {edu.degreeType} {edu.major && (`in ${edu.major}`)}
-                                    </h3>
+                                    </p>
                                     <h4>
                                         {edu.minor && (`Minor in ${edu.minor}`)}
                                     </h4>
