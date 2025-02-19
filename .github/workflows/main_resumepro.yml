@@ -53,8 +53,6 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
-    environment:
-      name: 'Production'
     permissions:
       id-token: write
       contents: read
@@ -80,6 +78,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'MyVote'
-          slot-name: 'Production'
+          app-name: 'ResumePro'
           package: ${{ github.workspace }}/dotnet-app
