@@ -30,15 +30,15 @@ jobs:
  
       - name: Install dependencies
         run: npm install
-        working-directory: resumeproproject.client
+        working-directory: ./ResumeProProject/resumeproproject.client
  
       - name: Build frontend
         run: npm run build
-        working-directory: resumeproproject.client
+        working-directory: ./ResumeProProject/resumeproproject.client
  
       - name: Build backend
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish
-        working-directory: resumeproproject.server
+        working-directory: ./ResumeProProject/resumeproproject.server
  
       - name: Verify published files
         run: dir ${{ github.workspace }}/publish
