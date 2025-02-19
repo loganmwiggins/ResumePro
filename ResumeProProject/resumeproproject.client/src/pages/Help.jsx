@@ -22,8 +22,8 @@ function Help() {
             description: "The Home page is your hub for all things resumes. Create, edit, and manage your existing resumes with ease.",
             images: [
                 // "/assets/images/help/home-1.png",
-                // "/assets/images/help/home-2.png",
-                "/assets/images/help/home-3.png",
+                "/assets/images/help/home-2.png",
+                // "/assets/images/help/home-3.png",
             ]
         },
         {

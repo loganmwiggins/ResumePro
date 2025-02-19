@@ -11,7 +11,7 @@ export const templates = [
         id: "minimal", 
         name: "Minimal", 
         tagline: "Clean, classic, and effortlessly professional",
-        imgPath: "/assets/template-thumbnails/minimal-thumbnail.png",
+        imgPath: "/assets/template-thumbnails/Thumbnail_Minimal.png",
         component: Template_Minimal 
     },
     // Bold Navy
