@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
+import { loadingMessages } from '../utils/Messages';
 
 function ResumeInsights() {
   const navigate = useNavigate();
@@ -17,38 +18,10 @@ function ResumeInsights() {
   const [aiResult, setAiResult] = useState(null); // New state to store AI response
   const [jobTitle, setJobTitle] = useState('');
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
-
-  // Messages for the loading state
-  const loadingMessages = [
-    "Analyzing your resume...",
-    "Getting insights from AI...",
-    "Fine-tuning your feedback...",
-    "Making the magic happen...",
-    "Reviewing your resume details...",
-    "Gathering AI-powered insights...",
-    "Optimizing your results...",
-    "Polishing your feedback...",
-    "Scanning for improvements...",
-    "Checking industry best practices...",
-    "Crunching the numbers...",
-    "Crafting the perfect response...",
-    "Almost there, hang tight...",
-    "Fine-tuning your recommendations...",
-    "Making sure everything checks out...",
-    "Unlocking your resume’s potential...",
-    "Formatting results for clarity...",
-    "Running a deep analysis...",
-    "Double-checking key details...",
-    "Giving it a final touch...",
-    "Generating tailored suggestions...",
-    "Putting AI to work for you...",
-    "Refining your career insights..."
-  ];
-
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
-  // Call fetchResumeInsights (on mount) to automatically trigger the process
   useEffect(() => {
+    // Call fetchResumeInsights (on mount) to automatically trigger the process
     if (resumeId) {
       fetchResumeInsights(); 
     }
@@ -67,7 +40,8 @@ function ResumeInsights() {
   useEffect(() => {
     // Set a random starting index when the component mounts
     setLoadingMessageIndex(Math.floor(Math.random() * loadingMessages.length));
-}, []); // Empty dependency array ensures this runs once when the component mounts
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
   useEffect(() => {
     if (loading) {
       const interval = setInterval(() => {
@@ -78,7 +52,7 @@ function ResumeInsights() {
     }
   }, [loading]);
 
-  // Helper function to determine color based on score
+  // Determine div color based on AI score
   const getScoreColorClass = (score) => {
     if (!score) return ""; // Handle missing score
 
@@ -93,6 +67,7 @@ function ResumeInsights() {
     return "score-red";  // Ensure 0% falls in this range
   };
 
+  // AI content disclaimer
   const toggleDisclaimer = () => {
     setShowDisclaimer(!showDisclaimer);
   }
@@ -262,6 +237,7 @@ function ResumeInsights() {
           <h1>Resume Insights</h1>
           <p>Use Artificial Intelligence to evaluate your resume.</p>
         </div>
+
         {aiResult && (
           <div className="reanalyze-ctnr">
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
@@ -272,7 +248,6 @@ function ResumeInsights() {
         )}
       </div>
       
-
       {!aiResult && !loading && (
         <div className="refine-ctnr">
           <h3>Welcome to Insights!</h3>

@@ -5,13 +5,16 @@ const greetings = [
 ];
 const morningGreetings = [
     "Good morning", "Good morrow", "Rise and shine", "Morning", 
-    "Top of the morning", "Grand risings"
+    "Top of the morning", "Grand risings", "A new day awaits", 
+    "Start the day right", "Seize the day"
 ];
 const afternoonGreetings = [
-    "Good afternoon", "Afternoon", "Good day"
+    "Good afternoon", "Afternoon", "Good day", "Keep pushing",
+    "The day's still young"
 ];
 const eveningGreetings = [
-    "Good evening", "Evening", "Good night"
+    "Good evening", "Evening", "The night is young", "End the day right",
+    "Enjoy your night", "The day's almost done"
 ];
 
 
@@ -54,4 +57,31 @@ export const messages = [
     "Let’s get that resume looking sharp!",
     "Ready to impress recruiters? Let's start!",
     "Make your resume as amazing as you are."
+];
+
+// Export array of loading messages for AI Insights
+export const loadingMessages = [
+    "Analyzing your resume...",
+    "Getting insights from AI...",
+    "Fine-tuning your feedback...",
+    "Making the magic happen...",
+    "Reviewing your resume details...",
+    "Gathering AI-powered insights...",
+    "Optimizing your results...",
+    "Polishing your feedback...",
+    "Scanning for improvements...",
+    "Checking industry best practices...",
+    "Crunching the numbers...",
+    "Crafting the perfect response...",
+    "Almost there, hang tight...",
+    "Fine-tuning your recommendations...",
+    "Making sure everything checks out...",
+    "Unlocking your resume’s potential...",
+    "Formatting results for clarity...",
+    "Running a deep analysis...",
+    "Double-checking key details...",
+    "Giving it a final touch...",
+    "Generating tailored suggestions...",
+    "Putting AI to work for you...",
+    "Refining your career insights..."
 ];

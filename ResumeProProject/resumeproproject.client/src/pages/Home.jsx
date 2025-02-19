@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
-import { allGreetings, messages } from '../utils/Greetings';
+import { allGreetings, messages } from '../utils/Messages';
 import '../stylesheets/Home.css';
 
 function Home() {
