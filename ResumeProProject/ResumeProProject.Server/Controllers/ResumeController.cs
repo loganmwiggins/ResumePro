@@ -4,59 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using ResumeProProject.Server.Data.Models;
 using ResumeProProject.Server.Data;
 using Microsoft.AspNetCore.Identity;
+using ResumeProProject.Server.Data.DTOs;
 using Azure.Core;
+using static ResumeProProject.Server.Data.DTOs.ResumeDTOs;
 
 
 namespace ResumeProProject.Server.Controllers
 {
-    public class CreateResumeDto
-    {
-        // Resume Attributes
-        public required string Id { get; set; } // User ID
-        public required string ResumeName { get; set; }
-        public required DateTime CurrentDate { get; set; }
-        public required string TemplateId { get; set; }
-        public string Thumbnail { get; set; } // Base64-encoded image
+   
 
-        // One-to-One Relationship
-        public required GeneralInformation GeneralInformation { get; set; }
-        public Skills Skills { get; set; }
-
-        // One-to-Many Relationships
-        public List<Education> Educations { get; set; } = new();
-        public List<Certification> Certifications { get; set; } = new();
-        public List<Experience> Experiences { get; set; } = new();
-        public List<Project> Projects { get; set; } = new();
-    }
-
-    public class UpdateResumeDto
-    {
-        public required Guid resumeId { get; set; }
-        public required string ResumeName { get; set; }
-        public required DateTime updatedDateTime { get; set; }
-        public required string templateId { get; set; }
-        public string thumbnail { get; set; } // Base64-encoded image
-
-        public required GeneralInformation GeneralInformation { get; set; }
-        public Skills Skills { get; set; }
-        public List<Education> Educations { get; set; } = new();
-        public List<Certification> Certifications { get; set; } = new();
-        public List<Experience> Experiences { get; set; } = new();
-        public List<Project> Projects { get; set; } = new();
-
-    }
-
-    public class DuplicateResumeDto
-    {
-        public required Guid resumeId { get; set; }
-        public required DateTime CurrentDate { get; set; }
-    }
-
-    public class addInsightDTO
-    {
-        public required Guid resumeId { get; set; }
-        public required string content { get; set; }
-    }
 
 
     [ApiController]
@@ -69,7 +25,7 @@ namespace ResumeProProject.Server.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateResume([FromBody] CreateResumeDto request)
+        public async Task<IActionResult> CreateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.CreateResumeDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -375,7 +331,7 @@ namespace ResumeProProject.Server.Controllers
 
 
         [HttpPut("Update/{resumeId}")]
-        public async Task<IActionResult> UpdateResume([FromBody] UpdateResumeDto request)
+        public async Task<IActionResult> UpdateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.UpdateResumeDto request)
         {
             var existingResume = await _db.Resumes
                 .Include(r => r.GeneralInformation)
@@ -446,7 +402,7 @@ namespace ResumeProProject.Server.Controllers
                 });
                 System.Diagnostics.Debug.WriteLine("SCHOOL LOCATION IS: " + edu.SchoolLocation);
             }
-            
+
             _db.Certifications.RemoveRange(existingResume.Certifications);
             await _db.SaveChangesAsync();
             existingResume.Certifications.Clear();
@@ -506,7 +462,7 @@ namespace ResumeProProject.Server.Controllers
 
 
         [HttpPost("Duplicate")]
-        public async Task<IActionResult> DuplicateResume([FromBody] DuplicateResumeDto request)
+        public async Task<IActionResult> DuplicateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.DuplicateResumeDto request)
         {
             var existingResume = await _db.Resumes
                 .Include(r => r.GeneralInformation)
@@ -638,90 +594,5 @@ namespace ResumeProProject.Server.Controllers
 
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // INSIGHTS CONTROLLER ACTIONS
-        [HttpPost("AddInsight")]
-        public async Task<IActionResult> AddInsight([FromBody] addInsightDTO request)
-        {
-            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
-
-            var NewInsight = new Insight
-            {
-                ResumeId = fetchedResume.ResumeId,
-                Content = request.content
-            };
-            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
-
-            return Ok(new { message = "Insight added successfully." });
-        }
-
-        [HttpGet("GetInsight/{resumeId}")]
-        public async Task<IActionResult> GetInsight(Guid resumeId)
-        {
-            var insight = await _db.Insights
-                .Where(i => i.ResumeId == resumeId)
-                .Select(i => i.Content)
-                .FirstOrDefaultAsync();
-
-            if (insight == null)
-            {
-                return NotFound("No insights found for this resume.");
-            }
-
-            return Ok(insight);
-        }
-
-
-        [HttpDelete("DeleteInsight/{resumeId}")]
-
-        public async Task<IActionResult> DeleteInsight(Guid resumeId)
-        {
-            var finsight = await _db.Insights
-                .Where(i => i.ResumeId == resumeId)
-                .FirstOrDefaultAsync();
-
-            if (finsight == null)
-            {
-                return NotFound("No insights found for this resume.");
-            }
-            _db.Insights.Remove(finsight);
-            await _db.SaveChangesAsync();
-            return Ok(new { message = "Insight deleted successfully." });
-        }
-
     }
 }

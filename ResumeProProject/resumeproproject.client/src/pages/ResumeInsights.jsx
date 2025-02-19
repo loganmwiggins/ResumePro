@@ -121,7 +121,7 @@ function ResumeInsights() {
   // Helper function to fetch an insight from the DB, if it exists
   const fetchExistingInsight = async (resumeId) => {
     try {
-      const response = await fetch(`https://localhost:7035/api/Resume/GetInsight/${resumeId}`);
+      const response = await fetch(`https://localhost:7035/api/Insight/GetInsight/${resumeId}`);
 
       if (!response.ok) return null;
 
@@ -193,7 +193,7 @@ function ResumeInsights() {
   // Helper function to save insight to the database
   const saveInsight = async (resumeId, aiJsonObj) => {
     try {
-      const response = await fetch('https://localhost:7035/api/Resume/AddInsight', {
+      const response = await fetch('https://localhost:7035/api/Insight/AddInsight', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resumeId, content: JSON.stringify(aiJsonObj) }),
@@ -216,7 +216,7 @@ function ResumeInsights() {
   const deleteInsight = async(resumeId) => {
     if (!window.confirm("Are you sure you want to re-analyze? The current suggestions will be deleted.")) return;
 
-    const response = await fetch(`https://localhost:7035/api/Resume/DeleteInsight/${resumeId}`,
+    const response = await fetch(`https://localhost:7035/api/Insight/DeleteInsight/${resumeId}`,
     {
         method: 'DELETE',
     });
