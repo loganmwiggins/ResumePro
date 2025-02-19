@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import '../stylesheets/Help.css';
 
-function Help({ setShowWalkthrough }) {
+function Help() {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
 
@@ -12,30 +12,43 @@ function Help({ setShowWalkthrough }) {
         {
             title: "Welcome to ResumePro!",
             description: "Let’s take a quick tour of ResumePro to help you get started and make the most of its features.",
-            imgPath: ""
+            images: [
+                "/assets/images/resume-1.webp",
+                "/assets/images/resume-2.webp",
+            ]
         },
         {
             title: "Manage Resumes on the Home Page",
             description: "The Home page is your hub for all things resumes. Create, edit, and manage your existing resumes with ease.",
-            imgPath: ""
+            images: [
+                // "/assets/images/help/home-1.png",
+                // "/assets/images/help/home-2.png",
+                "/assets/images/help/home-3.png",
+            ]
         },
         {
             title: "Customize Your Profile",
             description: `Your Profile page stores all your personal information. 
                           Here, you can update your username, password, and profile picture. 
                           Access it anytime via the user dropdown in the top-right corner.`,
-            imgPath: ""
+            images: []
         },
         {
-            title: "Set a Default Resume",
-            description: `Speed up your workflow by setting a default resume. 
-                          This ensures new resumes start with your preferred template and details pre-filled.`,
-            imgPath: ""
+            title: "Get Help from ResumePro AI",
+            description: `Get recommendations on each section of your resume from the ResumePro AI Assistant.`,
+            images: ["/assets/images/help/insights.png"]
         },
         {
             title: "You're All Set!",
             description: "That’s it! Now you’re ready to start building and managing your resumes like a pro.",
-            imgPath: ""
+            images: [
+                // "/assets/template-thumbnails/boldNavy-thumbnail.png",
+                // "/assets/template-thumbnails/minimal-thumbnail.png",
+                // "/assets/template-thumbnails/rosyEdge-thumbnail.png",
+                // "/assets/template-thumbnails/skyline-thumbnail.png",
+                "/assets/images/resume-1.webp",
+                "/assets/images/resume-2.webp",
+            ]
         },
     ];    
 
@@ -72,7 +85,14 @@ function Help({ setShowWalkthrough }) {
                         </div>
                         
                         <div className="img-ctnr">
-                            Add image
+                            {steps[currentStep].images.map((imgPath, index) => (
+                                <img 
+                                    key={index} 
+                                    src={imgPath} 
+                                    draggable="false"
+                                    style={{ width: `${100 / steps[currentStep].images.length}%` }} // Dynamic width
+                                />
+                            ))}
                         </div>
                     </motion.div>
                 </AnimatePresence>
@@ -106,7 +126,7 @@ function Help({ setShowWalkthrough }) {
                                     onClick={handleDone}
                                     whileTap={{scale: 0.9}}
                                 >
-                                    <span>Done</span>
+                                    <span>Let's Start</span>
                                     <img src="/assets/icons/check.svg" draggable="false" />
                                 </motion.button>
                             ) : (
