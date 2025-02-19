@@ -135,11 +135,11 @@ function Template_Minimal({ data }) {
                                 </span>
                                 <span>
                                     {cert.issueDate && cert.expireDate
-                                        ? ` • ${formatDate(cert.issueDate, { month: true, year: true })} - ${formatDate(cert.expireDate, { month: true, year: true })}`
+                                        ? ` | ${formatDate(cert.issueDate, { month: true, year: true })} - ${formatDate(cert.expireDate, { month: true, year: true })}`
                                         : cert.issueDate
-                                            ? ` • Issued: ${formatDate(cert.issueDate, { month: true, year: true })}`
+                                            ? ` | Issued: ${formatDate(cert.issueDate, { month: true, year: true })}`
                                             : cert.expireDate
-                                                ? ` • Expires: ${formatDate(cert.expireDate, { month: true, year: true })}`
+                                                ? ` | Expires: ${formatDate(cert.expireDate, { month: true, year: true })}`
                                                 : ""}
                                 </span>
                             </p>
