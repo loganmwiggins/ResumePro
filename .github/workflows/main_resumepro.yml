@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - ResumePro
+name: Build and deploy ASP.Net Core app to Azure Web App - ResumeProProject
  
 on:
   push:
@@ -30,15 +30,15 @@ jobs:
  
       - name: Install dependencies
         run: npm install
-        working-directory: ResumePro.client
+        working-directory: resumeproproject.client
  
       - name: Build frontend
         run: npm run build
-        working-directory: ResumePro.client
+        working-directory: resumeproproject.client
  
       - name: Build backend
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish
-        working-directory: ResumePro.server
+        working-directory: resumeproproject.server
  
       - name: Verify published files
         run: dir ${{ github.workspace }}/publish
