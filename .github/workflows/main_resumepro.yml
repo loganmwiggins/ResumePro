@@ -1,0 +1,85 @@
+name: Build and deploy ASP.Net Core app to Azure Web App - ResumeProProject
+ 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+ 
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+ 
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - name: Set environment to production
+        run: echo "NODE_ENV=production" >> $GITHUB_ENV
+ 
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+ 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+ 
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./ResumeProProject/resumeproproject.client
+ 
+      - name: Build frontend
+        run: npm run build -- --config ./vite.config.js
+        working-directory: ./ResumeProProject/resumeproproject.client
+ 
+      - name: Build backend
+        run: dotnet publish -c Release -o ${{ github.workspace }}/publish
+        working-directory: ./ResumeProProject/resumeproproject.server
+ 
+      - name: Verify published files
+        run: dir ${{ github.workspace }}/publish
+ 
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-app
+          path: ${{ github.workspace }}/publish
+          retention-days: 1
+ 
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+    permissions:
+      id-token: write
+      contents: read
+ 
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-app
+          path: ${{ github.workspace }}/dotnet-app
+ 
+      - name: Verify downloaded files
+        run: dir ${{ github.workspace }}/dotnet-app
+ 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+ 
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'MyVote'
+          slot-name: 'Production'
+          package: ${{ github.workspace }}/dotnet-app
