@@ -1,22 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
+import AllTemplates from '../components/Templates/AllTemplates';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
 
 function ResumeInsights() {
   const navigate = useNavigate();
   const params = useParams();
+  const resumeRef = useRef(null);
 
   const [resumeId, setResumeId] = useState(params.resumeId || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(null); // New state to store AI response
-  const [jobTitle, setJobTitle] = useState('');
+  const [jobTitle, setJobTitle] = useState(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
@@ -81,6 +83,7 @@ function ResumeInsights() {
       const resumeJson = await fetchResumeData();
       if (!resumeJson) return;
       setResumeData(resumeJson);
+      setJobTitle(resumeJson.generalInformation.role || null);
 
       // [Step 2]: Get existing insight or null 
       const existingInsightJson = await fetchExistingInsight(resumeId);
@@ -233,11 +236,13 @@ function ResumeInsights() {
   return (
     <AuthorizeView>
       <div className="header-with-btn">
+        {/* Header */}
         <div className="page-header">
           <h1>Resume Insights</h1>
           <p>Use Artificial Intelligence to evaluate your resume.</p>
         </div>
 
+        {/* Reanalyze button */}
         {aiResult && (
           <div className="reanalyze-ctnr">
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
@@ -248,11 +253,12 @@ function ResumeInsights() {
         )}
       </div>
       
+      {/* Welcome & Refine div */}
       {!aiResult && !loading && (
         <div className="refine-ctnr">
           <h3>Welcome to Insights!</h3>
           <p>
-            Looking for feedback on your resume? The Resume Pro AI Assistant is here to help! <br/>
+            Looking for feedback on your resume? The ResumePro AI Assistant is here to help! <br/>
             Want tailored suggestions? Enter your desired role before submitting <em>or</em> leave it blank for a general review.  
           </p>
           <input
@@ -272,7 +278,8 @@ function ResumeInsights() {
       )}
 
       <div className="resume-insights-ctnr">
-      {loading && (
+        {/* Loading animation & error message */}
+        {loading && (
           <div className="loading-spinner-container">
             <div className="loading-spinner"></div>
             <div className="loading-message">
@@ -285,6 +292,7 @@ function ResumeInsights() {
         {/* AI feedback */}
         {aiResult && (
           <div className="feedback-ctnr">
+            {/* Feedback header */}
             <div className="feedback-head">
               <div className="feedback-title">
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
@@ -323,24 +331,35 @@ function ResumeInsights() {
               </div>
             </div>
 
-            {Object.entries(aiResult).map(([section, data], index) => (
-              <motion.div 
-                key={section} 
-                className="feedback-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: `${index * 0.2}` }}
-              >
-                <div>
-                  <h3>{section}</h3>
-                  <p>{data.comments}</p>
-                </div>
-                <div className={`score ${getScoreColorClass(data.score)}`}>
-                  <div className="score-circle"></div>
-                  <p>{data.score}</p>
-                </div>
-              </motion.div>
-            ))}
+            <div className="side-by-side">
+              {/* Resume preview */}
+              <div className="preview-ctnr" ref={resumeRef}>
+                {console.log(resumeData)}
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+              </div>
+
+              {/* Feedback items */}
+              <div className="feedback-item-ctnr">
+                {Object.entries(aiResult).map(([section, data], index) => (
+                  <motion.div 
+                    key={section} 
+                    className="feedback-item"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: `${index * 0.2}` }}
+                  >
+                    <div>
+                      <h3>{section}</h3>
+                      <p>{data.comments}</p>
+                    </div>
+                    <div className={`score ${getScoreColorClass(data.score)}`}>
+                      <div className="score-circle"></div>
+                      <p>{data.score}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
