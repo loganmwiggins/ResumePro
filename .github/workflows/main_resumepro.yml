@@ -1,58 +1,85 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.Net Core app to Azure Web App - ResumePro
-
+ 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
+ 
 jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
-
+      contents: read
+ 
     steps:
       - uses: actions/checkout@v4
-
+ 
+      - name: Set environment to production
+        run: echo "NODE_ENV=production" >> $GITHUB_ENV
+ 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-
+ 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+ 
+      - name: Install dependencies
+        run: npm install
+        working-directory: myvote.client
+ 
+      - name: Build frontend
+        run: npm run build
+        working-directory: myvote.client
+ 
+      - name: Build backend
+        run: dotnet publish -c Release -o ${{ github.workspace }}/publish
+        working-directory: myvote.server
+ 
+      - name: Verify published files
+        run: dir ${{ github.workspace }}/publish
+ 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
+          name: dotnet-app
+          path: ${{ github.workspace }}/publish
+          retention-days: 1
+ 
   deploy:
     runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+    permissions:
+      id-token: write
+      contents: read
+ 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-      
+          name: dotnet-app
+          path: ${{ github.workspace }}/dotnet-app
+ 
+      - name: Verify downloaded files
+        run: dir ${{ github.workspace }}/dotnet-app
+ 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+ 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'ResumePro'
+          app-name: 'MyVote'
           slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8B45314FAFC5487485745901F849EF8C }}
+          package: ${{ github.workspace }}/dotnet-app
