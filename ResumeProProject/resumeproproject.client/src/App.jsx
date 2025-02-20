@@ -22,6 +22,7 @@ import Help from './pages/Help';
 import Template_Minimal from './components/Templates/Template_Minimal';
 import Template_Bold from './components/Templates/Template_BoldNavy';
 import Template_Skyline from './components/Templates/Template_Skyline';
+import Template_Beeline from './components/Templates/Template_Beeline';
 
 function App() {
   const location = useLocation();
@@ -60,9 +61,10 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         {/* WILL REMOVE LATER: Templates for viewing */}
-        <Route path="/template-minimal" element={<Template_Minimal />} />
+        {/* <Route path="/template-minimal" element={<Template_Minimal />} />
         <Route path="/template-bold" element={<Template_Bold />} />
-        <Route path="/template-skyline" element={<Template_Skyline />} />
+        <Route path="/template-skyline" element={<Template_Skyline />} /> */}
+        {/* <Route path="/template-beeline" element={<Template_Beeline />} /> */}
 
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Navigate to="/home" />} />

@@ -4,6 +4,7 @@ import Template_Minimal from '../components/Templates/Template_Minimal';
 import Template_BoldNavy from '../components/Templates/Template_BoldNavy';
 import Template_Skyline from '../components/Templates/Template_Skyline';
 import Template_RosyEdge from '../components/Templates/Template_RosyEdge';
+import Template_Beeline from '../components/Templates/Template_Beeline';
 
 export const templates = [
     // Minimal
@@ -38,6 +39,14 @@ export const templates = [
         tagline: "Stand out with subtle elegance and structure",
         imgPath: "/assets/template-thumbnails/rosyEdge-thumbnail.png",
         component: Template_RosyEdge
+    },
+    // Beeline
+    {
+        id: "beeline",
+        name: "Beeline",
+        tagline: "Lead with your name, follow with impact",
+        imgPath: "/assets/template-thumbnails/beeline-thumbnail.png",
+        component: Template_Beeline
     }
     
     // Add more ...

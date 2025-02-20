@@ -127,8 +127,8 @@ function Template_Minimal({ data }) {
             {data.certifications.length > 0 && (
                 <section>
                     <h2>CERTIFICATIONS</h2>
-                    {data.certifications.map(cert => (
-                        <div key={cert.name}>
+                    {data.certifications.map((cert, index) => (
+                        <div key={index}>
                             <p>
                                 <span className="p-main">
                                     {cert.issuer} {cert.name}
