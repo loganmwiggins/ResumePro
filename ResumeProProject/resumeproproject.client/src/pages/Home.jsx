@@ -13,7 +13,7 @@ function Home() {
     const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
     const [resumesLoading, setResumesLoading] = useState(true);
-    const [sortOption, setSortOption] = useState("update-desc");
+    const [sortOption, setSortOption] = useState(() => sessionStorage.getItem("sortOption") || "update-desc");
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -102,7 +102,9 @@ function Home() {
 
     // Handle sorting resumes
     const handleSortChange = (event) => {
-        setSortOption(event.target.value)
+        const newSortOption = event.target.value;
+        setSortOption(newSortOption);
+        sessionStorage.setItem("sortOption", newSortOption);
     }
 
     // Function to sort resumes based on selected option
