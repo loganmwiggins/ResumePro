@@ -13,6 +13,8 @@ function Home() {
     const { user, userLoading } = useUser();
     const [resumes, setResumes] = useState([]);
     const [resumesLoading, setResumesLoading] = useState(true);
+    const [sortedResumes, setSortedResumes] = useState([]);
+    const [sortOption, setSortOption] = useState(() => sessionStorage.getItem("sortOption") || "update-desc");
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -64,7 +66,43 @@ function Home() {
         setHomeMessage(getRandomElement(messages)); // Set message once on mount
     }, [user]);
 
+    // Handle opening and closing resume button actions
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".resume-btns")) {
+                setOpenMenuId(null);
+            }
+        }
 
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
+
+    // Update sorted resumes when resumes or sortOption is changed
+    useEffect(() => {
+        if (resumesLoading) return;
+
+        const sorted = [...resumes].sort((a, b) => {
+            switch (sortOption) {
+                case "updated-asc":
+                    return new Date(a.updatedDateTime) - new Date(b.updatedDateTime);
+                case "updated-desc":
+                    return new Date(b.updatedDateTime) - new Date(a.updatedDateTime);
+                case "title-asc":
+                    return a.resumeName.localeCompare(b.resumeName);
+                case "title-desc":
+                    return b.resumeName.localeCompare(a.resumeName);
+                default:
+                    return 0;
+            }
+        });
+    
+        setSortedResumes(sorted);
+    }, [resumes, sortOption, resumesLoading]);
+    
+
+    // First login - navigate to help and set boolean to false
     const handleFirstLogin = () => {
         navigate("/help");
 
@@ -87,27 +125,23 @@ function Home() {
     // Handle navigation to create a new resume
     const handleNewResume = () => navigate('/templates');
 
+    // Handle sorting resumes
+    const handleSortChange = (event) => {
+        const newSortOption = event.target.value;
+        setSortOption(newSortOption);
+        sessionStorage.setItem("sortOption", newSortOption);
+    }
+
     // Resume 'more' menu functions
     const toggleMenu = (resumeId, event) => {
         event.stopPropagation();
         setOpenMenuId(openMenuId === resumeId ? null : resumeId);
     }
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest(".resume-btns")) {
-                setOpenMenuId(null);
-            }
-        }
-
-        document.addEventListener("click", handleClickOutside);
-        return () => document.removeEventListener("click", handleClickOutside);
-    }, []);
-
-
-    // Resume button functions
+    // Preview resume
     const handlePreviewResume = (resumeId) => navigate(`/preview/${resumeId}`);
 
+    // Duplicate resume
     const handleDuplicateResume = async (resumeId, event) => {
         event.stopPropagation();
         try {
@@ -136,18 +170,19 @@ function Home() {
         }
     };
     
-    
-
+    // Resume insights
     const handleInsights = (resumeId, event) => { 
         event.stopPropagation();
         navigate(`/insights/${resumeId}`);
     }
 
+    // Edit resume
     const handleEditResume = (templateId, resumeId, event) => {
         event.stopPropagation();
         navigate(`/builder/${templateId}/${resumeId}`);
     }
 
+    // Delete resume
     const handleDeleteResume = async (resumeId, event) => {
         event.stopPropagation();
 
@@ -198,12 +233,21 @@ function Home() {
 
                     {/* My Resumes section */}
                     <div className="my-resumes-ctnr">
-                        <h2>My Resumes</h2>
+                        <div className="my-resumes-head">
+                            <h2>My Resumes</h2>
+                            <select className="filter-select" onChange={handleSortChange} value={sortOption}>
+                                <option value="updated-desc">Last Updated (Latest First)</option>
+                                <option value="updated-asc">Last Updated (Oldest First)</option>
+                                <option value="title-asc">Title (A-Z)</option>
+                                <option value="title-desc">Title (Z-A)</option>
+                            </select>
+                        </div>
                         <div className="resumes-row">
                             {resumesLoading ? (
                                 <div className="loading-spinner"></div>
                             ) : Array.isArray(resumes) && resumes.length > 0 ? (
-                                resumes.map((resume, index) => (
+                                // Resumes list
+                                sortedResumes.map((resume, index) => (
                                     <div 
                                         key={resume.resumeId} 
                                         className="resume" 
