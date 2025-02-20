@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import { API_BASE_URL } from '../utils/BaseUrl';
 import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
@@ -101,7 +101,7 @@ function ResumeInsights() {
   // Helper function to get the resume's data from DB and return the JSON
   const fetchResumeData = async () => {
     try {
-      const response = await fetch(`https://localhost:7035/api/Resume/GetResumeById/${resumeId}`);
+      const response = await fetch(`${API_BASE_URL}/api/Resume/GetResumeById/${resumeId}`);
 
       if (!response.ok) {
         showToast("Failed to fetch resume", "error");
@@ -121,7 +121,7 @@ function ResumeInsights() {
   // Helper function to fetch an insight from the DB, if it exists
   const fetchExistingInsight = async (resumeId) => {
     try {
-      const response = await fetch(`https://localhost:7035/api/Insight/GetInsight/${resumeId}`);
+      const response = await fetch(`${API_BASE_URL}/api/Insight/GetInsight/${resumeId}`);
 
       if (!response.ok) return null;
 
@@ -139,7 +139,7 @@ function ResumeInsights() {
       const resumeJsonNoThumbnail = { ...resumeJson, thumbnail: "" };
       console.log("NO thumbnail:", resumeJsonNoThumbnail);
 
-      const response = await fetch('https://localhost:7035/api/Chat/ScoreResume', {
+      const response = await fetch(`${API_BASE_URL}/api/Chat/ScoreResume`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resumeData: JSON.stringify(resumeJsonNoThumbnail),jobTitle: jobTitle }),
@@ -193,7 +193,7 @@ function ResumeInsights() {
   // Helper function to save insight to the database
   const saveInsight = async (resumeId, aiJsonObj) => {
     try {
-      const response = await fetch('https://localhost:7035/api/Insight/AddInsight', {
+      const response = await fetch(`${API_BASE_URL}/api/Insight/AddInsight`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resumeId, content: JSON.stringify(aiJsonObj) }),
@@ -216,7 +216,7 @@ function ResumeInsights() {
   const deleteInsight = async(resumeId) => {
     if (!window.confirm("Are you sure you want to re-analyze? The current suggestions will be deleted.")) return;
 
-    const response = await fetch(`https://localhost:7035/api/Insight/DeleteInsight/${resumeId}`,
+    const response = await fetch(`${API_BASE_URL}/api/Insight/DeleteInsight/${resumeId}`,
     {
         method: 'DELETE',
     });

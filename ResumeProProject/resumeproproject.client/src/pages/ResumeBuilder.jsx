@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
-
+import { API_BASE_URL } from '../utils/BaseUrl';
 import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
@@ -74,7 +74,7 @@ function ResumeBuilder() {
 
     const fetchResume = async () => {
         try {
-            const response = await fetch(`https://localhost:7035/api/Resume/GetResumeById/${updateResumeId}`);
+            const response = await fetch(`${API_BASE_URL}/api/Resume/GetResumeById/${updateResumeId}`);
 
             if (!response.ok) {
                 showToast("Failed to fetch resume", "error");
@@ -280,7 +280,7 @@ function ResumeBuilder() {
 
             // If new resume...
             if (updateResumeId == undefined) {
-                const response = await fetch("https://localhost:7035/api/Resume/Create", {
+                const response = await fetch(`${API_BASE_URL}/api/Resume/Create`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(processedResumeData),
@@ -307,7 +307,7 @@ function ResumeBuilder() {
             }
             // If updating...
             else {
-                const response = await fetch(`https://localhost:7035/api/Resume/Update/${updateResumeId}`, {
+                const response = await fetch(`${API_BASE_URL}/api/Resume/Update/${updateResumeId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(processedResumeData),

@@ -17,6 +17,9 @@ jobs:
  
       - name: Set environment to production
         run: echo "NODE_ENV=production" >> $GITHUB_ENV
+
+      - name: Set environment variable for ASP.NET Core
+        run: echo "ASPNETCORE_ENVIRONMENT=Production" >> $GITHUB_ENV
  
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
@@ -53,6 +56,8 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
+    environment:
+      name: 'Production'
     permissions:
       id-token: write
       contents: read
@@ -79,4 +84,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'ResumePro'
+          slot-name: 'Production'
           package: ${{ github.workspace }}/dotnet-app

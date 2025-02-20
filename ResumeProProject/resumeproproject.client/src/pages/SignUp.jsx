@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { API_BASE_URL } from "../utils/BaseUrl";
 import '../stylesheets/Login.css';
 import PasswordInput from "../components/PasswordInput";
 import { showToast } from "../utils/Toast";
@@ -48,7 +48,7 @@ function SignUp() {
 
         // Send request to API
         try {
-            const response = await fetch("https://localhost:7035/api/user/register", {
+            const response = await fetch(`${API_BASE_URL}/api/user/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

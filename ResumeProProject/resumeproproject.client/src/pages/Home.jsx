@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import { API_BASE_URL } from '../utils/BaseUrl';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
@@ -36,7 +36,7 @@ function Home() {
             setResumesLoading(true); // Start loading
 
             try {
-                const response = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
+                const response = await fetch(`${API_BASE_URL}/api/Resume/GetResumes/${user.id}`);
 
                 if (!response.ok) {
                     showToast("Error fetching resumes.", "error");
@@ -107,7 +107,7 @@ function Home() {
         navigate("/help");
 
         // Call API to update isFirstLogin to false
-        fetch(`https://localhost:7035/api/User/UpdateFirstLogin/${user.id}`, {
+        fetch(`${API_BASE_URL}/api/User/UpdateFirstLogin/${user.id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         })
@@ -145,7 +145,7 @@ function Home() {
     const handleDuplicateResume = async (resumeId, event) => {
         event.stopPropagation();
         try {
-            const response = await fetch('https://localhost:7035/api/Resume/Duplicate', {
+            const response = await fetch(`${API_BASE_URL}/api/Resume/Duplicate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ resumeId, CurrentDate: new Date() }),
@@ -159,7 +159,7 @@ function Home() {
             showToast("Resume duplicated successfully", "success");
     
             // Re-fetch all resumes to ensure the UI updates correctly
-            const updatedResumesResponse = await fetch(`https://localhost:7035/api/Resume/GetResumes/${user.id}`);
+            const updatedResumesResponse = await fetch(`${API_BASE_URL}/api/Resume/GetResumes/${user.id}`);
             const updatedResumes = await updatedResumesResponse.json();
     
             setResumes(updatedResumes);
@@ -189,7 +189,7 @@ function Home() {
         if (!window.confirm('Are you sure you want to delete this resume?')) return;
 
         try {
-            const response = await fetch(`https://localhost:7035/api/Resume/DeleteResume/${resumeId}`,
+            const response = await fetch(`${API_BASE_URL}/api/Resume/DeleteResume/${resumeId}`,
             {
                 method: 'DELETE',
             });

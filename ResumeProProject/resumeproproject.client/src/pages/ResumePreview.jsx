@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
-
+import { API_BASE_URL } from "../utils/BaseUrl";
 import { showToast } from "../utils/Toast";
 import AllTemplates from "../components/Templates/AllTemplates";
 import "../stylesheets/ResumePreview.css";
@@ -28,7 +28,7 @@ const ResumePreview = () => {
     useEffect(() => {
         const fetchResume = async () => {
             try {
-                const response = await fetch(`https://localhost:7035/api/Resume/GetResumeById/${resumeId}`);
+                const response = await fetch(`${API_BASE_URL}/api/Resume/GetResumeById/${resumeId}`);
 
                 if (!response.ok) {
                     showToast("Failed to fetch resume", "error");

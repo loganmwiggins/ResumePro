@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { API_BASE_URL } from "../utils/BaseUrl";
 
 const UserContext = createContext({ user: null, userLoading: true });
 
@@ -9,7 +10,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const response = await fetch("https://localhost:7035/api/user/info", {
+                const response = await fetch(`${API_BASE_URL}/api/user/info`, {
                     method: "GET",
                     credentials: "include", // Sends auth cookies
                     headers: {
