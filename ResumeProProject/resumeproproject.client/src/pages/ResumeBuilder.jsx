@@ -205,11 +205,14 @@ function ResumeBuilder() {
     const handleRemoveSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (updatedSkills[category]) {
-                updatedSkills[category].delete(skill);
+                // Ensure the category value is an array (not a Set)
+                updatedSkills[category] = Array.isArray(updatedSkills[category])
+                    ? updatedSkills[category].filter(s => s !== skill) // Remove the skill
+                    : [...updatedSkills[category]].filter(s => s !== skill); // Convert Set to array, then remove skill
             }
-    
+
             return {
                 ...prevResume,
                 skills: {
@@ -218,7 +221,7 @@ function ResumeBuilder() {
                 }
             };
         });
-    };    
+    };
 
     const handleAddEntry = (section, entry) => {
         setResumeData((prevResume) => ({
