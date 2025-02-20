@@ -71,7 +71,7 @@
         border-bottom: .5rem solid var(--accent);
 
         h1 {
-            font-size: 2.25rem;
+            font-size: 2rem;
             text-transform: uppercase;
         }
     }
