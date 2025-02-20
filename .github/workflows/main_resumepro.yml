@@ -20,7 +20,10 @@ jobs:
 
       - name: Set environment variable for ASP.NET Core
         run: echo "ASPNETCORE_ENVIRONMENT=Production" >> $GITHUB_ENV
- 
+        
+      - name: Set API Key for Production
+        run: echo "OPENAI_API_KEY_PROD=${{ secrets.OPENAI_API_KEY_PROD }}" >> $GITHUB_ENV
+        
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
