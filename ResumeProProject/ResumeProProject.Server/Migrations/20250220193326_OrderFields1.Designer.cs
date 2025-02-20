@@ -12,8 +12,8 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250219212942_SqlServerMigration2")]
-    partial class SqlServerMigration2
+    [Migration("20250220193326_OrderFields1")]
+    partial class OrderFields1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,9 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
@@ -209,6 +212,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<string>("Minor")
                         .HasColumnType("text");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
@@ -258,6 +264,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<string>("OfficeType")
                         .HasColumnType("text");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
@@ -357,6 +366,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");

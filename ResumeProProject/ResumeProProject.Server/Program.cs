@@ -62,7 +62,7 @@ namespace ResumeProProject.Server
                     options.UseNpgsql(connectionString)); // PostgreSQL
             }
 
-            //Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
+            Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();

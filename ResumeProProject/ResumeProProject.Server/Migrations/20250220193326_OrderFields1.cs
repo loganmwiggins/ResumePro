@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ResumeProProject.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class SqlServerMigration2 : Migration
+    public partial class OrderFields1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -192,7 +192,8 @@ namespace ResumeProProject.Server.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Issuer = table.Column<string>(type: "text", nullable: false),
                     IssueDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    ExpireDate = table.Column<DateOnly>(type: "date", nullable: true)
+                    ExpireDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    OrderNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +219,8 @@ namespace ResumeProProject.Server.Migrations
                     Major = table.Column<string>(type: "text", nullable: false),
                     Minor = table.Column<string>(type: "text", nullable: true),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: false)
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    OrderNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,7 +247,8 @@ namespace ResumeProProject.Server.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: true),
                     OfficeType = table.Column<string>(type: "text", nullable: true),
-                    JobType = table.Column<string>(type: "text", nullable: true)
+                    JobType = table.Column<string>(type: "text", nullable: true),
+                    OrderNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -314,7 +317,8 @@ namespace ResumeProProject.Server.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: true)
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    OrderNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
