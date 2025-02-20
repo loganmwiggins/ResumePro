@@ -79,7 +79,7 @@ export const validateResume = (data) => {
         }, {});
 
         Object.entries(groupedErrors).forEach(([section, fields]) => {
-            showToast(`${fields.join(", ")} field(s) required`, "warning", section);
+            showToast(`${fields.join(", ")} field(s) required`, "warning", `${section} fields missing`);
         });
 
         return false; // Resume is invalid

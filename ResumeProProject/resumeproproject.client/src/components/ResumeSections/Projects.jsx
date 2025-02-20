@@ -49,22 +49,24 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 value={data[index].title}
                             />
                         </div>
-                        <div className="input-field">
-                            <label>Start Date <span className="req">*</span></label>
-                            <input 
-                                type="date" 
-                                onChange={(e) => handleChange("projects", "startDate", e.target.value, index)} 
-                                value={data[index].startDate}
-                            />
-                        </div>
-                        <div className="input-field">
-                            <label>End Date</label>
-                            <input 
-                                type="date" 
-                                min = {data[index].startDate}
-                                onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
-                                value={data[index].endDate}
-                            />
+                        <div className="input-row">
+                            <div className="input-field">
+                                <label>Start Date <span className="req">*</span></label>
+                                <input 
+                                    type="date" 
+                                    onChange={(e) => handleChange("projects", "startDate", e.target.value, index)} 
+                                    value={data[index].startDate}
+                                />
+                            </div>
+                            <div className="input-field">
+                                <label>End Date</label>
+                                <input 
+                                    type="date" 
+                                    min = {data[index].startDate}
+                                    onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
+                                    value={data[index].endDate}
+                                />
+                            </div>
                         </div>
                         <div className="input-field">
                             <label>Description <span className="req">*</span></label>

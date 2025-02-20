@@ -8,10 +8,12 @@ import '../../stylesheets/Templates/Template_Skyline.css';
 function Template_Skyline({ data }) {
     return (
         <div className="resume-paper Template_Skyline">
+            {/* HEADER */}
             <div className="resume-header">
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                 <p>{data.generalInformation.role}</p>
             </div>
+
             <div className="split-ctnr">
                 <div className="split-left">
                     {/* CONTACT */}
@@ -62,24 +64,24 @@ function Template_Skyline({ data }) {
                     {data.certifications.length > 0 && (
                         <section>
                             <p className="p-sec">Certifications</p>
-                            {data.certifications.map(cert => (
-                                <div key={cert.name}>
-                                    <p>
-                                        <span className="p-bold">{cert.name}</span> {cert.issuer && (
-                                            <span>| {cert.issuer}</span>
+                            <div className="entry-ctnr">
+                                {data.certifications.map((cert, index) => (
+                                    <div key={index}>
+                                        <p className="p-bold">{cert.name}</p>
+                                        {cert.issuer && (
+                                            <p>Issued by {cert.issuer}</p>
                                         )}
                                         
-                                    </p>
-                                    
-                                    <p className="p-date">
-                                        {cert.issueDate && (
-                                            `${formatDate(cert.issueDate, {month:true, year:true})}` 
-                                        )} {cert.expireDate && (
-                                            `- ${formatDate(cert.expireDate, {month:true, year:true})}`
-                                        )}
-                                    </p>
-                                </div>
-                            ))}
+                                        <p className="p-date">
+                                            {cert.issueDate && (
+                                                `${formatDate(cert.issueDate, {month:true, year:true})}` 
+                                            )} {cert.expireDate && (
+                                                `- ${formatDate(cert.expireDate, {month:true, year:true})}`
+                                            )}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
                         </section>
                     )}
 
@@ -105,13 +107,13 @@ function Template_Skyline({ data }) {
                     {data.experiences.length > 0 && (
                         <section>
                             <p className="p-sec">Experience</p>
-                            {data.experiences.map(exp => {
+                            {data.experiences.map((exp, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={exp.description}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <p className="p-bold">
                                                 {exp.companyName} {exp.location && (
@@ -134,7 +136,9 @@ function Template_Skyline({ data }) {
                                             </p>
                                         </div>
 
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -145,13 +149,13 @@ function Template_Skyline({ data }) {
                     {data.projects.length > 0 && (
                         <section>
                             <p className="p-sec">Projects</p>
-                            {data.projects.map(proj => {
+                            {data.projects.map((proj, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={proj.title}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <div>
                                                 <p className="p-main">{proj.title}</p>
@@ -167,7 +171,9 @@ function Template_Skyline({ data }) {
                                             </div>
                                         </div>
                                         
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -178,8 +184,8 @@ function Template_Skyline({ data }) {
                     {data.educations.length > 0 && (
                         <section>
                             <p className="p-sec">Education</p>
-                            {data.educations.map(edu => (
-                                <div key={edu.startDate}>
+                            {data.educations.map((edu, index) => (
+                                <div key={index}>
                                     <p className="p-bold">{edu.schoolName}</p>
                                     <p className="p-main">
                                         {edu.degreeType} {edu.major && (`in ${edu.major}`)}
