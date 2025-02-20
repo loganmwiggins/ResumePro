@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;  // SQL Server support
+using Npgsql.EntityFrameworkCore.PostgreSQL;   // PostgreSQL support
 using ResumeProProject.Server.Data.Models;
 using System.Text.Json;
 
@@ -8,12 +10,6 @@ namespace ResumeProProject.Server.Data
     public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(connectionString:
-                "Server=localhost;Port=5432;User Id=postgres;Password=password;Database=ResumeProTest;Include Error Detail=true;");
-            base.OnConfiguring(optionsBuilder);
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

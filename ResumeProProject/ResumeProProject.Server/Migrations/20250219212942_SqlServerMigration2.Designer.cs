@@ -12,8 +12,8 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250217164232_InitialMigrationFeb17")]
-    partial class InitialMigrationFeb17
+    [Migration("20250219212942_SqlServerMigration2")]
+    partial class SqlServerMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -438,9 +438,6 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("CoreResumeId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DateJoined")
                         .HasColumnType("timestamp with time zone");

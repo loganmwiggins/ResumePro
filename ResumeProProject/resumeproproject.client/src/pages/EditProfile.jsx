@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { API_BASE_URL } from '../utils/BaseUrl';
 import '../stylesheets/Profile.css';
 import { showToast } from '../utils/Toast';
 import AuthorizeView from '../components/AuthorizeView';
@@ -27,7 +27,7 @@ function EditProfile() {
 
     const handleSave = async () => {
         try {
-            const response = await fetch("https://localhost:7035/api/user/update", {
+            const response = await fetch(`${API_BASE_URL}/api/user/update`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

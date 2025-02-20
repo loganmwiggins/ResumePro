@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore.SqlServer;  // SQL Server support
+using Npgsql.EntityFrameworkCore.PostgreSQL;   // PostgreSQL support
 using ResumeProProject.Server.Data;
 using ResumeProProject.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+
 
 namespace ResumeProProject.Server
 {
@@ -40,20 +43,26 @@ namespace ResumeProProject.Server
             });
 
             // ✅ Determine Database Provider
-            string dbType = builder.Configuration.GetValue<string>("DatabaseType") ?? "SqlServer";
-            var logger = builder.Logging.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
-            logger.LogInformation($"Using database provider: {dbType}");
+            var environment = builder.Environment.IsProduction() ? "Production" : "Development";
+            var config = builder.Configuration;
 
-            if (dbType.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+            string connectionString = environment == "Production"
+                ? config.GetConnectionString("Production") // Use SQL Server for Production
+                : config.GetConnectionString("Development"); // Use PostgreSQL for Development
+
+            if (environment == "Production")
             {
                 builder.Services.AddDbContext<AppDbContext>(options =>
-                    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+                options.UseSqlServer(connectionString)); // SQL Server
+
             }
             else
             {
                 builder.Services.AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseNpgsql(connectionString)); // PostgreSQL
             }
+
+            //Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
@@ -61,7 +70,7 @@ namespace ResumeProProject.Server
             {
                 options.AddPolicy("AllowFrontend",
                     builder => builder
-                        .WithOrigins("https://localhost:5173", "https://localhost:7035") // Allows front-end origin
+                        .WithOrigins("https://localhost:5173", "https://localhost:7035","https://resumepro-b8gue3fsf2a8dqex.canadacentral-01.azurewebsites.net") // Allows front-end origin
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()); // For authentication cookies
@@ -84,10 +93,6 @@ namespace ResumeProProject.Server
                 var email = user.FindFirstValue(ClaimTypes.Email); // get email from claim
                 return Results.Json(new { Email = email }); ; // return email as plain txt response
             }).RequireAuthorization();
-
-
-
-
 
             if (app.Environment.IsDevelopment())
             {
