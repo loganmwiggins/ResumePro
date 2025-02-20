@@ -28,19 +28,19 @@ function Template_Minimal({ data }) {
                 <div className="urls">
                     {data.generalInformation.websiteUrl && (
                         <span>
-                            <img src="/assets/icons/web-circle.svg" draggable="false" />
+                            <img src="/assets/icons/web-circle.svg" draggable="false" alt="web"/>
                             <p>{data.generalInformation.websiteUrl}</p>
                         </span>
                     )}
                     {data.generalInformation.linkedInUrl && (
                         <span>
-                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                             <p>{data.generalInformation.linkedInUrl}</p>
                         </span>
                     )}
                     {data.generalInformation.gitHubUrl && (
                         <span>
-                            <img src="/assets/icons/github-circle.svg" draggable="false" />
+                            <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                             <p>{data.generalInformation.gitHubUrl}</p>
                         </span>
                     )}
