@@ -24,31 +24,31 @@ function Template_RosyEdge({ data }) {
                         <div className="contact-info">
                             {data.generalInformation.email && (
                                 <span>
-                                    <img src="/assets/icons/email-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/email-circle.svg" draggable="false" alt="email" />
                                     <p>{data.generalInformation.email}</p>
                                 </span>
                             )}
                             {data.generalInformation.phoneNumber && (
                                 <span>
-                                    <img src="/assets/icons/phone-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/phone-circle.svg" draggable="false" alt="phone" />
                                     <p>{data.generalInformation.phoneNumber}</p>
                                 </span>
                             )}
                             {data.generalInformation.websiteUrl && (
                                 <span>
-                                    <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/web-circle.svg" draggable="false" alt="web" />
                                     <p>{data.generalInformation.websiteUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.linkedInUrl && (
                                 <span>
-                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                                     <p>{data.generalInformation.linkedInUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.gitHubUrl && (
                                 <span>
-                                    <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                                     <p>{data.generalInformation.gitHubUrl}</p>
                                 </span>
                             )}

@@ -20,37 +20,37 @@ function Template_Skyline({ data }) {
                         <div className="contact-list">
                             {data.generalInformation.email && (
                                 <span className="contact">
-                                    <img src="/assets/icons/email-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/email-circle.svg" draggable="false" alt="email" />
                                     <p>{data.generalInformation.email}</p>
                                 </span>
                             )}
                             {data.generalInformation.phoneNumber && (
                                 <span className="contact">
-                                    <img src="/assets/icons/phone-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/phone-circle.svg" draggable="false" alt="phone" />
                                     <p>{data.generalInformation.phoneNumber}</p>
                                 </span>
                             )}
                             {data.generalInformation.websiteUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/web-circle.svg" draggable="false" alt="web" />
                                     <p>{data.generalInformation.websiteUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.linkedInUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                                     <p>{data.generalInformation.linkedInUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.gitHubUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                                     <p>{data.generalInformation.gitHubUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.location && (
                                 <span className="contact">
-                                    <img src="/assets/icons/location-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/location-circle.svg" draggable="false" alt="location" />
                                     <p>{data.generalInformation.location}</p>
                                 </span>
                             )}
