@@ -276,7 +276,7 @@ function ResumeBuilder() {
                 }, thumbnail: imgData,
             };
 
-            //  console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+              console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
             // If new resume...
             if (updateResumeId == undefined) {

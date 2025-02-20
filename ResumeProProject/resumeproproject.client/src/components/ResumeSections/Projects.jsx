@@ -86,7 +86,8 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                     title: null,
                     description: null,
                     startDate: null,
-                    endDate: null
+                    endDate: null,
+                    orderNumber: data.length + 1
                 })}
                 whileTap={{ scale: 0.9 }}
             >

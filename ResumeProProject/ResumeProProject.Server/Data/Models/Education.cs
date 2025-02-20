@@ -34,5 +34,7 @@ namespace ResumeProProject.Server.Data.Models
         public required DateOnly StartDate { get; set; }
 
         public required DateOnly EndDate { get; set; }
+
+        public int OrderNumber { get; set; }
     }
 }

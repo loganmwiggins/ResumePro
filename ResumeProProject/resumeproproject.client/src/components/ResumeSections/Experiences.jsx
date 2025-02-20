@@ -145,7 +145,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                     description: null,
                     location: null,
                     officeType: null,
-                    jobType: null
+                    jobType: null,
+                    orderNumber: data.length + 1
                 })}
                 whileTap={{ scale: 0.9 }}
             >
