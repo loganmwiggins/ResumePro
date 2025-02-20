@@ -13,12 +13,31 @@ using Microsoft.AspNetCore.Identity;
 public class ChatController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiKey = "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";
-
-    public ChatController()
+    private readonly string _apiKey;
+    public ChatController(IWebHostEnvironment env)
     {
         _httpClient = new HttpClient();
+
+        // Hardcoded Dev API Key
+        if (env.IsDevelopment())
+        {
+            _apiKey = "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";
+        }
+        else
+        {
+            // Use GitHub Secret in Prod
+            Console.WriteLine("It thinks its in prod");
+            _apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD");
+        }
+
+        if (string.IsNullOrEmpty(_apiKey))
+        {
+            throw new Exception("API key is missing. Check OPENAI_API_KEY_PROD in GitHub Secrets.");
+        }
+        Console.WriteLine($"Using API Key: {_apiKey}");
+        //Console.WriteLine($"Using API Key: {(_apiKey != null ? "Loaded Successfully" : "MISSING!")}");
     }
+
 
     [HttpPost("ScoreResume")]
     public async Task<IActionResult> ScoreResume([FromBody] OpenAiRequest request)
@@ -59,6 +78,35 @@ public class ChatController : ControllerBase
         var response = await _httpClient.PostAsync(apiUrl, content1);
         var responseString = await response.Content.ReadAsStringAsync();
         System.Diagnostics.Debug.WriteLine(responseString);
+        // Handle API errors
+        if (!response.IsSuccessStatusCode)
+        {
+            try
+            {
+                var errorResponse = JsonConvert.DeserializeObject<dynamic>(responseString);
+                string errorMessage = errorResponse?.error?.message ?? "Unknown API error.";
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return StatusCode(401, "Invalid API key. Check your OpenAI credentials.");
+                }
+                if (response.StatusCode == System.Net.HttpStatusCode.PaymentRequired ||
+                    errorMessage.ToLower().Contains("insufficient_quota") ||
+                    errorMessage.ToLower().Contains("credit"))
+                {
+                    return StatusCode(402, "Insufficient OpenAI API credits. Please check your billing settings.");
+                }
+
+                return StatusCode((int)response.StatusCode, errorMessage);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error parsing OpenAI error response: " + ex.Message);
+                return StatusCode(500, "Unexpected error while processing OpenAI response.");
+            }
+        }
+
+        return Content(responseString, "text/plain");
         return Content(responseString, "text/plain");
     }
 }
