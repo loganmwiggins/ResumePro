@@ -71,6 +71,25 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                         </div>
                         <div className="input-row">
                             <div className="input-field">
+                                <label>Start Date <span className="req">*</span></label>
+                                <input 
+                                    type="date" 
+                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value, index)} 
+                                    value={data[index].startDate}
+                                />
+                            </div>
+                            <div className="input-field">
+                                <label>End Date</label>
+                                <input 
+                                    type="date" 
+                                    min = {data[index].startDate}
+                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)}
+                                    value={data[index].endDate}
+                                />
+                            </div>
+                        </div>
+                        <div className="input-row">
+                            <div className="input-field">
                                 <label>Job Type</label>
                                 <Select
                                     options={jobTypeOptions}
@@ -90,25 +109,6 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     isClearable
                                 />
                                
-                            </div>
-                        </div>
-                        <div className="input-row">
-                            <div className="input-field">
-                                <label>Start Date <span className="req">*</span></label>
-                                <input 
-                                    type="date" 
-                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value, index)} 
-                                    value={data[index].startDate}
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label>End Date</label>
-                                <input 
-                                    type="date" 
-                                    min = {data[index].startDate}
-                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)}
-                                    value={data[index].endDate}
-                                />
                             </div>
                         </div>
                         <div className="input-field">

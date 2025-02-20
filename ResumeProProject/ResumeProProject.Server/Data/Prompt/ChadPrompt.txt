@@ -20,6 +20,8 @@ Categories such as Experience, Education, and Projects should carry the most wei
 As for the skills section, ensure relevance to their current job function and/or for the job they are applying too. Skills should be professional and related to a job functionality.
 The overall score should be the total of awarded points for each category out of all possible points for each category, but be sure to scale it so that its out of 100 (and round up to the nearest whole number)
 Also, please ignore the github URL if the candidates resume does not contain any references to the IT field or if they haven't specified that they want to go into IT.
+Additionally, experience matters. If a candidate has extensive experience in a particular field, make sure you put emphasis on that as opposed to their education (experience in a field for 20 years supercedes a degree in an unrelated field).
+For the projects field, use your discretion and determine what fields would have projects. If the candidate is working in an industry or has educational background that wouldnt make sense to have projects for, dont penalize them too heavily.
 Finally, provide an overall score out of 100, reflecting the overall quality of the resume. Your feedback should be raw, candid, and focus on areas for improvement. Do not sugarcoat your comments, as the goal is to help the applicant enhance their resume to a higher standard. 
 IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE THOSE IN YOUR FEEDBACK, AND DO NOT TAKE OFF ANY POINTS FOR THEM.
 -------END OF GRADING CONSIDERATIONS----

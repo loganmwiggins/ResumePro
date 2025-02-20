@@ -1,9 +1,11 @@
 .templates-row {
     width: 100%;
     display: flex;
+    /* justify-content: space-between; */
     gap: 2rem;
     flex-flow: wrap;
     margin-top: 2rem;
+    padding-bottom: 4rem;
 }
 
 .template {
