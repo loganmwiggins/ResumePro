@@ -78,7 +78,8 @@ namespace ResumeProProject.Server.Controllers
                     Minor = request.Educations[i].Minor,
                     StartDate = request.Educations[i].StartDate,
                     EndDate = request.Educations[i].EndDate,
-                    SchoolLocation = request.Educations[i].SchoolLocation
+                    SchoolLocation = request.Educations[i].SchoolLocation,
+                    OrderNumber = request.Educations[i].OrderNumber
                     //Resume = fetchedResume,
                 };
                 if (NewEducation != null) { _db.Education.Add(NewEducation); }
@@ -93,6 +94,7 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = request.Certifications[i].Issuer,
                     IssueDate = request.Certifications[i].IssueDate,
                     ExpireDate = request.Certifications[i].ExpireDate,
+                    OrderNumber = request.Certifications[i].OrderNumber
                     //Resume = fetchedResume,
 
                 };
@@ -113,6 +115,7 @@ namespace ResumeProProject.Server.Controllers
                     Location = request.Experiences[i].Location,
                     OfficeType = request.Experiences[i].OfficeType,
                     JobType = request.Experiences[i].JobType,
+                    OrderNumber = request.Experiences[i].OrderNumber,
                     //Resume = fetchedResume,
                 };
 
@@ -138,7 +141,8 @@ namespace ResumeProProject.Server.Controllers
                     Description = request.Projects[i].Description,
                     StartDate = request.Projects[i].StartDate,
                     EndDate = request.Projects[i].EndDate,
-                    Title = request.Projects[i].Title
+                    Title = request.Projects[i].Title,
+                    OrderNumber = request.Projects[i].OrderNumber
                 };
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();
@@ -280,7 +284,7 @@ namespace ResumeProProject.Server.Controllers
            .FirstOrDefaultAsync(),
 
 
-                Educations = resume.Educations.Select(e => new
+                Educations = resume.Educations.OrderBy(e => e.OrderNumber).Select(e => new
                 {
                     e.SchoolName,
                     e.DegreeType,
@@ -289,18 +293,20 @@ namespace ResumeProProject.Server.Controllers
                     e.Minor,
                     e.StartDate,
                     e.EndDate,
-                    e.SchoolLocation
+                    e.SchoolLocation,
+                    e.OrderNumber
                 }).ToList(),
 
-                Certifications = resume.Certifications.Select(c => new
+                Certifications = resume.Certifications.OrderBy(c => c.OrderNumber).Select(c => new
                 {
                     c.Name,
                     c.Issuer,
                     c.IssueDate,
-                    c.ExpireDate
+                    c.ExpireDate,
+                    c.OrderNumber
                 }).ToList(),
 
-                Experiences = resume.Experiences.Select(ex => new
+                Experiences = resume.Experiences.OrderBy(ex => ex.OrderNumber).Select(ex => new
                 {
                     ex.CompanyName,
                     ex.Role,
@@ -310,15 +316,17 @@ namespace ResumeProProject.Server.Controllers
                     ex.Description,
                     ex.Location,
                     ex.OfficeType,
-                    ex.JobType
+                    ex.JobType,
+                    ex.OrderNumber
                 }).ToList(),
 
-                Projects = resume.Projects.Select(p => new
+                Projects = resume.Projects.OrderBy(p => p.OrderNumber).Select(p => new
                 {
                     p.Title,
                     p.Description,
                     p.StartDate,
-                    p.EndDate
+                    p.EndDate,
+                    p.OrderNumber
                 }).ToList(),
 
                 Skills = await _db.Skills
@@ -398,9 +406,9 @@ namespace ResumeProProject.Server.Controllers
                     Minor = edu.Minor,
                     StartDate = edu.StartDate,
                     EndDate = edu.EndDate,
-                    SchoolLocation = edu.SchoolLocation
+                    SchoolLocation = edu.SchoolLocation,
+                    OrderNumber = edu.OrderNumber,
                 });
-                System.Diagnostics.Debug.WriteLine("SCHOOL LOCATION IS: " + edu.SchoolLocation);
             }
 
             _db.Certifications.RemoveRange(existingResume.Certifications);
@@ -414,12 +422,14 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = cert.Issuer,
                     IssueDate = cert.IssueDate,
                     ExpireDate = cert.ExpireDate,
-                    Name = cert.Name
+                    Name = cert.Name,
+                    OrderNumber = cert.OrderNumber,
                 });
             }
 
             _db.Experiences.RemoveRange(existingResume.Experiences);
             await _db.SaveChangesAsync();
+
             existingResume.Experiences.Clear();
             foreach (var exp in request.Experiences)
             {
@@ -434,7 +444,8 @@ namespace ResumeProProject.Server.Controllers
                     Location = exp.Location,
                     IsCurrent = exp.IsCurrent,
                     StartDate = exp.StartDate,
-                    EndDate = exp.EndDate
+                    EndDate = exp.EndDate,
+                    OrderNumber = exp.OrderNumber
                 });
             }
 
@@ -450,7 +461,8 @@ namespace ResumeProProject.Server.Controllers
                     Title = proj.Title,
                     Description = proj.Description,
                     StartDate = proj.StartDate,
-                    EndDate = proj.EndDate
+                    EndDate = proj.EndDate,
+                    OrderNumber = proj.OrderNumber
                 });
             }
 
@@ -459,6 +471,163 @@ namespace ResumeProProject.Server.Controllers
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
 
+        //[HttpPut("Update/{resumeId}")]
+        //public async Task<IActionResult> UpdateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.UpdateResumeDto request)
+        //{
+        //    var existingResume = await _db.Resumes
+        //        .Include(r => r.GeneralInformation)
+        //        .Include(r => r.Skills)
+        //        .Include(r => r.Educations)
+        //        .Include(r => r.Certifications)
+        //        .Include(r => r.Experiences)
+        //        .Include(r => r.Projects)
+        //        .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+        //    if (existingResume == null)
+        //    {
+        //        return NotFound(new { message = "Resume not found." });
+        //    }
+
+        //    // Update Resume properties
+        //    existingResume.Name = request.ResumeName;
+        //    existingResume.UpdatedDateTime = request.updatedDateTime;
+        //    existingResume.TemplateId = request.templateId;
+        //    existingResume.Thumbnail = request.thumbnail;
+
+        //    // Update General Information
+        //    if (existingResume.GeneralInformation != null)
+        //    {
+        //        existingResume.GeneralInformation.FirstName = request.GeneralInformation.FirstName;
+        //        existingResume.GeneralInformation.MiddleName = request.GeneralInformation.MiddleName;
+        //        existingResume.GeneralInformation.LastName = request.GeneralInformation.LastName;
+        //        existingResume.GeneralInformation.Email = request.GeneralInformation.Email;
+        //        existingResume.GeneralInformation.PhoneNumber = request.GeneralInformation.PhoneNumber;
+        //        existingResume.GeneralInformation.WebsiteUrl = request.GeneralInformation.WebsiteUrl;
+        //        existingResume.GeneralInformation.LinkedInUrl = request.GeneralInformation.LinkedInUrl;
+        //        existingResume.GeneralInformation.GitHubUrl = request.GeneralInformation.GitHubUrl;
+        //        existingResume.GeneralInformation.Role = request.GeneralInformation.Role;
+        //        existingResume.GeneralInformation.Location = request.GeneralInformation.Location;
+        //    }
+        //    else
+        //    {
+        //        existingResume.GeneralInformation = request.GeneralInformation;
+        //    }
+
+        //    if (existingResume.Skills != null)
+        //    {
+        //        existingResume.Skills.SkillsDataJson = request.Skills.SkillsDataJson;
+        //    }
+        //    else
+        //    {
+        //        existingResume.Skills = request.Skills;
+        //    }
+
+        //    // **Update Experiences**
+        //    var existingExperienceIds = existingResume.Experiences.Select(e => e.ExperienceId).ToList();
+
+        //    // Remove experiences that are not in the new request
+        //    _db.Experiences.RemoveRange(existingResume.Experiences.Where(e => !request.Experiences.Any(req => req.ExperienceId == e.ExperienceId)));
+
+        //    foreach (var exp in request.Experiences)
+        //    {
+        //        var existingExperience = existingResume.Experiences.FirstOrDefault(e => e.ExperienceId == exp.ExperienceId);
+        //        if (existingExperience != null)
+        //        {
+        //            existingExperience.CompanyName = exp.CompanyName;
+        //            existingExperience.OfficeType = exp.OfficeType;
+        //            existingExperience.JobType = exp.JobType;
+        //            existingExperience.Description = exp.Description;
+        //            existingExperience.Role = exp.Role;
+        //            existingExperience.Location = exp.Location;
+        //            existingExperience.IsCurrent = exp.IsCurrent;
+        //            existingExperience.StartDate = exp.StartDate;
+        //            existingExperience.EndDate = exp.EndDate;
+        //        }
+        //        else
+        //        {
+        //            existingResume.Experiences.Add(new Experience
+        //            {
+        //                ResumeId = request.resumeId,
+        //                CompanyName = exp.CompanyName,
+        //                OfficeType = exp.OfficeType,
+        //                JobType = exp.JobType,
+        //                Description = exp.Description,
+        //                Role = exp.Role,
+        //                Location = exp.Location,
+        //                IsCurrent = exp.IsCurrent,
+        //                StartDate = exp.StartDate,
+        //                EndDate = exp.EndDate
+        //            });
+        //        }
+        //    }
+
+        //    // **Update Educations**
+        //    var existingEducationIds = existingResume.Educations.Select(e => e.EducationId).ToList();
+
+        //    _db.Education.RemoveRange(existingResume.Educations.Where(e => !request.Educations.Any(req => req.EducationId == e.EducationId)));
+
+        //    foreach (var edu in request.Educations)
+        //    {
+        //        var existingEducation = existingResume.Educations.FirstOrDefault(e => e.EducationId == edu.EducationId);
+        //        if (existingEducation != null)
+        //        {
+        //            existingEducation.SchoolName = edu.SchoolName;
+        //            existingEducation.DegreeType = edu.DegreeType;
+        //            existingEducation.GPA = edu.GPA;
+        //            existingEducation.Major = edu.Major;
+        //            existingEducation.Minor = edu.Minor;
+        //            existingEducation.StartDate = edu.StartDate;
+        //            existingEducation.EndDate = edu.EndDate;
+        //            existingEducation.SchoolLocation = edu.SchoolLocation;
+        //        }
+        //        else
+        //        {
+        //            existingResume.Educations.Add(new Education
+        //            {
+        //                ResumeId = request.resumeId,
+        //                SchoolName = edu.SchoolName,
+        //                DegreeType = edu.DegreeType,
+        //                GPA = edu.GPA,
+        //                Major = edu.Major,
+        //                Minor = edu.Minor,
+        //                StartDate = edu.StartDate,
+        //                EndDate = edu.EndDate,
+        //                SchoolLocation = edu.SchoolLocation
+        //            });
+        //        }
+        //    }
+
+        //    // **Update Certifications**
+        //    var existingCertificationIds = existingResume.Certifications.Select(c => c.CertificationId).ToList();
+
+        //    _db.Certifications.RemoveRange(existingResume.Certifications.Where(c => !request.Certifications.Any(req => req.CertificationId == c.CertificationId)));
+
+        //    foreach (var cert in request.Certifications)
+        //    {
+        //        var existingCertification = existingResume.Certifications.FirstOrDefault(c => c.CertificationId == cert.CertificationId);
+        //        if (existingCertification != null)
+        //        {
+        //            existingCertification.Issuer = cert.Issuer;
+        //            existingCertification.IssueDate = cert.IssueDate;
+        //            existingCertification.ExpireDate = cert.ExpireDate;
+        //            existingCertification.Name = cert.Name;
+        //        }
+        //        else
+        //        {
+        //            existingResume.Certifications.Add(new Certification
+        //            {
+        //                ResumeId = request.resumeId,
+        //                Issuer = cert.Issuer,
+        //                IssueDate = cert.IssueDate,
+        //                ExpireDate = cert.ExpireDate,
+        //                Name = cert.Name
+        //            });
+        //        }
+        //    }
+
+        //    await _db.SaveChangesAsync();
+        //    return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
+        //}
 
 
         [HttpPost("Duplicate")]
@@ -525,7 +694,8 @@ namespace ResumeProProject.Server.Controllers
                     Minor = education.Minor,
                     StartDate = education.StartDate,
                     EndDate = education.EndDate,
-                    SchoolLocation = education.SchoolLocation
+                    SchoolLocation = education.SchoolLocation,
+                    OrderNumber = education.OrderNumber,
                     //Resume = fetchedResume,
                 };
                 if (NewEducation != null) { _db.Education.Add(NewEducation); }
@@ -540,6 +710,7 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = certification.Issuer,
                     IssueDate = certification.IssueDate,
                     ExpireDate = certification.ExpireDate,
+                    OrderNumber = certification.OrderNumber,
                     //Resume = fetchedResume,
 
                 };
@@ -560,6 +731,7 @@ namespace ResumeProProject.Server.Controllers
                     Location = experience.Location,
                     OfficeType = experience.OfficeType,
                     JobType = experience.JobType,
+                    OrderNumber = experience.OrderNumber,
                     //Resume = fetchedResume,
                 };
 
@@ -585,7 +757,8 @@ namespace ResumeProProject.Server.Controllers
                     Description = project.Description,
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
-                    Title = project.Title
+                    Title = project.Title,
+                    OrderNumber = project.OrderNumber,
                 };
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();

@@ -142,6 +142,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                     minor: null,
                     startDate: null,
                     endDate: null,
+                    orderNumber: data.length + 1
                 })}
                 whileTap={{ scale: 0.9 }}
             >

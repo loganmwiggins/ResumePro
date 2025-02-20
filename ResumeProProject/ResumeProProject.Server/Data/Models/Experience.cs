@@ -33,6 +33,8 @@ namespace ResumeProProject.Server.Data.Models
 
         public JobType? JobType { get; set; }
 
+        public int OrderNumber { get; set; }
+
         //// ✅ Added Navigation Property
         [JsonIgnore]
         public virtual Resume? Resume { get; set; }

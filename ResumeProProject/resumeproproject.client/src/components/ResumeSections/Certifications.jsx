@@ -94,7 +94,8 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}
                     name: null,
                     issuer: null,
                     issueDate: null,
-                    expireDate: null
+                    expireDate: null,
+                    orderNumber: data.length + 1
                 })}
                 whileTap={{ scale: 0.9 }}
             >
