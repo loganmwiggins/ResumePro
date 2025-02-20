@@ -4,7 +4,6 @@ import DOMPurify from 'dompurify';
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/Templates/Template_Beeline.css';
-import { div, p, span } from 'framer-motion/client';
 
 function Template_Beeline({ data }) {
     return (
@@ -14,42 +13,47 @@ function Template_Beeline({ data }) {
                 <div className="title-text">
                     <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                     <div>
-                        <p>
-                            {data.generalInformation.role && (data.generalInformation.role)}
-                        </p>
-                        <p>
-                            {data.generalInformation.location && (data.generalInformation.location)}
-                        </p>
+                        {data.generalInformation.role && (
+                           <p>{data.generalInformation.role}</p> 
+                        )}
+                        {data.generalInformation.location && (
+                           <p>{data.generalInformation.location}</p> 
+                        )}
                     </div>
                 </div>
-                <div className="contact-line">
-                    <p>
-                        {data.generalInformation.email && (data.generalInformation.email)}
-                    </p>
-                    <p>
-                        {data.generalInformation.phoneNumber && (data.generalInformation.phoneNumber)}
-                    </p>
-                </div>
-                <div className="urls">
-                    {data.generalInformation.websiteUrl && (
-                        <span>
-                            <img src="/assets/icons/web-circle.svg" draggable="false" />
-                            <p>{data.generalInformation.websiteUrl}</p>
-                        </span>
-                    )}
-                    {data.generalInformation.linkedInUrl && (
-                        <span>
-                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
-                            <p>{data.generalInformation.linkedInUrl}</p>
-                        </span>
-                    )}
-                    {data.generalInformation.gitHubUrl && (
-                        <span>
-                            <img src="/assets/icons/github-circle.svg" draggable="false" />
-                            <p>{data.generalInformation.gitHubUrl}</p>
-                        </span>
-                    )}
-                </div>
+                {(data.generalInformation.email || data.generalInformation.phoneNumber) && (
+                    <div className="contact-line">
+                        {data.generalInformation.email && (
+                            <p>{data.generalInformation.email}</p>
+                        )}
+                        {data.generalInformation.phoneNumber && (
+                            <p>{data.generalInformation.phoneNumber}</p>
+                        )}
+                    </div>
+                )}
+                
+                {(data.generalInformation.websiteUrl || data.generalInformation.linkedInUrl || data.generalInformation.gitHubUrl) && (
+                    <div className="urls">
+                        {data.generalInformation.websiteUrl && (
+                            <span>
+                                <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                <p>{data.generalInformation.websiteUrl}</p>
+                            </span>
+                        )}
+                        {data.generalInformation.linkedInUrl && (
+                            <span>
+                                <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                <p>{data.generalInformation.linkedInUrl}</p>
+                            </span>
+                        )}
+                        {data.generalInformation.gitHubUrl && (
+                            <span>
+                                <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                <p>{data.generalInformation.gitHubUrl}</p>
+                            </span>
+                        )}
+                    </div>
+                )}
             </header>
 
             {/* EXPERIENCE */}
@@ -67,37 +71,39 @@ function Template_Beeline({ data }) {
                             return(
                                 <div key={index} className="entry-ctnr">
                                     <p className="text-sub">
-                                        <span>
-                                            {exp.startDate && (
-                                                `${formatDate(exp.startDate, {month:true, year:true})}`
-                                            )} {exp.endDate && (
-                                                `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                            ) || "- Present"}
-                                        </span>
-                                        <span>
-                                            {exp.jobType != null && (
-                                                ` • ${jobTypeOptions[exp.jobType].label}`
-                                            )} {exp.officeType != null && (
-                                                `• ${officeTypeOptions[exp.officeType].label}`
-                                            )}
-                                        </span>
+                                        {(exp.startDate || exp.endDate) && (
+                                            <span>
+                                                {exp.startDate && (
+                                                    `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                )} {exp.endDate && (
+                                                    `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                ) || "- Present"}
+                                            </span>
+                                        )}
+                                        
+                                        {exp.jobType != null && (
+                                            <span> • {jobTypeOptions[exp.jobType].label}</span>
+                                        )} 
+                                        {exp.officeType != null && (
+                                            <span> • {officeTypeOptions[exp.officeType].label}</span>
+                                        )}
                                     </p>
 
                                     <p>
                                         <span className="text-main">{exp.role}</span>
-                                        <span>
-                                            {exp.companyName && (
-                                            ` | ${exp.companyName}`
-                                            )}
-                                        </span>
-                                        <span>
-                                            {exp.location && (
-                                            ` | ${exp.location}`
-                                            )}
-                                        </span>
+
+                                        {exp.companyName && (
+                                            <span> | {exp.companyName}</span>
+                                        )}
+
+                                        {exp.location && (
+                                            <span> | {exp.location}</span>
+                                        )}
                                     </p>
 
-                                    <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    {sanitizedDescription && (
+                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    )}
                                 </div>
                             );
                         })}
@@ -131,7 +137,9 @@ function Template_Beeline({ data }) {
                                         {proj.title}
                                     </p>
 
-                                    <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    {sanitizedDescription && (
+                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                    )}
                                 </div>
                             );
                         })}
@@ -159,8 +167,9 @@ function Template_Beeline({ data }) {
                                                 : ""}
                                 </p>
                                 <p>
-                                    <span className="text-main">{cert.name}</span> {cert.issuer && (
-                                        <span>{`| ${cert.issuer}`}</span>
+                                    <span className="text-main">{cert.name}</span> 
+                                    {cert.issuer && (
+                                        <span>{` | ${cert.issuer}`}</span>
                                     )}
                                     
                                 </p>
@@ -216,18 +225,16 @@ function Template_Beeline({ data }) {
                                     <p>
                                         <span className="text-main">Minor:</span> <span>{edu.minor}</span>
                                         {edu.gpa && (
-                                            ` | GPA: ${edu.gpa} / 4.0`
+                                            <span> | GPA: {edu.gpa} / 4.0</span>
                                         )}
                                     </p>
                                 )}
                                 
                                 <p>
                                     <span>{edu.schoolName}</span> 
-                                    <span>
-                                        {edu.schoolLocation && (
-                                            ` | ${edu.schoolLocation}`
-                                        )}
-                                    </span>
+                                    {edu.schoolLocation && (
+                                        <span> | {edu.schoolLocation}</span>
+                                    )}
                                 </p>
                             </div>
                         ))}
