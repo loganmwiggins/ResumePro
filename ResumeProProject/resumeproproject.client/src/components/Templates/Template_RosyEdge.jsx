@@ -8,11 +8,16 @@ import '../../stylesheets/Templates/Template_RosyEdge.css';
 function Template_RosyEdge({ data }) {
     return (
         <div className="resume-paper Template_RosyEdge">
+            {/* HEADER */}
             <header>
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                 <div>
-                    <h3>{data.generalInformation.role}</h3>
-                    <h3>{data.generalInformation.location}</h3>
+                    {data.generalInformation.role && (
+                        <h3>{data.generalInformation.role}</h3>
+                    )}
+                    {data.generalInformation.location && (
+                        <h3>{data.generalInformation.location}</h3>
+                    )}
                 </div>
             </header>
 
@@ -75,8 +80,8 @@ function Template_RosyEdge({ data }) {
                         <div className="certifications">
                             <h2>Certifications</h2>
                             <div className="cert-ctnr">
-                                {data.certifications.map(cert => (
-                                    <div key={cert.name} className="cert-item">
+                                {data.certifications.map((cert, index) => (
+                                    <div key={index} className="cert-item">
                                         <p><strong>{cert.name}</strong></p>
                                         <p>
                                             {cert.issuer} {cert.issueDate && cert.expireDate
@@ -99,13 +104,13 @@ function Template_RosyEdge({ data }) {
                     {data.experiences.length > 0 && (
                         <section>
                             <h2>Experience</h2>
-                            {data.experiences.map(exp => {
+                            {data.experiences.map((exp, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return (
-                                    <div key={exp.description}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <div>
                                                 <h3>{exp.role}</h3>
@@ -125,7 +130,9 @@ function Template_RosyEdge({ data }) {
                                             </div>
                                         </div>
 
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -136,13 +143,13 @@ function Template_RosyEdge({ data }) {
                     {data.projects.length > 0 && (
                         <section>
                             <h2>Projects</h2>
-                            {data.projects.map(proj => {
+                            {data.projects.map((proj, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={proj.title} className="project-item">
+                                    <div key={index} className="project-item">
                                         <div className="entry-head">
                                             <div>
                                                 <h3>{proj.title}</h3>
@@ -158,10 +165,11 @@ function Template_RosyEdge({ data }) {
                                             </div>
                                         </div>
                                                     
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
-                                
                             })}
                         </section>
                     )}
@@ -170,8 +178,8 @@ function Template_RosyEdge({ data }) {
                     {data.educations.length > 0 && (
                         <section>
                             <h2>Education</h2>
-                            {data.educations.map(edu => (
-                                <div key={edu.startDate}>
+                            {data.educations.map((edu, index) => (
+                                <div key={index}>
                                     <div className="edu-head">
                                         <div>
                                             <h3>
@@ -194,7 +202,7 @@ function Template_RosyEdge({ data }) {
                                         {edu.minor && `Minor in ${edu.minor}`}
                                     </p>
                                     <p>
-                                        {edu.schoolName} {edu.gpa && `| GPA: ${edu.gpa} / 4.0`}
+                                        {edu.schoolName} {edu.schoolName && edu.gpa && (` | `)} {edu.gpa && (`GPA: ${edu.gpa} / 4.0`)}
                                     </p>
                                 </div>
                             ))}

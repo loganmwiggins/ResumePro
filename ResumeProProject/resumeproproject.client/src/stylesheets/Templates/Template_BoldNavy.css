@@ -10,7 +10,10 @@
 }
 
 .Template_BoldNavy {
-    /* Layout specific */
+    --accent: navy;
+
+
+    /* LAYOUT */
     .split-ctnr {
         display: flex;
         align-items: start;
@@ -20,7 +23,6 @@
     .split-left, .split-right {
         display: flex;
         flex-direction: column;
-        /* border: 1px solid lightgrey; */
         gap: 2rem;
     }
     
@@ -48,14 +50,13 @@
     }
 
 
-    /* Text */
+    /* TEXT */
     .p-sec {
-        color: navy;
-        border-bottom: 2px solid navy;
+        color: var(--accent);
+        border-bottom: 2px solid var(--accent);
         padding-bottom: .25rem;
         font-size: 1.1rem;
         font-weight: 600;
-        /* text-transform: uppercase; */
     }
 
     .p-main {
@@ -68,26 +69,26 @@
     ul { padding-left: 1.25rem }
 
 
-    /* Header */
+    /* HEADER */
     .resume-header {
-        background: navy;
+        background: var(--accent);
         color: white;
         padding: 1rem 2rem;
         display: flex;
         flex-direction: column;
         gap: .25rem;
         
-        /* h1 { font-family:Georgia, 'Times New Roman', Times, serif; } */
         p { text-transform: uppercase; }
     }
     
     
-    /* Contact specific */
+    /* CONTACT */
     .contact-list {
         display: flex;
         flex-direction: column;
         gap: .25rem;
     }
+
     .contact {
         display: flex;
         align-items: center;
@@ -99,7 +100,8 @@
         }
     }
 
-    /* Skills specific */
+
+    /* SKILLS */
     .skills-list {
         display: flex;
         flex-direction: column;
