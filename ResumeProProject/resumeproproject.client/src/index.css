@@ -1,9 +1,7 @@
 :root {
   /* Root styles */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* color: rgba(255, 255, 255, 0.87); */
   color: #222;
-  /* background-color: #242424; */
 
   /* Color variables */
   --text-primary: #222;
@@ -125,7 +123,7 @@ html {
 .btn-accent:hover { transform: scale(1.1); }
 
 .btn-success {
-  background: rgb(13, 174, 13);
+  background: #0dae0d;
   color: white;
 
   img {
