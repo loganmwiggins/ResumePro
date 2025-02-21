@@ -126,20 +126,19 @@
 
 .loader-center {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: center; /* Center items vertically */
-  align-items: center; /* Center items horizontally */
-  height: 60vh; /* Take up full viewport height */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
 
 .loading-message {
   display: block;
-  margin-bottom: 60px; /* Increased space between the message and animation */
-  font-size: 1.5rem;
-  font-weight: bold;
-  color:#2c6fff; /* Your desired color */
+  margin-bottom: 5rem;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
   opacity: 1;
-  animation: fadeInOut 3s infinite; /* Animation for the whole message */
+  animation: fadeInOut 3s infinite;
 }
 
 @keyframes fadeInOut {
