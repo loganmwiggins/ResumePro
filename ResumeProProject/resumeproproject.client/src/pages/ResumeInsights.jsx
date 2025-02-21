@@ -21,6 +21,7 @@ function ResumeInsights() {
   const [jobTitle, setJobTitle] = useState('');
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showResume, setShowResume] = useState(false);
 
   useEffect(() => {
     // Call fetchResumeInsights (on mount) to automatically trigger the process
@@ -244,6 +245,11 @@ function ResumeInsights() {
     setAiResult(null);
   }
 
+  const handleToggleResume = () => {
+    setShowResume(!showResume);
+  }
+
+
   return (
     <AuthorizeView>
       <div className="header-with-btn">
@@ -254,6 +260,10 @@ function ResumeInsights() {
 
         {aiResult && (
           <div className="reanalyze-ctnr">
+            <button type="button" className="btn btn-outline btn-show" onClick={handleToggleResume}>
+              <img src="/assets/icons/document.svg" draggable="false" />
+              <span>{showResume ? "Hide" : "Show"} Resume</span>
+            </button>
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
                 <span>Reanalyze</span>
@@ -310,6 +320,7 @@ function ResumeInsights() {
         {/* AI feedback */}
         {aiResult && (
           <div className="feedback-ctnr">
+            {/* Feedback header */}
             <div className="feedback-head">
               <div className="feedback-title">
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
@@ -347,16 +358,25 @@ function ResumeInsights() {
                 </div>
               </div>
             </div>
-                      <motion.div
-                          className="resume-view"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.6 }}
-                      >
-                          <div>
-                              <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
-                          </div>
-                      </motion.div>
+
+            {/* Resume preview */}
+            {showResume && (
+              <AnimatePresence>
+                <motion.div
+                    className="resume-view"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div>
+                        <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                    </div>
+                </motion.div>
+              </AnimatePresence>
+            )}
+
+            {/* Feedback items */}
             {Object.entries(aiResult).map(([section, data], index) => (
               <motion.div 
                 key={section} 
