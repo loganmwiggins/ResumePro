@@ -189,9 +189,7 @@ function Template_Minimal({ data }) {
                                         {edu.minor && (`Minor in ${edu.minor}`)}
                                     </h4>
                                     <p>
-                                        {edu.schoolName} {edu.gpa && (
-                                            `| GPA: ${edu.gpa} / 4.0`
-                                        )}
+                                        {edu.schoolName} {edu.schoolName && edu.gpa && (` | `)} {edu.gpa && (`GPA: ${edu.gpa} / 4.0`)}
                                     </p>
                                 </div>
                                 

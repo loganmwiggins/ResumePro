@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { API_BASE_URL } from '../utils/BaseUrl';
+import Select from 'react-select';
+
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
+import { API_BASE_URL } from '../utils/BaseUrl';
 import { showToast } from '../utils/Toast';
 import { allGreetings, messages } from '../utils/Messages';
+import { resumeSortOptions } from '../utils/SelectOptions';
 import '../stylesheets/Home.css';
 
 function Home() {
@@ -14,7 +17,7 @@ function Home() {
     const [resumes, setResumes] = useState([]);
     const [resumesLoading, setResumesLoading] = useState(true);
     const [sortedResumes, setSortedResumes] = useState([]);
-    const [sortOption, setSortOption] = useState(() => sessionStorage.getItem("sortOption") || "update-desc");
+    const [sortOption, setSortOption] = useState(() => sessionStorage.getItem("sortOption") || "updated-desc");
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
@@ -126,10 +129,10 @@ function Home() {
     const handleNewResume = () => navigate('/templates');
 
     // Handle sorting resumes
-    const handleSortChange = (event) => {
-        const newSortOption = event.target.value;
-        setSortOption(newSortOption);
-        sessionStorage.setItem("sortOption", newSortOption);
+    const handleSortChange = (selectedOption) => {
+        if (!selectedOption) return; // Handle edge case if select is cleared somehow
+        setSortOption(selectedOption.value);
+        sessionStorage.setItem("sortOption", selectedOption.value);
     }
 
     // Resume 'more' menu functions
@@ -235,12 +238,12 @@ function Home() {
                     <div className="my-resumes-ctnr">
                         <div className="my-resumes-head">
                             <h2>My Resumes</h2>
-                            <select className="filter-select" onChange={handleSortChange} value={sortOption}>
-                                <option value="updated-desc">Last Updated (Latest First)</option>
-                                <option value="updated-asc">Last Updated (Oldest First)</option>
-                                <option value="title-asc">Title (A-Z)</option>
-                                <option value="title-desc">Title (Z-A)</option>
-                            </select>
+                            <Select 
+                                options={resumeSortOptions}
+                                onChange={(selectedOption) => handleSortChange(selectedOption ? selectedOption : "updated-desc")}
+                                value={resumeSortOptions.find(option => option.value === sortOption)}
+                                className="filter-select"
+                            />
                         </div>
                         <div className="resumes-row">
                             {resumesLoading ? (
