@@ -54,7 +54,7 @@ function GeneralInformation({ data, handleChange }) {
                     <div className="input-field">
                         <label>Email</label>
                         <input 
-                            type="email" 
+                            type="text" 
                             placeholder="(e.g.,  john.doe@example.com)"
                             onChange={(e) => handleChange("generalInformation", "email", e.target.value)}
                             value={data.email}

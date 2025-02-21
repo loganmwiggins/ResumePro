@@ -14,6 +14,6 @@ export const jobTypeOptions = [
 export const resumeSortOptions = [
     { value: "updated-desc", label: "Last Updated (Latest First)" },
     { value: "updated-asc", label: "Last Updated (Oldest First)" },
-    { value: "title-asc", label: "Title (A-Z)" },
-    { value: "title-desc", label: "Title (Z-A)" },
+    { value: "title-asc", label: "Title (A → Z)" },
+    { value: "title-desc", label: "Title (Z → A)" },
 ];
