@@ -6,6 +6,7 @@ import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
+import { BoxesLoader } from "react-awesome-loaders";
 
 function ResumeInsights() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function ResumeInsights() {
     if (loading) {
       const interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-      }, 2000); // Change message every 3 seconds
+      }, 3000); // Change message every 3 seconds
 
       return () => clearInterval(interval); // Clean up the interval when the component is unmounted
     }
@@ -264,6 +265,7 @@ function ResumeInsights() {
           <button 
             className="btn btn-black"
             onClick={() => fetchNewInsight(resumeData)}
+            // onClick={() => setLoading(true)}
           >
             <img src="/assets/icons/sparkles.svg" draggable="false" />
             <span>Analyze</span>
@@ -273,13 +275,18 @@ function ResumeInsights() {
 
       <div className="resume-insights-ctnr">
       {loading && (
-          <div className="loading-spinner-container">
-            <div className="loading-spinner"></div>
-            <div className="loading-message">
-              <span>{loadingMessages[loadingMessageIndex]}</span>
-            </div>
-          </div>
-        )}
+  <div className="loader-center">
+    <div className="loading-message">
+      <span>{loadingMessages[loadingMessageIndex]}</span>
+    </div>
+    <BoxesLoader 
+      boxColor={"#2c6fff"} 
+      // shadowColor={"#018997"} 
+      size={"100px"}
+    />
+    
+  </div>
+)}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* AI feedback */}
