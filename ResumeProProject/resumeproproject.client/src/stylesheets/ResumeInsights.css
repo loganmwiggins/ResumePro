@@ -1,6 +1,18 @@
-.resume-insights-ctnr { padding: 2rem 0; }
+.resume-insights-ctnr { padding: 2rem 0 4rem 0; }
 
-.reanalyze-ctnr button { font-size: 1rem; }
+.reanalyze-ctnr {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  button { font-size: 1rem; }
+  .btn-show {
+    img { opacity: .5; }
+  }
+  .btn-show:hover {
+    img { opacity: .9; }
+  }
+} 
 
 
 /* Refine container */
@@ -28,6 +40,14 @@
   flex-direction: column;
   text-align: left;
   gap: 1rem;
+
+  .resume-view {
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    margin: 1rem 0;
+  }
 }
 
 .feedback-head {
@@ -113,7 +133,6 @@
 .info-txt {
   position: absolute;
   top: 2rem;
-  bottom: 5rem;
   padding: .5rem 1rem;
   background: white;
   border-radius: .5rem;
@@ -126,20 +145,19 @@
 
 .loader-center {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: center; /* Center items vertically */
-  align-items: center; /* Center items horizontally */
-  height: 60vh; /* Take up full viewport height */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
 
 .loading-message {
   display: block;
-  margin-bottom: 60px; /* Increased space between the message and animation */
-  font-size: 1.5rem;
-  font-weight: bold;
-  color:#2c6fff; /* Your desired color */
+  margin-bottom: 5rem;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
   opacity: 1;
-  animation: fadeInOut 3s infinite; /* Animation for the whole message */
+  animation: fadeInOut 3s infinite;
 }
 
 @keyframes fadeInOut {

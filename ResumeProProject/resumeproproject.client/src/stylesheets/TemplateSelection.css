@@ -17,9 +17,11 @@
     gap: .5rem;
     cursor: pointer;
     transition: all .2s ease;
+    animation: floatIn 1s ease-out forwards;
+    opacity: 0;
 }
 .template:hover {
-    transform: scale(1.025);
+    scale: 101%;
     box-shadow: 0 0 1rem rgba(0, 0, 0, .25);
     transition: all .5s ease;
 }

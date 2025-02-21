@@ -24,7 +24,12 @@ function TemplateSelection() {
       <div className="templates-row">
         {/* Dynamically populated from TemplateList.jsx */}
         {templates.map((template, index) => (
-          <div className="template" onClick={() => handleTemplateSelect(`${template.id}`, `${template.name}`)}>
+          <div 
+            key={index}
+            className="template" 
+            style={{ animationDelay: `${index * 0.2}s`}}
+            onClick={() => handleTemplateSelect(`${template.id}`, `${template.name}`)}
+          >
             <div className="template-img">
               <img src={template.imgPath} draggable="false" />
             </div>
