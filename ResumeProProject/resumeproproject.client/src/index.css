@@ -9,6 +9,7 @@
   --text-third: #666;
   --text-fourth: #999;
   --text-danger: #e60000;
+  --text-success: #0dae0d;
   --blue: rgb(44, 111, 255);
   --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));

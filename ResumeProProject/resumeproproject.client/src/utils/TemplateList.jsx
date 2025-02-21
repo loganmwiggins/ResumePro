@@ -12,7 +12,7 @@ export const templates = [
         id: "minimal", 
         name: "Minimal", 
         tagline: "Clean, classic, and effortlessly professional",
-        imgPath: "/assets/template-thumbnails/Thumbnail_Minimal.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Minimal.png",
         component: Template_Minimal 
     },
     // Bold Navy
@@ -20,7 +20,7 @@ export const templates = [
         id: "bold-navy", 
         name: "Bold Navy", 
         tagline: "Strong lines, bold type, and a commanding navy presence",
-        imgPath: "/assets/template-thumbnails/Thumbnail_BoldNavy.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_BoldNavy.png",
         component: Template_BoldNavy 
     },
     // Skyline
@@ -29,7 +29,7 @@ export const templates = [
         name: "Skyline",
         // tagline: "Light, airy, and professional like a clear blue sky",
         tagline: "A strong yet calming presence",
-        imgPath: "/assets/template-thumbnails/Thumbnail_Skyline.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Skyline.png",
         component: Template_Skyline
     },
     // Rosy Edge
@@ -37,7 +37,7 @@ export const templates = [
         id: "rosy-edge",
         name: "Rosy Edge",
         tagline: "Stand out with subtle elegance and structure",
-        imgPath: "/assets/template-thumbnails/Thumbnail_RosyEdge.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_RosyEdge.png",
         component: Template_RosyEdge
     },
     // Beeline
@@ -45,7 +45,7 @@ export const templates = [
         id: "beeline",
         name: "Beeline",
         tagline: "Lead with your name, follow with impact",
-        imgPath: "/assets/template-thumbnails/Thumbnail_Beeline.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Beeline.png",
         component: Template_Beeline
     }
     

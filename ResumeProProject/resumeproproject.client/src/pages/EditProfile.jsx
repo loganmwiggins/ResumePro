@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../utils/BaseUrl';
-import '../stylesheets/Profile.css';
-import { showToast } from '../utils/Toast';
+
 import AuthorizeView from '../components/AuthorizeView';
+import { API_BASE_URL } from '../utils/BaseUrl';
+import { showToast } from '../utils/Toast';
 import { useUser } from "../context/UserContext"; 
+import '../stylesheets/EditProfile.css';
 
 function EditProfile() {
     const navigate = useNavigate();
@@ -63,8 +64,8 @@ function EditProfile() {
                     <h1>Edit Profile</h1>
                 </div>
                 <div className="head-btns">
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button" onClick={handleSave}>Save</button>
+                    <button type="button" className="btn btn-outline" onClick={handleCancel}>Cancel</button>
+                    <button type="button" className="btn btn-blue" onClick={handleSave}>Save</button>
                 </div>
             </div>
 
@@ -135,7 +136,7 @@ function EditProfile() {
                     </div>
                     <div className="input-ctnr edit-pfp-ctnr">
                         <div className="pfp">
-                            <img src="assets/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+                            <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
                         </div>
                         <div>
                             <p><strong>Upload an image</strong></p>

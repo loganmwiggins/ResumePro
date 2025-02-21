@@ -29,6 +29,36 @@
     justify-content: space-between;
     padding: 2rem 0;
     border-bottom: 1px solid lightgrey;
+
+    .head-btns {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    
+        button {
+            background: none;
+            color: var(--text-third);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            border: 1px solid var(--text-fourth);
+            border-radius: 2rem;
+            padding: .5rem 1rem;
+            text-wrap: nowrap;
+            cursor: pointer;
+            transition: all .2s ease-in-out;
+        }
+        button:hover {
+            color: #000;
+            border-color: var(--text-secondary);
+            transition: all .2s ease-in-out;
+        }
+    
+        button:last-child:hover {
+            color: var(--text-danger);
+            border-color: var(--text-danger);
+        }
+    }
 }
 
 .head-info {
@@ -61,107 +91,5 @@
         background: rgb(220, 239, 255);
         color: rgb(13, 13, 163);
         border-radius: .25rem;
-    }
-}
-
-.head-btns {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-
-    button {
-        background: none;
-        color: var(--text-secondary);
-        padding: .25rem .5rem;
-        border: 1px solid grey;
-        border-radius: .25rem;
-        cursor: pointer;
-        transition: all .2s ease;
-    }
-    button:hover {
-        background: #000;
-        border-color: #000;
-        color: white;
-        transition: all .2s ease;
-    }
-
-    /* button:last-child:hover {
-        background: var(--text-danger);
-        border-color: var(--text-danger);
-    } */
-}
-
-
-
-/* Edit Profile page */
-.edit-profile-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
-.edit-profile-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column !important;
-}
-
-.field-row {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    .label-ctnr { 
-        flex: .5; 
-        text-align: left;
-    }
-    .input-ctnr {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-}
-
-.edit-pfp-ctnr {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: rgb(235, 239, 247);
-    border-radius: .5rem;
-    padding: .75rem;
-
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: start !important;
-        gap: .5rem !important;
-    }
-    button {
-        background: none;
-        color: var(--text-secondary);
-        border: 1px solid grey;
-        border-radius: .25rem;
-        padding: .25rem;
-        cursor: pointer;
-    }
-    button:hover {
-        color: var(--text-primary);
-        border-color: var(--text-primary);
-    }
-}
-
-.pfp {
-    width: 5rem;
-    height: 5rem;
-    background: lightgrey;
-    border-radius: 100%;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: inherit;
     }
 }
