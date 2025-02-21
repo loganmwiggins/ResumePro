@@ -95,7 +95,7 @@
 }
 .score-green {
     background: rgba(0, 180, 0, 0.2);
-    .score-circle { background: rgb(0, 180, 0); }
+    .score-circle { background: #00b400; }
 }
 
 
@@ -113,42 +113,41 @@
 .info-txt {
   position: absolute;
   top: 2rem;
+  bottom: 5rem;
   padding: .5rem 1rem;
   background: white;
   border-radius: .5rem;
   color: var(--text-third);
   font-size: .85rem;
   min-width: 25rem;
-  box-shadow: 0 0 .15rem rgba(0, 0, 0, .5);
+  box-shadow: 0 0 .15rem #00000080;
   cursor: default;
 }
 
-  
-/* Loading stuff */
-.loading-message {
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  opacity: 0;
-  animation: fadeInOut 4s infinite;
-}
-  
-@keyframes fadeInOut {
-  0% { opacity: 0; }
-  100% { opacity: 0; }
-}
-  
-.loading-message span {
-  display: block;
-  animation: fadeInOutText 3s ease-in-out infinite;
+.loader-center {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 60vh; /* Take up full viewport height */
 }
 
-@keyframes fadeInOutText {
-  0% { opacity: 1; }
-  100% { opacity: 1; }
+.loading-message {
+  display: block;
+  margin-bottom: 60px; /* Increased space between the message and animation */
+  font-size: 1.5rem;
+  font-weight: bold;
+  color:#2c6fff; /* Your desired color */
+  opacity: 1;
+  animation: fadeInOut 3s infinite; /* Animation for the whole message */
 }
-  
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
   
 .reanalyze-ctnr button { font-size: 1rem; }
+
