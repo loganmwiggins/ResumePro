@@ -107,7 +107,7 @@ public class ChatController : ControllerBase
         }
 
         return Content(responseString, "text/plain");
-        return Content(responseString, "text/plain");
+        //return Content(responseString, "text/plain");
     }
 }
 
