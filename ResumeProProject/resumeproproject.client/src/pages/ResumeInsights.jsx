@@ -359,42 +359,49 @@ function ResumeInsights() {
               </div>
             </div>
 
-            {/* Resume preview */}
-            {showResume && (
-              <AnimatePresence>
-                <motion.div
+            
+
+            <div className="side-by-side">
+              {/* Resume preview */}
+              {showResume && (
+                <AnimatePresence>
+                  <motion.div
                     className="resume-view"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                      <div>
+                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                      </div>
+                  </motion.div>
+                </AnimatePresence>
+              )}
+
+              {/* Feedback items */}
+              <div className="feedback-items-ctnr">
+                {Object.entries(aiResult).map(([section, data], index) => (
+                  <motion.div 
+                    key={section} 
+                    className="feedback-item"
+                    style={showResume ? {flexDirection: "column", gap: ".5rem", alignItems: "start"} : {}}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.6 }}
-                >
+                    transition={{ duration: 0.6, delay: `${index * 0.2}` }}
+                  >
                     <div>
-                        <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                      <h3>{section}</h3>
+                      <p>{data.comments}</p>
                     </div>
-                </motion.div>
-              </AnimatePresence>
-            )}
-
-            {/* Feedback items */}
-            {Object.entries(aiResult).map(([section, data], index) => (
-              <motion.div 
-                key={section} 
-                className="feedback-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: `${index * 0.2}` }}
-              >
-                <div>
-                  <h3>{section}</h3>
-                  <p>{data.comments}</p>
-                </div>
-                <div className={`score ${getScoreColorClass(data.score)}`}>
-                  <div className="score-circle"></div>
-                  <p>{data.score}</p>
-                </div>
-              </motion.div>
-            ))}
+                    <div className={`score ${getScoreColorClass(data.score)}`}>
+                      <div className="score-circle"></div>
+                      <p>{data.score}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
