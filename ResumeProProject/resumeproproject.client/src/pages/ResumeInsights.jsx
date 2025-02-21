@@ -13,7 +13,8 @@ function ResumeInsights() {
   const params = useParams();
 
   const [resumeId, setResumeId] = useState(params.resumeId || '');
-  const [loading, setLoading] = useState(false);
+  const [resumeLoading, setResumeLoading] = useState(false);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
   const [error, setError] = useState('');
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(null); // New state to store AI response
@@ -44,14 +45,14 @@ function ResumeInsights() {
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
   useEffect(() => {
-    if (loading) {
+    if (analysisLoading) {
       const interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
       }, 3000); // Change message every 3 seconds
 
       return () => clearInterval(interval); // Clean up the interval when the component is unmounted
     }
-  }, [loading]);
+  }, [analysisLoading]);
 
   // Determine div color based on AI score
   const getScoreColorClass = (score) => {
@@ -75,7 +76,7 @@ function ResumeInsights() {
 
   const fetchResumeInsights = async () => {
     setError('');
-    setLoading(true);
+    setResumeLoading(true);
 
     try {
       // [Step 1]: Fetch the resume JSON
@@ -95,7 +96,7 @@ function ResumeInsights() {
       setError(err.message);
     } 
     finally {
-      setLoading(false);
+      setResumeLoading(false);
     }
   };
 
@@ -163,7 +164,7 @@ function ResumeInsights() {
 
   // Helper function to get a new insight (analyze)
   const fetchNewInsight = async (resumeJson) => {
-      setLoading(true);
+      setAnalysisLoading(true);
 
       try {
         // Run AI analysis
@@ -186,9 +187,8 @@ function ResumeInsights() {
         setError(err.message);
       } 
       finally {
-        setLoading(false);
+        setAnalysisLoading(false);
       }
-      
   }
 
   // Helper function to save insight to the database
@@ -248,8 +248,14 @@ function ResumeInsights() {
           </div>
         )}
       </div>
+
+      {resumeLoading && (
+        <div className="refine-ctnr">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       
-      {!aiResult && !loading && (
+      {!aiResult && !resumeLoading && !analysisLoading && (
         <div className="refine-ctnr">
           <h3>Welcome to Insights!</h3>
           <p>
@@ -265,7 +271,6 @@ function ResumeInsights() {
           <button 
             className="btn btn-black"
             onClick={() => fetchNewInsight(resumeData)}
-            // onClick={() => setLoading(true)}
           >
             <img src="/assets/icons/sparkles.svg" draggable="false" />
             <span>Analyze</span>
@@ -274,19 +279,19 @@ function ResumeInsights() {
       )}
 
       <div className="resume-insights-ctnr">
-      {loading && (
-  <div className="loader-center">
-    <div className="loading-message">
-      <span>{loadingMessages[loadingMessageIndex]}</span>
-    </div>
-    <BoxesLoader 
-      boxColor={"#2c6fff"} 
-      // shadowColor={"#018997"} 
-      size={"100px"}
-    />
-    
-  </div>
-)}
+        {analysisLoading && (
+          <div className="loader-center">
+            <div className="loading-message">
+              <span>{loadingMessages[loadingMessageIndex]}</span>
+            </div>
+            <BoxesLoader 
+              boxColor={"#2c6fff"} 
+              // shadowColor={"#018997"} 
+              size={"100px"}
+            />
+          </div>
+        )}
+
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* AI feedback */}
