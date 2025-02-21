@@ -169,18 +169,24 @@ function ResumeBuilder() {
     const handleAddSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (!updatedSkills[category]) {
                 updatedSkills[category] = new Set();
             }
-    
+
+            if (Array.isArray(updatedSkills[category])) {
+                updatedSkills[category] = new Set(updatedSkills[category]);
+            }
+
             updatedSkills[category].add(skill);
-    
+
             return {
                 ...prevResume,
                 skills: {
                     ...prevResume.skills,
-                    skillsDataJson: updatedSkills
+                    skillsDataJson: Object.fromEntries(
+                        Object.entries(updatedSkills).map(([key, value]) => [key, [...value]])
+                    ) 
                 }
             };
         });
