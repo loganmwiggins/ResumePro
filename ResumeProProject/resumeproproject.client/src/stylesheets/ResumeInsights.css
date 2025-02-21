@@ -1,6 +1,18 @@
-.resume-insights-ctnr { padding: 2rem 0; }
+.resume-insights-ctnr { padding: 2rem 0 4rem 0; }
 
-.reanalyze-ctnr button { font-size: 1rem; }
+.reanalyze-ctnr {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  button { font-size: 1rem; }
+  .btn-show {
+    img { opacity: .5; }
+  }
+  .btn-show:hover {
+    img { opacity: .9; }
+  }
+} 
 
 
 /* Refine container */
@@ -28,6 +40,14 @@
   flex-direction: column;
   text-align: left;
   gap: 1rem;
+
+  .resume-view {
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    margin: 1rem 0;
+  }
 }
 
 .feedback-head {
@@ -113,7 +133,6 @@
 .info-txt {
   position: absolute;
   top: 2rem;
-  bottom: 5rem;
   padding: .5rem 1rem;
   background: white;
   border-radius: .5rem;
