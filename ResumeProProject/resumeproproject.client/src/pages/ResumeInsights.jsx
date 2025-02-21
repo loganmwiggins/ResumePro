@@ -7,11 +7,11 @@ import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
 import { BoxesLoader } from "react-awesome-loaders";
+import AllTemplates from "../components/Templates/AllTemplates";
 
 function ResumeInsights() {
   const navigate = useNavigate();
   const params = useParams();
-
   const [resumeId, setResumeId] = useState(params.resumeId || '');
   const [resumeLoading, setResumeLoading] = useState(false);
   const [analysisLoading, setAnalysisLoading] = useState(false);
@@ -109,9 +109,22 @@ function ResumeInsights() {
         showToast("Failed to fetch resume", "error");
         console.error("Failed to fetch resume:", error.message);
         throw new Error("Failed to fetch resume");
-      }
+        }
 
-      return response.json();
+        const data = await response.json();
+
+        if (data.skills?.skillsDataJson) {
+            try {
+                data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
+            } catch (error) {
+                console.error("Error parsing skillsDataJson:", error);
+                data.skills.skillsDataJson = {};
+            }
+        }
+
+        setResumeData(data);
+
+      return data;
     } 
     catch (error) {
       showToast("An (catch) error occurred", "error");
@@ -334,7 +347,16 @@ function ResumeInsights() {
                 </div>
               </div>
             </div>
-
+                      <motion.div
+                          className="resume-view"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.6 }}
+                      >
+                          <div>
+                              <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                          </div>
+                      </motion.div>
             {Object.entries(aiResult).map(([section, data], index) => (
               <motion.div 
                 key={section} 
