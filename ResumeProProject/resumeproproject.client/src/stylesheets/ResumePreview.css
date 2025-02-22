@@ -8,7 +8,7 @@
 }
 
 .preview-header {
-    p { color: var(--text-secondary); }
+    p { color: var(--text-2); }
 }
 
 /* The outer wrapper for the resume preview */

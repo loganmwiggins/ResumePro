@@ -1,36 +1,56 @@
 :root {
-  /* Root styles */
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #222;
+  --bg-primary: #fff;
+  --bg-secondary: #eee;
 
-  /* Color variables */
   --text-primary: #222;
-  --text-secondary: #333;
-  --text-third: #666;
-  --text-fourth: #999;
+  --text-2: #333;
+  --text-3: #666;
+  --text-4: #999;
+
+  --border-3: rgb(235, 235, 235);
+
+  --btn-black: #111;
+
   --text-danger: #e60000;
   --text-success: #0dae0d;
-  --blue: rgb(44, 111, 255);
+  --blue: #2c6fff;
   --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
-  --bg-primary: #fff;
-
   --modal-shadow: 0 0 .5rem rgb(215, 215, 215);
 
+  /* --filter-icon: invert(5%) sepia(9%) saturate(0%) hue-rotate(179deg) brightness(95%) contrast(81%); */
+  --filter-icon: none;
   --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
   --filter-red: invert(11%) sepia(71%) saturate(7272%) hue-rotate(0deg) brightness(96%) contrast(115%);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #151819;
+  --bg-secondary: #313638;
+
+  --text-primary: #fff;
+  --text-2: #ccc;
+  --text-3: #999;
+
+  --border-3: rgb(50, 50, 50);
+
+  --btn-black: #000;
+
+  --filter-icon: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
 
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  /* padding: 2rem; */
   text-align: center;
 }
 
 html {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   box-sizing: border-box;
 }
 
@@ -64,7 +84,7 @@ html {
   cursor: default;
 
   h1 { text-align: left; }
-  p { color: var(--text-third); }
+  p { color: var(--text-3); }
 }
 
 .header-with-btn {
@@ -91,7 +111,7 @@ html {
 .btn:hover { transition: all .2s ease-in-out; }
 
 .btn-black {
-  background: #111;
+  background: var(--btn-black);
   color: white;
 
   img { filter: var(--filter-white); }
@@ -100,12 +120,12 @@ html {
 
 .btn-outline {
   background: none;
-  color: var(--text-third);
-  border: 1px solid var(--text-fourth);
+  color: var(--text-3);
+  border: 1px solid var(--text-4);
 }
 .btn-outline:hover {
   color: #000;
-  border-color: var(--text-secondary);
+  border-color: var(--text-2);
 }
 
 .btn-blue {
@@ -136,8 +156,13 @@ html {
 
 .btn-icon {
   padding: 0;
+  background: none;
 
   img { width: 1.25rem; }
+}
+
+.icon-dynamic {
+  filter: var(--filter-icon);
 }
 
 .btn-disabled {
@@ -184,24 +209,34 @@ form input:focus, select:focus {
 }
 
 
+/* React-select styles */
+.css-13cymwt-control {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+.css-1dimb5e-singleValue {
+  color: var(--text-primary) !important;
+  /* color: rgb(225, 219, 211) !important; */
+}
+
+
+
 /* Overriding default Toastify styling */
 .Toastify__toast-theme--light {
   color: #333 !important;
   text-align: left;
 }
-.Toastify__toast-icon {
-  margin-right: 1rem !important;
-}
+.Toastify__toast-icon { margin-right: 1rem !important; }
 
 
 /* Animations */
 @keyframes floatIn {
   0% {
-      transform: translateX(100px);
-      opacity: 0;
+    transform: translateX(100px);
+    opacity: 0;
   }
   100% {
-      transform: translateX(0);
-      opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
   }
 }

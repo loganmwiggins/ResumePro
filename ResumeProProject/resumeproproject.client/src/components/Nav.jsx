@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useUser } from "../context/UserContext"; 
+import { useTheme } from "../context/ThemeContext";
 import LogoutLink from "../components/LogoutLink";
 import '../stylesheets/Nav.css';
 
 function Nav() {
     const navigate = useNavigate();
     const { user, userLoading } = useUser();
+    const { theme, setTheme } = useTheme();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleHomeClick = () => { navigate("/home"); };
@@ -17,6 +19,9 @@ function Nav() {
         setIsDropdownOpen(false);
     };
     const handleEditProfileClick = () => { navigate("/edit-profile"); }
+    const handleThemeChange = () => {
+        setTheme(theme === "light" ? "dark" : "light");
+    }
     const handleHelp = () => { navigate("/help"); }
     const handleLoginClick = () => { navigate("/login"); }
     const handleSignUpClick = () => { navigate("/signup"); }
@@ -42,7 +47,7 @@ function Nav() {
         <div className="nav-container">
             <div className="main-row">
                 <div className="title" onClick={handleHomeClick} title="Go Home">
-                    <img src="/assets/icons/resume-logo.svg" draggable="false" />
+                    <img src="/assets/icons/resume-logo.svg" className="icon-dynamic" draggable="false" />
                     <h3>ResumePro</h3>
                 </div>
 
@@ -59,14 +64,14 @@ function Nav() {
                                 onClick={handleHomeClick}
                                 whileTap={{ scale: 0.9 }}
                             >
-                                <img src="/assets/icons/home.svg" draggable="false" />
+                                <img src="/assets/icons/home.svg" className="icon-dynamic" draggable="false" />
                             </motion.button>
                             
                             <div className="profile-ctnr">
                                 {/* Profile Button */}
                                 <button className="user-btn" onClick={toggleDropdown} title="Profile">
                                     <img src="/assets/icons/user.svg" draggable="false" />
-                                    <img src="/assets/icons/angle-down.svg" draggable="false" />
+                                    <img src="/assets/icons/angle-down.svg" className="icon-dynamic" draggable="false" />
                                 </button>
 
                                 {/* User dropdown menu */}
@@ -81,6 +86,9 @@ function Nav() {
                                         >
                                             <button onClick={handleProfileClick}>My Profile</button>
                                             <button onClick={handleEditProfileClick}>Edit Profile</button>
+                                            <button onClick={handleThemeChange}>
+                                                {theme === "light" ? "Dark Mode" : "Light Mode"}
+                                            </button>
                                             <button onClick={handleHelp}>Help</button>
                                             <LogoutLink>Logout</LogoutLink>
                                         </motion.div>

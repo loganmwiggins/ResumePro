@@ -51,7 +51,7 @@
     }
     button {
         background: none;
-        color: var(--text-secondary);
+        color: var(--text-2);
         border: 1px solid grey;
         border-radius: .25rem;
         padding: .25rem;

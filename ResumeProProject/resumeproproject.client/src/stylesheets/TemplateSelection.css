@@ -59,7 +59,7 @@
     }
     p:last-child {
         font-size: .9rem;
-        color: var(--text-third);
+        color: var(--text-3);
     }
 }
 

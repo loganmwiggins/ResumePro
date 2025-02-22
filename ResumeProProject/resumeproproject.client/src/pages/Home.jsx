@@ -272,7 +272,7 @@ function Home() {
                                             <div className="resume-btns">
                                                 {/* Ellipsis button */}
                                                 <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
-                                                    <img src="assets/icons/ellipsis.svg" draggable="false" />
+                                                    <img src="assets/icons/ellipsis.svg" className="icon-dynamic" draggable="false" />
                                                 </button>
 
                                                 {/* Animated dropdown menu */}

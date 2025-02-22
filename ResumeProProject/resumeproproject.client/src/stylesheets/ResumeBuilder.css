@@ -99,7 +99,7 @@
 
     p { 
         font-size: .9rem;
-        color: var(--text-fourth); 
+        color: var(--text-4); 
     }
 }
 
@@ -124,7 +124,7 @@
     gap: .25rem;
 
     label { 
-        color: var(--text-third); 
+        color: var(--text-3); 
         font-size: .85rem;
     }
 }
@@ -201,7 +201,7 @@
     flex-direction: column;
     text-align: left;
 
-    p { color: var(--text-third); }
+    p { color: var(--text-3); }
 }
 
 .add-entry-btn {
