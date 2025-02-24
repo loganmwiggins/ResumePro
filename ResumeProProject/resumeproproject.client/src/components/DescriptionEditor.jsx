@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import RichTextEditor from 'react-rte';
 
-import '../stylesheets/DescriptionEditor.css';
+import '../stylesheets/components/DescriptionEditor.css';
 
 function DescriptionEditor({ value, handleChange, placeholder }) {
     // Ensure value is initialized properly when passed back
