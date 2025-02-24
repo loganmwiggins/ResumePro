@@ -5,7 +5,25 @@ import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
+function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+    const moveEntryUp = (index) => {
+        if (index > 0) {
+            const newData = [...data];
+            [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("projects", newData);
+        }
+    };
+    
+    const moveEntryDown = (index) => {
+        if (index < data.length - 1) {
+            const newData = [...data];
+            [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("projects", newData);
+        }
+    };
+    
     return (
         <section>
             <div className="section-head">
@@ -34,6 +52,22 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     <p>{data[index].startDate && formatDate(data[index].startDate, {month: true, year: true}) || "Start"} {data[index].endDate && `- ${formatDate(data[index].endDate, {month: true, year: true})}`}</p>
                                 </div>
                             </div>
+                            <div className="move-buttons">    
+                            <div className="move-buttons">
+                                {index > 0 && (
+                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
+                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
+                            </button>
+                                )}
+                                </div>
+                                <div className="move-buttons">
+                                {index <data.length -1 && (
+                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
+                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
+                            </button>
+                                )}
+                             </div>
+                        </div>
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("projects", index)}>
                                 <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
                             </button>

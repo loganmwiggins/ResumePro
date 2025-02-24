@@ -71,6 +71,17 @@ function ResumeBuilder() {
             }
         }
     }, [user]); // Runs whenever 'user' changes
+    
+
+    const handleChangeResumeData = (section, sectionData) => {
+        setResumeData((prevResume) => ({
+            ...prevResume,
+            [section]: sectionData,  // Dynamically update the section
+        }));
+    };
+    
+
+
 
     const fetchResume = async () => {
         try {
@@ -403,10 +414,10 @@ function ResumeBuilder() {
                         {/* Stepper content */}
                         <div className="step-content">
                             {currentStep === 0 && <GeneralInformation data={resumeData.generalInformation} handleChange={handleChange} />}
-                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
+                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData}/>}
+                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
