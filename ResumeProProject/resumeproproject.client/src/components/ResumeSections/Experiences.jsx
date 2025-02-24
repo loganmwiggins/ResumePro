@@ -150,7 +150,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                 })}
                 whileTap={{ scale: 0.9 }}
             >
-                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Experience</span>
             </motion.button>
         </section>

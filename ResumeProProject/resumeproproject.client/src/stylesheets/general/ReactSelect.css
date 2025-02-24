@@ -1,0 +1,33 @@
+/* Main container */
+.css-13cymwt-control, .css-t3ipsp-control {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-input) !important;
+}
+
+/* Container separator */
+.css-1u9des2-indicatorSeparator { background: var(--border-input) !important; }
+
+/* Clear X container */
+.css-1xc3v61-indicatorContainer { cursor: pointer; }
+
+/* Dropdown arrow container */
+.css-1xc3v61-indicatorContainer { cursor: pointer; }
+
+/* Typed text */
+.css-1cfo1cf { color: var(--text-primary) !important; }
+
+/* Text */
+.css-1dimb5e-singleValue { color: var(--text-primary) !important; }
+
+/* Menu container */
+.css-1nmdiq5-menu { background: var(--bg-primary) !important; }
+
+/* Non-selected option */
+.css-10wo9uf-option {}
+
+/* Hovered option */
+.css-d7l1ni-option { background: var(--bg-secondary) !important; }
+
+/* Selected option */
+.css-tr4s17-option { background: var(--blue); }

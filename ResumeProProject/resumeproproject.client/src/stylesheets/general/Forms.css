@@ -1,0 +1,27 @@
+form {
+    display: flex;
+    flex-direction: column !important;
+}
+
+form input, input, select {
+    width: 100%;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: .85rem;
+    padding: .75rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-input);
+    border-radius: .5rem;
+    text-overflow: ellipsis;
+}
+form input:focus, select:focus {
+    outline: 1px solid #2684ff;
+    border-color: #2684ff;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: var(--filter-icon);
+    opacity: .5;
+}
+
+.req { color: var(--text-danger); }

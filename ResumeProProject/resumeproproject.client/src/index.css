@@ -1,14 +1,22 @@
+@import url('/src/stylesheets/general/ReactSelect.css');
+@import url('/src/stylesheets/general/Forms.css');
+@import url('/src/stylesheets/general/Buttons.css');
+
 :root {
   --bg-primary: rgb(255, 255, 255);
-  --bg-secondary: rgb(238, 238, 238);
+  --bg-secondary: rgb(235, 235, 235);
   --bg-3: rgb(215, 215, 215);
+  --bg-4: rgb(200, 200, 200);
+  --bg-builder: rgb(250, 250, 250);
 
   --text-primary: #222;
   --text-2: #333;
   --text-3: #666;
   --text-4: #999;
+  --text-placeholder: rgba(0, 0, 0, .54);
 
   --border-input: rgb(204, 204, 204);
+  --border-1: rgb(211, 211, 211);
   --border-2: rgb(220, 220, 220);
   --border-3: rgb(235, 235, 235);
 
@@ -32,14 +40,19 @@
 }
 
 [data-theme="dark"] {
-  --bg-primary: #151819;
-  --bg-secondary: #313638;
+  --bg-primary: rgb(21, 24, 25);
+  --bg-secondary: rgb(49, 54, 56);
+  --bg-3: rgb(69, 74, 76);
+  --bg-4: rgb(84, 89, 91);
+  --bg-builder: rgb(27, 29, 30);
 
   --text-primary: #fff;
   --text-2: #ccc;
   --text-3: #999;
+  --text-placeholder: rgba(255, 255, 255, .54);
 
   --border-input: rgb(81, 81, 81);
+  --border-1: rgb(74, 74, 74);
   --border-2: rgb(65, 65, 65);
   --border-3: rgb(50, 50, 50);
 
@@ -104,106 +117,7 @@ html {
     gap: 2rem;
 }
 
-/* Buttons */
-.btn {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  border: none;
-  border-radius: 2rem;
-  padding: .5rem 1rem;
-  text-wrap: nowrap;
-  cursor: pointer;
-  transition: all .2s ease-in-out;
-
-  img { width: 1rem; }
-}
-.btn:hover { transition: all .2s ease-in-out; }
-
-.btn-black {
-  background: var(--btn-black);
-  color: white;
-
-  img { filter: var(--filter-white); }
-}
-.btn-black:hover { background: #000; }
-
-.btn-outline {
-  background: none;
-  color: var(--text-3);
-  border: 1px solid var(--text-4);
-}
-.btn-outline:hover {
-  color: var(--text-2);
-  border-color: var(--text-2);
-}
-
-.btn-blue {
-  background: rgb(44, 111, 255);
-  color: white;
-}
-.btn-blue:hover { background: rgb(39, 98, 224); }
-
-.btn-accent {
-  background: var(--accent-blue);
-  color: white;
-  max-width: fit-content;
-
-  img { filter: var(--filter-white); }
-}
-.btn-accent:hover { transform: scale(1.1); }
-
-.btn-success {
-  background: #0dae0d;
-  color: white;
-
-  img {
-    width: .8rem;
-    filter: var(--filter-white);
-  }
-}
-.btn-success:hover { background: rgb(11, 153, 11); }
-
-.btn-icon {
-  padding: 0;
-  background: none;
-
-  img { width: 1.25rem; }
-}
-
-.icon-dynamic {
-  filter: var(--filter-icon);
-}
-
-.btn-disabled {
-  opacity: .25;
-  cursor: default !important;
-}
-
-
-/* Forms */
-form {
-  display: flex;
-  flex-direction: column !important;
-}
-
-form input, input, select {
-  width: 100%;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: .85rem;
-  padding: .75rem;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-input);
-  border-radius: .5rem;
-  text-overflow: ellipsis;
-}
-form input:focus, select:focus {
-  outline: 1px solid #2684ff;
-  border-color: #2684ff;
-}
-
-.req { color: var(--text-danger); }
+.icon-dynamic { filter: var(--filter-icon); }
 
 /* Loading spinner */
 .loading-spinner {
@@ -217,17 +131,6 @@ form input:focus, select:focus {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-
-/* React-select styles */
-.css-13cymwt-control {
-  background: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
-}
-.css-1dimb5e-singleValue {
-  color: var(--text-primary) !important;
-  /* color: rgb(225, 219, 211) !important; */
 }
 
 
