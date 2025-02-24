@@ -35,7 +35,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 </div>
                             </div>
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("projects", index)}>
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 

@@ -49,7 +49,7 @@
   --text-primary: #fff;
   --text-2: #ccc;
   --text-3: #999;
-  --text-placeholder: rgba(255, 255, 255, .54);
+  --text-placeholder: rgba(175, 175, 175, 0.54);
 
   --border-input: rgb(81, 81, 81);
   --border-1: rgb(74, 74, 74);
@@ -119,6 +119,7 @@ html {
 
 .icon-dynamic { filter: var(--filter-icon); }
 
+
 /* Loading spinner */
 .loading-spinner {
   width: 20px;
@@ -137,7 +138,7 @@ html {
 
 /* Overriding default Toastify styling */
 .Toastify__toast-theme--light {
-  color: #333 !important;
+  color: #222 !important;
   text-align: left;
 }
 .Toastify__toast-icon { margin-right: 1rem !important; }

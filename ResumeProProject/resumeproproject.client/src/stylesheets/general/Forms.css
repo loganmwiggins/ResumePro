@@ -19,9 +19,11 @@ form input:focus, select:focus {
     border-color: #2684ff;
 }
 
+.req { color: var(--text-danger); }
+
+
+/* Chrome, Safari, Edge, Opera (webkit) */
 ::-webkit-calendar-picker-indicator {
     filter: var(--filter-icon);
     opacity: .5;
 }
-
-.req { color: var(--text-danger); }

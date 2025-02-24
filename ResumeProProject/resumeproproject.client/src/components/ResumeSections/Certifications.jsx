@@ -40,7 +40,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry}
                                 </div>
                             </div>
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("certifications", index)}>
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 
