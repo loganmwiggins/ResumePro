@@ -83,7 +83,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
 
 
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
-                                <img src="/assets/icons/trash.svg" draggable="false" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
                             </button>
                            
                         </div>
@@ -190,7 +190,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                 })}
                 whileTap={{ scale: 0.9 }}
             >
-                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Experience</span>
             </motion.button>
         </section>

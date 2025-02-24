@@ -1,5 +1,5 @@
-import React from "react";
-import "../stylesheets/Stepper.css";
+import React from 'react';
+import '../stylesheets/components/Stepper.css';
 
 const steps = ["General", "Experience", "Education", "Certifications", "Projects", "Skills"];
 

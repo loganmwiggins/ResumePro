@@ -1,7 +1,9 @@
 /* Parent container */
 .RichTextEditor__root___2QXK- {
     width: 100%;
-    border: 1px solid rgb(204, 204, 204) !important;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-input) !important;
     border-radius: .5rem !important;
 }
 
@@ -10,18 +12,22 @@
     display: flex;
     flex-flow: wrap;
     gap: .75rem;
-    border-color: rgb(204, 204, 204) !important;
+    border-color: var(--border-input) !important;
 }
 
 /* Toolbar buttons */
 .ButtonGroup__root___3lEAn {
     display: flex !important;
-    /* gap: .25rem; */
     margin-right: 0 !important; 
 }
 
 .ButtonWrap__root___1EO_R {
-    button { border-radius: .5rem !important; }
+    button {
+        background: var(--bg-primary);
+        border-radius: .5rem !important;
+
+        span { filter: var(--filter-icon); }
+    }
 }
 
 /* Text box */
@@ -34,7 +40,7 @@
 .public-DraftEditorPlaceholder-root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-size: .85rem;
-    color: rgba(0, 0, 0, 0.54) !important;
+    color: var(--text-placeholder) !important;
 }
 
 /* Hide certain button groups:

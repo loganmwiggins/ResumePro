@@ -24,6 +24,7 @@ function EditProfile() {
 
     const handleCancel = () => {
         navigate("/profile");
+        showToast("Changes were not saved", "warning", "Canceled");
     };
 
     const handleSave = async () => {

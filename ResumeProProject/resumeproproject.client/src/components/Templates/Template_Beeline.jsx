@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Beeline.css';
+import '../../stylesheets/templates/Template_Beeline.css';
 
 function Template_Beeline({ data }) {
     return (

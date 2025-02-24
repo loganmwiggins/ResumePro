@@ -8,17 +8,17 @@ import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
-import AllTemplates from '../components/Templates/AllTemplates';
+import AllTemplates from '../components/templates/AllTemplates';
 import { templates } from '../utils/TemplateList';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
-import GeneralInformation from '../components/ResumeSections/GeneralInformation';
-import Experiences from '../components/ResumeSections/Experiences';
-import Educations from '../components/ResumeSections/Educations';
-import Certifications from '../components/ResumeSections/Certifications';
-import Projects from '../components/ResumeSections/Projects';
-import Skills from '../components/ResumeSections/Skills';
+import GeneralInformation from '../components/resume-sections/GeneralInformation';
+import Experiences from '../components/resume-sections/Experiences';
+import Educations from '../components/resume-sections/Educations';
+import Certifications from '../components/resume-sections/Certifications';
+import Projects from '../components/resume-sections/Projects';
+import Skills from '../components/resume-sections/Skills';
 
 
 function ResumeBuilder() {
@@ -259,27 +259,36 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
+    const generateResumeThumbnail = async (resumeRef) => {
+        if (!resumeRef.current) return null;
+
+        // Create hidden clone to prevent layout shifts
+        const clone = resumeRef.current.cloneNode(true);
+        document.body.appendChild(clone);
+
+        clone.style.transform = "none";
+        clone.style.width = `${resumeRef.current.offsetWidth}px`;
+        clone.style.height = `${resumeRef.current.offsetHeight}px`;
+        clone.style.position = "absolute";
+        clone.style.left = "-9999px";
+
+        const canvas = await html2canvas(clone, {
+            backgroundColor: "#FFFFFF",
+            scale: window.devicePixelRatio, 
+            useCORS: true,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+
+        // Remove  clone after rendering
+        document.body.removeChild(clone);
+
+        return imgData;
+    };
+
     const handleSubmit = async () => {
         try {
-            //  Create hidden clone to prevent layout shifts
-            const clone = resumeRef.current.cloneNode(true);
-            clone.style.transform = "scale(1)";
-            clone.style.width = "450px";
-            clone.style.height = "auto";
-            clone.style.position = "absolute";
-            clone.style.left = "-9999px";
-            document.body.appendChild(clone);
-
-            const canvas = await html2canvas(clone, {
-                backgroundColor: "#FFFFFF",
-                scale: 5,
-                useCORS: true,
-            });
-
-            const imgData = canvas.toDataURL("image/png");
-
-            //  Remove  clone 
-            document.body.removeChild(clone);
+            const imgData = await generateResumeThumbnail(resumeRef);
 
             // Validate the resume and stop execution if invalid
             if (!validateResume(resumeData)) return;

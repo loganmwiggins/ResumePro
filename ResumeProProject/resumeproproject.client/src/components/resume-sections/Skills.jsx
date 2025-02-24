@@ -64,7 +64,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                                 className="delete-btn" 
                                 onClick={() => handleRemoveSkillCategory(category)}
                             >
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 
@@ -122,7 +122,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                                     }}
                                     whileTap={{ scale: 0.9 }}
                                 >
-                                    <img src="/assets/icons/plus.svg" draggable="false" />
+                                    <img src="/assets/icons/plus.svg" className="icon-dynamic" draggable="false" />
                                 </motion.button>
                             </div>
                         </div>

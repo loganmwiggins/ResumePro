@@ -7,7 +7,7 @@ import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
 import { BoxesLoader } from "react-awesome-loaders";
-import AllTemplates from "../components/Templates/AllTemplates";
+import AllTemplates from "../components/templates/AllTemplates";
 
 function ResumeInsights() {
   const navigate = useNavigate();
@@ -261,7 +261,7 @@ function ResumeInsights() {
         {aiResult && (
           <div className="reanalyze-ctnr">
             <button type="button" className="btn btn-outline btn-show" onClick={handleToggleResume}>
-              <img src="/assets/icons/document.svg" draggable="false" />
+              <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
               <span>{showResume ? "Hide" : "Show"} Resume</span>
             </button>
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
@@ -323,7 +323,7 @@ function ResumeInsights() {
             {/* Feedback header */}
             <div className="feedback-head">
               <div className="feedback-title">
-                <img src="/assets/icons/sparkles.svg" draggable="false" />
+                <img src="/assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
                 <h2>Recommendations for "{resumeData.resumeName}"</h2>
               </div>
               <div className="feedback-title">
@@ -331,7 +331,7 @@ function ResumeInsights() {
                   <img 
                     src="/assets/icons/info.svg" 
                     draggable="false" 
-                    className="info-icon"
+                    className="icon-dynamic info-icon"
                     onClick={toggleDisclaimer}
                   />
                   <AnimatePresence>

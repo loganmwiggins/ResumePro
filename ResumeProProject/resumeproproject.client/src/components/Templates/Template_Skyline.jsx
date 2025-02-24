@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Skyline.css';
+import '../../stylesheets/templates/Template_Skyline.css';
 
 function Template_Skyline({ data }) {
     return (
@@ -123,17 +123,20 @@ function Template_Skyline({ data }) {
 
                                             <p className="p-main">{exp.role}</p>
 
-                                            <p className="p-date">
-                                                {exp.startDate && (
-                                                    `${formatDate(exp.startDate, {month:true, year:true})}`
-                                                )} {exp.endDate && (
-                                                    `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                                ) || "- Present"} {exp.jobType != null && (
-                                                    `• ${jobTypeOptions[exp.jobType].label}`
-                                                )} {exp.officeType != null && (
-                                                    `• ${officeTypeOptions[exp.officeType].label}`
-                                                )}
-                                            </p>
+                                            {(exp.startDate || exp.endDate) && (
+                                                <p className="p-date">
+                                                    {exp.startDate && (
+                                                        `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                    )} {exp.endDate && (
+                                                        `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                    ) || "- Present"} {exp.jobType != null && (
+                                                        `• ${jobTypeOptions[exp.jobType].label}`
+                                                    )} {exp.officeType != null && (
+                                                        `• ${officeTypeOptions[exp.officeType].label}`
+                                                    )}
+                                                </p> 
+                                            )}
+                                            
                                         </div>
 
                                         {sanitizedDescription && (

@@ -1,17 +1,16 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
             [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
             newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("projects", newData);
+            handleChangeResumeData("certifications", newData);
         }
     };
     
@@ -20,23 +19,22 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
             const newData = [...data];
             [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
             newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("projects", newData);
+            handleChangeResumeData("certifications", newData);
         }
     };
-    
     return (
         <section>
             <div className="section-head">
-                <h3>Projects</h3>
-                <p>Showcase notable projects you have worked on, including personal, academic, or professional projects. Highlight key achievements and technologies used.</p>
+                <h3>Certifications</h3>
+                <p>List any certifications that add credibility to your skills and make you stand out.</p>
             </div>
 
             <AnimatePresence>
-                {data.map((proj, index) => (
-                    // Individual project entry
-                    <motion.div
+                {data.map((cert, index) => (
+                    // Individual certification entry
+                    <motion.div 
                         key={index}
-                        className="inputs-ctnr"
+                        className="inputs-ctnr" 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
@@ -48,8 +46,14 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                             <div className="entry-info">
                                 <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
-                                    <h4>{data[index].title || "Untitled"}</h4>
-                                    <p>{data[index].startDate && formatDate(data[index].startDate, {month: true, year: true}) || "Start"} {data[index].endDate && `- ${formatDate(data[index].endDate, {month: true, year: true})}`}</p>
+                                    <h4>
+                                        {data[index].issuer || data[index].name
+                                            ? `${data[index].issuer || data[index].name}${data[index].issuer && data[index].issuer ? " " + data[index].name : ""}`
+                                            : "Untitled"}
+                                    </h4>
+                                    <p>
+                                        {data[index].issueDate && `Issued: ${formatDate(data[index].issueDate)}`}
+                                    </p>
                                 </div>
                             </div>
                             <div className="move-buttons">    
@@ -68,70 +72,71 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                                 )}
                              </div>
                         </div>
-                            <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("projects", index)}>
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                            <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("certifications", index)}>
+                                <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 
                         {/* Inputs */}
                         <div className="input-field">
-                            <label>Title <span className="req">*</span></label>
+                            <label>Name <span className="req">*</span></label>
                             <input 
                                 type="text"
-                                placeholder="Name of project (e.g., Weather App)"
-                                onChange={(e) => handleChange("projects", "title", e.target.value, index)}
-                                value={data[index].title}
+                                placeholder="Name of certification (e.g., Azure Fundamentals)"
+                                onChange={(e) => handleChange("certifications", "name", e.target.value, index)}
+                                value={data[index].name}
+                            />
+                        </div>
+                        <div className="input-field">
+                            <label>Issuer <span className="req">*</span></label>
+                            <input 
+                                type="text"
+                                placeholder="Name of issuer (e.g., Microsoft)"
+                                onChange={(e) => handleChange("certifications", "issuer", e.target.value, index)}
+                                value={data[index].issuer}
                             />
                         </div>
                         <div className="input-row">
                             <div className="input-field">
-                                <label>Start Date <span className="req">*</span></label>
+                                <label>Issue Date <span className="req">*</span></label>
                                 <input 
                                     type="date" 
-                                    onChange={(e) => handleChange("projects", "startDate", e.target.value, index)} 
-                                    value={data[index].startDate}
+                                    onChange={(e) => handleChange("certifications", "issueDate", e.target.value, index)} 
+                                    value={data[index].issueDate}
                                 />
                             </div>
                             <div className="input-field">
-                                <label>End Date</label>
+                                <label>Expire Date</label>
                                 <input 
                                     type="date" 
-                                    min = {data[index].startDate}
-                                    onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
-                                    value={data[index].endDate}
+                                    min = {data[index].issueDate}
+                                    onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
+                                    value={data[index].expireDate}
                                 />
                             </div>
-                        </div>
-                        <div className="input-field">
-                            <label>Description <span className="req">*</span></label>
-                            <DescriptionEditor 
-                                value={data[index].description || ""}
-                                handleChange={(newValue) => handleChange("projects", "description", newValue, index)}
-                                placeholder={"Summarize the project's purpose, your role, and key results in bulleted format"}
-                            />
                         </div>
                     </motion.div>
                 ))}
             </AnimatePresence>
 
-            {/* Add Project button */}
+            {/* Add Certification button */}
             <motion.button 
-                type="button"
+                type="button" 
                 className="add-entry-btn"
-                onClick={() => handleAddEntry("projects", {
-                    title: null,
-                    description: null,
-                    startDate: null,
-                    endDate: null,
+                onClick={() => handleAddEntry("certifications", {
+                    name: null,
+                    issuer: null,
+                    issueDate: null,
+                    expireDate: null,
                     orderNumber: data.length + 1
                 })}
                 whileTap={{ scale: 0.9 }}
             >
-                <img src="/assets/icons/plus-filled.svg" draggable="false" />
-                <span>Add Project</span>
+                <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
+                <span>Add Certification</span>
             </motion.button>
         </section>
-    );
+    )
 }
 
-export default Projects;
+export default Certifications;

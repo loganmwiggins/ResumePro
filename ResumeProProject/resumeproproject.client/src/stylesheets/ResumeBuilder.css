@@ -1,13 +1,25 @@
 .builder-ctnr {
     display: flex;
     flex-direction: row !important;
-    background: rgb(250, 250, 250);
+    background: var(--bg-builder);
     border-radius: .5rem;
-    border: 1px solid lightgrey;
-    /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
+    border: 1px solid var(--border-1);
 }
 
-.template-view, .build-view {
+.template-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80svh;
+    width: 479px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid lightgrey;
+}
+
+.build-view {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -24,20 +36,29 @@
 }
 
 .resume-ctnr {
-    width: 100%; 
-    height: 700px !important; 
-    max-width: 450.18px;
-    display: flex;
+    width: 100%;
+    height: 100%;
+    /*    max-height: 600px;*/
+    /*    max-width: 450.18px;*/
+    /*display: flex;*/
     overflow: hidden;
-    position: relative;
-    border: 1px solid lightgrey;
     /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
+    /*position: relative;
+    border: 1px solid lightgrey;*/
 }
 
 .resume-scale-ctnr {
+    justify-items:center;
     width: 800px;
     height: 1100px;
     transform-origin: top left;
+
+}
+
+.ctnr {
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .resume-actions {
@@ -54,7 +75,7 @@
 /* BUILD VIEW (RIGHT SIDE) */
 .build-view {
     position: relative;
-    border-left: 1px solid lightgrey;
+    border-left: 1px solid var(--border-1);
     overflow-y: scroll;
     padding-bottom: 4rem;
 
@@ -83,15 +104,15 @@
 }
 .step-content::-webkit-scrollbar { width: 8px; }
 .step-content::-webkit-scrollbar-track { 
-    background: rgb(235, 235, 235); 
+    background: var(--bg-secondary); 
     border-radius: .25rem;
 }
 .step-content::-webkit-scrollbar-thumb { 
-    background: rgb(215, 215, 215); 
+    background: var(--bg-3); 
     border-radius: .25rem;
     cursor: grab;
 }
-.step-content::-webkit-scrollbar-thumb:hover { background: rgb(200, 200, 200); }
+.step-content::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
 
 .section-head {
     width: 100%;
@@ -99,7 +120,7 @@
 
     p { 
         font-size: .9rem;
-        color: var(--text-fourth); 
+        color: var(--text-4); 
     }
 }
 
@@ -124,7 +145,7 @@
     gap: .25rem;
 
     label { 
-        color: var(--text-third); 
+        color: var(--text-3); 
         font-size: .85rem;
     }
 }
@@ -137,7 +158,7 @@
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid lightgrey;
+    border-top: 1px solid var(--border-1);
 
     button { transition: none; }
     button:hover { transition: none; }
@@ -157,15 +178,15 @@
         width: 1.15rem;
         height: 1.15rem;
         opacity: 0.5;
-        transition: all .2s ease-in-out;
+        /* transition: all .2s ease-in-out; */
     }
 }
 .delete-btn:hover {
     img {
         opacity: 0.8;
         filter: var(--filter-red);
-        transform: scale(1.1);
-        transition: all .2s ease-in-out;
+        /* transform: scale(1.1); */
+        /* transition: all .2s ease-in-out; */
     }
 }
 
@@ -214,7 +235,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    background: var(--text-primary);
+    background: var(--btn-black);
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 100%;
@@ -227,7 +248,7 @@
     flex-direction: column;
     text-align: left;
 
-    p { color: var(--text-third); }
+    p { color: var(--text-3); }
 }
 
 .add-entry-btn {

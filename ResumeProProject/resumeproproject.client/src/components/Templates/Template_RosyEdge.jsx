@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_RosyEdge.css';
+import '../../stylesheets/templates/Template_RosyEdge.css';
 
 function Template_RosyEdge({ data }) {
     return (
