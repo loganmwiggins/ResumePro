@@ -78,7 +78,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                                     className="delete-btn"
                                     onClick={() => handleRemoveEntry("educations", index)}
                                 >
-                                    <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
+                                    <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>
                             </div>
                         </div>
