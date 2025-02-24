@@ -35,6 +35,7 @@
   --select-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 11px rgba(0, 0, 0, 0.1);
   --shadow-1: rgba(0, 0, 0, .15);
   --shadow-2: rgba(0, 0, 0, .25);
+  --shadow-3: rgba(0, 0, 0, .5);
 
   /* --filter-icon: invert(5%) sepia(9%) saturate(0%) hue-rotate(179deg) brightness(95%) contrast(81%); */
   --filter-icon: none;
@@ -67,6 +68,7 @@
   --select-shadow: 0 0 0 1px rgba(255, 255, 255, .1), 0 4px 11px rgba(255, 255, 255, .1);
   --shadow-1: rgba(255, 255, 255, .15);
   --shadow-2: rgba(255, 255, 255, .25);
+  --shadow-3: rgba(255, 255, 255, .5);
 
   --filter-icon: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
