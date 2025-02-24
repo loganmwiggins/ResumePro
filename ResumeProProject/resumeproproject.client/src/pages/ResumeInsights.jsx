@@ -376,7 +376,7 @@ function ResumeInsights() {
                       {/*    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
                                       {/*</div>*/}
                                       <div className="resume-preview-wrapper">
-                                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="builder" />
+                                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
                                       </div>
                   </motion.div>
                 </AnimatePresence>

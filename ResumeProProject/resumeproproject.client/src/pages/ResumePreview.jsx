@@ -141,8 +141,11 @@ const ResumePreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
             >
-                <div ref={resumeRef}>
-                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                {/*<div ref={resumeRef}>*/}
+                <div className="resume-preview-wrapper-2" ref={resumeRef}>
+                        <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+
+                    {/*<AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
                 </div>
             </motion.div>
         </div>
