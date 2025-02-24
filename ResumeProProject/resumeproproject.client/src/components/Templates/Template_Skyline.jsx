@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Skyline.css';
+import '../../stylesheets/templates/Template_Skyline.css';
 
 function Template_Skyline({ data }) {
     return (

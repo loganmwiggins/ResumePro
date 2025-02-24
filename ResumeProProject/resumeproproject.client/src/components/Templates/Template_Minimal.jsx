@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Minimal.css';
+import '../../stylesheets/templates/Template_Minimal.css';
 
 function Template_Minimal({ data }) {
     return (

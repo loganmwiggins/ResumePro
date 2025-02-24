@@ -7,7 +7,7 @@ import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
 import { BoxesLoader } from "react-awesome-loaders";
-import AllTemplates from "../components/Templates/AllTemplates";
+import AllTemplates from "../components/templates/AllTemplates";
 
 function ResumeInsights() {
   const navigate = useNavigate();

@@ -84,7 +84,7 @@
     position: absolute;
     right: 0;
     top: 2.25rem;
-    background: white;
+    background: var(--bg-primary);
     border-radius: 8px;
     box-shadow: 0px 4px 12px var(--shadow-1);
     display: flex;

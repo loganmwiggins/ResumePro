@@ -49,22 +49,22 @@ function Welcome() {
                 </div>
                 <div className="card-ctnr">
                     <div className="card">
-                        <img src="/assets/icons/Welcome/pack-1/artwork.svg" draggable="false" />
+                        <img src="/assets/icons/welcome/artwork.svg" draggable="false" />
                         <h3>Stunning Templates</h3>
                         <p>Select from multiple resume templates to match your style and industry.</p>
                     </div>
                     <div className="card">
-                        <img src="/assets/icons/Welcome/pack-1/intuitive.svg" draggable="false" />
+                        <img src="/assets/icons/welcome/intuitive.svg" draggable="false" />
                         <h3>Easy & Intuitive Input</h3>
                         <p>Our step-by-step guided interface ensures you include all the right details.</p>
                     </div>
                     <div className="card">
-                        <img src="/assets/icons/Welcome/pack-1/case-study.svg" draggable="false" />
+                        <img src="/assets/icons/welcome/case-study.svg" draggable="false" />
                         <h3>Export Seamlessly</h3>
                         <p>Save your resume to your profile and export it as a PDF (and soon, Word!).</p>
                     </div>
                     <div className="card">
-                        <img src="/assets/icons/Welcome/pack-1/ai.svg" draggable="false" />
+                        <img src="/assets/icons/welcome/ai.svg" draggable="false" />
                         <h3>AI Integration</h3>
                         <p>Use Artificial Intelligence to help you revise and improve your resumes.</p>
                     </div>

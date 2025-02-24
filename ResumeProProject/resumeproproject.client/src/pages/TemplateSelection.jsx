@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../stylesheets/TemplateSelection.css';
+import '../stylesheets/templateselection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { templates } from '../utils/TemplateList';

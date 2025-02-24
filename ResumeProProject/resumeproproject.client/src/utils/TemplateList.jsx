@@ -1,10 +1,10 @@
 // Add more templates here when they are created
 
-import Template_Minimal from '../components/Templates/Template_Minimal';
-import Template_BoldNavy from '../components/Templates/Template_BoldNavy';
-import Template_Skyline from '../components/Templates/Template_Skyline';
-import Template_RosyEdge from '../components/Templates/Template_RosyEdge';
-import Template_Beeline from '../components/Templates/Template_Beeline';
+import Template_Minimal from '../components/templates/Template_Minimal';
+import Template_BoldNavy from '../components/templates/Template_BoldNavy';
+import Template_Skyline from '../components/templates/Template_Skyline';
+import Template_RosyEdge from '../components/templates/Template_RosyEdge';
+import Template_Beeline from '../components/templates/Template_Beeline';
 
 export const templates = [
     // Minimal

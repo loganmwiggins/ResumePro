@@ -8,17 +8,17 @@ import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
-import AllTemplates from '../components/Templates/AllTemplates';
+import AllTemplates from '../components/templates/AllTemplates';
 import { templates } from '../utils/TemplateList';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
-import GeneralInformation from '../components/ResumeSections/GeneralInformation';
-import Experiences from '../components/ResumeSections/Experiences';
-import Educations from '../components/ResumeSections/Educations';
-import Certifications from '../components/ResumeSections/Certifications';
-import Projects from '../components/ResumeSections/Projects';
-import Skills from '../components/ResumeSections/Skills';
+import GeneralInformation from '../components/resume-sections/GeneralInformation';
+import Experiences from '../components/resume-sections/Experiences';
+import Educations from '../components/resume-sections/Educations';
+import Certifications from '../components/resume-sections/Certifications';
+import Projects from '../components/resume-sections/Projects';
+import Skills from '../components/resume-sections/Skills';
 
 
 function ResumeBuilder() {

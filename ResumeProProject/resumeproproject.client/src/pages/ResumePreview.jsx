@@ -5,7 +5,7 @@ import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { API_BASE_URL } from "../utils/BaseUrl";
 import { showToast } from "../utils/Toast";
-import AllTemplates from "../components/Templates/AllTemplates";
+import AllTemplates from "../components/templates/AllTemplates";
 import "../stylesheets/ResumePreview.css";
 
 const ResumePreview = () => {
