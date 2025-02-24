@@ -45,7 +45,7 @@ function AllTemplates({ selectedTemplate, resumeData, viewMode }) {
             transform: `scale(${scale})`,
             //transformOrigin: "top left",
             position: "center",
-            position: "center",
+            //boxShadow: "0 0 .25rem rgba(0, 0, 0, .25)"
         };
         outsideStyle = {
             transform: "none",
