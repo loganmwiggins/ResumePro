@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useUser } from "../context/UserContext"; 
 import { useTheme } from "../context/ThemeContext";
 import LogoutLink from "../components/LogoutLink";
-import '../stylesheets/Nav.css';
+import '../stylesheets/components/Nav.css';
 
 function Nav() {
     const navigate = useNavigate();
