@@ -19,8 +19,8 @@ const PasswordInput = ({ id, name, placeholder, value, handleChange }) => {
                 onClick={() => setShowPassword(!showPassword)}
             >
                 {showPassword ? 
-                    <img src="assets/icons/eye-crossed.svg" draggable="false" /> : 
-                    <img src="assets/icons/eye.svg" draggable="false" />
+                    <img src="assets/icons/eye-crossed.svg" className="icon-dynamic" draggable="false" /> : 
+                    <img src="assets/icons/eye.svg" className="icon-dynamic" draggable="false" />
                 }
             </button>
         </div>

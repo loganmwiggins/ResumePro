@@ -19,6 +19,11 @@ form input:focus, select:focus {
     border-color: #2684ff;
 }
 
+/* Autofilled input */
+/* input:-internal-autofill-selected {
+    background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+} */
+
 .req { color: var(--text-danger); }
 
 

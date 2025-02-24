@@ -92,7 +92,7 @@ function SignUp() {
                 {/* FORM SIDE */}
                 <div className="form-ctnr">
                     <div className="form-title">
-                        <img src="assets/icons/resume-logo.svg" draggable="false" />
+                        <img src="assets/icons/resume-logo.svg" className="icon-dynamic" draggable="false" />
                         <h3>ResumePro</h3>
                     </div>
 

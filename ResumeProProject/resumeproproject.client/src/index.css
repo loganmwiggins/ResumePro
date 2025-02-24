@@ -16,6 +16,8 @@
   --text-placeholder: rgba(0, 0, 0, .54);
 
   --border-input: rgb(204, 204, 204);
+  --border-spinner: rgba(0, 0, 0, .2);
+  --border-spinner-top: rgb(0, 0, 0);
   --border-1: rgb(211, 211, 211);
   --border-2: rgb(220, 220, 220);
   --border-3: rgb(235, 235, 235);
@@ -30,6 +32,7 @@
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
   --modal-shadow: 0 0 .5rem rgb(215, 215, 215);
+  --select-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 11px rgba(0, 0, 0, 0.1);
   --shadow-1: rgba(0, 0, 0, .15);
   --shadow-2: rgba(0, 0, 0, .25);
 
@@ -52,12 +55,16 @@
   --text-placeholder: rgba(175, 175, 175, 0.54);
 
   --border-input: rgb(81, 81, 81);
+  --border-spinner: rgba(255, 255, 255, .2);
+  --border-spinner-top: rgb(255, 255, 255);
   --border-1: rgb(74, 74, 74);
   --border-2: rgb(65, 65, 65);
   --border-3: rgb(50, 50, 50);
 
   --btn-black: #000;
 
+  --modal-shadow: 0 0 .5rem rgb(40, 40, 40);
+  --select-shadow: 0 0 0 1px rgba(255, 255, 255, .1), 0 4px 11px rgba(255, 255, 255, .1);
   --shadow-1: rgba(255, 255, 255, .15);
   --shadow-2: rgba(255, 255, 255, .25);
 
@@ -124,8 +131,8 @@ html {
 .loading-spinner {
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.2);
-  border-top: 3px solid #000;
+  border: 3px solid var(--border-spinner);
+  border-top: 3px solid var(--border-spinner-top);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -139,6 +146,10 @@ html {
 /* Overriding default Toastify styling */
 .Toastify__toast-theme--light {
   color: #222 !important;
+  text-align: left;
+}
+.Toastify__toast-theme--dark {
+  color: #fff !important;
   text-align: left;
 }
 .Toastify__toast-icon { margin-right: 1rem !important; }

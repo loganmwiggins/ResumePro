@@ -21,10 +21,13 @@
 .css-1dimb5e-singleValue { color: var(--text-primary) !important; }
 
 /* Menu container */
-.css-1nmdiq5-menu { background: var(--bg-primary) !important; }
+.css-1nmdiq5-menu {
+    background: var(--bg-primary) !important;
+    box-shadow: var(--select-shadow) !important;
+}
 
 /* Non-selected option */
-.css-10wo9uf-option {}
+/* .css-10wo9uf-option {} */
 
 /* Hovered option */
 .css-d7l1ni-option { background: var(--bg-secondary) !important; }
