@@ -35,7 +35,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 </div>
                             </div>
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("projects", index)}>
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 
@@ -93,7 +93,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                 })}
                 whileTap={{ scale: 0.9 }}
             >
-                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Project</span>
             </motion.button>
         </section>

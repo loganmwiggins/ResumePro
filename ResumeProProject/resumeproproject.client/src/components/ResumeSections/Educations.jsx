@@ -38,7 +38,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                 className="delete-btn" 
                                 onClick={() => handleRemoveEntry("educations", index)}
                             >
-                                <img src="/assets/icons/trash.svg" draggable="false" className="trash-icon" />
+                                <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
                             </button>
                         </div>
 
@@ -146,7 +146,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                 })}
                 whileTap={{ scale: 0.9 }}
             >
-                <img src="/assets/icons/plus-filled.svg" draggable="false" />
+                <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Education</span>
             </motion.button>
         </section>

@@ -1,7 +1,7 @@
 .login-modal {
     display: flex;
     padding: 1rem;
-    border: 1px solid rgb(230, 230, 230);
+    border: 1px solid var(--border-3);
     border-radius: .5rem;
     height: 100%;
     box-shadow: var(--modal-shadow);
@@ -99,7 +99,7 @@ a:hover { font-weight: 600; }
 
 .btn-login {
     margin-top: 1rem;
-    background: #111;
+    background: var(--btn-black);
     color: white;
     padding: .75rem;
     width: 100%;

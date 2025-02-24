@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 import { showToast } from '../utils/Toast';
 
 function LogoutLink({ children }) {
