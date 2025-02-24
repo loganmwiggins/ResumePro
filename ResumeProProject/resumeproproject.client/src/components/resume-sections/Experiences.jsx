@@ -31,8 +31,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
         <section>
             <div className="section-head">
                 <h3>Experience</h3>
-                <p>Highlight your work history by listing relevant roles that showcase your skills and achievements. List your most recent position first.
-                </p>
+                <p>Highlight your work history by listing relevant roles that showcase your skills and achievements. List your most recent position first.</p>
             </div>
 
             <AnimatePresence>
@@ -49,6 +48,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                     >
                         {/* Entry header */}
                         <div className="entry-header">
+                            {/* Entry info */}
                             <div className="entry-info">
                                 <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
@@ -63,29 +63,35 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 </div>
                             </div>
 
-                        <div className="move-buttons">    
-                            <div className="move-buttons">
+                            {/* Entry actions */}
+                            <div className="entry-btns">
                                 {index > 0 && (
-                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
-                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
-                            </button>
+                                    <button
+                                        type="button" 
+                                        title="Move this entry up"
+                                        onClick={() => moveEntryUp(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-up.svg" draggable="false" className="icon-dynamic down-icon" />
+                                    </button>
                                 )}
-                                </div>
-                                <div className="move-buttons">
                                 {index <data.length -1 && (
-                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
-                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
-                            </button>
+                                    <button 
+                                        type="button" 
+                                        title="Move this entry down"
+                                        onClick={() => moveEntryDown(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-down.svg" draggable="false" className="icon-dynamic up-icon" />
+                                    </button>
                                 )}
-                             </div>
-                        </div>
-                            
-
-
-                            <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
-                                <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
-                            </button>
-                           
+                                <button
+                                    type="button"
+                                    title="Delete this entry"
+                                    className="delete-btn"
+                                    onClick={() => handleRemoveEntry("experiences", index)}
+                                >
+                                    <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Inputs */}
@@ -173,7 +179,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
             </AnimatePresence>
             
             {/* Add Experience button */}
-            <motion.button 
+            <button 
                 type="button" 
                 className="add-entry-btn" 
                 onClick={() => handleAddEntry("experiences", {
@@ -188,11 +194,10 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                     jobType: null,
                     orderNumber: data.length + 1
                 })}
-                whileTap={{ scale: 0.9 }}
             >
                 <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Experience</span>
-            </motion.button>
+            </button>
         </section>
     );
 }

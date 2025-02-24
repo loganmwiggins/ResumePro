@@ -43,6 +43,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                     >
                         {/* Entry header */}
                         <div className="entry-header">
+                            {/* Entry info */}
                             <div className="entry-info">
                                 <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
@@ -50,29 +51,36 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                                     {data[index].startDate && formatDate(data[index].startDate, {month: true, year: true}) || "Start"} - {data[index].endDate && formatDate(data[index].endDate, {month: true, year: true}) || "End"}
                                 </div>
                             </div>
-                            <div className="move-buttons">    
-                            <div className="move-buttons">
+
+                            {/* Entry actions */}
+                            <div className="entry-btns">
                                 {index > 0 && (
-                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
-                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
-                            </button>
+                                    <button
+                                        type="button" 
+                                        title="Move this entry up"
+                                        onClick={() => moveEntryUp(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-up.svg" draggable="false" className="icon-dynamic" />
+                                    </button>
                                 )}
-                                </div>
-                                <div className="move-buttons">
                                 {index <data.length -1 && (
-                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
-                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
-                            </button>
+                                    <button 
+                                        type="button" 
+                                        title="Move this entry down"
+                                        onClick={() => moveEntryDown(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-down.svg" draggable="false" className="icon-dynamic" />
+                                    </button>
                                 )}
-                             </div>
-                        </div>
-                            <button 
-                                type="button" 
-                                className="delete-btn" 
-                                onClick={() => handleRemoveEntry("educations", index)}
-                            >
-                                <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
-                            </button>
+                                <button
+                                    type="button"
+                                    title="Delete this entry"
+                                    className="delete-btn"
+                                    onClick={() => handleRemoveEntry("educations", index)}
+                                >
+                                    <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic trash-icon" />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Inputs */}
@@ -166,7 +174,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
             </AnimatePresence>
 
             {/* Add Education button */}
-            <motion.button 
+            <button 
                 type="button" 
                 className="add-entry-btn"
                 onClick={() => handleAddEntry("educations", {
@@ -180,11 +188,10 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                     endDate: null,
                     orderNumber: data.length + 1
                 })}
-                whileTap={{ scale: 0.9 }}
             >
                 <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Education</span>
-            </motion.button>
+            </button>
         </section>
     );
 }
