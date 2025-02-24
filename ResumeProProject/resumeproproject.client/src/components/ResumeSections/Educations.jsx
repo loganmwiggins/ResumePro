@@ -4,7 +4,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
+function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,handleChangeResumeData}) {
+    const moveEntryUp = (index) => {
+        if (index > 0) {
+            const newData = [...data];
+            [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("educations", newData);
+        }
+    };
+    
+    const moveEntryDown = (index) => {
+        if (index < data.length - 1) {
+            const newData = [...data];
+            [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("educations", newData);
+        }
+    };
     return (
         <section>
             <div className="section-head">
@@ -33,6 +50,22 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     {data[index].startDate && formatDate(data[index].startDate, {month: true, year: true}) || "Start"} - {data[index].endDate && formatDate(data[index].endDate, {month: true, year: true}) || "End"}
                                 </div>
                             </div>
+                            <div className="move-buttons">    
+                            <div className="move-buttons">
+                                {index > 0 && (
+                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
+                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
+                            </button>
+                                )}
+                                </div>
+                                <div className="move-buttons">
+                                {index <data.length -1 && (
+                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
+                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
+                            </button>
+                                )}
+                             </div>
+                        </div>
                             <button 
                                 type="button" 
                                 className="delete-btn" 
@@ -81,8 +114,11 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     min={0.0}
                                     max={4.0}
                                     step="0.01"
-                                    onChange={(e) => handleChange("educations", "gpa", e.target.value, index)}
-                                    value={data[index].gpa}
+                                    onChange={(e) => {
+                                        const value = e.target.value === "" ? null : parseFloat(e.target.value);
+                                        handleChange("educations", "gpa", value, index);
+                                    }}
+                                    value={data[index].gpa === null ? "" : data[index].gpa}
                                 />
                             </div>
                         </div>

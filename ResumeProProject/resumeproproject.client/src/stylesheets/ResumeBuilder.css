@@ -169,6 +169,32 @@
     }
 }
 
+.upanddown-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 2.5rem; /* Set a fixed width */
+    height: 2.5rem; /* Set a fixed height */
+    padding: 0; /* Remove any internal padding that might affect the size */
+    box-sizing: content-box; /* Ensure the box size doesn't change */
+}
+
+.upanddown-btn img {
+    width: 1.15rem;
+    height: 1.15rem;
+    opacity: 0.5;
+    transition: all .2s ease-in-out;
+}
+
+.upanddown-btn:hover img {
+    opacity: 0.8;
+    filter: var(--filter-blue);
+    transform: scale(1.1);
+    transition: all .2s ease-in-out;
+}
 .entry-header {
     display: flex;
     align-items: center;
@@ -349,3 +375,19 @@
     opacity: 1;
     transform: scale(1.1); 
 }
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem; /* Reduce gap for better alignment */
+}
+
+/* Group up/down buttons together */
+.move-buttons {
+    display: flex;
+    flex-direction: row; /* Ensure buttons are side by side */
+    align-items: center;
+    gap: 0.1rem; /* Adjust spacing between up/down buttons */
+}
+

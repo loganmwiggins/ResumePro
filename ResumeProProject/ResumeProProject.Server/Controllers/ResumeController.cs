@@ -171,13 +171,6 @@ namespace ResumeProProject.Server.Controllers
 
             // Fetch all GeneralInformation separately
             var resumeIds = resumes.Select(r => r.ResumeId).ToList();
-            //var generalInfoDict = await _db.GeneralInformation
-            //    .Where(g => resumeIds.Contains(g.ResumeId))
-            //    .ToDictionaryAsync(g => g.ResumeId);
-
-            //var skillsDict = await _db.Skills
-            //    .Where(g => resumeIds.Contains(g.ResumeId))
-            //    .ToDictionaryAsync(g => g.ResumeId);
 
             var result = resumes.Select(resume => new
             {
@@ -186,50 +179,6 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
                 Thumbnail = resume.Thumbnail,
-
-                //GeneralInformation = generalInfoDict.TryGetValue(resume.ResumeId, out var genInfo) ? genInfo : null,
-
-                //Educations = resume.Educations.Select(e => new
-                //{
-                //    e.SchoolName,
-                //    e.DegreeType,
-                //    e.GPA,
-                //    e.Major,
-                //    e.Minor,
-                //    e.StartDate,
-                //    e.EndDate
-                //}).ToList(),
-
-                //Certifications = resume.Certifications.Select(c => new
-                //{
-                //    c.Name,
-                //    c.Issuer,
-                //    c.IssueDate,
-                //    c.ExpireDate
-                //}).ToList(),
-
-                //Experiences = resume.Experiences.Select(ex => new
-                //{
-                //    ex.CompanyName,
-                //    ex.Role,
-                //    ex.StartDate,
-                //    ex.EndDate,
-                //    ex.IsCurrent,
-                //    ex.Description,
-                //    ex.Location,
-                //    ex.OfficeType,
-                //    ex.JobType
-                //}).ToList(),
-
-                //Projects = resume.Projects.Select(p => new
-                //{
-                //    p.Title,
-                //    p.Description,
-                //    p.StartDate,
-                //    p.EndDate
-                //}).ToList(),
-
-                //Skills = skillsDict.TryGetValue(resume.ResumeId, out var skill) ? skill : null,
 
             }).ToList();
 
@@ -288,7 +237,7 @@ namespace ResumeProProject.Server.Controllers
                 {
                     e.SchoolName,
                     e.DegreeType,
-                    GPA = e.GPA.HasValue ? e.GPA.Value.ToString("0.0") : "0.0",
+                    GPA = e.GPA.HasValue ? e.GPA.Value.ToString("0.0") : (string)null,
                     e.Major,
                     e.Minor,
                     e.StartDate,

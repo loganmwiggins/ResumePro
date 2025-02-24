@@ -7,7 +7,26 @@ import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
+function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+    const moveEntryUp = (index) => {
+        if (index > 0) {
+            const newData = [...data];
+            [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("experiences", newData);
+        }
+    };
+    
+    const moveEntryDown = (index) => {
+        if (index < data.length - 1) {
+            const newData = [...data];
+            [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
+            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
+            handleChangeResumeData("experiences", newData);
+        }
+    };
+    
+
     return (
         <section>
             <div className="section-head">
@@ -43,9 +62,30 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry}) {
                                     </p>
                                 </div>
                             </div>
+
+                        <div className="move-buttons">    
+                            <div className="move-buttons">
+                                {index > 0 && (
+                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
+                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
+                            </button>
+                                )}
+                                </div>
+                                <div className="move-buttons">
+                                {index <data.length -1 && (
+                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
+                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
+                            </button>
+                                )}
+                             </div>
+                        </div>
+                            
+
+
                             <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("experiences", index)}>
                                 <img src="/assets/icons/trash.svg" draggable="false" className="trash-icon" />
                             </button>
+                           
                         </div>
 
                         {/* Inputs */}
