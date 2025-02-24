@@ -289,25 +289,25 @@ function Home() {
                                                                 title="AI Insights"
                                                                 onClick={(event) => handleInsights(resume.resumeId, event)}
                                                             >
-                                                                <img src="assets/icons/sparkles.svg" draggable="false" />
+                                                                <img src="assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
                                                             </button>
                                                             <button 
                                                                 title="Duplicate Resume"
                                                                 onClick={(event) => handleDuplicateResume(resume.resumeId, event)}
                                                             >
-                                                                <img src="assets/icons/duplicate.svg" draggable="false" />
+                                                                <img src="assets/icons/duplicate.svg" className="icon-dynamic" draggable="false" />
                                                             </button>
                                                             <button 
                                                                 title="Edit Resume"
                                                                 onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}
                                                             >
-                                                                <img src="assets/icons/pencil.svg" draggable="false" />
+                                                                <img src="assets/icons/pencil.svg" className="icon-dynamic" draggable="false" />
                                                             </button>
                                                             <button 
                                                                 title="Delete Resume"
                                                                 onClick={(event) => handleDeleteResume(resume.resumeId, event)}
                                                             >
-                                                                <img src="assets/icons/trash.svg" draggable="false" />
+                                                                <img src="assets/icons/trash.svg" className="icon-dynamic" draggable="false" />
                                                             </button>
                                                         </motion.div>
                                                     )}

@@ -1,12 +1,15 @@
 :root {
-  --bg-primary: #fff;
-  --bg-secondary: #eee;
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary: rgb(238, 238, 238);
+  --bg-3: rgb(215, 215, 215);
 
   --text-primary: #222;
   --text-2: #333;
   --text-3: #666;
   --text-4: #999;
 
+  --border-input: rgb(204, 204, 204);
+  --border-2: rgb(220, 220, 220);
   --border-3: rgb(235, 235, 235);
 
   --btn-black: #111;
@@ -19,6 +22,8 @@
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
   --modal-shadow: 0 0 .5rem rgb(215, 215, 215);
+  --shadow-1: rgba(0, 0, 0, .15);
+  --shadow-2: rgba(0, 0, 0, .25);
 
   /* --filter-icon: invert(5%) sepia(9%) saturate(0%) hue-rotate(179deg) brightness(95%) contrast(81%); */
   --filter-icon: none;
@@ -34,9 +39,14 @@
   --text-2: #ccc;
   --text-3: #999;
 
+  --border-input: rgb(81, 81, 81);
+  --border-2: rgb(65, 65, 65);
   --border-3: rgb(50, 50, 50);
 
   --btn-black: #000;
+
+  --shadow-1: rgba(255, 255, 255, .15);
+  --shadow-2: rgba(255, 255, 255, .25);
 
   --filter-icon: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
@@ -124,7 +134,7 @@ html {
   border: 1px solid var(--text-4);
 }
 .btn-outline:hover {
-  color: #000;
+  color: var(--text-2);
   border-color: var(--text-2);
 }
 
@@ -183,7 +193,8 @@ form input, input, select {
   font-size: .85rem;
   padding: .75rem;
   background: var(--bg-primary);
-  border: 1px solid rgb(204, 204, 204);
+  color: var(--text-primary);
+  border: 1px solid var(--border-input);
   border-radius: .5rem;
   text-overflow: ellipsis;
 }

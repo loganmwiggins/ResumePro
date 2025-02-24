@@ -4,7 +4,6 @@
 }
 
 
-
 /* Profile banner */
 .profile-banner {
     width: 100%;
@@ -21,14 +20,13 @@
 }
 
 
-
 /* Profile head */
 .profile-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 2rem 0;
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid var(--border-2);
 
     .head-btns {
         display: flex;
@@ -49,14 +47,9 @@
             transition: all .2s ease-in-out;
         }
         button:hover {
-            color: #000;
+            color: var(--text-2);
             border-color: var(--text-2);
             transition: all .2s ease-in-out;
-        }
-    
-        button:last-child:hover {
-            color: var(--text-danger);
-            border-color: var(--text-danger);
         }
     }
 }
@@ -67,9 +60,7 @@
     gap: 1rem;
     cursor: default;
 
-    img {
-        width: 3rem;
-    }
+    img { width: 3rem; }
 }
 .head-info-txt {
     display: flex;

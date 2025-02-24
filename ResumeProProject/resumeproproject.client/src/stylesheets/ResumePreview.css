@@ -8,6 +8,7 @@
 }
 
 .preview-header {
+    cursor: default;
     p { color: var(--text-2); }
 }
 
@@ -24,7 +25,8 @@
 .resume-paper {
     width: 800px !important; /* A4 width */
     height: 1100px !important; /* A4 width */
-    background-color: white;
+    background: white;
+    color: black;
     box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.25);
     transform: none !important;
     display: flex;

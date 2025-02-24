@@ -18,7 +18,10 @@ function Nav() {
         navigate("/profile"); 
         setIsDropdownOpen(false);
     };
-    const handleEditProfileClick = () => { navigate("/edit-profile"); }
+    const handleEditProfileClick = () => {
+        navigate("/edit-profile");
+        setIsDropdownOpen(false);
+    }
     const handleThemeChange = () => {
         setTheme(theme === "light" ? "dark" : "light");
     }
