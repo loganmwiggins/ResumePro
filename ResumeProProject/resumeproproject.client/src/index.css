@@ -79,6 +79,12 @@
   text-align: center;
 }
 
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
 html {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   background: var(--bg-primary);
@@ -86,11 +92,15 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
+body::-webkit-scrollbar { width: 10px; }
+body::-webkit-scrollbar-track { 
+    background: var(--bg-secondary); 
 }
+body::-webkit-scrollbar-thumb { 
+    background: var(--bg-3); 
+    cursor: grab;
+}
+body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
 
 .page-ctnr-center {
   display: flex;
