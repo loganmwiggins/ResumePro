@@ -372,9 +372,12 @@ function ResumeInsights() {
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.6 }}
                   >
-                      <div>
-                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
-                      </div>
+                      {/*<div>*/}
+                      {/*    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
+                                      {/*</div>*/}
+                                      <div className="resume-preview-wrapper">
+                                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="builder" />
+                                      </div>
                   </motion.div>
                 </AnimatePresence>
               )}

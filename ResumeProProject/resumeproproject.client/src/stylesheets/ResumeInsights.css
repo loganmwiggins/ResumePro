@@ -182,3 +182,14 @@
   display: flex;
   gap: 2rem;
 }
+
+
+.resume-preview-wrapper {
+    width: 600px; /* Set fixed width */
+    height: 825px;  
+    display: flex;
+    border: 1px solid lightgray;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    overflow: hidden; /* Ensures nothing spills out */
+}
