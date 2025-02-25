@@ -366,9 +366,12 @@ function ResumeBuilder() {
                 <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     {/* LEFT SIDE */}
                     <div className="template-view">
+                        {/* Template preview */}
                         <div ref={resumeRef} className="resume-ctnr">
                             <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
                         </div>
+
+                        {/* Resume actions */}
                         <div className="resume-actions">
                             <input 
                                 type="text"
@@ -386,6 +389,13 @@ function ResumeBuilder() {
                                 ))}
                             </select>
 
+                            <button type="button" className="btn btn-icon">
+                                <img src="/assets/icons/zoom-out.svg" draggable="false" />
+                            </button>
+                            <button type="button" className="btn btn-icon">
+                                <img src="/assets/icons/zoom-in.svg" draggable="false" />
+                            </button>
+
                             <motion.button 
                                 type="button" 
                                 className="btn btn-outline" 
@@ -399,7 +409,7 @@ function ResumeBuilder() {
                                 className="btn btn-blue"
                                 whileTap={{ scale: 0.9 }}
                             >
-                                <span>Save Resume</span>
+                                <span>Save</span>
                             </motion.button>
                         </div>
                     </div>

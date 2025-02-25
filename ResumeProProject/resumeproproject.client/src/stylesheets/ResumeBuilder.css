@@ -28,10 +28,13 @@
 .resume-ctnr {
     width: 100%;
     height: 100%;
+    /* scale: 200%; */
     /*    max-height: 600px;*/
     /*    max-width: 450.18px;*/
-    /*display: flex;*/
-    overflow: hidden;
+    /* display: flex;
+    flex-grow: 1; */
+    /* overflow: hidden; */
+    overflow: scroll;
     /* box-shadow: 0 0 .25rem rgba(0, 0, 0, .25); */
     /*position: relative;
     border: 1px solid lightgrey;*/
@@ -52,10 +55,16 @@
 }
 
 .resume-actions {
+    background: var(--bg-builder);
     width: 100%;
     display: flex;
     align-items: center;
     gap: .5rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: .6rem 2rem;
+    border-top: 1px solid var(--border-1);
 
     button { transition: none; }
     button:hover { transition: none; }
