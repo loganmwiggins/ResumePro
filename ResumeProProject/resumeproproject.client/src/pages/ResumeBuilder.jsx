@@ -2,14 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+
 import { API_BASE_URL } from '../utils/BaseUrl';
-import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
 import AllTemplates from '../components/templates/AllTemplates';
 import { templates } from '../utils/TemplateList';
+import '../stylesheets/ResumeBuilder.css';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
@@ -25,7 +27,6 @@ function ResumeBuilder() {
     const navigate = useNavigate();
     const params = useParams();
     const { user, userLoading } = useUser();
-    const resumeRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
@@ -259,33 +260,6 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
-    const generateResumeThumbnail = async (resumeRef) => {
-        if (!resumeRef.current) return null;
-
-        // Create hidden clone to prevent layout shifts
-        const clone = resumeRef.current.cloneNode(true);
-        document.body.appendChild(clone);
-
-        clone.style.transform = "none";
-        clone.style.width = `${resumeRef.current.offsetWidth}px`;
-        clone.style.height = `${resumeRef.current.offsetHeight}px`;
-        clone.style.position = "absolute";
-        clone.style.left = "-9999px";
-
-        const canvas = await html2canvas(clone, {
-            backgroundColor: "#FFFFFF",
-            scale: window.devicePixelRatio, 
-            useCORS: true,
-        });
-
-        const imgData = canvas.toDataURL("image/png");
-
-        // Remove  clone after rendering
-        document.body.removeChild(clone);
-
-        return imgData;
-    };
-
     const handleSubmit = async () => {
         try {
             const imgData = await generateResumeThumbnail(resumeRef);
@@ -367,9 +341,45 @@ function ResumeBuilder() {
                     {/* LEFT SIDE */}
                     <div className="template-view">
                         {/* Template preview */}
-                        <div ref={resumeRef} className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
-                        </div>
+                        <TransformWrapper
+                            initialScale={.5}
+                            minScale={.5}
+                            centerOnInit
+                        >
+                            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                <React.Fragment>
+                                    <div className="zoom-tools">
+                                        <motion.button
+                                            type="button"
+                                            className="zoom-btn"
+                                            onClick={() => zoomIn()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-in.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button 
+                                            type="button"
+                                            className="zoom-btn" 
+                                            onClick={() => zoomOut()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-out.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button
+                                            type="button"
+                                            className="reset-btn"
+                                            onClick={() => resetTransform()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            Reset
+                                        </motion.button>
+                                    </div>
+                                    <TransformComponent>
+                                        <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
+                                    </TransformComponent>
+                                </React.Fragment>
+                            )}
+                        </TransformWrapper>
 
                         {/* Resume actions */}
                         <div className="resume-actions">
@@ -388,13 +398,6 @@ function ResumeBuilder() {
                                     </option>
                                 ))}
                             </select>
-
-                            <button type="button" className="btn btn-icon">
-                                <img src="/assets/icons/zoom-out.svg" draggable="false" />
-                            </button>
-                            <button type="button" className="btn btn-icon">
-                                <img src="/assets/icons/zoom-in.svg" draggable="false" />
-                            </button>
 
                             <motion.button 
                                 type="button" 
