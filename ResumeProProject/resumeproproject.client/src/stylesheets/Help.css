@@ -44,13 +44,14 @@
             /* border: 1px solid var(--blue); */
             border-radius: .5rem;
             /* box-shadow: 0 0 1rem rgba(44, 111, 255, .5); */
-            box-shadow: var(--modal-shadow);
+            /* box-shadow: var(--modal-shadow); */
 
             img {
                 flex: 1;
                 height: 100%;
                 object-fit: cover;
                 border-radius: inherit;
+                box-shadow: var(--modal-shadow);
             }
         }
     }

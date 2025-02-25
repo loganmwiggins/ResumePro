@@ -24,7 +24,7 @@
 .btn-outline {
     background: none;
     color: var(--text-3);
-    border: 1px solid var(--text-4);
+    border: 1px solid var(--text-3);
 }
 .btn-outline:hover {
     color: var(--text-2);

@@ -13,8 +13,8 @@ function Help() {
             title: "Welcome to ResumePro!",
             description: "Let’s take a quick tour of ResumePro to help you get started and make the most of its features.",
             images: [
-                "/assets/images/resume-1.webp",
-                "/assets/images/resume-2.webp",
+                "/assets/images/help/highlight-1.png",
+                "/assets/images/help/highlight-2.png",
             ]
         },
         {
@@ -36,18 +36,14 @@ function Help() {
         {
             title: "Get Help from ResumePro AI",
             description: `Get recommendations on each section of your resume from the ResumePro AI Assistant.`,
-            images: ["/assets/images/help/insights.png"]
+            images: ["/assets/images/help/insights-2.png"]
         },
         {
             title: "You're All Set!",
             description: "That’s it! Now you’re ready to start building and managing your resumes like a pro.",
             images: [
-                // "/assets/template-thumbnails/boldNavy-thumbnail.png",
-                // "/assets/template-thumbnails/minimal-thumbnail.png",
-                // "/assets/template-thumbnails/rosyEdge-thumbnail.png",
-                // "/assets/template-thumbnails/skyline-thumbnail.png",
-                "/assets/images/resume-1.webp",
-                "/assets/images/resume-2.webp",
+                "/assets/images/help/highlight-1.png",
+                "/assets/images/help/highlight-2.png",
             ]
         },
     ];    
