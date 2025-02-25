@@ -87,6 +87,11 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
             setTimeout(() => {
                 handleChangeResumeData("experiences", [...newData]);
             }, 0);
+
+            // **Redundant Second Update (force re-render)**
+            setTimeout(() => {
+                handleChangeResumeData("experiences", [...newData]);
+            }, 1);
         }
     };
     
@@ -208,7 +213,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                     options={jobTypeOptions}
                                     placeholder="Select a job type"
                                     onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption ? selectedOption.value : null, index)}
-                                    value={jobTypeOptions.find(option => option.value === data[index].jobType || null)}
+                                    value={jobTypeOptions.find(option => option.value === data[index].jobType || "")}
                                     isClearable
                                 />
                             </div>
@@ -218,7 +223,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                     options={officeTypeOptions}
                                     placeholder="Select an office type"
                                     onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption ? selectedOption.value : null, index)}
-                                    value={officeTypeOptions.find(option => option.value === data[index].officeType) || null}
+                                    value={officeTypeOptions.find(option => option.value === data[index].officeType) || ""}
                                     isClearable
                                 />
                                
