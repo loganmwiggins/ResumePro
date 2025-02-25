@@ -12,6 +12,7 @@
 
 .Template_Beeline {
     --accent: gold;
+    --accent: rgba(255, 215, 0, 1);
     font-size: 1rem;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
@@ -69,7 +70,7 @@
         flex-direction: column;
         gap: .75rem;
         padding-bottom: 1rem;
-        border-bottom: .5rem solid var(--accent);
+        border-bottom: .5rem solid;
 
         h1 {
             font-size: 2rem;

@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
-import { createRoot } from "react-dom/client";
+import { createRoot } from 'react-dom/client';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { RgbaColorPicker } from 'react-colorful';
 
 import { API_BASE_URL } from '../utils/BaseUrl';
 import AuthorizeView from '../components/AuthorizeView';
@@ -31,6 +32,8 @@ function ResumeBuilder() {
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
+    const [resumeColor, setResumeColor] = useState({ r: 128, g: 128, b: 128, a: 1 });
+    const [showColorPicker, setShowColorPicker] = useState(false);
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
 
@@ -73,6 +76,15 @@ function ResumeBuilder() {
             }
         }
     }, [user]); // Runs whenever 'user' changes
+
+
+    // Color logic
+    useEffect(() => {
+        console.log(templateId);
+        if (templateId) {
+            if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }
+        }
+    }, [templateId])
     
 
     const handleChangeResumeData = (section, sectionData) => {
@@ -258,6 +270,11 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
+    const handleChangeColor = (newColor) => {
+        // console.log("New color selected:", newColor);
+        setResumeColor(newColor);
+    }
+
     const generateResumeThumbnail = async () => {
         try {
             if (!hiddenRef.current) return null;
@@ -403,7 +420,11 @@ function ResumeBuilder() {
                                         </motion.button>
                                     </div>
                                     <TransformComponent>
-                                        <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
+                                        <AllTemplates 
+                                            selectedTemplate={templateId} 
+                                            resumeData={resumeData} 
+                                            builderColor={resumeColor} 
+                                        />
                                     </TransformComponent>
                                 </React.Fragment>
                             )}
@@ -426,6 +447,21 @@ function ResumeBuilder() {
                                     </option>
                                 ))}
                             </select>
+                            <div className="color-picker-ctnr">
+                                <motion.button
+                                    type="button"
+                                    className="color-btn"
+                                    style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
+                                    onClick={() => setShowColorPicker(!showColorPicker)}
+                                    whileTap={{scale: 0.8}}
+                                ></motion.button>
+                                {showColorPicker && (
+                                    <div className="color-picker">
+                                        <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
+                                    </div>
+                                )}
+                            </div>
+                            
 
                             <motion.button 
                                 type="button" 
