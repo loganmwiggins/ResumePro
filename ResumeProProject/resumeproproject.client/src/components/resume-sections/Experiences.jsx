@@ -15,26 +15,37 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
             // Swap entries
             [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
     
-            // Ensure empty fields are reset to empty strings for the swapped entry
+            // Ensure null values remain null for dates
+            ["startDate", "endDate"].forEach((key) => {
+                if (data[index][key] === null) newData[index - 1][key] = null;
+                if (data[index - 1][key] === null) newData[index][key] = null;
+            });
+    
+            // Ensure empty fields remain empty
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                if (!newData[index][key] && newData[index][key] !== false) newData[index][key] = key.includes("Date") ? null : "";
             });
     
             Object.keys(newData[index - 1]).forEach((key) => {
-                if (!newData[index - 1][key]) newData[index - 1][key] = "";
+                if (!newData[index - 1][key] && newData[index - 1][key] !== false) newData[index - 1][key] = key.includes("Date") ? null : "";
             });
     
-            // Fix Select options (handle undefined or empty values)
+            // Fix Select options
             newData.forEach((entry) => {
                 if (!entry.jobType) entry.jobType = null;
                 if (!entry.officeType) entry.officeType = null;
             });
     
-            // Update order numbers (if necessary)
+            // Update order numbers
             newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
     
-            // Trigger state update
+            // **First State Update**
             handleChangeResumeData("experiences", [...newData]);
+    
+            // **Redundant Second Update (force re-render)**
+            setTimeout(() => {
+                handleChangeResumeData("experiences", [...newData]);
+            }, 0);
         }
     };
     
@@ -45,28 +56,40 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
             // Swap entries
             [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
     
-            // Ensure empty fields are reset to empty strings for the swapped entry
+            // Ensure null values remain null for dates
+            ["startDate", "endDate"].forEach((key) => {
+                if (data[index][key] === null) newData[index + 1][key] = null;
+                if (data[index + 1][key] === null) newData[index][key] = null;
+            });
+    
+            // Ensure empty fields remain empty
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                if (!newData[index][key] && newData[index][key] !== false) newData[index][key] = key.includes("Date") ? null : "";
             });
     
             Object.keys(newData[index + 1]).forEach((key) => {
-                if (!newData[index + 1][key]) newData[index + 1][key] = "";
+                if (!newData[index + 1][key] && newData[index + 1][key] !== false) newData[index + 1][key] = key.includes("Date") ? null : "";
             });
     
-            // Fix Select options (handle undefined or empty values)
+            // Fix Select options
             newData.forEach((entry) => {
                 if (!entry.jobType) entry.jobType = null;
                 if (!entry.officeType) entry.officeType = null;
             });
     
-            // Update order numbers (if necessary)
+            // Update order numbers
             newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
     
-            // Trigger state update
+            // **First State Update**
             handleChangeResumeData("experiences", [...newData]);
+    
+            // **Redundant Second Update (force re-render)**
+            setTimeout(() => {
+                handleChangeResumeData("experiences", [...newData]);
+            }, 0);
         }
     };
+    
     
     
     
@@ -164,8 +187,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <label>Start Date <span className="req">*</span></label>
                                 <input 
                                     type="date" 
-                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value, index)} 
-                                    value={data[index].startDate}
+                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value || null, index)}  
+                                    value={data[index].startDate || ""}  // Ensure empty string if null
                                 />
                             </div>
                             <div className="input-field">
@@ -173,8 +196,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input 
                                     type="date" 
                                     min = {data[index].startDate}
-                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)}
-                                    value={data[index].endDate}
+                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value || null, index)}
+                                    value={data[index].endDate || ""}  // Ensure empty string if null
                                 />
                             </div>
                         </div>
