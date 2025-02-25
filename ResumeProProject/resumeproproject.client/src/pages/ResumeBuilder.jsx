@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
+import { createRoot } from "react-dom/client";
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 import { API_BASE_URL } from '../utils/BaseUrl';
@@ -30,7 +31,7 @@ function ResumeBuilder() {
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
-
+    const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
 
     // When user data is available, initialize resumeData with default values
@@ -80,9 +81,6 @@ function ResumeBuilder() {
             [section]: sectionData,  // Dynamically update the section
         }));
     };
-    
-
-
 
     const fetchResume = async () => {
         try {
@@ -260,9 +258,39 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
+    const generateResumeThumbnail = async () => {
+        try {
+            if (!hiddenRef.current) return null;
+
+            // Render AllTemplates inside hidden container
+            const root = createRoot(hiddenRef.current);
+            root.render(
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+            );
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            // Capture as Image
+            const canvas = await html2canvas(hiddenRef.current, {
+                backgroundColor: "#FFFFFF",
+                scale: 2,
+                useCORS: true
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            root.unmount();
+
+            return imgData;
+        } catch (error) {
+            console.error("Error generating resume thumbnail:", error);
+            return null;
+        }
+    };
+
     const handleSubmit = async () => {
         try {
-            const imgData = await generateResumeThumbnail(resumeRef);
+            const imgData = await generateResumeThumbnail();
 
             // Validate the resume and stop execution if invalid
             if (!validateResume(resumeData)) return;
@@ -469,6 +497,8 @@ function ResumeBuilder() {
                         </div>
                     </div>
                 </form>
+                {/*Hidden container for thumbnail generation */}
+                <div ref={hiddenRef} style={{ position: "absolute", left: "-9999px", width: "800px", height: "1100px", overflow: "hidden", backgroundColor: "white" }} />
             </AuthorizeView>
         );
     }
