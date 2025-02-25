@@ -31,7 +31,8 @@ The following dependencies power ResumePro:
 - `framer-motion` (for CSS animations)
 - `react-rte` (for rich text editing)
 - `dompurify` (for input sanitization)
-- 'react-awesome-loaders' (for 3d animations)
+- `react-awesome-loaders` (for 3d animations)
+- `react-zoom-pan-pinch` (for resume zoom functionality)
 
 ### Back-end:
 - `ASP.NET Core`
