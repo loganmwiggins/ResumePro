@@ -2,15 +2,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
+import { createRoot } from "react-dom/client";
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+
 import { API_BASE_URL } from '../utils/BaseUrl';
-import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
 import AllTemplates from '../components/templates/AllTemplates';
 import { templates } from '../utils/TemplateList';
-import { createRoot } from "react-dom/client";
+import '../stylesheets/ResumeBuilder.css';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
@@ -366,9 +368,48 @@ function ResumeBuilder() {
                 <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     {/* LEFT SIDE */}
                     <div className="template-view">
-                        <div className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
-                        </div>
+                        {/* Template preview */}
+                        <TransformWrapper
+                            initialScale={.5}
+                            minScale={.5}
+                            centerOnInit
+                        >
+                            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                <React.Fragment>
+                                    <div className="zoom-tools">
+                                        <motion.button
+                                            type="button"
+                                            className="zoom-btn"
+                                            onClick={() => zoomIn()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-in.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button 
+                                            type="button"
+                                            className="zoom-btn" 
+                                            onClick={() => zoomOut()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-out.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button
+                                            type="button"
+                                            className="reset-btn"
+                                            onClick={() => resetTransform()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            Reset
+                                        </motion.button>
+                                    </div>
+                                    <TransformComponent>
+                                        <AllTemplates selectedTemplate={templateId} resumeData={resumeData} />
+                                    </TransformComponent>
+                                </React.Fragment>
+                            )}
+                        </TransformWrapper>
+
+                        {/* Resume actions */}
                         <div className="resume-actions">
                             <input 
                                 type="text"
@@ -399,7 +440,7 @@ function ResumeBuilder() {
                                 className="btn btn-blue"
                                 whileTap={{ scale: 0.9 }}
                             >
-                                <span>Save Resume</span>
+                                <span>Save</span>
                             </motion.button>
                         </div>
                     </div>
