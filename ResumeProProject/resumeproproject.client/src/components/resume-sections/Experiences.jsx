@@ -8,92 +8,48 @@ import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
 function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
-    const moveEntryUp = (index) => {
-        if (index > 0) {
-            const newData = [...data];
-    
-            // Swap entries
-            [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
-    
-            // Ensure null values remain null for dates
-            ["startDate", "endDate"].forEach((key) => {
-                if (data[index][key] === null) newData[index - 1][key] = null;
-                if (data[index - 1][key] === null) newData[index][key] = null;
-            });
-    
-            // Ensure empty fields remain empty
-            Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key] && newData[index][key] !== false) newData[index][key] = key.includes("Date") ? null : "";
-            });
-    
-            Object.keys(newData[index - 1]).forEach((key) => {
-                if (!newData[index - 1][key] && newData[index - 1][key] !== false) newData[index - 1][key] = key.includes("Date") ? null : "";
-            });
-    
-            // Fix Select options
-            newData.forEach((entry) => {
-                if (!entry.jobType) entry.jobType = null;
-                if (!entry.officeType) entry.officeType = null;
-            });
-    
-            // Update order numbers
-            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-            // **First State Update**
-            handleChangeResumeData("experiences", [...newData]);
-    
-            // **Redundant Second Update (force re-render)**
-            setTimeout(() => {
-                handleChangeResumeData("experiences", [...newData]);
-            }, 0);
-        }
-    };
-    
-    const moveEntryDown = (index) => {
-        if (index < data.length - 1) {
-            const newData = [...data];
-    
-            // Swap entries
-            [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
-    
-            // Ensure null values remain null for dates
-            ["startDate", "endDate"].forEach((key) => {
-                if (data[index][key] === null) newData[index + 1][key] = null;
-                if (data[index + 1][key] === null) newData[index][key] = null;
-            });
-    
-            // Ensure empty fields remain empty
-            Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key] && newData[index][key] !== false) newData[index][key] = key.includes("Date") ? null : "";
-            });
-    
-            Object.keys(newData[index + 1]).forEach((key) => {
-                if (!newData[index + 1][key] && newData[index + 1][key] !== false) newData[index + 1][key] = key.includes("Date") ? null : "";
-            });
-    
-            // Fix Select options
-            newData.forEach((entry) => {
-                if (!entry.jobType) entry.jobType = null;
-                if (!entry.officeType) entry.officeType = null;
-            });
-    
-            // Update order numbers
-            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-            // **First State Update**
-            handleChangeResumeData("experiences", [...newData]);
-    
-            // **Redundant Second Update (force re-render)**
-            setTimeout(() => {
-                handleChangeResumeData("experiences", [...newData]);
-            }, 0);
+   console.log(data)
+   const swapAttributes = (entryA, entryB) => {
+    Object.keys(entryA).forEach((key) => {
+        console.log("-------------------------------------")
+        console.log(key + "  ENTRY A KEY: " + entryA[key])
+        console.log(key + "  ENTRY B KEY: " + entryB[key])
+        let temp = entryA[key];
+        entryA[key] = entryB[key];
+        entryB[key] = temp;
+        console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
+        console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
+    });
+};
 
-            // **Redundant Second Update (force re-render)**
-            setTimeout(() => {
-                handleChangeResumeData("experiences", [...newData]);
-            }, 1);
-        }
-    };
+const moveEntryUp = (index) => {
+    if (index > 0) {
+        const newData = [...data];
+        
+
+        // Swap attributes instead of objects
+        swapAttributes(newData[index], newData[index - 1]);
+
+        // Update order numbers
+        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+
+        handleChangeResumeData("experiences", [...newData]);
+    }
+};
+
+const moveEntryDown = (index) => {
+    if (index < data.length - 1) {
+        const newData = [...data];
+
+        // Swap attributes instead of objects
+        swapAttributes(newData[index], newData[index + 1]);
+
+        // Update order numbers
+        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+
+        handleChangeResumeData("experiences", [...newData]);
+    }
+};
     
     
     
@@ -173,8 +129,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input
                                     type="text"
                                     placeholder="(e.g.,  Walmart)"
-                                    onChange={(e) => handleChange("experiences", "companyName", e.target.value, index)}
-                                    value={data[index].companyName}
+                                    onChange={(e) => handleChange("experiences", "companyName", e.target.value || null, index)}
+                                    value={data[index]?.companyName ?? ""}
                                 />
                             </div>
                             <div className="input-field">
@@ -182,8 +138,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input
                                     type="text"
                                     placeholder="(e.g.,  Store Manager)"
-                                    onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
-                                    value={data[index].role}
+                                    onChange={(e) => handleChange("experiences", "role", e.target.value || null, index)}
+                                    value={data[index]?.role ?? ""}
                                 />
                             </div>
                         </div>
@@ -208,12 +164,12 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                         </div>
                         <div className="input-row">
                             <div className="input-field">
-                                <label>Job Type</label>
+                            <label>Job Type</label>
                                 <Select
                                     options={jobTypeOptions}
                                     placeholder="Select a job type"
                                     onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption ? selectedOption.value : null, index)}
-                                    value={jobTypeOptions.find(option => option.value === data[index].jobType || "")}
+                                    value={jobTypeOptions.find(option => option.value === data[index].jobType) || null}
                                     isClearable
                                 />
                             </div>
@@ -223,7 +179,7 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                     options={officeTypeOptions}
                                     placeholder="Select an office type"
                                     onChange={(selectedOption) => handleChange("experiences", "officeType", selectedOption ? selectedOption.value : null, index)}
-                                    value={officeTypeOptions.find(option => option.value === data[index].officeType) || ""}
+                                    value={officeTypeOptions.find(option => option.value === data[index].officeType) || null}
                                     isClearable
                                 />
                                
@@ -242,8 +198,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                             <input 
                                 type="text" 
                                 placeholder="(e.g.,  Manhattan, NY)"
-                                onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
-                                value={data[index].location}
+                                onChange={(e) => handleChange("experiences", "location", e.target.value || null, index)} 
+                                value={data[index]?.location ?? ""}
                             />
                         </div>
                     </motion.div>
