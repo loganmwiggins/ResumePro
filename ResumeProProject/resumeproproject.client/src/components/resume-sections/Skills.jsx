@@ -59,13 +59,17 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                         <div className="skill-category-header">
                             <h4>{category}</h4>
                             {/* DELETE CATEGORY BUTTON */}
-                            <button 
-                                type="button" 
-                                className="delete-btn" 
-                                onClick={() => handleRemoveSkillCategory(category)}
-                            >
-                                <img src="/assets/icons/trash.svg" className="icon-dynamic trash-icon" />
-                            </button>
+                            <div className="entry-btns">
+                                <button 
+                                    type="button" 
+                                    title="Delete this category and its skills"
+                                    className="delete-btn" 
+                                    onClick={() => handleRemoveSkillCategory(category)}
+                                >
+                                    <img src="/assets/icons/trash.svg" className="icon-dynamic" />
+                                </button>
+                            </div>
+                            
                         </div>
 
                         {/* Display Skills in Each Category */}
@@ -84,6 +88,7 @@ function Skills({ data, handleAddSkillCategory, handleRemoveSkillCategory, handl
                                         {/* Delete individual skill button */}
                                         <button 
                                             type="button"
+                                            title={`Remove ${skill}`}
                                             className="delete-x-btn" 
                                             onClick={() => handleRemoveSkill(category, skill)}
                                         >

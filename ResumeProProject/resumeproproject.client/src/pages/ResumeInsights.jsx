@@ -373,17 +373,20 @@ function ResumeInsights() {
                     transition={{ duration: 0.6 }}
                   >
                       {/*<div>*/}
-                      {/*    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
-                                      {/*</div>*/}
-                                      <div className="resume-preview-wrapper">
-                                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
-                                      </div>
+                        {/*    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
+                      {/*</div>*/}
+                      <div className="resume-preview-wrapper">
+                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+                      </div>
                   </motion.div>
                 </AnimatePresence>
               )}
 
               {/* Feedback items */}
-              <div className="feedback-items-ctnr">
+              <div
+                className="feedback-items-ctnr"
+                style={showResume ? {height: "825px", padding: "1rem 2rem", overflowY: "scroll"} : {}}
+              >
                 {Object.entries(aiResult).map(([section, data], index) => (
                   <motion.div 
                     key={section} 

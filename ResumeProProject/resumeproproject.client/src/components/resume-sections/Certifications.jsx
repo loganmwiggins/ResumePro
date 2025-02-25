@@ -43,6 +43,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                     >
                         {/* Entry header */}
                         <div className="entry-header">
+                            {/* Entry info */}
                             <div className="entry-info">
                                 <div className="entry-icon">{index + 1}</div>
                                 <div className="entry-info-txt">
@@ -56,25 +57,36 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                     </p>
                                 </div>
                             </div>
-                            <div className="move-buttons">    
-                            <div className="move-buttons">
+
+                            {/* Entry actions */}
+                            <div className="entry-btns">
                                 {index > 0 && (
-                            <button type="button" className="upanddown-btn"onClick={() => moveEntryUp(index)}>
-                                <img src="/assets/icons/arrow-up.svg" draggable="false" className="down-icon" />
-                            </button>
+                                    <button
+                                        type="button" 
+                                        title="Move this entry up"
+                                        onClick={() => moveEntryUp(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-up.svg" draggable="false" className="icon-dynamic" />
+                                    </button>
                                 )}
-                                </div>
-                                <div className="move-buttons">
                                 {index <data.length -1 && (
-                            <button type="button" className="upanddown-btn" onClick={() => moveEntryDown(index)}>
-                                <img src="/assets/icons/arrow-down.svg" draggable="false" className="up-icon" />
-                            </button>
+                                    <button 
+                                        type="button" 
+                                        title="Move this entry down"
+                                        onClick={() => moveEntryDown(index)}
+                                    >
+                                        <img src="/assets/icons/arrow-down.svg" draggable="false" className="icon-dynamic" />
+                                    </button>
                                 )}
-                             </div>
-                        </div>
-                            <button type="button" className="delete-btn" onClick={() => handleRemoveEntry("certifications", index)}>
-                                <img src="/assets/icons/trash.svg" alt="Delete" className="icon-dynamic trash-icon" />
-                            </button>
+                                <button
+                                    type="button"
+                                    title="Delete this entry"
+                                    className="delete-btn"
+                                    onClick={() => handleRemoveEntry("certifications", index)}
+                                >
+                                    <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Inputs */}
@@ -120,7 +132,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
             </AnimatePresence>
 
             {/* Add Certification button */}
-            <motion.button 
+            <button 
                 type="button" 
                 className="add-entry-btn"
                 onClick={() => handleAddEntry("certifications", {
@@ -130,11 +142,10 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                     expireDate: null,
                     orderNumber: data.length + 1
                 })}
-                whileTap={{ scale: 0.9 }}
             >
                 <img src="/assets/icons/plus-filled.svg" className="icon-dynamic" draggable="false" />
                 <span>Add Certification</span>
-            </motion.button>
+            </button>
         </section>
     )
 }
