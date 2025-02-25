@@ -21,6 +21,7 @@ function Home() {
     const [homeGreeting, setHomeGreeting] = useState(""); // Ensures greeting doesn't change on re-render
     const [homeMessage, setHomeMessage] = useState(""); // Ensures message doesn't change on re-render
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [quickRename,setQuickRename] = useState(null)
 
     // Function to randomly pick a greeting and a message
     const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
@@ -172,6 +173,32 @@ function Home() {
             console.error("Failed to duplicate resume.", error.message);
         }
     };
+    const handleRenameResume = (resumeId, event) => {
+        event.stopPropagation();
+        setQuickRename(quickRename === resumeId ? null : resumeId);
+    };
+    const handleConfirmRename = async (resumeId, event) => {
+        event.stopPropagation(); // Prevent parent click events from triggering
+    
+        if (!quickRename || !quickRename.newName.trim()) {
+            setQuickRename(null); // Exit rename mode if name is empty
+            return;
+        }
+    
+        try {
+            await renameResume(resumeId, quickRename.newName); // Call API or function to rename the resume
+            setResumes((prevResumes) =>
+                prevResumes.map((resume) =>
+                    resume.resumeId === resumeId ? { ...resume, resumeName: quickRename.newName } : resume
+                )
+            );
+        } catch (error) {
+            console.error("Error renaming resume:", error);
+        } finally {
+            setQuickRename(null); // Exit rename mode
+        }
+    };
+    
     
     // Resume insights
     const handleInsights = (resumeId, event) => { 
@@ -212,126 +239,181 @@ function Home() {
 
 
 
-    return (
-        <AuthorizeView>
-            {userLoading ? (
-                <div className="loading-spinner"></div>
-            ) : (
-                <div className="page-ctnr">
-                    {/* Home header */}
-                    <div className="home-header">
-                        <div className="page-header">
-                            {user?.firstName && (
-                                <h1>{homeGreeting}, {user.firstName}</h1>
-                            )}
-                            <p>{homeMessage}</p>
-                        </div>
-                        <div>
-                            <button type="button" onClick={handleNewResume}>
-                                <img src="assets/icons/plus.svg" draggable="false" />
-                                <span>New Resume</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* My Resumes section */}
-                    <div className="my-resumes-ctnr">
-                        <div className="my-resumes-head">
-                            <h2>My Resumes</h2>
-                            <Select 
-                                options={resumeSortOptions}
-                                onChange={(selectedOption) => handleSortChange(selectedOption ? selectedOption : "updated-desc")}
-                                value={resumeSortOptions.find(option => option.value === sortOption)}
-                                className="filter-select"
-                            />
-                        </div>
-                        <div className="resumes-row">
-                            {resumesLoading ? (
-                                <div className="loading-spinner"></div>
-                            ) : Array.isArray(resumes) && resumes.length > 0 ? (
-                                // Resumes list
-                                sortedResumes.map((resume, index) => (
-                                    <div 
-                                        key={resume.resumeId} 
-                                        className="resume" 
-                                        style={{ animationDelay: `${index * 0.2}s`}}
-                                        onClick={() => handlePreviewResume(resume.resumeId)}
-                                    >
-                                        <div className="resume-img">
-                                            {resume.thumbnail ? (
-                                                <img src={resume.thumbnail} draggable="false" />
-                                            ) : (
-                                                <p>No Preview Available</p>
-                                            )}
-                                        </div>
-                                        <div className="resume-info">
-                                            <div className="resume-txt">
-                                                <p>{resume.resumeName}</p>
-                                                <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
-                                            </div>
-                                            <div className="resume-btns">
-                                                {/* Ellipsis button */}
-                                                <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
-                                                    <img src="assets/icons/ellipsis.svg" className="icon-dynamic" draggable="false" />
-                                                </button>
-
-                                                {/* Animated dropdown menu */}
-                                                <AnimatePresence>
-                                                    {openMenuId === resume.resumeId && (
-                                                        <motion.div
-                                                            className="btns-menu"
-                                                            initial={{ opacity: 0, y: -10 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            exit={{ opacity: 0, y: -10 }}
-                                                            transition={{ duration: 0.2, ease: "easeOut" }}
-                                                        >
-                                                            <button 
-                                                                title="AI Insights"
-                                                                onClick={(event) => handleInsights(resume.resumeId, event)}
-                                                            >
-                                                                <img src="assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
-                                                            </button>
-                                                            <button 
-                                                                title="Duplicate Resume"
-                                                                onClick={(event) => handleDuplicateResume(resume.resumeId, event)}
-                                                            >
-                                                                <img src="assets/icons/duplicate.svg" className="icon-dynamic" draggable="false" />
-                                                            </button>
-                                                            <button 
-                                                                title="Edit Resume"
-                                                                onClick={(event) => handleEditResume(resume.templateId, resume.resumeId, event)}
-                                                            >
-                                                                <img src="assets/icons/pencil.svg" className="icon-dynamic" draggable="false" />
-                                                            </button>
-                                                            <button 
-                                                                title="Delete Resume"
-                                                                onClick={(event) => handleDeleteResume(resume.resumeId, event)}
-                                                            >
-                                                                <img src="assets/icons/trash.svg" className="icon-dynamic" draggable="false" />
-                                                            </button>
-                                                        </motion.div>
-                                                    )}
-                                                </AnimatePresence>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div
-                                    className="no-resume"
-                                    title="No resumes yet. Click to create one!"
-                                    onClick={handleNewResume}
-                                >
+        return (
+            <AuthorizeView>
+                {userLoading ? (
+                    <div className="loading-spinner"></div>
+                ) : (
+                    <div className="page-ctnr">
+                        {/* Home header */}
+                        <div className="home-header">
+                            <div className="page-header">
+                                {user?.firstName && (
+                                    <h1>{homeGreeting}, {user.firstName}</h1>
+                                )}
+                                <p>{homeMessage}</p>
+                            </div>
+                            <div>
+                                <button type="button" onClick={handleNewResume}>
                                     <img src="assets/icons/plus.svg" draggable="false" />
-                                    <p>Create a Resume</p>
-                                </div>
-                            )}
+                                    <span>New Resume</span>
+                                </button>
+                            </div>
+                        </div>
+        
+                        {/* My Resumes section */}
+                        <div className="my-resumes-ctnr">
+                            <div className="my-resumes-head">
+                                <h2>My Resumes</h2>
+                                <Select 
+                                    options={resumeSortOptions}
+                                    onChange={(selectedOption) => handleSortChange(selectedOption ? selectedOption : "updated-desc")}
+                                    value={resumeSortOptions.find(option => option.value === sortOption)}
+                                    className="filter-select"
+                                />
+                            </div>
+                            <div className="resumes-row">
+                                {resumesLoading ? (
+                                    <div className="loading-spinner"></div>
+                                ) : Array.isArray(resumes) && resumes.length > 0 ? (
+                                    // Resumes list
+                                    sortedResumes.map((resume, index) => (
+                                        <div 
+                                            key={resume.resumeId} 
+                                            className="resume" 
+                                            style={{ animationDelay: `${index * 0.2}s` }}
+                                            onClick={() => handlePreviewResume(resume.resumeId)}
+                                        >
+                                            <div className="resume-img">
+                                                {resume.thumbnail ? (
+                                                    <img src={resume.thumbnail} draggable="false" />
+                                                ) : (
+                                                    <p>No Preview Available</p>
+                                                )}
+                                            </div>
+        
+                                            {/* START OF UPDATED .resume-info CODE */}
+                                            <div className="resume-info">
+                                                {quickRename?.resumeId === resume.resumeId ? (
+                                                    // Rename Mode
+                                                    <div className="rename-input-container">
+                                                        <input
+                                                            type="text"
+                                                            value={quickRename.newName}
+                                                            onChange={(e) =>
+                                                                setQuickRename({ ...quickRename, newName: e.target.value })
+                                                            }
+                                                            className="rename-input"
+                                                            autoFocus
+                                                        />
+                                                        <div className="rename-buttons">
+                                                            <button
+                                                                title="Cancel Rename"
+                                                                onClick={(event) => {
+                                                                    event.stopPropagation();
+                                                                    setQuickRename(null);
+                                                                }}
+                                                            >
+                                                                <img src="assets/icons/cancel.svg" className="icon-dynamic" draggable="false" />
+                                                            </button>
+                                                            <button
+                                                                title="Confirm Rename"
+                                                                onClick={(event) =>
+                                                                    handleConfirmRename(resume.resumeId, event)
+                                                                }
+                                                            >
+                                                                <img src="assets/icons/check.svg" className="icon-dynamic" draggable="false" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    // Normal Mode
+                                                    <div className="resume-content">
+                                                        <div className="resume-txt">
+                                                            <p>{resume.resumeName}</p>
+                                                            <p>Last Updated: {new Date(resume.updatedDateTime).toLocaleDateString()}</p>
+                                                        </div>
+                                                        <div className="resume-btns">
+                                                            {/* Ellipsis button */}
+                                                            <button onClick={(event) => toggleMenu(resume.resumeId, event)}>
+                                                                <img src="assets/icons/ellipsis.svg" className="icon-dynamic" draggable="false" />
+                                                            </button>
+        
+                                                            {/* Animated dropdown menu */}
+                                                            <AnimatePresence>
+                                                                {openMenuId === resume.resumeId && (
+                                                                    <motion.div
+                                                                        className="btns-menu"
+                                                                        initial={{ opacity: 0, y: -10 }}
+                                                                        animate={{ opacity: 1, y: 0 }}
+                                                                        exit={{ opacity: 0, y: -10 }}
+                                                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                                                    >
+                                                                        <button 
+                                                                            title="Rename Resume"
+                                                                            onClick={(event) => handleRenameResume(resume.resumeId, resume.resumeName, event)}
+                                                                        >
+                                                                            <img src="assets/icons/text-box-edit.svg" className="icon-dynamic" draggable="false" />
+                                                                        </button>
+
+                                                                        <button 
+                                                                            title="AI Insights"
+                                                                            onClick={(event) =>
+                                                                                handleInsights(resume.resumeId, event)
+                                                                            }
+                                                                        >
+                                                                            <img src="assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
+                                                                        </button>
+                                                                        <button 
+                                                                            title="Duplicate Resume"
+                                                                            onClick={(event) =>
+                                                                                handleDuplicateResume(resume.resumeId, event)
+                                                                            }
+                                                                        >
+                                                                            <img src="assets/icons/duplicate.svg" className="icon-dynamic" draggable="false" />
+                                                                        </button>
+                                                                        <button 
+                                                                            title="Edit Resume"
+                                                                            onClick={(event) =>
+                                                                                handleEditResume(resume.templateId, resume.resumeId, event)
+                                                                            }
+                                                                        >
+                                                                            <img src="assets/icons/pencil.svg" className="icon-dynamic" draggable="false" />
+                                                                        </button>
+                                                                        <button 
+                                                                            title="Delete Resume"
+                                                                            onClick={(event) =>
+                                                                                handleDeleteResume(resume.resumeId, event)
+                                                                            }
+                                                                        >
+                                                                            <img src="assets/icons/trash.svg" className="icon-dynamic" draggable="false" />
+                                                                        </button>
+                                                                    </motion.div>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {/* END OF UPDATED .resume-info CODE */}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div
+                                        className="no-resume"
+                                        title="No resumes yet. Click to create one!"
+                                        onClick={handleNewResume}
+                                    >
+                                        <img src="assets/icons/plus.svg" draggable="false" />
+                                        <p>Create a Resume</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </AuthorizeView>
-    );
+                )}
+            </AuthorizeView>
+        );
 }
 
 export default Home;
