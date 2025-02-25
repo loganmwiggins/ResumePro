@@ -33,7 +33,7 @@ function ResumeBuilder() {
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
-    const [resumeColor, setResumeColor] = useState({ r: 128, g: 128, b: 128, a: 1 });
+    const [resumeColor, setResumeColor] = useState(null);
     const [showColorButton, setShowColorButton] = useState(true);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const hiddenRef = useRef(null);
@@ -51,6 +51,7 @@ function ResumeBuilder() {
                     resumeName: "Untitled Document",
                     currentDate: new Date(),
                     templateId: templateId,
+                    colorJson: resumeColor,
                     generalInformation: {
                         firstName: user.firstName,
                         middleName: null,
@@ -82,7 +83,7 @@ function ResumeBuilder() {
 
     // Color logic
     useEffect(() => {
-        if (templateId) {
+        if (!resumeColor) {
             // Minimal
             if (templateId === "minimal") {
                 setShowColorPicker(false);
@@ -109,7 +110,15 @@ function ResumeBuilder() {
                 setResumeColor({ r: 255, g: 215, b: 0, a: 1 });  // rgba(255, 215, 0, 1)
             }
         }
-    }, [templateId])
+        else {
+            if (templateId === "minimal") {
+                setShowColorPicker(false);
+                setShowColorButton(false);
+            }
+
+            setResumeColor(JSON.parse(resumeData.colorJson));
+        }
+    }, [templateId, resumeData]);
     
 
     const handleChangeResumeData = (section, sectionData) => {
@@ -314,7 +323,7 @@ function ResumeBuilder() {
             // Render AllTemplates inside hidden container
             const root = createRoot(hiddenRef.current);
             root.render(
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={resumeColor} />
             );
 
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -353,7 +362,9 @@ function ResumeBuilder() {
                             Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
                         )
                     )
-                }, thumbnail: imgData,
+                }, 
+                thumbnail: imgData,
+                colorJson: JSON.stringify(resumeColor)
             };
 
             // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
