@@ -143,7 +143,7 @@ const ResumePreview = () => {
             >
                 {/*<div ref={resumeRef}>*/}
                 <div className="resume-preview-wrapper-2" ref={resumeRef}>
-                        <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+                        <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData}  />
 
                     {/*<AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
                 </div>

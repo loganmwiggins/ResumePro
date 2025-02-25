@@ -8,9 +8,12 @@ import '../../stylesheets/templates/Template_Beeline.css';
 
 function Template_Beeline({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_Beeline">
+        <div 
+            className="resume-paper Template_Beeline"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
             {/* GENERAL INFORMATION */}
-            <header className="header" style={{borderColor: rgbaToString(builderColor)}}>
+            <header className="header">
                 <div className="title-text">
                     <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                     <div>

@@ -11,6 +11,7 @@ import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
+import { rgbaToString } from '../utils/ColorFormatter';
 import AllTemplates from '../components/templates/AllTemplates';
 import { templates } from '../utils/TemplateList';
 import '../stylesheets/ResumeBuilder.css';
@@ -33,6 +34,7 @@ function ResumeBuilder() {
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
     const [resumeColor, setResumeColor] = useState({ r: 128, g: 128, b: 128, a: 1 });
+    const [showColorButton, setShowColorButton] = useState(true);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
@@ -80,9 +82,32 @@ function ResumeBuilder() {
 
     // Color logic
     useEffect(() => {
-        console.log(templateId);
         if (templateId) {
-            if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }
+            // Minimal
+            if (templateId === "minimal") {
+                setShowColorPicker(false);
+                setShowColorButton(false);
+            }
+            // Bold Navy
+            else if (templateId === "bold-navy") {
+                setShowColorButton(true);
+                setResumeColor({ r: 0, g: 0, b: 128, a: 1 });  // rgba(0, 0, 128, 1)
+            }
+            // Skyline
+            else if (templateId === "skyline") {
+                setShowColorButton(true);
+                setResumeColor({ r: 165, g: 206, b: 241, a: 1 });  // rgba(165, 206, 241, 1)
+            }
+            // Rosy Edge
+            else if (templateId === "rosy-edge") {
+                setShowColorButton(true);
+                setResumeColor({ r: 255, g: 210, b: 210, a: 1 });  // rgba(255, 210, 210, 1)
+            }
+            // Beeline
+            else if (templateId === "beeline") {
+                setShowColorButton(true);
+                setResumeColor({ r: 255, g: 215, b: 0, a: 1 });  // rgba(255, 215, 0, 1)
+            }
         }
     }, [templateId])
     
@@ -271,8 +296,15 @@ function ResumeBuilder() {
     }
 
     const handleChangeColor = (newColor) => {
-        // console.log("New color selected:", newColor);
         setResumeColor(newColor);
+    }
+
+    const handleResetColor = () => {
+        // Minimal doesn't have color ...
+        if (templateId === "bold-navy") { setResumeColor({ r: 0, g: 0, b: 128, a: 1 }); }  // rgba(0, 0, 128, 1) 
+        else if (templateId === "skyline") { setResumeColor({ r: 165, g: 206, b: 241, a: 1 }); }  // rgba(165, 206, 241, 1)
+        else if (templateId === "rosy-edge") { setResumeColor({ r: 255, g: 210, b: 210, a: 1 }); }  // rgba(255, 228, 228, 1)
+        else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
     }
 
     const generateResumeThumbnail = async () => {
@@ -447,21 +479,25 @@ function ResumeBuilder() {
                                     </option>
                                 ))}
                             </select>
+
                             <div className="color-picker-ctnr">
-                                <motion.button
-                                    type="button"
-                                    className="color-btn"
-                                    style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
-                                    onClick={() => setShowColorPicker(!showColorPicker)}
-                                    whileTap={{scale: 0.8}}
-                                ></motion.button>
+                                {showColorButton && (
+                                    <motion.button
+                                        type="button"
+                                        className="color-btn"
+                                        style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
+                                        onClick={() => setShowColorPicker(!showColorPicker)}
+                                        whileTap={{scale: 0.8}}
+                                    ></motion.button>
+                                )}
                                 {showColorPicker && (
                                     <div className="color-picker">
+                                        <div>{rgbaToString(resumeColor)}</div>
                                         <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
+                                        <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
                                     </div>
                                 )}
                             </div>
-                            
 
                             <motion.button 
                                 type="button" 

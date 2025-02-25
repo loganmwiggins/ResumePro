@@ -2,12 +2,16 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_BoldNavy.css';
 
-function Template_BoldNavy({ data }) {
+function Template_BoldNavy({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_BoldNavy">
+        <div 
+            className="resume-paper Template_BoldNavy"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
             {/* HEADER */}
             <div className="resume-header">
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>

@@ -2,12 +2,19 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString, darkenColor, shiftColorTowards } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_RosyEdge.css';
 
-function Template_RosyEdge({ data }) {
+function Template_RosyEdge({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_RosyEdge">
+        <div 
+            className="resume-paper Template_RosyEdge"
+            style={{
+                "--column-accent": rgbaToString(builderColor),
+                "--border-accent": darkenColor(builderColor, 50)
+            }}
+        >
             {/* HEADER */}
             <header>
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>

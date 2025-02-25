@@ -11,9 +11,10 @@
 }
 
 .Template_RosyEdge {
-    --column-accent: #ffe4e4;
-    --border-accent: #eb7777;
+    --column-accent: rgb(255, 210, 210);
+    --border-accent: rgb(235, 119, 119);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 75%;
 
 
     /* TEXT */
