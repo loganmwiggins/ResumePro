@@ -390,6 +390,10 @@ namespace ResumeProProject.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ColorJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Id")
                         .HasColumnType("text");
 

@@ -11,10 +11,6 @@ using static ResumeProProject.Server.Data.DTOs.ResumeDTOs;
 
 namespace ResumeProProject.Server.Controllers
 {
-   
-
-
-
     [ApiController]
     [Route("/api/[controller]")]
     public class ResumeController(AppDbContext dbContext, UserManager<User> userManager) : Controller
@@ -38,6 +34,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId,
+                ColorJson = request.ColorJson,
                 Thumbnail = request.Thumbnail // Store Thumbnail
             };
 
@@ -178,6 +175,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                ColorJson = resume.ColorJson,
                 Thumbnail = resume.Thumbnail,
 
             }).ToList();
@@ -226,6 +224,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                ColorJson = resume.ColorJson,
                 Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = await _db.GeneralInformation
@@ -308,6 +307,7 @@ namespace ResumeProProject.Server.Controllers
             existingResume.Name = request.ResumeName;
             existingResume.UpdatedDateTime = request.updatedDateTime;
             existingResume.TemplateId = request.templateId;
+            existingResume.ColorJson = request.colorJson;
             existingResume.Thumbnail = request.thumbnail;
 
             existingResume.TemplateId = request.templateId;
@@ -446,6 +446,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = existingResume.Id,
                 TemplateId = existingResume.TemplateId,
+                ColorJson = existingResume.ColorJson,
                 Thumbnail = existingResume.Thumbnail // Store Thumbnail
             };
 
@@ -555,8 +556,6 @@ namespace ResumeProProject.Server.Controllers
                 await _db.SaveChangesAsync();
             }
             return Ok(new { message = "Resume duplicated successfully.", resumeId = fetchedResume.ResumeId });
-
-
         }
     }
 }

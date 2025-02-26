@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { templates } from '../../utils/TemplateList';
 
-function AllTemplates({ selectedTemplate, resumeData }) {
+function AllTemplates({ selectedTemplate, resumeData, builderColor }) {
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
     const resumeContainerRef = useRef(null);
     const [scale, setScale] = useState(1);
@@ -42,7 +42,7 @@ function AllTemplates({ selectedTemplate, resumeData }) {
 
     return (
         <div ref={resumeContainerRef} className="resume-scale-ctnr" style={scaleStyle}>
-            <selectedTemplateObj.component data={resumeData} />
+            <selectedTemplateObj.component data={resumeData} builderColor={builderColor} />
         </div>
     );
 }

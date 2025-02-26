@@ -2,12 +2,16 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_Skyline.css';
 
-function Template_Skyline({ data }) {
+function Template_Skyline({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_Skyline">
+        <div 
+            className="resume-paper Template_Skyline"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
             {/* HEADER */}
             <div className="resume-header">
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>

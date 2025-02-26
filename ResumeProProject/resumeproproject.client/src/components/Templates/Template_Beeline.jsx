@@ -2,12 +2,16 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_Beeline.css';
 
-function Template_Beeline({ data }) {
+function Template_Beeline({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_Beeline">
+        <div 
+            className="resume-paper Template_Beeline"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
             {/* GENERAL INFORMATION */}
             <header className="header">
                 <div className="title-text">

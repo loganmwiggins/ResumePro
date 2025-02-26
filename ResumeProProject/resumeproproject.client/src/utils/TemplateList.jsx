@@ -51,3 +51,11 @@ export const templates = [
     
     // Add more ...
 ];
+
+export const templateColors = {
+    "minimal": { r: 0, g: 0, b: 0, a: 1 },
+    "bold-navy": { r: 0, g: 0, b: 128, a: 1 },
+    "skyline": { r: 165, g: 206, b: 241, a: 1 },
+    "rosy-edge": { r: 255, g: 210, b: 210, a: 1 },
+    "beeline": { r: 255, g: 215, b: 0, a: 1 }
+}
