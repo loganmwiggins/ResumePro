@@ -1,7 +1,7 @@
 /* Parent container */
 .RichTextEditor__root___2QXK- {
     width: 100%;
-    background: var(--bg-builder) !important;
+    background: var(--bg-primary) !important;
     color: var(--text-primary);
     border: 1px solid var(--border-input) !important;
     border-radius: .5rem !important;

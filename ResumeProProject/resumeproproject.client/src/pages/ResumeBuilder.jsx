@@ -13,7 +13,7 @@ import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
 import { rgbaToString } from '../utils/ColorFormatter';
 import AllTemplates from '../components/templates/AllTemplates';
-import { templates } from '../utils/TemplateList';
+import { templates, templateColors } from '../utils/TemplateList';
 import '../stylesheets/ResumeBuilder.css';
 
 // import: Stepper + Resume Sections
@@ -76,9 +76,7 @@ function ResumeBuilder() {
     // Call fetchResume only when updateResumeId is defined and resumeData is null
     // (prevents redundant API calls)
     useEffect(() => {
-        if (updateResumeId && !resumeData) {
-            fetchResume();
-        }
+        if (updateResumeId && !resumeData) { fetchResume(); }
     }, [updateResumeId, resumeData]);
 
 
@@ -90,29 +88,15 @@ function ResumeBuilder() {
                 setShowColorPicker(false);
                 setShowColorButton(false);
             }
-            else if (templateId === "bold-navy") {
+            else {
                 setShowColorButton(true);
-                setResumeColor({ r: 0, g: 0, b: 128, a: 1 });  // rgba(0, 0, 128, 1)
-            }
-            else if (templateId === "skyline") {
-                setShowColorButton(true);
-                setResumeColor({ r: 165, g: 206, b: 241, a: 1 });  // rgba(165, 206, 241, 1)
-            }
-            else if (templateId === "rosy-edge") {
-                setShowColorButton(true);
-                setResumeColor({ r: 255, g: 210, b: 210, a: 1 });  // rgba(255, 210, 210, 1)
-            }
-            else if (templateId === "beeline") {
-                setShowColorButton(true);
-                setResumeColor({ r: 255, g: 215, b: 0, a: 1 });  // rgba(255, 215, 0, 1)
+                if (templateColors[templateId]) {
+                    setResumeColor(templateColors[templateId]);
+                }
             }
         }
         else {
-            if (templateId === "minimal") {
-                setShowColorPicker(false);
-                setShowColorButton(false);
-            }
-            else { setShowColorButton(true) }
+            setShowColorButton(templateId !== "minimal");
         }
     }, [templateId]);
 
