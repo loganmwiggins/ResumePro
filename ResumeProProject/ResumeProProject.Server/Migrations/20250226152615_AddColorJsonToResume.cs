@@ -15,7 +15,8 @@ namespace ResumeProProject.Server.Migrations
                 table: "Resumes",
                 type: "text",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "{\"r\":0,\"g\":0,\"b\":0,\"a\":1}"
+            );
         }
 
         /// <inheritdoc />

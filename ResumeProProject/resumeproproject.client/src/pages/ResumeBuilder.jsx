@@ -39,8 +39,8 @@ function ResumeBuilder() {
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
 
-    // When user data is available, initialize resumeData with default values
     useEffect(() => {
+        // When user data is available, initialize resumeData with default values
         if (user?.id) {
             const username = user.firstName.toLowerCase() + user.lastName.toLowerCase();
 
@@ -117,6 +117,8 @@ function ResumeBuilder() {
             setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
         }
     }, [resumeData])
+
+
 
     const handleChangeResumeData = (section, sectionData) => {
         setResumeData((prevResume) => ({

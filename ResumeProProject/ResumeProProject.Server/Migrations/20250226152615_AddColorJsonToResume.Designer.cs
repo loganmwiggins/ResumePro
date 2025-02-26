@@ -12,7 +12,7 @@ using ResumeProProject.Server.Data;
 namespace ResumeProProject.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250225210555_AddColorJsonToResume")]
+    [Migration("20250226152615_AddColorJsonToResume")]
     partial class AddColorJsonToResume
     {
         /// <inheritdoc />
