@@ -74,9 +74,7 @@ function ResumeBuilder() {
                 });
             }
             // If updating a resume...
-            else {
-                fetchResume();
-            }
+            else { fetchResume(); }
         }
     }, [user]);
 
@@ -111,13 +109,14 @@ function ResumeBuilder() {
                 setShowColorButton(false);
             }
             else { setShowColorButton(true) }
-
-
-            if (resumeData) {
-                setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });   // RESUME DATA HAS NOT BEEN FETCHED BY THE TIME THIS GETS CALLED
-            }
         }
-    }, [templateId, resumeData]);
+    }, [templateId]);
+
+    useEffect(() => {
+        if (updateResumeId !== undefined && resumeData) {
+            setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
+        }
+    }, [resumeData])
 
     const handleChangeResumeData = (section, sectionData) => {
         setResumeData((prevResume) => ({
@@ -578,6 +577,7 @@ function ResumeBuilder() {
                         </div>
                     </div>
                 </form>
+
                 {/*Hidden container for thumbnail generation */}
                 <div ref={hiddenRef} style={{ position: "absolute", left: "-9999px", width: "800px", height: "1100px", overflow: "hidden", backgroundColor: "white" }} />
             </AuthorizeView>
