@@ -38,15 +38,22 @@
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: .5rem;
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: .6rem 1rem;
+    padding: .6rem 2rem;
     border-top: 1px solid var(--border-1);
 
     button { transition: none; }
     button:hover { transition: none; }
+}
+
+.actions-div {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
 }
 
 .transform-component-module_wrapper__SPB86 {

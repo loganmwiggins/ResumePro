@@ -474,56 +474,59 @@ function ResumeBuilder() {
 
                         {/* Resume actions */}
                         <div className="resume-actions">
-                            <input 
-                                type="text"
-                                placeholder="Name your document!"
-                                value={resumeData.resumeName} 
-                                onChange={(e) => handleNameChange(e.target.value)}
-                                required
-                            />
-                            <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
-                                {/* Dynamically populated from TemplateList.jsx */}
-                                {templates.map((template) => (
-                                    <option key={template.id} value={template.id}>
-                                        {template.name}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <div className="color-picker-ctnr">
-                                {showColorButton && (
-                                    <motion.button
-                                        type="button"
-                                        className="color-btn"
-                                        style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
-                                        onClick={() => setShowColorPicker(!showColorPicker)}
-                                        whileTap={{scale: 0.8}}
-                                    ></motion.button>
-                                )}
-                                {showColorPicker && (
-                                    <div className="color-picker">
-                                        <div>{rgbaToString(resumeColor)}</div>
-                                        <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
-                                        <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
-                                    </div>
-                                )}
+                            <div className="actions-div">
+                                <input 
+                                    type="text"
+                                    placeholder="Name your document!"
+                                    value={resumeData.resumeName} 
+                                    onChange={(e) => handleNameChange(e.target.value)}
+                                    required
+                                />
+                                <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
+                                    {/* Dynamically populated from TemplateList.jsx */}
+                                    {templates.map((template) => (
+                                        <option key={template.id} value={template.id}>
+                                            {template.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="color-picker-ctnr">
+                                    {showColorButton && (
+                                        <motion.button
+                                            type="button"
+                                            className="color-btn"
+                                            style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
+                                            onClick={() => setShowColorPicker(!showColorPicker)}
+                                            whileTap={{scale: 0.8}}
+                                        ></motion.button>
+                                    )}
+                                    {showColorPicker && (
+                                        <div className="color-picker">
+                                            <div>{rgbaToString(resumeColor)}</div>
+                                            <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
+                                            <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-
-                            <motion.button 
-                                type="button" 
-                                className="btn btn-outline" 
-                                onClick={handleCancel}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <span>Cancel</span>
-                            </motion.button>
-                            <motion.button 
-                                type="submit" 
-                                className="btn btn-blue"
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <span>Save</span>
-                            </motion.button>
+                            
+                            <div className="actions-div">
+                                <motion.button 
+                                    type="button" 
+                                    className="btn btn-outline" 
+                                    onClick={handleCancel}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <span>Cancel</span>
+                                </motion.button>
+                                <motion.button 
+                                    type="submit" 
+                                    className="btn btn-blue"
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <span>Save</span>
+                                </motion.button>
+                            </div>
                         </div>
                     </div>
 
