@@ -17,6 +17,8 @@ namespace ResumeProProject.Server.Data.Models
 
         public string TemplateId { get; set; }
 
+        public string ColorJson { get; set; }
+
         [ForeignKey("User")]
         public required string Id { get; set; } //THIS IS THE USER ID
         [JsonIgnore]

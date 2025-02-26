@@ -1,9 +1,10 @@
 // Add more templates here when they are created
 
-import Template_Minimal from '../components/Templates/Template_Minimal';
-import Template_BoldNavy from '../components/Templates/Template_BoldNavy';
-import Template_Skyline from '../components/Templates/Template_Skyline';
-import Template_RosyEdge from '../components/Templates/Template_RosyEdge';
+import Template_Minimal from '../components/templates/Template_Minimal';
+import Template_BoldNavy from '../components/templates/Template_BoldNavy';
+import Template_Skyline from '../components/templates/Template_Skyline';
+import Template_RosyEdge from '../components/templates/Template_RosyEdge';
+import Template_Beeline from '../components/templates/Template_Beeline';
 
 export const templates = [
     // Minimal
@@ -11,7 +12,7 @@ export const templates = [
         id: "minimal", 
         name: "Minimal", 
         tagline: "Clean, classic, and effortlessly professional",
-        imgPath: "/assets/template-thumbnails/Thumbnail_Minimal.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Minimal.png",
         component: Template_Minimal 
     },
     // Bold Navy
@@ -19,7 +20,7 @@ export const templates = [
         id: "bold-navy", 
         name: "Bold Navy", 
         tagline: "Strong lines, bold type, and a commanding navy presence",
-        imgPath: "/assets/template-thumbnails/boldNavy-thumbnail.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_BoldNavy.png",
         component: Template_BoldNavy 
     },
     // Skyline
@@ -28,7 +29,7 @@ export const templates = [
         name: "Skyline",
         // tagline: "Light, airy, and professional like a clear blue sky",
         tagline: "A strong yet calming presence",
-        imgPath: "/assets/template-thumbnails/skyline-thumbnail.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Skyline.png",
         component: Template_Skyline
     },
     // Rosy Edge
@@ -36,9 +37,25 @@ export const templates = [
         id: "rosy-edge",
         name: "Rosy Edge",
         tagline: "Stand out with subtle elegance and structure",
-        imgPath: "/assets/template-thumbnails/rosyEdge-thumbnail.png",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_RosyEdge.png",
         component: Template_RosyEdge
+    },
+    // Beeline
+    {
+        id: "beeline",
+        name: "Beeline",
+        tagline: "Lead with your name, follow with impact",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Beeline.png",
+        component: Template_Beeline
     }
     
     // Add more ...
 ];
+
+export const templateColors = {
+    "minimal": { r: 0, g: 0, b: 0, a: 1 },
+    "bold-navy": { r: 0, g: 0, b: 128, a: 1 },
+    "skyline": { r: 165, g: 206, b: 241, a: 1 },
+    "rosy-edge": { r: 255, g: 210, b: 210, a: 1 },
+    "beeline": { r: 255, g: 215, b: 0, a: 1 }
+}

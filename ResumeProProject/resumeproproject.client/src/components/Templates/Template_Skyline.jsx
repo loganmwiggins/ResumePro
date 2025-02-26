@@ -2,16 +2,22 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Skyline.css';
+import '../../stylesheets/templates/Template_Skyline.css';
 
-function Template_Skyline({ data }) {
+function Template_Skyline({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_Skyline">
+        <div 
+            className="resume-paper Template_Skyline"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
+            {/* HEADER */}
             <div className="resume-header">
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                 <p>{data.generalInformation.role}</p>
             </div>
+
             <div className="split-ctnr">
                 <div className="split-left">
                     {/* CONTACT */}
@@ -20,37 +26,37 @@ function Template_Skyline({ data }) {
                         <div className="contact-list">
                             {data.generalInformation.email && (
                                 <span className="contact">
-                                    <img src="/assets/icons/email-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/email-circle.svg" draggable="false" alt="email" />
                                     <p>{data.generalInformation.email}</p>
                                 </span>
                             )}
                             {data.generalInformation.phoneNumber && (
                                 <span className="contact">
-                                    <img src="/assets/icons/phone-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/phone-circle.svg" draggable="false" alt="phone" />
                                     <p>{data.generalInformation.phoneNumber}</p>
                                 </span>
                             )}
                             {data.generalInformation.websiteUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/web-circle.svg" draggable="false" alt="web" />
                                     <p>{data.generalInformation.websiteUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.linkedInUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                                     <p>{data.generalInformation.linkedInUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.gitHubUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                                     <p>{data.generalInformation.gitHubUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.location && (
                                 <span className="contact">
-                                    <img src="/assets/icons/location-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/location-circle.svg" draggable="false" alt="location" />
                                     <p>{data.generalInformation.location}</p>
                                 </span>
                             )}
@@ -62,24 +68,24 @@ function Template_Skyline({ data }) {
                     {data.certifications.length > 0 && (
                         <section>
                             <p className="p-sec">Certifications</p>
-                            {data.certifications.map(cert => (
-                                <div key={cert.name}>
-                                    <p>
-                                        <span className="p-bold">{cert.name}</span> {cert.issuer && (
-                                            <span>| {cert.issuer}</span>
+                            <div className="entry-ctnr">
+                                {data.certifications.map((cert, index) => (
+                                    <div key={index}>
+                                        <p className="p-bold">{cert.name}</p>
+                                        {cert.issuer && (
+                                            <p>Issued by {cert.issuer}</p>
                                         )}
                                         
-                                    </p>
-                                    
-                                    <p className="p-date">
-                                        {cert.issueDate && (
-                                            `${formatDate(cert.issueDate, {month:true, year:true})}` 
-                                        )} {cert.expireDate && (
-                                            `- ${formatDate(cert.expireDate, {month:true, year:true})}`
-                                        )}
-                                    </p>
-                                </div>
-                            ))}
+                                        <p className="p-date">
+                                            {cert.issueDate && (
+                                                `${formatDate(cert.issueDate, {month:true, year:true})}` 
+                                            )} {cert.expireDate && (
+                                                `- ${formatDate(cert.expireDate, {month:true, year:true})}`
+                                            )}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
                         </section>
                     )}
 
@@ -105,13 +111,13 @@ function Template_Skyline({ data }) {
                     {data.experiences.length > 0 && (
                         <section>
                             <p className="p-sec">Experience</p>
-                            {data.experiences.map(exp => {
+                            {data.experiences.map((exp, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={exp.description}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <p className="p-bold">
                                                 {exp.companyName} {exp.location && (
@@ -121,20 +127,25 @@ function Template_Skyline({ data }) {
 
                                             <p className="p-main">{exp.role}</p>
 
-                                            <p className="p-date">
-                                                {exp.startDate && (
-                                                    `${formatDate(exp.startDate, {month:true, year:true})}`
-                                                )} {exp.endDate && (
-                                                    `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                                ) || "- Present"} {exp.jobType != null && (
-                                                    `• ${jobTypeOptions[exp.jobType].label}`
-                                                )} {exp.officeType != null && (
-                                                    `• ${officeTypeOptions[exp.officeType].label}`
-                                                )}
-                                            </p>
+                                            {(exp.startDate || exp.endDate) && (
+                                                <p className="p-date">
+                                                    {exp.startDate && (
+                                                        `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                    )} {exp.endDate && (
+                                                        `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                    ) || "- Present"} {exp.jobType != null && (
+                                                        `• ${jobTypeOptions[exp.jobType].label}`
+                                                    )} {exp.officeType != null && (
+                                                        `• ${officeTypeOptions[exp.officeType].label}`
+                                                    )}
+                                                </p> 
+                                            )}
+                                            
                                         </div>
 
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -145,13 +156,13 @@ function Template_Skyline({ data }) {
                     {data.projects.length > 0 && (
                         <section>
                             <p className="p-sec">Projects</p>
-                            {data.projects.map(proj => {
+                            {data.projects.map((proj, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={proj.title}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <div>
                                                 <p className="p-main">{proj.title}</p>
@@ -167,7 +178,9 @@ function Template_Skyline({ data }) {
                                             </div>
                                         </div>
                                         
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -178,8 +191,8 @@ function Template_Skyline({ data }) {
                     {data.educations.length > 0 && (
                         <section>
                             <p className="p-sec">Education</p>
-                            {data.educations.map(edu => (
-                                <div key={edu.startDate}>
+                            {data.educations.map((edu, index) => (
+                                <div key={index}>
                                     <p className="p-bold">{edu.schoolName}</p>
                                     <p className="p-main">
                                         {edu.degreeType} {edu.major && (`in ${edu.major}`)}

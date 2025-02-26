@@ -1,11 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { API_BASE_URL } from "../utils/BaseUrl";
 import { showToast } from "../utils/Toast";
-import AllTemplates from "../components/Templates/AllTemplates";
+import AllTemplates from "../components/templates/AllTemplates";
 import "../stylesheets/ResumePreview.css";
 
 const ResumePreview = () => {
@@ -69,7 +68,8 @@ const ResumePreview = () => {
         navigate(`/builder/${templateId}/${resumeId}`);
     }
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
+        const html2pdf = (await import("html2pdf.js")).default;
         const element = resumeRef.current;
 
         element.style.width = "100%";
@@ -141,8 +141,8 @@ const ResumePreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
             >
-                <div ref={resumeRef}>
-                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />
+                <div className="resume-preview-wrapper-2" ref={resumeRef}>
+                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={JSON.parse(resumeData.colorJson)}  />
                 </div>
             </motion.div>
         </div>

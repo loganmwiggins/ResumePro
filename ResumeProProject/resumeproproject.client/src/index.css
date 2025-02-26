@@ -1,36 +1,82 @@
-:root {
-  /* Root styles */
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #222;
+@import url('/src/stylesheets/general/ReactSelect.css');
+@import url('/src/stylesheets/general/Forms.css');
+@import url('/src/stylesheets/general/Buttons.css');
 
-  /* Color variables */
+:root {
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary: rgb(235, 235, 235);
+  --bg-3: rgb(215, 215, 215);
+  --bg-4: rgb(200, 200, 200);
+  --bg-builder: rgb(250, 250, 250);
+
   --text-primary: #222;
-  --text-secondary: #333;
-  --text-third: #666;
-  --text-fourth: #999;
+  --text-2: #333;
+  --text-3: #666;
+  --text-4: #999;
+  --text-placeholder: rgba(0, 0, 0, .54);
+
+  --border-input: rgb(204, 204, 204);
+  --border-spinner: rgba(0, 0, 0, .2);
+  --border-spinner-top: rgb(0, 0, 0);
+  --border-1: rgb(211, 211, 211);
+  --border-2: rgb(220, 220, 220);
+  --border-3: rgb(235, 235, 235);
+
+  --btn-black: #111;
+
   --text-danger: #e60000;
-  --blue: rgb(44, 111, 255);
+  --text-success: #0dae0d;
+  --blue: #2c6fff;
   --accent-blue: linear-gradient(to bottom right, rgb(79, 208, 255),rgb(44, 111, 255));
   --card-color: linear-gradient(to bottom right, rgb(17, 17, 17, .8), rgba(17, 17, 17, .4));
   --card-hvr-color: linear-gradient(to right bottom, rgba(17, 17, 17, .8), rgba(17, 17, 17, 0));
 
-  --bg-primary: #fff;
-
   --modal-shadow: 0 0 .5rem rgb(215, 215, 215);
+  --select-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 11px rgba(0, 0, 0, 0.1);
+  --shadow-1: rgba(0, 0, 0, .15);
+  --shadow-2: rgba(0, 0, 0, .25);
+  --shadow-3: rgba(0, 0, 0, .5);
 
+  /* --filter-icon: invert(5%) sepia(9%) saturate(0%) hue-rotate(179deg) brightness(95%) contrast(81%); */
+  --filter-icon: none;
   --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
   --filter-red: invert(11%) sepia(71%) saturate(7272%) hue-rotate(0deg) brightness(96%) contrast(115%);
+}
+
+[data-theme="dark"] {
+  --bg-primary: rgb(21, 24, 25);
+  --bg-secondary: rgb(49, 54, 56);
+  --bg-3: rgb(69, 74, 76);
+  --bg-4: rgb(84, 89, 91);
+  --bg-builder: rgb(27, 29, 30);
+
+  --text-primary: #fff;
+  --text-2: #ccc;
+  --text-3: #999;
+  --text-placeholder: rgba(175, 175, 175, 0.54);
+
+  --border-input: rgb(81, 81, 81);
+  --border-spinner: rgba(255, 255, 255, .2);
+  --border-spinner-top: rgb(255, 255, 255);
+  --border-1: rgb(74, 74, 74);
+  --border-2: rgb(65, 65, 65);
+  --border-3: rgb(50, 50, 50);
+
+  --btn-black: #000;
+
+  --modal-shadow: 0 0 .5rem rgb(40, 40, 40);
+  --select-shadow: 0 0 0 1px rgba(255, 255, 255, .1), 0 4px 11px rgba(255, 255, 255, .1);
+  --shadow-1: rgba(255, 255, 255, .15);
+  --shadow-2: rgba(255, 255, 255, .25);
+  --shadow-3: rgba(255, 255, 255, .5);
+
+  --filter-icon: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
 
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  /* padding: 2rem; */
   text-align: center;
-}
-
-html {
-  box-sizing: border-box;
 }
 
 *, *::before, *::after {
@@ -38,6 +84,23 @@ html {
   padding: 0;
   box-sizing: inherit;
 }
+
+html {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+body::-webkit-scrollbar { width: 10px; }
+body::-webkit-scrollbar-track { 
+    background: var(--bg-secondary); 
+}
+body::-webkit-scrollbar-thumb { 
+    background: var(--bg-3); 
+    cursor: grab;
+}
+body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
 
 .page-ctnr-center {
   display: flex;
@@ -63,7 +126,7 @@ html {
   cursor: default;
 
   h1 { text-align: left; }
-  p { color: var(--text-third); }
+  p { color: var(--text-3); }
 }
 
 .header-with-btn {
@@ -73,107 +136,15 @@ html {
     gap: 2rem;
 }
 
-/* Buttons */
-.btn {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  border: none;
-  border-radius: 2rem;
-  padding: .5rem 1rem;
-  text-wrap: nowrap;
-  cursor: pointer;
-  transition: all .2s ease-in-out;
+.icon-dynamic { filter: var(--filter-icon); }
 
-  img { width: 1rem; }
-}
-.btn:hover { transition: all .2s ease-in-out; }
-
-.btn-black {
-  background: #111;
-  color: white;
-
-  img { filter: var(--filter-white); }
-}
-.btn-black:hover { background: #000; }
-
-.btn-outline {
-  background: none;
-  color: var(--text-third);
-  border: 1px solid var(--text-fourth);
-}
-.btn-outline:hover {
-  color: #000;
-  border-color: var(--text-secondary);
-}
-
-.btn-blue {
-  background: rgb(44, 111, 255);
-  color: white;
-}
-.btn-blue:hover { background: rgb(39, 98, 224); }
-
-.btn-accent {
-  background: var(--accent-blue);
-  color: white;
-  max-width: fit-content;
-
-  img { filter: var(--filter-white); }
-}
-.btn-accent:hover { transform: scale(1.1); }
-
-.btn-success {
-  background: #0dae0d;
-  color: white;
-
-  img {
-    width: .8rem;
-    filter: var(--filter-white);
-  }
-}
-.btn-success:hover { background: rgb(11, 153, 11); }
-
-.btn-icon {
-  padding: 0;
-
-  img { width: 1.25rem; }
-}
-
-.btn-disabled {
-  opacity: .25;
-  cursor: default !important;
-}
-
-
-/* Forms */
-form {
-  display: flex;
-  flex-direction: column !important;
-}
-
-form input, input, select {
-  width: 100%;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: .85rem;
-  padding: .75rem;
-  background: var(--bg-primary);
-  border: 1px solid rgb(204, 204, 204);
-  border-radius: .5rem;
-  text-overflow: ellipsis;
-}
-form input:focus, select:focus {
-  outline: 1px solid #2684ff;
-  border-color: #2684ff;
-}
-
-.req { color: var(--text-danger); }
 
 /* Loading spinner */
 .loading-spinner {
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.2);
-  border-top: 3px solid #000;
+  border: 3px solid var(--border-spinner);
+  border-top: 3px solid var(--border-spinner-top);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -183,11 +154,27 @@ form input:focus, select:focus {
 }
 
 
+
 /* Overriding default Toastify styling */
 .Toastify__toast-theme--light {
-  color: #333 !important;
+  color: #222 !important;
   text-align: left;
 }
-.Toastify__toast-icon {
-  margin-right: 1rem !important;
+.Toastify__toast-theme--dark {
+  color: #fff !important;
+  text-align: left;
+}
+.Toastify__toast-icon { margin-right: 1rem !important; }
+
+
+/* Animations */
+@keyframes floatIn {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

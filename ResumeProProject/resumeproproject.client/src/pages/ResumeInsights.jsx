@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { API_BASE_URL } from '../utils/BaseUrl';
@@ -6,19 +6,23 @@ import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
+//import { BoxesLoader } from "react-awesome-loaders";
+import AllTemplates from "../components/templates/AllTemplates";
 
 function ResumeInsights() {
   const navigate = useNavigate();
   const params = useParams();
-
   const [resumeId, setResumeId] = useState(params.resumeId || '');
-  const [loading, setLoading] = useState(false);
+  const [resumeLoading, setResumeLoading] = useState(false);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
   const [error, setError] = useState('');
   const [resumeData, setResumeData] = useState(null);
   const [aiResult, setAiResult] = useState(null); // New state to store AI response
   const [jobTitle, setJobTitle] = useState('');
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showResume, setShowResume] = useState(false);
+  const LazyBoxesLoader = lazy(() => import("react-awesome-loaders").then(mod => ({ default: mod.BoxesLoader })));
 
   useEffect(() => {
     // Call fetchResumeInsights (on mount) to automatically trigger the process
@@ -43,14 +47,14 @@ function ResumeInsights() {
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
   useEffect(() => {
-    if (loading) {
+    if (analysisLoading) {
       const interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-      }, 2000); // Change message every 3 seconds
+      }, 3000); // Change message every 3 seconds
 
       return () => clearInterval(interval); // Clean up the interval when the component is unmounted
     }
-  }, [loading]);
+  }, [analysisLoading]);
 
   // Determine div color based on AI score
   const getScoreColorClass = (score) => {
@@ -74,7 +78,7 @@ function ResumeInsights() {
 
   const fetchResumeInsights = async () => {
     setError('');
-    setLoading(true);
+    setResumeLoading(true);
 
     try {
       // [Step 1]: Fetch the resume JSON
@@ -94,7 +98,7 @@ function ResumeInsights() {
       setError(err.message);
     } 
     finally {
-      setLoading(false);
+      setResumeLoading(false);
     }
   };
 
@@ -107,9 +111,22 @@ function ResumeInsights() {
         showToast("Failed to fetch resume", "error");
         console.error("Failed to fetch resume:", error.message);
         throw new Error("Failed to fetch resume");
-      }
+        }
 
-      return response.json();
+        const data = await response.json();
+
+        if (data.skills?.skillsDataJson) {
+            try {
+                data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
+            } catch (error) {
+                console.error("Error parsing skillsDataJson:", error);
+                data.skills.skillsDataJson = {};
+            }
+        }
+
+        setResumeData(data);
+
+      return data;
     } 
     catch (error) {
       showToast("An (catch) error occurred", "error");
@@ -162,7 +179,7 @@ function ResumeInsights() {
 
   // Helper function to get a new insight (analyze)
   const fetchNewInsight = async (resumeJson) => {
-      setLoading(true);
+      setAnalysisLoading(true);
 
       try {
         // Run AI analysis
@@ -185,9 +202,8 @@ function ResumeInsights() {
         setError(err.message);
       } 
       finally {
-        setLoading(false);
+        setAnalysisLoading(false);
       }
-      
   }
 
   // Helper function to save insight to the database
@@ -230,6 +246,11 @@ function ResumeInsights() {
     setAiResult(null);
   }
 
+  const handleToggleResume = () => {
+    setShowResume(!showResume);
+  }
+
+
   return (
     <AuthorizeView>
       <div className="header-with-btn">
@@ -240,6 +261,10 @@ function ResumeInsights() {
 
         {aiResult && (
           <div className="reanalyze-ctnr">
+            <button type="button" className="btn btn-outline btn-show" onClick={handleToggleResume}>
+              <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
+              <span>{showResume ? "Hide" : "Show"} Resume</span>
+            </button>
             <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
                 <span>Reanalyze</span>
@@ -247,8 +272,14 @@ function ResumeInsights() {
           </div>
         )}
       </div>
+
+      {resumeLoading && (
+        <div className="refine-ctnr">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       
-      {!aiResult && !loading && (
+      {!aiResult && !resumeLoading && !analysisLoading && (
         <div className="refine-ctnr">
           <h3>Welcome to Insights!</h3>
           <p>
@@ -272,22 +303,27 @@ function ResumeInsights() {
       )}
 
       <div className="resume-insights-ctnr">
-      {loading && (
-          <div className="loading-spinner-container">
-            <div className="loading-spinner"></div>
-            <div className="loading-message">
-              <span>{loadingMessages[loadingMessageIndex]}</span>
-            </div>
-          </div>
-        )}
+              {analysisLoading && (
+                  <div className="loader-center">
+                      <div className="loading-message">
+                          <span>{loadingMessages[loadingMessageIndex]}</span>
+                      </div>
+                      <Suspense fallback={<div>Loading animation...</div>}>
+                          <LazyBoxesLoader boxColor={"#2c6fff"} size={"100px"} />
+                      </Suspense>
+                  </div>
+              )}
+
+
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* AI feedback */}
         {aiResult && (
           <div className="feedback-ctnr">
+            {/* Feedback header */}
             <div className="feedback-head">
               <div className="feedback-title">
-                <img src="/assets/icons/sparkles.svg" draggable="false" />
+                <img src="/assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
                 <h2>Recommendations for "{resumeData.resumeName}"</h2>
               </div>
               <div className="feedback-title">
@@ -295,7 +331,7 @@ function ResumeInsights() {
                   <img 
                     src="/assets/icons/info.svg" 
                     draggable="false" 
-                    className="info-icon"
+                    className="icon-dynamic info-icon"
                     onClick={toggleDisclaimer}
                   />
                   <AnimatePresence>
@@ -323,24 +359,55 @@ function ResumeInsights() {
               </div>
             </div>
 
-            {Object.entries(aiResult).map(([section, data], index) => (
-              <motion.div 
-                key={section} 
-                className="feedback-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: `${index * 0.2}` }}
+            
+
+            <div className="side-by-side">
+              {/* Resume preview */}
+              {showResume && (
+                <AnimatePresence>
+                  <motion.div
+                    className="resume-view"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                      {/*<div>*/}
+                        {/*    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} viewMode="preview" />*/}
+                      {/*</div>*/}
+                      <div className="resume-preview-wrapper">
+                          <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} />
+                      </div>
+                  </motion.div>
+                </AnimatePresence>
+              )}
+
+              {/* Feedback items */}
+              <div
+                className="feedback-items-ctnr"
+                style={showResume ? {height: "825px", padding: "1rem 2rem", overflowY: "scroll"} : {}}
               >
-                <div>
-                  <h3>{section}</h3>
-                  <p>{data.comments}</p>
-                </div>
-                <div className={`score ${getScoreColorClass(data.score)}`}>
-                  <div className="score-circle"></div>
-                  <p>{data.score}</p>
-                </div>
-              </motion.div>
-            ))}
+                {Object.entries(aiResult).map(([section, data], index) => (
+                  <motion.div 
+                    key={section} 
+                    className="feedback-item"
+                    style={showResume ? {flexDirection: "column", gap: ".5rem", alignItems: "start"} : {}}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: `${index * 0.2}` }}
+                  >
+                    <div>
+                      <h3>{section}</h3>
+                      <p>{data.comments}</p>
+                    </div>
+                    <div className={`score ${getScoreColorClass(data.score)}`}>
+                      <div className="score-circle"></div>
+                      <p>{data.score}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>

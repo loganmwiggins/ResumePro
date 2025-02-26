@@ -1,5 +1,6 @@
-/* .resume-paper {
+.resume-paper {
     background: white;
+    color: black;
     width: 850px;
     height: 1100px;
     padding: 50px;
@@ -7,12 +8,11 @@
     flex-direction: column;
     text-align: left;
     gap: 1rem;
-} */
+}
 
 .Template_Minimal {
-    /* gap: 1.5rem !important; */
 
-    /* Layout */
+    /* LAYOUT */
     section {
         display: flex;
         flex-direction: column;
@@ -32,7 +32,7 @@
     }
 
 
-    /* Header */
+    /* HEADER */
     header {
         display: flex;
         align-items: center;
@@ -46,7 +46,7 @@
     }
 
 
-    /* Text */
+    /* TEXT */
     h1 { font-size: 1.5rem; }
     section h2 {
         font-size: 1rem;
@@ -58,7 +58,7 @@
     ul { padding-left: 1.25rem }
     
     
-    /* General Info */
+    /* GENERAL INFO */
     .urls {
         display: flex;
         align-items: center;

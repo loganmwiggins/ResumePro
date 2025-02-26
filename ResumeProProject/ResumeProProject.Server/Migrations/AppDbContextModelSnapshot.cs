@@ -174,6 +174,9 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
@@ -206,6 +209,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<string>("Minor")
                         .HasColumnType("text");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
@@ -255,6 +261,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<string>("OfficeType")
                         .HasColumnType("text");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
@@ -355,6 +364,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ResumeId")
                         .HasColumnType("uuid");
 
@@ -377,6 +389,10 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<Guid>("ResumeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ColorJson")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Id")
                         .HasColumnType("text");

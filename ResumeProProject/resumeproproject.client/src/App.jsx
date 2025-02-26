@@ -4,8 +4,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { UserProvider } from "./context/UserContext";
+import { ThemeProvider } from './context/ThemeContext';
 
-import './App.css';
 import Nav from './components/Nav';
 import Welcome from './pages/Welcome';
 import Home from './pages/Home';
@@ -19,54 +19,50 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Help from './pages/Help';
 
-import Template_Minimal from './components/Templates/Template_Minimal';
-import Template_Bold from './components/Templates/Template_BoldNavy';
-import Template_Skyline from './components/Templates/Template_Skyline';
+import './App.css';
 
 function App() {
   const location = useLocation();
   
   // Define routes where Nav should be hidden
-  const hideNavRoutes = ["/login", "/signup", "/help" ];
+  const hideNavRoutes = [ "/login", "/signup", "/help" ];
   
   return (
     < UserProvider>
-      {/* Conditionally render Nav */}
-      {!hideNavRoutes.includes(location.pathname) && <Nav />}
+      <ThemeProvider>
+        {/* Conditionally render Nav */}
+        {!hideNavRoutes.includes(location.pathname) && <Nav />}
 
-      {/* Toast Container for toast alerts */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        closeOnClick
-        newestOnTop
-      />
+        {/* Toast Container for toast alerts */}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          theme={localStorage.getItem("theme") === "light" ? "light" : "dark"}
+          closeOnClick
+          newestOnTop
+        />
 
-      <Routes>
-        {/* Authorized routes */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/templates" element={<TemplateSelection />} />
-        <Route path="/builder/:templateId/:resumeId?" element={<ResumeBuilder />} />
-        <Route path="/preview/:resumeId" element={<ResumePreview />} />
-        <Route path="/insights/:resumeId" element={<ResumeInsights />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/help" element={<Help />} />
-        
-        {/* Unauthorized routes */}
-        <Route path="/" element={<Welcome />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        <Routes>
+          {/* Authorized routes */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/templates" element={<TemplateSelection />} />
+          <Route path="/builder/:templateId/:resumeId?" element={<ResumeBuilder />} />
+          <Route path="/preview/:resumeId" element={<ResumePreview />} />
+          <Route path="/insights/:resumeId" element={<ResumeInsights />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/help" element={<Help />} />
+          
+          {/* Unauthorized routes */}
+          <Route path="/" element={<Welcome />} />
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
 
-        {/* WILL REMOVE LATER: Templates for viewing */}
-        <Route path="/template-minimal" element={<Template_Minimal />} />
-        <Route path="/template-bold" element={<Template_Bold />} />
-        <Route path="/template-skyline" element={<Template_Skyline />} />
-
-        {/* Catch-all route for unknown paths */}
-        <Route path="*" element={<Navigate to="/home" />} />
-      </Routes>
+          {/* Catch-all route for unknown paths */}
+          <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
+      </ThemeProvider>
     </UserProvider>
   );
 }

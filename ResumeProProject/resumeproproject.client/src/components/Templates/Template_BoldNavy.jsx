@@ -2,16 +2,22 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
+import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_BoldNavy.css';
+import '../../stylesheets/templates/Template_BoldNavy.css';
 
-function Template_BoldNavy({ data }) {
+function Template_BoldNavy({ data, builderColor }) {
     return (
-        <div className="resume-paper Template_BoldNavy">
+        <div 
+            className="resume-paper Template_BoldNavy"
+            style={{"--accent": rgbaToString(builderColor)}}
+        >
+            {/* HEADER */}
             <div className="resume-header">
                 <h1>{data.generalInformation.firstName} {data.generalInformation.middleName} {data.generalInformation.lastName}</h1>
                 <p>{data.generalInformation.role}</p>
             </div>
+
             <div className="split-ctnr">
                 <div className="split-left">
                     {/* CONTACT */}
@@ -20,41 +26,40 @@ function Template_BoldNavy({ data }) {
                         <div className="contact-list">
                             {data.generalInformation.email && (
                                 <span className="contact">
-                                    <img src="/assets/icons/email-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/email-circle.svg" draggable="false" alt="email"/>
                                     <p>{data.generalInformation.email}</p>
                                 </span>
                             )}
                             {data.generalInformation.phoneNumber && (
                                 <span className="contact">
-                                    <img src="/assets/icons/phone-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/phone-circle.svg" draggable="false" alt="phone" />
                                     <p>{data.generalInformation.phoneNumber}</p>
                                 </span>
                             )}
                             {data.generalInformation.websiteUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/web-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/web-circle.svg" draggable="false" alt="web" />
                                     <p>{data.generalInformation.websiteUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.linkedInUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                                     <p>{data.generalInformation.linkedInUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.gitHubUrl && (
                                 <span className="contact">
-                                    <img src="/assets/icons/github-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                                     <p>{data.generalInformation.gitHubUrl}</p>
                                 </span>
                             )}
                             {data.generalInformation.location && (
                                 <span className="contact">
-                                    <img src="/assets/icons/location-circle.svg" draggable="false" />
+                                    <img src="/assets/icons/location-circle.svg" draggable="false" alt="location" />
                                     <p>{data.generalInformation.location}</p>
                                 </span>
                             )}
-                            
                         </div>
                     </section>
 
@@ -62,9 +67,10 @@ function Template_BoldNavy({ data }) {
                     {data.certifications.length > 0 && (
                         <section>
                             <p className="p-sec">Certifications</p>
-                            {data.certifications.map(cert => (
-                                <div key={cert.name}>
+                            {data.certifications.map((cert, index) => (
+                                <div key={index}>
                                     <p className="p-main">{cert.name}</p>
+
                                     {cert.issuer && (
                                         <p className="p-date">Issued by {cert.issuer}</p>
                                     )}
@@ -103,13 +109,13 @@ function Template_BoldNavy({ data }) {
                     {data.experiences.length > 0 && (
                         <section>
                             <p className="p-sec">Experience</p>
-                            {data.experiences.map(exp => {
+                            {data.experiences.map((exp, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={exp.description}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <div>
                                                 <p className="p-main">{exp.role}</p>
@@ -122,18 +128,23 @@ function Template_BoldNavy({ data }) {
                                                 </p>
                                             </div>
                                             <div>
-                                                <p className="p-date">
-                                                    {exp.startDate && (
-                                                        `${formatDate(exp.startDate, {month:true, year:true})}`
-                                                    )} {exp.endDate && (
-                                                        `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                                    ) || "- Present"}
-                                                </p>
+                                                {(exp.startDate || exp.endDate) && (
+                                                    <p className="p-date">
+                                                        {exp.startDate && (
+                                                            `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                        )} {exp.endDate && (
+                                                            `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                        ) || "- Present"}
+                                                    </p>
+                                                )}
+                                                
                                                 <p>{exp.location}</p>
                                             </div>
                                         </div>
 
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -144,13 +155,13 @@ function Template_BoldNavy({ data }) {
                     {data.projects.length > 0 && (
                         <section>
                             <p className="p-sec">Projects</p>
-                            {data.projects.map(proj => {
+                            {data.projects.map((proj, index) => {
                                 let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                                     ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                 });
 
                                 return(
-                                    <div key={proj.title}>
+                                    <div key={index}>
                                         <div className="entry-head">
                                             <div>
                                                 <p className="p-main">{proj.title}</p>
@@ -166,7 +177,9 @@ function Template_BoldNavy({ data }) {
                                             </div>
                                         </div>
                                         
-                                        <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        {sanitizedDescription && (
+                                            <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -177,8 +190,8 @@ function Template_BoldNavy({ data }) {
                     {data.educations.length > 0 && (
                         <section>
                             <p className="p-sec">Education</p>
-                            {data.educations.map(edu => (
-                                <div key={edu.startDate}>
+                            {data.educations.map((edu, index) => (
+                                <div key={index}>
                                     <div className="entry-head">
                                         <div>
                                             <p className="p-main">
@@ -203,9 +216,7 @@ function Template_BoldNavy({ data }) {
                                     </div>
                                     <p>{edu.minor && (`Minor in ${edu.minor}`)}</p>
                                     <p>
-                                        {edu.schoolName} {edu.gpa && (
-                                            `| GPA: ${edu.gpa} / 4.0`
-                                        )}
+                                        {edu.schoolName} {edu.schoolName && edu.gpa && (` | `)} {edu.gpa && (`GPA: ${edu.gpa} / 4.0`)}
                                     </p>
                                 </div>
                             ))}

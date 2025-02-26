@@ -1,0 +1,24 @@
+.stepper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: wrap;
+    background: var(--bg-secondary);
+    border-radius: 2rem;
+}
+
+.step {
+    font-size: .8rem;
+    padding: .5rem 1rem;
+    border-right: 1px solid var(--bg-primary);
+    border-radius: 2rem;
+    cursor: pointer;
+}
+.step:hover { background: var(--bg-3); }
+
+.step-active {
+    font-weight: 600;
+    background: var(--bg-primary);
+    border: 2px solid rgb(44, 111, 255);
+}

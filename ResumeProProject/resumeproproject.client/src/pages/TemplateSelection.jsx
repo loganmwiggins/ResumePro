@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../stylesheets/TemplateSelection.css';
+import '../stylesheets/templateselection.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { templates } from '../utils/TemplateList';
@@ -24,7 +24,12 @@ function TemplateSelection() {
       <div className="templates-row">
         {/* Dynamically populated from TemplateList.jsx */}
         {templates.map((template, index) => (
-          <div className="template" onClick={() => handleTemplateSelect(`${template.id}`, `${template.name}`)}>
+          <div 
+            key={index}
+            className="template" 
+            style={{ animationDelay: `${index * 0.2}s`}}
+            onClick={() => handleTemplateSelect(`${template.id}`, `${template.name}`)}
+          >
             <div className="template-img">
               <img src={template.imgPath} draggable="false" />
             </div>

@@ -25,5 +25,7 @@ namespace ResumeProProject.Server.Data.Models
         [JsonIgnore]
         public virtual Resume? Resume { get; set; }
 
+        public int OrderNumber { get; set; }
+
     }
 }

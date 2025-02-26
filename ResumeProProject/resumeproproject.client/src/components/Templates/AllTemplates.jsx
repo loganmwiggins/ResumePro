@@ -1,45 +1,48 @@
-import React from 'react';
-import { templates } from '../../utils/TemplateList';   // Update this file to add a new template
+import React, { useState, useEffect, useRef } from 'react';
+import { templates } from '../../utils/TemplateList';
 
-function AllTemplates({ selectedTemplate, resumeData, viewMode }) {
-
+function AllTemplates({ selectedTemplate, resumeData, builderColor }) {
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
+    const resumeContainerRef = useRef(null);
+    const [scale, setScale] = useState(1);
 
     if (!selectedTemplateObj) {
         return <div>Error: Template not found</div>;
     }
 
-    // Scaling styles
-    let scaleStyle = {}; // Default styling (used for preview mode)
+    useEffect(() => {
+        const updateScale = () => {
+            if (resumeContainerRef.current) {
+                const parentWidth = resumeContainerRef.current.parentElement.offsetWidth;
+                const parentHeight = resumeContainerRef.current.parentElement.offsetHeight;
 
-    if (viewMode === "builder") {
-        // Original template size
-        const originalWidth = 850;
-        const originalHeight = 1100;
+                const originalWidth = 800; // Original template width
+                const originalHeight = 1100; // Original template height
 
-        // Target container size
-        const containerWidth = 500;
-        const containerHeight = 619;
+                // Compute the scale factor while maintaining aspect ratio
+                const scaleFactor = Math.min(parentWidth / originalWidth, parentHeight / originalHeight);
 
-        // Compute the scale factor while maintaining aspect ratio
-        const scale = Math.min(containerWidth / originalWidth, containerHeight / originalHeight);
+                // Ensure the scale updates dynamically
+                setScale(scaleFactor);
+            }
+        };
 
-        scaleStyle = {
+        // Run on mount and on resize
+        updateScale();
+        window.addEventListener("resize", updateScale);
+        return () => window.removeEventListener("resize", updateScale);
+    }, []);
+
+    let scaleStyle = {
             transform: `scale(${scale})`,
-            transformOrigin: "top left",
+            //transformOrigin: "top left",
+            position: "center",
+            //boxShadow: "0 0 .25rem rgba(0, 0, 0, .25)"
         };
-    } 
-    else if (viewMode === "preview") {
-        scaleStyle = {
-            transform: "none",
-            width: "100%",
-            height: "100%",
-        };
-    }
 
     return (
-        <div className="resume-scale-ctnr" style={scaleStyle}>
-            <selectedTemplateObj.component data={resumeData} />
+        <div ref={resumeContainerRef} className="resume-scale-ctnr" style={scaleStyle}>
+            <selectedTemplateObj.component data={resumeData} builderColor={builderColor} />
         </div>
     );
 }

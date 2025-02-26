@@ -1,76 +1,136 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
+import { createRoot } from 'react-dom/client';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { RgbaColorPicker } from 'react-colorful';
+
 import { API_BASE_URL } from '../utils/BaseUrl';
-import '../stylesheets/ResumeBuilder.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
 import { showToast } from '../utils/Toast';
 import { validateResume } from '../utils/ResumeValidator';
-import AllTemplates from '../components/Templates/AllTemplates';
-import { templates } from '../utils/TemplateList';
+import { rgbaToString } from '../utils/ColorFormatter';
+import AllTemplates from '../components/templates/AllTemplates';
+import { templates, templateColors } from '../utils/TemplateList';
+import '../stylesheets/ResumeBuilder.css';
 
 // import: Stepper + Resume Sections
 import Stepper from '../components/Stepper';
-import GeneralInformation from '../components/ResumeSections/GeneralInformation';
-import Experiences from '../components/ResumeSections/Experiences';
-import Educations from '../components/ResumeSections/Educations';
-import Certifications from '../components/ResumeSections/Certifications';
-import Projects from '../components/ResumeSections/Projects';
-import Skills from '../components/ResumeSections/Skills';
+import GeneralInformation from '../components/resume-sections/GeneralInformation';
+import Experiences from '../components/resume-sections/Experiences';
+import Educations from '../components/resume-sections/Educations';
+import Certifications from '../components/resume-sections/Certifications';
+import Projects from '../components/resume-sections/Projects';
+import Skills from '../components/resume-sections/Skills';
 
 
 function ResumeBuilder() {
     const navigate = useNavigate();
     const params = useParams();
     const { user, userLoading } = useUser();
-    const resumeRef = useRef(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
-
+    const [resumeColor, setResumeColor] = useState({ r: 0, g: 0, b: 0, a: 1 });
+    const [showColorButton, setShowColorButton] = useState(true);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
+    const colorInitialized = useRef(false);
 
-    // When user data is available, initialize resumeData with default values
+    // When user data is available && user is creating a resume, initialize resumeData with default values
     useEffect(() => {
-        if (user?.id) {
+        if (user?.id && updateResumeId === undefined) {
             const username = user.firstName.toLowerCase() + user.lastName.toLowerCase();
 
-            // If creating a new resume...
-            if (updateResumeId == undefined) {
-                setResumeData({
-                    id: user.id,
-                    resumeName: "Untitled Document",
-                    currentDate: new Date(),
-                    templateId: templateId,
-                    generalInformation: {
-                        firstName: user.firstName,
-                        middleName: null,
-                        lastName: user.lastName,
-                        email: user.email,
-                        phoneNumber: "(123) 456-7890",
-                        location: "Miami, FL",
-                        role: "Job Title",
-                        websiteUrl: `${username}.com`,
-                        linkedInUrl: `linkedin.com/in/${username}`,
-                        gitHubUrl: null
-                    },
-                    skills: {
-                        skillsDataJson: {}
-                    },
-                    experiences: [],
-                    educations: [],
-                    certifications: [],
-                    projects: []
-                });
+            setResumeData({
+                id: user.id,
+                resumeName: "Untitled Document",
+                currentDate: new Date(),
+                templateId: templateId,
+                colorJson: resumeColor,
+                generalInformation: {
+                    firstName: user.firstName,
+                    middleName: null,
+                    lastName: user.lastName,
+                    email: user.email,
+                    phoneNumber: "(123) 456-7890",
+                    location: "Miami, FL",
+                    role: "Job Title",
+                    websiteUrl: `${username}.com`,
+                    linkedInUrl: `linkedin.com/in/${username}`,
+                    gitHubUrl: null
+                },
+                skills: {
+                    skillsDataJson: {}
+                },
+                experiences: [],
+                educations: [],
+                certifications: [],
+                projects: []
+            });
+        }
+    }, [user, updateResumeId]);
+
+    // Call fetchResume only when updateResumeId is defined and resumeData is null
+    // (prevents redundant API calls)
+    useEffect(() => {
+        if (updateResumeId && !resumeData) { fetchResume(); }
+    }, [updateResumeId, resumeData]);
+
+
+    // Color logic
+    useEffect(() => {
+        // If creating a new resume ...
+        if (updateResumeId == undefined) {
+            if (templateId === "minimal") {
+                setShowColorPicker(false);
+                setShowColorButton(false);
             }
-            // If updating a resume...
             else {
-                fetchResume();
+                setShowColorButton(true);
+                if (templateColors[templateId]) {
+                    setResumeColor(templateColors[templateId]);
+                }
             }
         }
-    }, [user]); // Runs whenever 'user' changes
+        else {
+            setShowColorButton(templateId !== "minimal");
+        }
+    }, [templateId]);
+
+    useEffect(() => {
+        if (updateResumeId !== undefined && resumeData) {
+            if (!colorInitialized.current) {
+                setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
+                colorInitialized.current = true;
+            }
+        }
+    }, [resumeData, updateResumeId]);
+
+
+    // Close color picker when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".color-picker-ctnr")) {
+                setShowColorPicker(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
+
+
+    const handleChangeResumeData = (section, sectionData) => {
+        setResumeData((prevResume) => ({
+            ...prevResume,
+            [section]: sectionData,  // Dynamically update the section
+        }));
+    };
 
     const fetchResume = async () => {
         try {
@@ -83,14 +143,7 @@ function ResumeBuilder() {
 
             const data = await response.json();
             data.updatedDateTime = new Date();
-            if (data.skills?.skillsDataJson) {
-                try {
-                    data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
-                } catch (error) {
-                    console.error("Error parsing skillsDataJson:", error);
-                    data.skills.skillsDataJson = {};
-                }
-            }
+            data.skills.skillsDataJson = JSON.parse(data.skills?.skillsDataJson || "{}");
 
             setResumeData(data);
         }
@@ -169,18 +222,24 @@ function ResumeBuilder() {
     const handleAddSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (!updatedSkills[category]) {
                 updatedSkills[category] = new Set();
             }
-    
+
+            if (Array.isArray(updatedSkills[category])) {
+                updatedSkills[category] = new Set(updatedSkills[category]);
+            }
+
             updatedSkills[category].add(skill);
-    
+
             return {
                 ...prevResume,
                 skills: {
                     ...prevResume.skills,
-                    skillsDataJson: updatedSkills
+                    skillsDataJson: Object.fromEntries(
+                        Object.entries(updatedSkills).map(([key, value]) => [key, [...value]])
+                    ) 
                 }
             };
         });
@@ -205,11 +264,14 @@ function ResumeBuilder() {
     const handleRemoveSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (updatedSkills[category]) {
-                updatedSkills[category].delete(skill);
+                // Ensure the category value is an array (not a Set)
+                updatedSkills[category] = Array.isArray(updatedSkills[category])
+                    ? updatedSkills[category].filter(s => s !== skill) // Remove the skill
+                    : [...updatedSkills[category]].filter(s => s !== skill); // Convert Set to array, then remove skill
             }
-    
+
             return {
                 ...prevResume,
                 skills: {
@@ -218,7 +280,7 @@ function ResumeBuilder() {
                 }
             };
         });
-    };    
+    };
 
     const handleAddEntry = (section, entry) => {
         setResumeData((prevResume) => ({
@@ -239,27 +301,51 @@ function ResumeBuilder() {
         navigate("/home");
     }
 
-    const handleSubmit = async () => {
-        try {
-            //  Create hidden clone to prevent layout shifts
-            const clone = resumeRef.current.cloneNode(true);
-            clone.style.transform = "scale(1)";
-            clone.style.width = "450px";
-            clone.style.height = "auto";
-            clone.style.position = "absolute";
-            clone.style.left = "-9999px";
-            document.body.appendChild(clone);
+    const handleChangeColor = (newColor) => {
+        setResumeColor(newColor);
+    }
 
-            const canvas = await html2canvas(clone, {
+    const handleResetColor = () => {
+        // Minimal doesn't have color ...
+        if (templateId === "bold-navy") { setResumeColor({ r: 0, g: 0, b: 128, a: 1 }); }  // rgba(0, 0, 128, 1) 
+        else if (templateId === "skyline") { setResumeColor({ r: 165, g: 206, b: 241, a: 1 }); }  // rgba(165, 206, 241, 1)
+        else if (templateId === "rosy-edge") { setResumeColor({ r: 255, g: 210, b: 210, a: 1 }); }  // rgba(255, 228, 228, 1)
+        else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
+    }
+
+    const generateResumeThumbnail = async () => {
+        try {
+            if (!hiddenRef.current) return null;
+
+            // Render AllTemplates inside hidden container
+            const root = createRoot(hiddenRef.current);
+            root.render(
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={resumeColor} />
+            );
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            // Capture as Image
+            const canvas = await html2canvas(hiddenRef.current, {
                 backgroundColor: "#FFFFFF",
-                scale: 5,
-                useCORS: true,
+                scale: 2,
+                useCORS: true
             });
 
             const imgData = canvas.toDataURL("image/png");
 
-            //  Remove  clone 
-            document.body.removeChild(clone);
+            root.unmount();
+
+            return imgData;
+        } catch (error) {
+            console.error("Error generating resume thumbnail:", error);
+            return null;
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const imgData = await generateResumeThumbnail();
 
             // Validate the resume and stop execution if invalid
             if (!validateResume(resumeData)) return;
@@ -273,10 +359,12 @@ function ResumeBuilder() {
                             Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
                         )
                     )
-                }, thumbnail: imgData,
+                }, 
+                thumbnail: imgData,
+                colorJson: JSON.stringify(resumeColor)
             };
 
-            //  console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
+            // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
 
             // If new resume...
             if (updateResumeId == undefined) {
@@ -337,41 +425,114 @@ function ResumeBuilder() {
                 <form className="builder-ctnr" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     {/* LEFT SIDE */}
                     <div className="template-view">
-                        <div ref={resumeRef} className="resume-ctnr">
-                            <AllTemplates selectedTemplate={templateId} resumeData={resumeData} viewMode="builder" />
-                        </div>
-                        <div className="resume-actions">
-                            <input 
-                                type="text"
-                                placeholder="Name your document!"
-                                value={resumeData.resumeName} 
-                                onChange={(e) => handleNameChange(e.target.value)}
-                                required
-                            />
-                            <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
-                                {/* Dynamically populated from TemplateList.jsx */}
-                                {templates.map((template) => (
-                                    <option key={template.id} value={template.id}>
-                                        {template.name}
-                                    </option>
-                                ))}
-                            </select>
+                        {/* Template preview */}
+                        <TransformWrapper
+                            initialScale={.5}
+                            minScale={.5}
+                            centerOnInit
+                        >
+                            {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                <React.Fragment>
+                                    <div className="zoom-tools">
+                                        <motion.button
+                                            type="button"
+                                            className="zoom-btn"
+                                            onClick={() => zoomIn()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-in.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button 
+                                            type="button"
+                                            className="zoom-btn" 
+                                            onClick={() => zoomOut()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            <img src="/assets/icons/zoom-out.svg" draggable="false" />
+                                        </motion.button>
+                                        <motion.button
+                                            type="button"
+                                            className="reset-btn"
+                                            onClick={() => resetTransform()}
+                                            whileTap={{scale: 0.9}}
+                                        >
+                                            Reset
+                                        </motion.button>
+                                    </div>
+                                    <TransformComponent>
+                                        <AllTemplates 
+                                            selectedTemplate={templateId} 
+                                            resumeData={resumeData} 
+                                            builderColor={resumeColor} 
+                                        />
+                                    </TransformComponent>
+                                </React.Fragment>
+                            )}
+                        </TransformWrapper>
 
-                            <motion.button 
-                                type="button" 
-                                className="btn btn-outline" 
-                                onClick={handleCancel}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <span>Cancel</span>
-                            </motion.button>
-                            <motion.button 
-                                type="submit" 
-                                className="btn btn-blue"
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <span>Save Resume</span>
-                            </motion.button>
+                        {/* Resume actions */}
+                        <div className="resume-actions">
+                            <div className="actions-div">
+                                <input 
+                                    type="text"
+                                    placeholder="Name your document!"
+                                    value={resumeData.resumeName} 
+                                    onChange={(e) => handleNameChange(e.target.value)}
+                                    required
+                                />
+                                <select value={templateId} onChange={(event) => handleTemplateChange(event.target.value)}>
+                                    {/* Dynamically populated from TemplateList.jsx */}
+                                    {templates.map((template) => (
+                                        <option key={template.id} value={template.id}>
+                                            {template.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="color-picker-ctnr">
+                                    {showColorButton && (
+                                        <motion.button
+                                            type="button"
+                                            className="color-btn"
+                                            style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
+                                            onClick={() => setShowColorPicker(!showColorPicker)}
+                                            whileTap={{scale: 0.8}}
+                                        ></motion.button>
+                                    )}
+                                    <AnimatePresence>
+                                        {showColorPicker && (
+                                            <motion.div 
+                                                className="color-picker"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                            >
+                                                <div className="rgb-txt">{rgbaToString(resumeColor)}</div>
+                                                <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
+                                                <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            </div>
+                            
+                            <div className="actions-div">
+                                <motion.button 
+                                    type="button" 
+                                    className="btn btn-outline" 
+                                    onClick={handleCancel}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <span>Cancel</span>
+                                </motion.button>
+                                <motion.button 
+                                    type="submit" 
+                                    className="btn btn-blue"
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <span>Save</span>
+                                </motion.button>
+                            </div>
                         </div>
                     </div>
 
@@ -385,10 +546,10 @@ function ResumeBuilder() {
                         {/* Stepper content */}
                         <div className="step-content">
                             {currentStep === 0 && <GeneralInformation data={resumeData.generalInformation} handleChange={handleChange} />}
-                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
-                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} />}
+                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData}/>}
+                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
@@ -427,6 +588,9 @@ function ResumeBuilder() {
                         </div>
                     </div>
                 </form>
+
+                {/*Hidden container for thumbnail generation */}
+                <div ref={hiddenRef} style={{ position: "absolute", left: "-9999px", width: "800px", height: "1100px", overflow: "hidden", backgroundColor: "white" }} />
             </AuthorizeView>
         );
     }

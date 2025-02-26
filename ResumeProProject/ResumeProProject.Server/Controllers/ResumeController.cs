@@ -11,10 +11,6 @@ using static ResumeProProject.Server.Data.DTOs.ResumeDTOs;
 
 namespace ResumeProProject.Server.Controllers
 {
-   
-
-
-
     [ApiController]
     [Route("/api/[controller]")]
     public class ResumeController(AppDbContext dbContext, UserManager<User> userManager) : Controller
@@ -38,6 +34,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = request.Id,
                 TemplateId = request.TemplateId,
+                ColorJson = request.ColorJson,
                 Thumbnail = request.Thumbnail // Store Thumbnail
             };
 
@@ -78,7 +75,8 @@ namespace ResumeProProject.Server.Controllers
                     Minor = request.Educations[i].Minor,
                     StartDate = request.Educations[i].StartDate,
                     EndDate = request.Educations[i].EndDate,
-                    SchoolLocation = request.Educations[i].SchoolLocation
+                    SchoolLocation = request.Educations[i].SchoolLocation,
+                    OrderNumber = request.Educations[i].OrderNumber
                     //Resume = fetchedResume,
                 };
                 if (NewEducation != null) { _db.Education.Add(NewEducation); }
@@ -93,6 +91,7 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = request.Certifications[i].Issuer,
                     IssueDate = request.Certifications[i].IssueDate,
                     ExpireDate = request.Certifications[i].ExpireDate,
+                    OrderNumber = request.Certifications[i].OrderNumber
                     //Resume = fetchedResume,
 
                 };
@@ -113,6 +112,7 @@ namespace ResumeProProject.Server.Controllers
                     Location = request.Experiences[i].Location,
                     OfficeType = request.Experiences[i].OfficeType,
                     JobType = request.Experiences[i].JobType,
+                    OrderNumber = request.Experiences[i].OrderNumber,
                     //Resume = fetchedResume,
                 };
 
@@ -138,7 +138,8 @@ namespace ResumeProProject.Server.Controllers
                     Description = request.Projects[i].Description,
                     StartDate = request.Projects[i].StartDate,
                     EndDate = request.Projects[i].EndDate,
-                    Title = request.Projects[i].Title
+                    Title = request.Projects[i].Title,
+                    OrderNumber = request.Projects[i].OrderNumber
                 };
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();
@@ -151,12 +152,12 @@ namespace ResumeProProject.Server.Controllers
         {
             var resumes = await _db.Resumes
                 .Where(r => r.Id == userId)
-                .Include(r => r.GeneralInformation)
-                .Include(r => r.Educations)
-                .Include(r => r.Certifications)
-                .Include(r => r.Experiences)
-                .Include(r => r.Projects)
-                .Include(r => r.Skills)
+                //.Include(r => r.GeneralInformation)
+                //.Include(r => r.Educations)
+                //.Include(r => r.Certifications)
+                //.Include(r => r.Experiences)
+                //.Include(r => r.Projects)
+                //.Include(r => r.Skills)
                 .OrderByDescending(r => r.UpdatedDateTime)
                 .ToListAsync();
 
@@ -167,13 +168,6 @@ namespace ResumeProProject.Server.Controllers
 
             // Fetch all GeneralInformation separately
             var resumeIds = resumes.Select(r => r.ResumeId).ToList();
-            var generalInfoDict = await _db.GeneralInformation
-                .Where(g => resumeIds.Contains(g.ResumeId))
-                .ToDictionaryAsync(g => g.ResumeId);
-
-            var skillsDict = await _db.Skills
-                .Where(g => resumeIds.Contains(g.ResumeId))
-                .ToDictionaryAsync(g => g.ResumeId);
 
             var result = resumes.Select(resume => new
             {
@@ -181,51 +175,8 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                ColorJson = resume.ColorJson,
                 Thumbnail = resume.Thumbnail,
-
-                GeneralInformation = generalInfoDict.TryGetValue(resume.ResumeId, out var genInfo) ? genInfo : null,
-
-                Educations = resume.Educations.Select(e => new
-                {
-                    e.SchoolName,
-                    e.DegreeType,
-                    e.GPA,
-                    e.Major,
-                    e.Minor,
-                    e.StartDate,
-                    e.EndDate
-                }).ToList(),
-
-                Certifications = resume.Certifications.Select(c => new
-                {
-                    c.Name,
-                    c.Issuer,
-                    c.IssueDate,
-                    c.ExpireDate
-                }).ToList(),
-
-                Experiences = resume.Experiences.Select(ex => new
-                {
-                    ex.CompanyName,
-                    ex.Role,
-                    ex.StartDate,
-                    ex.EndDate,
-                    ex.IsCurrent,
-                    ex.Description,
-                    ex.Location,
-                    ex.OfficeType,
-                    ex.JobType
-                }).ToList(),
-
-                Projects = resume.Projects.Select(p => new
-                {
-                    p.Title,
-                    p.Description,
-                    p.StartDate,
-                    p.EndDate
-                }).ToList(),
-
-                Skills = skillsDict.TryGetValue(resume.ResumeId, out var skill) ? skill : null,
 
             }).ToList();
 
@@ -273,6 +224,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeName = resume.Name,
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
+                ColorJson = resume.ColorJson,
                 Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = await _db.GeneralInformation
@@ -280,27 +232,29 @@ namespace ResumeProProject.Server.Controllers
            .FirstOrDefaultAsync(),
 
 
-                Educations = resume.Educations.Select(e => new
+                Educations = resume.Educations.OrderBy(e => e.OrderNumber).Select(e => new
                 {
                     e.SchoolName,
                     e.DegreeType,
-                    e.GPA,
+                    GPA = e.GPA.HasValue ? e.GPA.Value.ToString("0.0") : (string)null,
                     e.Major,
                     e.Minor,
                     e.StartDate,
                     e.EndDate,
-                    e.SchoolLocation
+                    e.SchoolLocation,
+                    e.OrderNumber
                 }).ToList(),
 
-                Certifications = resume.Certifications.Select(c => new
+                Certifications = resume.Certifications.OrderBy(c => c.OrderNumber).Select(c => new
                 {
                     c.Name,
                     c.Issuer,
                     c.IssueDate,
-                    c.ExpireDate
+                    c.ExpireDate,
+                    c.OrderNumber
                 }).ToList(),
 
-                Experiences = resume.Experiences.Select(ex => new
+                Experiences = resume.Experiences.OrderBy(ex => ex.OrderNumber).Select(ex => new
                 {
                     ex.CompanyName,
                     ex.Role,
@@ -310,15 +264,17 @@ namespace ResumeProProject.Server.Controllers
                     ex.Description,
                     ex.Location,
                     ex.OfficeType,
-                    ex.JobType
+                    ex.JobType,
+                    ex.OrderNumber
                 }).ToList(),
 
-                Projects = resume.Projects.Select(p => new
+                Projects = resume.Projects.OrderBy(p => p.OrderNumber).Select(p => new
                 {
                     p.Title,
                     p.Description,
                     p.StartDate,
-                    p.EndDate
+                    p.EndDate,
+                    p.OrderNumber
                 }).ToList(),
 
                 Skills = await _db.Skills
@@ -351,6 +307,7 @@ namespace ResumeProProject.Server.Controllers
             existingResume.Name = request.ResumeName;
             existingResume.UpdatedDateTime = request.updatedDateTime;
             existingResume.TemplateId = request.templateId;
+            existingResume.ColorJson = request.colorJson;
             existingResume.Thumbnail = request.thumbnail;
 
             existingResume.TemplateId = request.templateId;
@@ -398,9 +355,9 @@ namespace ResumeProProject.Server.Controllers
                     Minor = edu.Minor,
                     StartDate = edu.StartDate,
                     EndDate = edu.EndDate,
-                    SchoolLocation = edu.SchoolLocation
+                    SchoolLocation = edu.SchoolLocation,
+                    OrderNumber = edu.OrderNumber,
                 });
-                System.Diagnostics.Debug.WriteLine("SCHOOL LOCATION IS: " + edu.SchoolLocation);
             }
 
             _db.Certifications.RemoveRange(existingResume.Certifications);
@@ -414,12 +371,14 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = cert.Issuer,
                     IssueDate = cert.IssueDate,
                     ExpireDate = cert.ExpireDate,
-                    Name = cert.Name
+                    Name = cert.Name,
+                    OrderNumber = cert.OrderNumber,
                 });
             }
 
             _db.Experiences.RemoveRange(existingResume.Experiences);
             await _db.SaveChangesAsync();
+
             existingResume.Experiences.Clear();
             foreach (var exp in request.Experiences)
             {
@@ -434,7 +393,8 @@ namespace ResumeProProject.Server.Controllers
                     Location = exp.Location,
                     IsCurrent = exp.IsCurrent,
                     StartDate = exp.StartDate,
-                    EndDate = exp.EndDate
+                    EndDate = exp.EndDate,
+                    OrderNumber = exp.OrderNumber
                 });
             }
 
@@ -450,7 +410,8 @@ namespace ResumeProProject.Server.Controllers
                     Title = proj.Title,
                     Description = proj.Description,
                     StartDate = proj.StartDate,
-                    EndDate = proj.EndDate
+                    EndDate = proj.EndDate,
+                    OrderNumber = proj.OrderNumber
                 });
             }
 
@@ -459,9 +420,26 @@ namespace ResumeProProject.Server.Controllers
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
 
+        [HttpPut("Rename")]
+        public async Task<IActionResult> RenameResume([FromBody] RenameResumeDto request)
+        {
+            var existingResume = await _db.Resumes
+
+                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            if (existingResume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+            existingResume.Name = request.newName;
+            existingResume.UpdatedDateTime = request.newTime; 
 
 
-        [HttpPost("Duplicate")]
+            await _db.SaveChangesAsync();
+            return Ok(new { message = "Resume renamed successfully.", resumeId = existingResume.ResumeId });
+
+        }
+            [HttpPost("Duplicate")]
         public async Task<IActionResult> DuplicateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.DuplicateResumeDto request)
         {
             var existingResume = await _db.Resumes
@@ -486,6 +464,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = request.CurrentDate,
                 Id = existingResume.Id,
                 TemplateId = existingResume.TemplateId,
+                ColorJson = existingResume.ColorJson,
                 Thumbnail = existingResume.Thumbnail // Store Thumbnail
             };
 
@@ -525,7 +504,8 @@ namespace ResumeProProject.Server.Controllers
                     Minor = education.Minor,
                     StartDate = education.StartDate,
                     EndDate = education.EndDate,
-                    SchoolLocation = education.SchoolLocation
+                    SchoolLocation = education.SchoolLocation,
+                    OrderNumber = education.OrderNumber,
                     //Resume = fetchedResume,
                 };
                 if (NewEducation != null) { _db.Education.Add(NewEducation); }
@@ -540,6 +520,7 @@ namespace ResumeProProject.Server.Controllers
                     Issuer = certification.Issuer,
                     IssueDate = certification.IssueDate,
                     ExpireDate = certification.ExpireDate,
+                    OrderNumber = certification.OrderNumber,
                     //Resume = fetchedResume,
 
                 };
@@ -560,6 +541,7 @@ namespace ResumeProProject.Server.Controllers
                     Location = experience.Location,
                     OfficeType = experience.OfficeType,
                     JobType = experience.JobType,
+                    OrderNumber = experience.OrderNumber,
                     //Resume = fetchedResume,
                 };
 
@@ -585,14 +567,13 @@ namespace ResumeProProject.Server.Controllers
                     Description = project.Description,
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
-                    Title = project.Title
+                    Title = project.Title,
+                    OrderNumber = project.OrderNumber,
                 };
                 if (NewProject != null) { _db.Projects.Add(NewProject); }
                 await _db.SaveChangesAsync();
             }
             return Ok(new { message = "Resume duplicated successfully.", resumeId = fetchedResume.ResumeId });
-
-
         }
     }
 }

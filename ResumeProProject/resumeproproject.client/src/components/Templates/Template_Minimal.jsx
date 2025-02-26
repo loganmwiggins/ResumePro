@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
-import '../../stylesheets/Templates/Template_Minimal.css';
+import '../../stylesheets/templates/Template_Minimal.css';
 
 function Template_Minimal({ data }) {
     return (
@@ -17,8 +17,12 @@ function Template_Minimal({ data }) {
                     </p>
                 </div>
                 <div className="header-right">
-                    <p>{data.generalInformation.email}</p>
-                    <p>{data.generalInformation.phoneNumber}</p>
+                    {data.generalInformation.email && (
+                        <p>{data.generalInformation.email}</p>
+                    )}
+                    {data.generalInformation.phoneNumber && (
+                        <p>{data.generalInformation.phoneNumber}</p>
+                    )}
                 </div>
             </header>
 
@@ -28,19 +32,19 @@ function Template_Minimal({ data }) {
                 <div className="urls">
                     {data.generalInformation.websiteUrl && (
                         <span>
-                            <img src="/assets/icons/web-circle.svg" draggable="false" />
+                            <img src="/assets/icons/web-circle.svg" draggable="false" alt="web"/>
                             <p>{data.generalInformation.websiteUrl}</p>
                         </span>
                     )}
                     {data.generalInformation.linkedInUrl && (
                         <span>
-                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" />
+                            <img src="/assets/icons/linkedin-circle.svg" draggable="false" alt="linkedIn" />
                             <p>{data.generalInformation.linkedInUrl}</p>
                         </span>
                     )}
                     {data.generalInformation.gitHubUrl && (
                         <span>
-                            <img src="/assets/icons/github-circle.svg" draggable="false" />
+                            <img src="/assets/icons/github-circle.svg" draggable="false" alt="github" />
                             <p>{data.generalInformation.gitHubUrl}</p>
                         </span>
                     )}
@@ -52,13 +56,13 @@ function Template_Minimal({ data }) {
             {data.experiences.length > 0 && (
                 <section>
                     <h2>EXPERIENCE</h2>
-                    {data.experiences.map(exp => {
+                    {data.experiences.map((exp, index) => {
                         let sanitizedDescription = DOMPurify.sanitize(exp.description || "", {
                             ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                         });
 
                         return(
-                            <div key={exp.description}>
+                            <div key={index}>
                                 <div className="entry-head">
                                     <div>
                                         <p className="p-main">{exp.role}</p>
@@ -71,17 +75,21 @@ function Template_Minimal({ data }) {
                                         </p>
                                     </div>
                                     <div>
-                                        <p>
-                                            {exp.startDate && (
-                                                `${formatDate(exp.startDate, {month:true, year:true})}`
-                                            )} {exp.endDate && (
-                                                `- ${formatDate(exp.endDate, {month:true, year:true})}`
-                                            ) || "- Present"}
-                                        </p>
+                                        {(exp.startDate || exp.endDate) && (
+                                            <p>
+                                                {exp.startDate && (
+                                                    `${formatDate(exp.startDate, {month:true, year:true})}`
+                                                )} {exp.endDate && (
+                                                    `- ${formatDate(exp.endDate, {month:true, year:true})}`
+                                                ) || "- Present"}
+                                            </p>
+                                        )}
                                         <p>{exp.location}</p>
                                     </div>
                                 </div>
-                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                {sanitizedDescription && (
+                                    <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                )}
                             </div>
                         );
                     })}
@@ -93,13 +101,13 @@ function Template_Minimal({ data }) {
             {data.projects.length > 0 && (
                 <section>
                     <h2>PROJECTS</h2>
-                    {data.projects.map(proj => {
+                    {data.projects.map((proj, index) => {
                         let sanitizedDescription = DOMPurify.sanitize(proj.description || "", {
                             ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                         });
 
                         return(
-                            <div key={proj.title}>
+                            <div key={index}>
                                 <div className="entry-head">
                                     <div>
                                         <p className="p-main">{proj.title}</p>
@@ -115,7 +123,9 @@ function Template_Minimal({ data }) {
                                     </div>
                                 </div>
                                 
-                                <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                {sanitizedDescription && (
+                                    <p dangerouslySetInnerHTML={{ __html: sanitizedDescription }}></p>
+                                )}
                             </div>
                         );
                     })}
@@ -127,8 +137,8 @@ function Template_Minimal({ data }) {
             {data.certifications.length > 0 && (
                 <section>
                     <h2>CERTIFICATIONS</h2>
-                    {data.certifications.map(cert => (
-                        <div key={cert.name}>
+                    {data.certifications.map((cert, index) => (
+                        <div key={index}>
                             <p>
                                 <span className="p-main">
                                     {cert.issuer} {cert.name}
@@ -168,8 +178,8 @@ function Template_Minimal({ data }) {
             {data.educations.length > 0 && (
                 <section>
                     <h2>EDUCATION</h2>
-                    {data.educations.map(edu => (
-                        <div key={edu.startDate}>
+                    {data.educations.map((edu, index) => (
+                        <div key={index}>
                             <div className="entry-head">
                                 <div>
                                     <p className="p-main">
@@ -179,9 +189,7 @@ function Template_Minimal({ data }) {
                                         {edu.minor && (`Minor in ${edu.minor}`)}
                                     </h4>
                                     <p>
-                                        {edu.schoolName} {edu.gpa && (
-                                            `| GPA: ${edu.gpa} / 4.0`
-                                        )}
+                                        {edu.schoolName} {edu.schoolName && edu.gpa && (` | `)} {edu.gpa && (`GPA: ${edu.gpa} / 4.0`)}
                                     </p>
                                 </div>
                                 

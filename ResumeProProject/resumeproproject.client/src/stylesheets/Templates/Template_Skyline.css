@@ -1,5 +1,6 @@
 .resume-paper {
     background: white;
+    color: black;
     width: 850px;
     height: 1100px;
     padding: 50px;
@@ -10,11 +11,11 @@
 }
 
 .Template_Skyline {
-    --accent: #a5cef1;
+    --accent: rgb(165, 206, 241);
     font-family: 'Times New Roman', Times, serif;
 
 
-    /* Layout specific */
+    /* LAYOUT */
     .split-ctnr {
         display: flex;
         align-items: start;
@@ -33,7 +34,13 @@
     section {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1rem;
+    }
+
+    .entry-ctnr {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
     }
 
     .entry-head {
@@ -44,7 +51,7 @@
     }
 
 
-    /* Text specific */
+    /* TEXT */
     .p-sec {
         display: flex;
         justify-content: center;
@@ -67,7 +74,7 @@
     ul { padding-left: 2.25rem }
 
 
-    /* Header specific */
+    /* HEADER */
     .resume-header {
         display: flex;
         flex-direction: column;
@@ -79,12 +86,13 @@
     }
     
     
-    /* Contact specific */
+    /* CONTACT */
     .contact-list {
         display: flex;
         flex-direction: column;
         gap: .25rem;
     }
+    
     .contact {
         display: flex;
         align-items: center;
@@ -97,10 +105,10 @@
     }
 
 
-    /* Skills specific */
+    /* SKILLS */
     .skills-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: .5rem;
     }
 }
