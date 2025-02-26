@@ -138,14 +138,7 @@ function ResumeBuilder() {
 
             const data = await response.json();
             data.updatedDateTime = new Date();
-            if (data.skills?.skillsDataJson) {
-                try {
-                    data.skills.skillsDataJson = JSON.parse(data.skills.skillsDataJson);
-                } catch (error) {
-                    console.error("Error parsing skillsDataJson:", error);
-                    data.skills.skillsDataJson = {};
-                }
-            }
+            data.skills.skillsDataJson = JSON.parse(data.skills?.skillsDataJson || "{}");
 
             setResumeData(data);
         }
