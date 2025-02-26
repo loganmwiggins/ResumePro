@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import html2pdf from "html2pdf.js";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { API_BASE_URL } from "../utils/BaseUrl";
 import { showToast } from "../utils/Toast";
@@ -69,7 +68,8 @@ const ResumePreview = () => {
         navigate(`/builder/${templateId}/${resumeId}`);
     }
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
+        const html2pdf = (await import("html2pdf.js")).default;
         const element = resumeRef.current;
 
         element.style.width = "100%";

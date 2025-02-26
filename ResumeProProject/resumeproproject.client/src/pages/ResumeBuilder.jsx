@@ -38,6 +38,7 @@ function ResumeBuilder() {
     const [showColorPicker, setShowColorPicker] = useState(false);
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
+    const colorInitialized = useRef(false);
 
     // When user data is available && user is creating a resume, initialize resumeData with default values
     useEffect(() => {
@@ -102,9 +103,13 @@ function ResumeBuilder() {
 
     useEffect(() => {
         if (updateResumeId !== undefined && resumeData) {
-            setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
+            if (!colorInitialized.current) {
+                setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
+                colorInitialized.current = true;
+            }
         }
-    }, [resumeData]);
+    }, [resumeData, updateResumeId]);
+
 
     // Close color picker when clicking outside
     useEffect(() => {
@@ -196,31 +201,14 @@ function ResumeBuilder() {
         });
     }
 
-    const handleReorderCategories = (newOrder) => {
-        setResumeData((prevResume) => ({
-            ...prevResume,
-            skills: {
-                ...prevResume.skills,
-                skillsDataJson: { ...newOrder },
-            },
-        }));
-    };
-
     const handleAddSkillCategory = (category) => {
-        category = String(category).trim();
-
-        // Add a prefix if it's a number to prevent JavaScript auto-sorting
-        if (!isNaN(category)) {
-            category = `Category ${category}`;
-        }
-
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-
+    
             if (!updatedSkills[category]) {
-                updatedSkills[category] = new Set();
+                updatedSkills[category] = new Set(); // Use a Set to avoid duplicates
             }
-
+    
             return {
                 ...prevResume,
                 skills: {
@@ -562,7 +550,7 @@ function ResumeBuilder() {
                             {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
+                            {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
                         <div className="build-footer">

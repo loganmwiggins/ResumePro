@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { API_BASE_URL } from '../utils/BaseUrl';
@@ -6,7 +6,7 @@ import '../stylesheets/ResumeInsights.css';
 import AuthorizeView from '../components/AuthorizeView';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
-import { BoxesLoader } from "react-awesome-loaders";
+//import { BoxesLoader } from "react-awesome-loaders";
 import AllTemplates from "../components/templates/AllTemplates";
 
 function ResumeInsights() {
@@ -22,6 +22,7 @@ function ResumeInsights() {
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showResume, setShowResume] = useState(false);
+  const LazyBoxesLoader = lazy(() => import("react-awesome-loaders").then(mod => ({ default: mod.BoxesLoader })));
 
   useEffect(() => {
     // Call fetchResumeInsights (on mount) to automatically trigger the process
@@ -302,18 +303,17 @@ function ResumeInsights() {
       )}
 
       <div className="resume-insights-ctnr">
-        {analysisLoading && (
-          <div className="loader-center">
-            <div className="loading-message">
-              <span>{loadingMessages[loadingMessageIndex]}</span>
-            </div>
-            <BoxesLoader 
-              boxColor={"#2c6fff"} 
-              // shadowColor={"#018997"} 
-              size={"100px"}
-            />
-          </div>
-        )}
+              {analysisLoading && (
+                  <div className="loader-center">
+                      <div className="loading-message">
+                          <span>{loadingMessages[loadingMessageIndex]}</span>
+                      </div>
+                      <Suspense fallback={<div>Loading animation...</div>}>
+                          <LazyBoxesLoader boxColor={"#2c6fff"} size={"100px"} />
+                      </Suspense>
+                  </div>
+              )}
+
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
