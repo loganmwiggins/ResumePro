@@ -116,6 +116,10 @@
     }
 }
 
+.rgb-txt {
+    color: var(--text-3);
+}
+
 
 /* BUILD VIEW (RIGHT SIDE) */
 .build-view {

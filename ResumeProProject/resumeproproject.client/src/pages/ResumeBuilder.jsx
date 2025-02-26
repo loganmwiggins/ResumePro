@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import { createRoot } from 'react-dom/client';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -116,7 +116,19 @@ function ResumeBuilder() {
         if (updateResumeId !== undefined && resumeData) {
             setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
         }
-    }, [resumeData])
+    }, [resumeData]);
+
+    // Close color picker when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".color-picker-ctnr")) {
+                setShowColorPicker(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
 
 
 
@@ -500,13 +512,21 @@ function ResumeBuilder() {
                                             whileTap={{scale: 0.8}}
                                         ></motion.button>
                                     )}
-                                    {showColorPicker && (
-                                        <div className="color-picker">
-                                            <div>{rgbaToString(resumeColor)}</div>
-                                            <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
-                                            <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
-                                        </div>
-                                    )}
+                                    <AnimatePresence>
+                                        {showColorPicker && (
+                                            <motion.div 
+                                                className="color-picker"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                            >
+                                                <div className="rgb-txt">{rgbaToString(resumeColor)}</div>
+                                                <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
+                                                <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </div>
                             
