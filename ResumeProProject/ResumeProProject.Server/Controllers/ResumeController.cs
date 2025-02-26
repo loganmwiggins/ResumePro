@@ -420,8 +420,26 @@ namespace ResumeProProject.Server.Controllers
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
 
+        [HttpPut("Rename")]
+        public async Task<IActionResult> RenameResume([FromBody] RenameResumeDto request)
+        {
+            var existingResume = await _db.Resumes
 
-        [HttpPost("Duplicate")]
+                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+
+            if (existingResume == null)
+            {
+                return NotFound(new { message = "Resume not found." });
+            }
+            existingResume.Name = request.newName;
+            existingResume.UpdatedDateTime = request.newTime; 
+
+
+            await _db.SaveChangesAsync();
+            return Ok(new { message = "Resume renamed successfully.", resumeId = existingResume.ResumeId });
+
+        }
+            [HttpPost("Duplicate")]
         public async Task<IActionResult> DuplicateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.DuplicateResumeDto request)
         {
             var existingResume = await _db.Resumes
