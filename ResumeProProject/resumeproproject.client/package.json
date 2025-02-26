@@ -14,12 +14,8 @@
     "dompurify": "^3.2.4",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.4.2",
-    "html-to-docx": "^1.8.0",
     "html2pdf": "^0.0.11",
     "html2pdf.js": "^0.10.2",
-    "mammoth": "^1.9.0",
-    "pdf-lib": "^1.17.1",
-    "pdf-officegen": "^3.0.0",
     "react": "^18.3.1",
     "react-canvas-confetti": "^2.0.7",
     "react-colorful": "^5.6.1",
@@ -28,8 +24,7 @@
     "react-rte": "^0.16.5",
     "react-select": "^5.10.0",
     "react-toastify": "^11.0.3",
-    "react-zoom-pan-pinch": "^3.7.0",
-    "xmlbuilder2": "^3.1.1"
+    "react-zoom-pan-pinch": "^3.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
