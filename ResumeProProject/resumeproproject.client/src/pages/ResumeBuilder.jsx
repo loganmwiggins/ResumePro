@@ -211,7 +211,7 @@ function ResumeBuilder() {
 
         // Add a prefix if it's a number to prevent JavaScript auto-sorting
         if (!isNaN(category)) {
-            category = `Category_${category}`;
+            category = `Category ${category}`;
         }
 
         setResumeData((prevResume) => {
