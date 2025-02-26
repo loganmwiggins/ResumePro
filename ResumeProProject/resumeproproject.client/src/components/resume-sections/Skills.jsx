@@ -5,7 +5,7 @@ import '../../stylesheets/ResumeBuilder.css';
 function Skills({ data, handleReorderCategories, handleAddSkillCategory, handleRemoveSkillCategory, handleAddSkill, handleRemoveSkill }) {
 
     const moveCategoryUp = (index) => {
-        const categories = Object.entries(data.skillsDataJson).map(([key, value]) => [String(key), value]); // Convert keys to strings
+        const categories = Object.entries(data.skillsDataJson).map(([key, value]) => [String(key), value]);
         if (index > 0) {
             [categories[index], categories[index - 1]] = [categories[index - 1], categories[index]];
             handleReorderCategories(Object.fromEntries(categories));
@@ -13,7 +13,7 @@ function Skills({ data, handleReorderCategories, handleAddSkillCategory, handleR
     };
 
     const moveCategoryDown = (index) => {
-        const categories = Object.entries(data.skillsDataJson).map(([key, value]) => [String(key), value]); // Convert keys to strings
+        const categories = Object.entries(data.skillsDataJson).map(([key, value]) => [String(key), value]);
         if (index < categories.length - 1) {
             [categories[index], categories[index + 1]] = [categories[index + 1], categories[index]];
             handleReorderCategories(Object.fromEntries(categories));
