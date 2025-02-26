@@ -8,23 +8,51 @@ import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
 function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
-    const moveEntryUp = (index) => {
-        if (index > 0) {
-            const newData = [...data];
-            [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
-            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("experiences", newData);
-        }
-    };
+   console.log(data)
+   const swapAttributes = (entryA, entryB) => {
+    Object.keys(entryA).forEach((key) => {
+        console.log("-------------------------------------")
+        console.log(key + "  ENTRY A KEY: " + entryA[key])
+        console.log(key + "  ENTRY B KEY: " + entryB[key])
+        let temp = entryA[key];
+        entryA[key] = entryB[key];
+        entryB[key] = temp;
+        console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
+        console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
+    });
+};
+
+const moveEntryUp = (index) => {
+    if (index > 0) {
+        const newData = [...data];
+        
+
+        // Swap attributes instead of objects
+        swapAttributes(newData[index], newData[index - 1]);
+
+        // Update order numbers
+        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+
+        handleChangeResumeData("experiences", [...newData]);
+    }
+};
+
+const moveEntryDown = (index) => {
+    if (index < data.length - 1) {
+        const newData = [...data];
+
+        // Swap attributes instead of objects
+        swapAttributes(newData[index], newData[index + 1]);
+
+        // Update order numbers
+        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+
+        handleChangeResumeData("experiences", [...newData]);
+    }
+};
     
-    const moveEntryDown = (index) => {
-        if (index < data.length - 1) {
-            const newData = [...data];
-            [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
-            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("experiences", newData);
-        }
-    };
+    
+    
     
 
     return (
@@ -101,8 +129,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input
                                     type="text"
                                     placeholder="(e.g.,  Walmart)"
-                                    onChange={(e) => handleChange("experiences", "companyName", e.target.value, index)}
-                                    value={data[index].companyName}
+                                    onChange={(e) => handleChange("experiences", "companyName", e.target.value || null, index)}
+                                    value={data[index]?.companyName ?? ""}
                                 />
                             </div>
                             <div className="input-field">
@@ -110,8 +138,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input
                                     type="text"
                                     placeholder="(e.g.,  Store Manager)"
-                                    onChange={(e) => handleChange("experiences", "role", e.target.value, index)}
-                                    value={data[index].role}
+                                    onChange={(e) => handleChange("experiences", "role", e.target.value || null, index)}
+                                    value={data[index]?.role ?? ""}
                                 />
                             </div>
                         </div>
@@ -120,8 +148,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <label>Start Date <span className="req">*</span></label>
                                 <input 
                                     type="date" 
-                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value, index)} 
-                                    value={data[index].startDate}
+                                    onChange={(e) => handleChange("experiences", "startDate", e.target.value || null, index)}  
+                                    value={data[index].startDate || ""}  // Ensure empty string if null
                                 />
                             </div>
                             <div className="input-field">
@@ -129,19 +157,19 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                                 <input 
                                     type="date" 
                                     min = {data[index].startDate}
-                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value, index)}
-                                    value={data[index].endDate}
+                                    onChange={(e) => handleChange("experiences", "endDate", e.target.value || null, index)}
+                                    value={data[index].endDate || ""}  // Ensure empty string if null
                                 />
                             </div>
                         </div>
                         <div className="input-row">
                             <div className="input-field">
-                                <label>Job Type</label>
+                            <label>Job Type</label>
                                 <Select
                                     options={jobTypeOptions}
                                     placeholder="Select a job type"
                                     onChange={(selectedOption) => handleChange("experiences", "jobType", selectedOption ? selectedOption.value : null, index)}
-                                    value={jobTypeOptions.find(option => option.value === data[index].jobType || null)}
+                                    value={jobTypeOptions.find(option => option.value === data[index].jobType) || null}
                                     isClearable
                                 />
                             </div>
@@ -170,8 +198,8 @@ function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, ha
                             <input 
                                 type="text" 
                                 placeholder="(e.g.,  Manhattan, NY)"
-                                onChange={(e) => handleChange("experiences", "location", e.target.value, index)} 
-                                value={data[index].location}
+                                onChange={(e) => handleChange("experiences", "location", e.target.value || null, index)} 
+                                value={data[index]?.location ?? ""}
                             />
                         </div>
                     </motion.div>

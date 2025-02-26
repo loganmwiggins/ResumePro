@@ -48,5 +48,12 @@ namespace ResumeProProject.Server.Data.DTOs
             public required Guid resumeId { get; set; }
             public required DateTime CurrentDate { get; set; }
         }
+
+        public class RenameResumeDto
+        {
+            public required Guid resumeId { get; set; }
+            public required DateTime newTime { get; set; }
+            public required string newName { get; set; }
+        }
     }
 }

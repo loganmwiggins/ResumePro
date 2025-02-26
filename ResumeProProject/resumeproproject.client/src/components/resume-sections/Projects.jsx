@@ -9,18 +9,60 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
+    
+            // Swap entries
             [newData[index], newData[index - 1]] = [newData[index - 1], newData[index]];
-            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("projects", newData);
+    
+            // Ensure empty fields are reset to empty strings for the swapped entry
+            Object.keys(newData[index]).forEach((key) => {
+                if (!newData[index][key]) newData[index][key] = "";
+            });
+    
+            Object.keys(newData[index - 1]).forEach((key) => {
+                if (!newData[index - 1][key]) newData[index - 1][key] = "";
+            });
+    
+            // Fix Select options (handle undefined or empty values)
+            newData.forEach((entry) => {
+                if (!entry.jobType) entry.jobType = null;
+                if (!entry.officeType) entry.officeType = null;
+            });
+    
+            // Update order numbers (if necessary)
+            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+    
+            // Trigger state update
+            handleChangeResumeData("projects", [...newData]);
         }
     };
     
     const moveEntryDown = (index) => {
         if (index < data.length - 1) {
             const newData = [...data];
+    
+            // Swap entries
             [newData[index], newData[index + 1]] = [newData[index + 1], newData[index]];
-            newData.forEach((entry, idx) => entry.orderNumber = idx + 1);
-            handleChangeResumeData("projects", newData);
+    
+            // Ensure empty fields are reset to empty strings for the swapped entry
+            Object.keys(newData[index]).forEach((key) => {
+                if (!newData[index][key]) newData[index][key] = "";
+            });
+    
+            Object.keys(newData[index + 1]).forEach((key) => {
+                if (!newData[index + 1][key]) newData[index + 1][key] = "";
+            });
+    
+            // Fix Select options (handle undefined or empty values)
+            newData.forEach((entry) => {
+                if (!entry.jobType) entry.jobType = null;
+                if (!entry.officeType) entry.officeType = null;
+            });
+    
+            // Update order numbers (if necessary)
+            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+    
+            // Trigger state update
+            handleChangeResumeData("projects", [...newData]);
         }
     };
     
