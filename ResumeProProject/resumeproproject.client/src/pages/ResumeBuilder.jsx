@@ -39,44 +39,48 @@ function ResumeBuilder() {
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
 
+    // When user data is available && user is creating a resume, initialize resumeData with default values
     useEffect(() => {
-        // When user data is available, initialize resumeData with default values
-        if (user?.id) {
+        if (user?.id && updateResumeId === undefined) {
             const username = user.firstName.toLowerCase() + user.lastName.toLowerCase();
 
-            // If creating a new resume...
-            if (updateResumeId == undefined) {
-                setResumeData({
-                    id: user.id,
-                    resumeName: "Untitled Document",
-                    currentDate: new Date(),
-                    templateId: templateId,
-                    colorJson: resumeColor,
-                    generalInformation: {
-                        firstName: user.firstName,
-                        middleName: null,
-                        lastName: user.lastName,
-                        email: user.email,
-                        phoneNumber: "(123) 456-7890",
-                        location: "Miami, FL",
-                        role: "Job Title",
-                        websiteUrl: `${username}.com`,
-                        linkedInUrl: `linkedin.com/in/${username}`,
-                        gitHubUrl: null
-                    },
-                    skills: {
-                        skillsDataJson: {}
-                    },
-                    experiences: [],
-                    educations: [],
-                    certifications: [],
-                    projects: []
-                });
-            }
-            // If updating a resume...
-            else { fetchResume(); }
+            setResumeData({
+                id: user.id,
+                resumeName: "Untitled Document",
+                currentDate: new Date(),
+                templateId: templateId,
+                colorJson: resumeColor,
+                generalInformation: {
+                    firstName: user.firstName,
+                    middleName: null,
+                    lastName: user.lastName,
+                    email: user.email,
+                    phoneNumber: "(123) 456-7890",
+                    location: "Miami, FL",
+                    role: "Job Title",
+                    websiteUrl: `${username}.com`,
+                    linkedInUrl: `linkedin.com/in/${username}`,
+                    gitHubUrl: null
+                },
+                skills: {
+                    skillsDataJson: {}
+                },
+                experiences: [],
+                educations: [],
+                certifications: [],
+                projects: []
+            });
         }
-    }, [user]);
+    }, [user, updateResumeId]);
+
+    // Call fetchResume only when updateResumeId is defined and resumeData is null
+    // (prevents redundant API calls)
+    useEffect(() => {
+        if (updateResumeId && !resumeData) {
+            fetchResume();
+        }
+    }, [updateResumeId, resumeData]);
+
 
     // Color logic
     useEffect(() => {

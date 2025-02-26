@@ -116,9 +116,7 @@
     }
 }
 
-.rgb-txt {
-    color: var(--text-3);
-}
+.rgb-txt { color: var(--text-3); }
 
 
 /* BUILD VIEW (RIGHT SIDE) */
