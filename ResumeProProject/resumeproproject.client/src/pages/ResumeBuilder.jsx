@@ -196,14 +196,31 @@ function ResumeBuilder() {
         });
     }
 
+    const handleReorderCategories = (newOrder) => {
+        setResumeData((prevResume) => ({
+            ...prevResume,
+            skills: {
+                ...prevResume.skills,
+                skillsDataJson: { ...newOrder },
+            },
+        }));
+    };
+
     const handleAddSkillCategory = (category) => {
+        category = String(category).trim();
+
+        // Add a prefix if it's a number to prevent JavaScript auto-sorting
+        if (!isNaN(category)) {
+            category = `Category_${category}`;
+        }
+
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (!updatedSkills[category]) {
-                updatedSkills[category] = new Set(); // Use a Set to avoid duplicates
+                updatedSkills[category] = new Set();
             }
-    
+
             return {
                 ...prevResume,
                 skills: {
@@ -545,7 +562,7 @@ function ResumeBuilder() {
                             {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
+                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
                         <div className="build-footer">
