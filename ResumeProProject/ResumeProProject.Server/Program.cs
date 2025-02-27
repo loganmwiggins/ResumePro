@@ -21,6 +21,11 @@ namespace ResumeProProject.Server
             builder.Logging.AddConsole();
             builder.Logging.AddDebug();
             builder.Logging.AddEventSourceLogger();
+            builder.Logging.AddAzureWebAppDiagnostics(); // Enable Azure logging
+
+            // Add Application Insights (Optional, but useful)
+            builder.Services.AddApplicationInsightsTelemetry()
+
             builder.Services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
             builder.Services.AddControllers()
