@@ -27,7 +27,8 @@ public class ChatController : ControllerBase
         {
             // Use GitHub Secret in Prod
             Console.WriteLine("It thinks its in prod");
-            _apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD");
+            _apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD")
+                      ?? Environment.GetEnvironmentVariable("APPSETTING_OPENAI_API_KEY_PROD");
         }
 
         if (string.IsNullOrEmpty(_apiKey))
