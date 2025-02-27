@@ -21,22 +21,9 @@ public class ChatController : ControllerBase
         _httpClient = new HttpClient();
 
         // Hardcoded Dev API Key
-        if (env.IsDevelopment())
-        {
-            Console.WriteLine("this is dev");
-           _apiKey = "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";
-            // Console.WriteLine("this is pre api key", _apiKey);
-            // Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            // Console.WriteLine("this is post api key", _apiKey);
-        }
-        else
-        {
-            // Use GitHub Secret in Prod
-            Console.WriteLine("It thinks its in prod");
-            Console.WriteLine("this is pre api key", _apiKey);
+        
             Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            Console.WriteLine("this is post api key", _apiKey);
-        }
+            System.Diagnostics.Trace.TraceInformation("YOU ARE IN PROD: THIS IS THEY KEY:", _apiKey);
 
         if (string.IsNullOrEmpty(_apiKey))
         {
