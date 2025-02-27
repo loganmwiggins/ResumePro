@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,27 +16,26 @@ public class ChatController : ControllerBase
 {
     private readonly HttpClient _httpClient;
     private string _apiKey;
-    private readonly IConfiguration _configuration;
-    public ChatController(IWebHostEnvironment env, IConfiguration configuration)
+    public ChatController(IWebHostEnvironment env)
     {
         _httpClient = new HttpClient();
-        _configuration = configuration;
 
         // Hardcoded Dev API Key
         if (env.IsDevelopment())
         {
-            _apiKey = "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";
-            //Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            // string? _apiKey = _configuration["OPENAI-API-KEY-PROD"];
-            // Console.WriteLine($"Using API Key: {_apiKey}");
+            Console.WriteLine("this is dev");
+           _apiKey = "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";
+            // Console.WriteLine("this is pre api key", _apiKey);
+            // Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
+            // Console.WriteLine("this is post api key", _apiKey);
         }
         else
         {
             // Use GitHub Secret in Prod
             Console.WriteLine("It thinks its in prod");
-            //_apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD");
-            //Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            string? _apiKey = _configuration["OPENAI-API-KEY-PROD"];
+            Console.WriteLine("this is pre api key", _apiKey);
+            Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
+            Console.WriteLine("this is post api key", _apiKey);
         }
 
         if (string.IsNullOrEmpty(_apiKey))
@@ -122,12 +121,14 @@ public class ChatController : ControllerBase
     {
         try
         {
-            string keyVaultUrl = "https://resumepro-keyvault.vault.azure.net/";
+            var keyVaultUrl = new Uri("https://resumepro-keyvault.vault.azure.net/");
+            var azureCredential = new DefaultAzureCredential();
             string secretName = "OPENAI-API-KEY-PROD";
 
-            var client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+            var client = new SecretClient(keyVaultUrl, azureCredential);
+            Console.WriteLine("this is client azure stuff", client);
             KeyVaultSecret secret = await client.GetSecretAsync(secretName);
-
+            Console.WriteLine("this is secret azure stuff", secret);
             return secret.Value;
         }
         catch (Exception ex)
