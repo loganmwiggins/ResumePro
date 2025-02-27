@@ -107,7 +107,9 @@ public class ChatController : ControllerBase
         try
         {
             var keyVaultUrl = new Uri("https://resumepro-keyvault.vault.azure.net/");
-            var azureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions{ ManagedIdentityClientId = "281d4a9c-eadd-4e75-b6ea-6cb53321ae12" });
+            var azureCredentialOptions = new DefaultAzureCredentialOptions();
+            azureCredentialOptions.SharedTokenCacheUsername = "margaret@vrajsemailgmail.onmicrosoft.com";
+            var azureCredential = new DefaultAzureCredential(azureCredentialOptions);
             string secretName = "OPENAI-API-KEY-PROD";
 
             var client = new SecretClient(keyVaultUrl, azureCredential);
