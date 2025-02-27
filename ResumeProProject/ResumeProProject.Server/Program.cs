@@ -42,7 +42,7 @@ namespace ResumeProProject.Server
             });
 
             // ✅ Determine Database Provider
-            var environment = "Production"; 
+            var environment = builder.Environment.IsProduction() ? "Production" : "Development";
             var config = builder.Configuration;
 
             string connectionString = environment == "Production"
