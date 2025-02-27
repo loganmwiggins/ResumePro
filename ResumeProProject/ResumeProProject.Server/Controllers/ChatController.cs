@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 public class ChatController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiKey;
+    private string _apiKey;
     public ChatController(IWebHostEnvironment env)
     {
         _httpClient = new HttpClient();
