@@ -25,10 +25,10 @@ public class ChatController : ControllerBase
         // Hardcoded Dev API Key
         if (env.IsDevelopment())
         {
-            //_apiKey = "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";
+            _apiKey = "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";
             //Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            string? _apiKey = _configuration["OPENAI-API-KEY-PROD"];
-            Console.WriteLine($"Using API Key: {_apiKey}");
+            // string? _apiKey = _configuration["OPENAI-API-KEY-PROD"];
+            // Console.WriteLine($"Using API Key: {_apiKey}");
         }
         else
         {
