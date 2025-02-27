@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -8,10 +8,6 @@ using ResumeProProject.Server.Data;
 using ResumeProProject.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
-using Microsoft.Extensions.Azure;
 
 namespace ResumeProProject.Server
 {
@@ -45,19 +41,8 @@ namespace ResumeProProject.Server
                 });
             });
 
-            var keyVaultUri = "https://resumepro-keyvault.vault.azure.net/";
-            if (!string.IsNullOrEmpty(keyVaultUri))
-            {
-                builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
-            }
-
-
-
-
-
-
             // ✅ Determine Database Provider
-            var environment = builder.Environment.IsProduction() ? "Production" : "Development";
+            var environment = "Production"; 
             var config = builder.Configuration;
 
             string connectionString = environment == "Production"
@@ -77,13 +62,6 @@ namespace ResumeProProject.Server
             }
 
             Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
-
-            // Inject Key Vault Secrets into Configuration
-            builder.Services.AddAzureClients(clientBuilder =>
-            {
-                clientBuilder.AddSecretClient(new Uri(keyVaultUri))
-                    .WithCredential(new DefaultAzureCredential());
-            });
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
