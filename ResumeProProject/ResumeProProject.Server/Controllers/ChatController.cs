@@ -20,22 +20,8 @@ public class ChatController : ControllerBase
     {
         _httpClient = new HttpClient();
 
-        // Hardcoded Dev API Key
-        if (env.IsDevelopment())
-        {
-            Console.WriteLine("this is dev");
-           // _apiKey = "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";
-            Console.WriteLine("this is pre api key", _apiKey);
-            Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            Console.WriteLine("this is post api key", _apiKey);
-        }
-        else
-        {
-            // Use GitHub Secret in Prod
-            Console.WriteLine("It thinks its in prod");
-            //_apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD");
-            Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-        }
+        Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
+        
 
         if (string.IsNullOrEmpty(_apiKey))
         {
@@ -121,7 +107,7 @@ public class ChatController : ControllerBase
         try
         {
             var keyVaultUrl = new Uri("https://resumepro-keyvault.vault.azure.net/");
-            var azureCredential = new DefaultAzureCredential();
+            var azureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions{ ManagedIdentityClientId = "281d4a9c-eadd-4e75-b6ea-6cb53321ae12" });
             string secretName = "OPENAI-API-KEY-PROD";
 
             var client = new SecretClient(keyVaultUrl, azureCredential);
