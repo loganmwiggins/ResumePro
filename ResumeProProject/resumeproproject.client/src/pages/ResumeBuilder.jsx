@@ -172,22 +172,22 @@ function ResumeBuilder() {
     };
 
     const handleChange = (section, field, value, index = null) => {
-       // console.log(`Updating ${section}[${index}].${field} to:`, value);
+        // console.log(`Updating ${section}[${index}].${field} to:`, value);
         setResumeData((prevResume) => {
             if (index !== null) {
-              return {
-                ...prevResume,
-                [section]: prevResume[section].map((entry, i) =>
-                  i === index ? { ...entry, [field]: value } : entry
-                ),
-              };
+                return {
+                    ...prevResume,
+                    [section]: prevResume[section].map((entry, i) =>
+                        i === index ? { ...entry, [field]: value } : entry
+                    ),
+                };
             }
             return {
-              ...prevResume,
-              [section]: {
-                ...prevResume[section],
-                [field]: value,
-              },
+                ...prevResume,
+                [section]: {
+                    ...prevResume[section],
+                    [field]: value,
+                },
             };
         });
     };
@@ -201,14 +201,31 @@ function ResumeBuilder() {
         });
     }
 
+    const handleReorderCategories = (newOrder) => {
+        setResumeData((prevResume) => ({
+            ...prevResume,
+            skills: {
+                ...prevResume.skills,
+                skillsDataJson: { ...newOrder },
+            },
+        }));
+    };
+
     const handleAddSkillCategory = (category) => {
+        category = String(category).trim();
+
+        // Add a prefix if it's a number to prevent JavaScript auto-sorting
+        if (!isNaN(category)) {
+            category = `Category_${category}`;
+        }
+
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
-    
+
             if (!updatedSkills[category]) {
-                updatedSkills[category] = new Set(); // Use a Set to avoid duplicates
+                updatedSkills[category] = new Set();
             }
-    
+
             return {
                 ...prevResume,
                 skills: {
@@ -218,7 +235,7 @@ function ResumeBuilder() {
             };
         });
     };
-    
+
     const handleAddSkill = (category, skill) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
@@ -239,7 +256,7 @@ function ResumeBuilder() {
                     ...prevResume.skills,
                     skillsDataJson: Object.fromEntries(
                         Object.entries(updatedSkills).map(([key, value]) => [key, [...value]])
-                    ) 
+                    )
                 }
             };
         });
@@ -284,8 +301,8 @@ function ResumeBuilder() {
 
     const handleAddEntry = (section, entry) => {
         setResumeData((prevResume) => ({
-          ...prevResume,
-          [section]: [...prevResume[section], entry],
+            ...prevResume,
+            [section]: [...prevResume[section], entry],
         }));
     };
 
@@ -295,7 +312,7 @@ function ResumeBuilder() {
             [section]: prevResume[section].filter((_, i) => i !== index),
         }));
     };
-    
+
     const handleCancel = () => {
         showToast("Changes were not saved", "warning", "Resume Abandoned");
         navigate("/home");
@@ -359,7 +376,7 @@ function ResumeBuilder() {
                             Object.entries(resumeData.skills.skillsDataJson).map(([key, value]) => [key, [...value]])
                         )
                     )
-                }, 
+                },
                 thumbnail: imgData,
                 colorJson: JSON.stringify(resumeColor)
             };
@@ -373,24 +390,24 @@ function ResumeBuilder() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(processedResumeData),
                 });
-    
+
                 if (!response.ok) {
                     throw new Error(`Failed to create resume. Status: ${response.status}`);
                 }
-    
+
                 const responseText = await response.text(); // Read response as text
-    
+
                 let responseData;
                 try {
                     responseData = JSON.parse(responseText); // Convert to JSON
                 } catch (error) {
                     throw new Error("API did not return valid JSON.");
                 }
-    
+
                 if (!responseData.resumeId) {
                     throw new Error("resumeId is missing in API response.");
                 }
-    
+
                 navigate(`/preview/${responseData.resumeId}`);
             }
             // If updating...
@@ -405,10 +422,10 @@ function ResumeBuilder() {
                     showToast("Failed to update resume.", "error");
                     throw new Error(`Failed to update resume. Status: ${response.status}`);
                 }
-    
+
                 navigate(`/preview/${updateResumeId}`);
             }
-        } 
+        }
         catch (error) {
             console.error("Error:", error);
             showToast(error.message, "error");
@@ -438,15 +455,15 @@ function ResumeBuilder() {
                                             type="button"
                                             className="zoom-btn"
                                             onClick={() => zoomIn()}
-                                            whileTap={{scale: 0.9}}
+                                            whileTap={{ scale: 0.9 }}
                                         >
                                             <img src="/assets/icons/zoom-in.svg" draggable="false" />
                                         </motion.button>
-                                        <motion.button 
+                                        <motion.button
                                             type="button"
-                                            className="zoom-btn" 
+                                            className="zoom-btn"
                                             onClick={() => zoomOut()}
-                                            whileTap={{scale: 0.9}}
+                                            whileTap={{ scale: 0.9 }}
                                         >
                                             <img src="/assets/icons/zoom-out.svg" draggable="false" />
                                         </motion.button>
@@ -454,16 +471,16 @@ function ResumeBuilder() {
                                             type="button"
                                             className="reset-btn"
                                             onClick={() => resetTransform()}
-                                            whileTap={{scale: 0.9}}
+                                            whileTap={{ scale: 0.9 }}
                                         >
                                             Reset
                                         </motion.button>
                                     </div>
                                     <TransformComponent>
-                                        <AllTemplates 
-                                            selectedTemplate={templateId} 
-                                            resumeData={resumeData} 
-                                            builderColor={resumeColor} 
+                                        <AllTemplates
+                                            selectedTemplate={templateId}
+                                            resumeData={resumeData}
+                                            builderColor={resumeColor}
                                         />
                                     </TransformComponent>
                                 </React.Fragment>
@@ -473,10 +490,10 @@ function ResumeBuilder() {
                         {/* Resume actions */}
                         <div className="resume-actions">
                             <div className="actions-div">
-                                <input 
+                                <input
                                     type="text"
                                     placeholder="Name your document!"
-                                    value={resumeData.resumeName} 
+                                    value={resumeData.resumeName}
                                     onChange={(e) => handleNameChange(e.target.value)}
                                     required
                                 />
@@ -493,14 +510,14 @@ function ResumeBuilder() {
                                         <motion.button
                                             type="button"
                                             className="color-btn"
-                                            style={{background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})`}}
+                                            style={{ background: `rgba(${resumeColor.r}, ${resumeColor.g}, ${resumeColor.b}, ${resumeColor.a})` }}
                                             onClick={() => setShowColorPicker(!showColorPicker)}
-                                            whileTap={{scale: 0.8}}
+                                            whileTap={{ scale: 0.8 }}
                                         ></motion.button>
                                     )}
                                     <AnimatePresence>
                                         {showColorPicker && (
-                                            <motion.div 
+                                            <motion.div
                                                 className="color-picker"
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
@@ -515,18 +532,18 @@ function ResumeBuilder() {
                                     </AnimatePresence>
                                 </div>
                             </div>
-                            
+
                             <div className="actions-div">
-                                <motion.button 
-                                    type="button" 
-                                    className="btn btn-outline" 
+                                <motion.button
+                                    type="button"
+                                    className="btn btn-outline"
                                     onClick={handleCancel}
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     <span>Cancel</span>
                                 </motion.button>
-                                <motion.button 
-                                    type="submit" 
+                                <motion.button
+                                    type="submit"
                                     className="btn btn-blue"
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -540,17 +557,17 @@ function ResumeBuilder() {
                     <div className="build-view">
                         {/* Stepper section buttons */}
                         <div className="stepper-ctnr">
-                            <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+                            <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
                         </div>
 
                         {/* Stepper content */}
                         <div className="step-content">
                             {currentStep === 0 && <GeneralInformation data={resumeData.generalInformation} handleChange={handleChange} />}
-                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData}/>}
+                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
                             {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 5 && <Skills data={resumeData.skills} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
+                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
                         <div className="build-footer">
@@ -562,8 +579,8 @@ function ResumeBuilder() {
                             >
                                 <span>Back</span>
                             </motion.button>
-                            
-                            {currentStep != 5 ? 
+
+                            {currentStep != 5 ?
                                 (
                                     <motion.button
                                         type="button"
