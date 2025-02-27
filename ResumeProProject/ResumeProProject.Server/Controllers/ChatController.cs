@@ -7,13 +7,15 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 
 [ApiController]
 [Route("/api/[controller]")]
 public class ChatController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiKey;
+    private string _apiKey;
     public ChatController(IWebHostEnvironment env)
     {
         _httpClient = new HttpClient();
@@ -27,15 +29,16 @@ public class ChatController : ControllerBase
         {
             // Use GitHub Secret in Prod
             Console.WriteLine("It thinks its in prod");
-            _apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD")
-                      ?? Environment.GetEnvironmentVariable("APPSETTING_OPENAI_API_KEY_PROD");
+            //_apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY_PROD");
+            Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
         }
 
         if (string.IsNullOrEmpty(_apiKey))
         {
-            throw new Exception("API key is missing. Check OPENAI_API_KEY_PROD in GitHub Secrets.");
+            //throw new Exception("API key is missing. Check OPENAI_API_KEY_PROD in GitHub Secrets.");
+            throw new Exception("API key is missing. Check Azure Key Vault.");
         }
-        Console.WriteLine($"Using API Key: {_apiKey}");
+        //Console.WriteLine($"Using API Key: {_apiKey}");
         //Console.WriteLine($"Using API Key: {(_apiKey != null ? "Loaded Successfully" : "MISSING!")}");
     }
 
@@ -108,7 +111,24 @@ public class ChatController : ControllerBase
         }
 
         return Content(responseString, "text/plain");
-        //return Content(responseString, "text/plain");
+    }
+    private async Task<string> GetApiKeyFromKeyVault()
+    {
+        try
+        {
+            string keyVaultUrl = "https://resumepro-keyvault.vault.azure.net/";
+            string secretName = "OPENAI-API-KEY-PROD";
+
+            var client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+            KeyVaultSecret secret = await client.GetSecretAsync(secretName);
+
+            return secret.Value;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving API key from Key Vault: {ex.Message}");
+            return null;
+        }
     }
 }
 
