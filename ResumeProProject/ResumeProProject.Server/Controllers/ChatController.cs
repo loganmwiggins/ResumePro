@@ -11,6 +11,8 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Logging;
 using ResumeProProject.Server.Data.Models;
+using Microsoft.Extensions.Configuration;
+using ResumeProProject.Server.Services;
 
 [ApiController]
 [Route("/api/[controller]")]
@@ -19,25 +21,31 @@ public class ChatController : ControllerBase
     private readonly HttpClient _httpClient;
     private readonly ILogger<ChatController> _logger;
     private string _apiKey;
-    public ChatController(IWebHostEnvironment env, ILogger<ChatController> logger)
+    private readonly OpenAIService _openAIService;
+
+    public ChatController(IWebHostEnvironment env, ILogger<ChatController> logger, OpenAIService openAIService)
     {
         _httpClient = new HttpClient();
         _logger = logger;
+        _openAIService = openAIService;
 
-    // Hardcoded Dev API Key
+        if (env.IsDevelopment())
+        {
+            _apiKey = "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";
+        }
+        else
+        {
+            _apiKey = _openAIService.GetApiKey();
+        }
 
-    Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-        _logger.LogInformation("YOU ARE IN PROD: THIS IS THEY KEY:");
-        _logger.LogInformation(_apiKey);
-        System.Diagnostics.Trace.TraceInformation("YOU ARE IN PROD: THIS IS THEY KEY:", _apiKey);
+            _logger.LogInformation("YOU ARE IN PROD!");
 
         if (string.IsNullOrEmpty(_apiKey))
         {
             //throw new Exception("API key is missing. Check OPENAI_API_KEY_PROD in GitHub Secrets.");
             throw new Exception("API key is missing. Check Azure Key Vault.");
         }
-        //Console.WriteLine($"Using API Key: {_apiKey}");
-        //Console.WriteLine($"Using API Key: {(_apiKey != null ? "Loaded Successfully" : "MISSING!")}");
+
     }
 
 

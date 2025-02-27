@@ -8,6 +8,10 @@ using ResumeProProject.Server.Data;
 using ResumeProProject.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
+using ResumeProProject.Server.Services;
 
 namespace ResumeProProject.Server
 {
@@ -58,6 +62,32 @@ namespace ResumeProProject.Server
             {
                 builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString)); // SQL Server
+
+
+                // NEW KEY VAULT STUFF
+                var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
+                var keyVaultClientId = builder.Configuration.GetSection("KeyVault:ClientId");
+                var keyVaultClientSecret = builder.Configuration.GetSection("KeyVault:ClientSecret");
+                var keyVaultDirectoryID = builder.Configuration.GetSection("KeyVault:DirectoryID");
+
+                var credential = new ClientSecretCredential(
+                    keyVaultDirectoryID.Value!.ToString(),
+                    keyVaultClientId.Value!.ToString(),
+                    keyVaultClientSecret.Value!.ToString()
+                );
+
+                builder.Configuration.AddAzureKeyVault(
+                    keyVaultURL.Value!.ToString(),
+                    keyVaultClientId.Value!.ToString(),
+                    keyVaultClientSecret.Value!.ToString(),
+                    new DefaultKeyVaultSecretManager()
+                );
+
+                var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), credential);
+                var _apiKey = client.GetSecret("OPENAI-API-KEY-PROD").Value.Value.ToString();
+                Console.WriteLine(_apiKey);
+                builder.Services.AddSingleton(new OpenAIService(_apiKey)); // Register service
+                //builder.Configuration["OpenAI:ApiKey"] = _apiKey;
 
             }
             else
