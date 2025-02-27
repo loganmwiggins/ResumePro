@@ -42,11 +42,12 @@
   display: flex;
   flex-direction: column;
   text-align: left;
-  gap: 1rem;
+  /* gap: 1rem; */
 
   .resume-view {
     box-shadow: none;
     align-items: start;
+    padding: 1rem 0;
   }
 }
 
@@ -77,6 +78,7 @@
 .feedback-items-ctnr {
   display: flex;
   flex-direction: column;
+  padding: 1rem 0;
   gap: 1rem;
 
   /* Mask image for scroll fade effect */
@@ -172,6 +174,7 @@
   font-size: .85rem;
   min-width: 25rem;
   box-shadow: 0 0 .15rem var(--shadow-3);
+  z-index: 100;
   cursor: default;
 }
 
