@@ -28,17 +28,9 @@ public class ChatController : ControllerBase
         _httpClient = new HttpClient();
         _logger = logger;
         _openAIService = openAIService;
+        _apiKey = _openAIService.GetApiKey();
 
-        if (env.IsDevelopment())
-        {
-            _apiKey = "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";
-        }
-        else
-        {
-            _apiKey = _openAIService.GetApiKey();
-        }
-
-            _logger.LogInformation("YOU ARE IN PROD!");
+        _logger.LogInformation("YOU ARE IN PROD!");
 
         if (string.IsNullOrEmpty(_apiKey))
         {
@@ -117,28 +109,6 @@ public class ChatController : ControllerBase
         }
 
         return Content(responseString, "text/plain");
-    }
-    private async Task<string> GetApiKeyFromKeyVault()
-    {
-        try
-        {
-            var keyVaultUrl = new Uri("https://resumepro-keyvault.vault.azure.net/");
-            var azureCredentialOptions = new DefaultAzureCredentialOptions();
-            azureCredentialOptions.SharedTokenCacheUsername = "margaret@vrajsemailgmail.onmicrosoft.com";
-            var azureCredential = new DefaultAzureCredential(azureCredentialOptions);
-            string secretName = "OPENAI-API-KEY-PROD";
-
-            var client = new SecretClient(keyVaultUrl, azureCredential);
-            Console.WriteLine("this is client azure stuff", client);
-            KeyVaultSecret secret = await client.GetSecretAsync(secretName);
-            Console.WriteLine("this is secret azure stuff", secret);
-            return secret.Value;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving API key from Key Vault: {ex.Message}");
-            return null;
-        }
     }
 }
 

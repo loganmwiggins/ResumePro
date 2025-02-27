@@ -94,6 +94,7 @@ namespace ResumeProProject.Server
             {
                 builder.Services.AddDbContext<AppDbContext>(options =>
                     options.UseNpgsql(connectionString)); // PostgreSQL
+                builder.Services.AddSingleton(new OpenAIService("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"));
             }
 
             Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
