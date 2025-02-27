@@ -9,21 +9,27 @@ using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Logging;
+using ResumeProProject.Server.Data.Models;
 
 [ApiController]
 [Route("/api/[controller]")]
 public class ChatController : ControllerBase
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger<ChatController> _logger;
     private string _apiKey;
-    public ChatController(IWebHostEnvironment env)
+    public ChatController(IWebHostEnvironment env, ILogger<ChatController> logger)
     {
         _httpClient = new HttpClient();
+        _logger = logger;
 
-        // Hardcoded Dev API Key
-        
-            Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
-            System.Diagnostics.Trace.TraceInformation("YOU ARE IN PROD: THIS IS THEY KEY:", _apiKey);
+    // Hardcoded Dev API Key
+
+    Task.Run(async () => _apiKey = await GetApiKeyFromKeyVault()).Wait();
+        _logger.LogInformation("YOU ARE IN PROD: THIS IS THEY KEY:");
+        _logger.LogInformation(_apiKey);
+        System.Diagnostics.Trace.TraceInformation("YOU ARE IN PROD: THIS IS THEY KEY:", _apiKey);
 
         if (string.IsNullOrEmpty(_apiKey))
         {
@@ -109,7 +115,8 @@ public class ChatController : ControllerBase
         try
         {
             var keyVaultUrl = new Uri("https://resumepro-keyvault.vault.azure.net/");
-            var azureCredential = new DefaultAzureCredential();
+            //var azureCredential = new DefaultAzureCredential();
+            var azureCredential = new ManagedIdentityCredential();
             string secretName = "OPENAI-API-KEY-PROD";
 
             var client = new SecretClient(keyVaultUrl, azureCredential);
