@@ -76,6 +76,7 @@
 
     .zoom-btn, .reset-btn {
         background: none;
+        color: var(--text-primary);
         border: none;
         cursor: pointer;
 

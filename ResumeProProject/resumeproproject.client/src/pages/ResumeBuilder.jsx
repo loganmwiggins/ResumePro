@@ -457,7 +457,7 @@ function ResumeBuilder() {
                                             onClick={() => zoomIn()}
                                             whileTap={{ scale: 0.9 }}
                                         >
-                                            <img src="/assets/icons/zoom-in.svg" draggable="false" />
+                                            <img src="/assets/icons/zoom-in.svg" className="icon-dynamic" draggable="false" />
                                         </motion.button>
                                         <motion.button
                                             type="button"
@@ -465,7 +465,7 @@ function ResumeBuilder() {
                                             onClick={() => zoomOut()}
                                             whileTap={{ scale: 0.9 }}
                                         >
-                                            <img src="/assets/icons/zoom-out.svg" draggable="false" />
+                                            <img src="/assets/icons/zoom-out.svg" className="icon-dynamic" draggable="false" />
                                         </motion.button>
                                         <motion.button
                                             type="button"
