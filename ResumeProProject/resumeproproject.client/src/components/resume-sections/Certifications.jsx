@@ -14,11 +14,12 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                console.log(key)
+                if (!newData[index][key] && key != "expireDate") newData[index][key] = "";
             });
     
             Object.keys(newData[index - 1]).forEach((key) => {
-                if (!newData[index - 1][key]) newData[index - 1][key] = "";
+                if (!newData[index - 1][key]  && key != "expireDate") newData[index - 1][key] = "";
             });
     
             // Fix Select options (handle undefined or empty values)
@@ -44,11 +45,11 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                if (!newData[index][key]  && key != "expireDate") newData[index][key] = "";
             });
     
             Object.keys(newData[index + 1]).forEach((key) => {
-                if (!newData[index + 1][key]) newData[index + 1][key] = "";
+                if (!newData[index + 1][key]  && key != "expireDate") newData[index + 1][key] = "";
             });
     
             // Fix Select options (handle undefined or empty values)
@@ -156,7 +157,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                 <input 
                                     type="date" 
                                     onChange={(e) => handleChange("certifications", "issueDate", e.target.value, index)} 
-                                    value={data[index].issueDate}
+                                    value={data[index].issueDate || ""}
                                 />
                             </div>
                             <div className="input-field">
@@ -165,7 +166,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                     type="date" 
                                     min = {data[index].issueDate}
                                     onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
-                                    value={data[index].expireDate}
+                                    value={data[index].expireDate || ""}
                                 />
                             </div>
                         </div>

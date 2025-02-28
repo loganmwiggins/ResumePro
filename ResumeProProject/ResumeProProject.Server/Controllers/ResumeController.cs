@@ -64,7 +64,7 @@ namespace ResumeProProject.Server.Controllers
             if (NewGeneralInformation != null) { _db.GeneralInformation.Add(NewGeneralInformation); await _db.SaveChangesAsync(); }
 
             for (int i = 0; i < request.Educations.Count; i++)
-            {
+            {              
                 var NewEducation = new Education
                 {
                     ResumeId = fetchedResume.ResumeId,

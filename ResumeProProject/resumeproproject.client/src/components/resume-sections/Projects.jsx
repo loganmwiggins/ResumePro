@@ -15,11 +15,11 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                if (!newData[index][key] && key != "endDate") newData[index][key] = "";
             });
     
             Object.keys(newData[index - 1]).forEach((key) => {
-                if (!newData[index - 1][key]) newData[index - 1][key] = "";
+                if (!newData[index - 1][key] && key != "endDate") newData[index - 1][key] = "";
             });
     
             // Fix Select options (handle undefined or empty values)
@@ -45,11 +45,11 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                if (!newData[index][key]) newData[index][key] = "";
+                if (!newData[index][key] && key != "endDate") newData[index][key] = "";
             });
     
             Object.keys(newData[index + 1]).forEach((key) => {
-                if (!newData[index + 1][key]) newData[index + 1][key] = "";
+                if (!newData[index + 1][key] && key != "endDate") newData[index + 1][key] = "";
             });
     
             // Fix Select options (handle undefined or empty values)
