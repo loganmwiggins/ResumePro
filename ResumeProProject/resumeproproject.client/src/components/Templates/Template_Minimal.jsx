@@ -5,9 +5,12 @@ import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_Minimal.css';
 
-function Template_Minimal({ data }) {
+function Template_Minimal({ data, textSize }) {
     return (
-        <div className="resume-paper Template_Minimal">
+        <div 
+            className="resume-paper Template_Minimal"
+            style={{"--scale-factor": textSize}}
+        >
             {/* GENERAL INFORMATION */}
             <header>
                 <div className="header-left">

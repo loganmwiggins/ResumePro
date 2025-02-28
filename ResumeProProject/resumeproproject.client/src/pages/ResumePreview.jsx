@@ -142,7 +142,7 @@ const ResumePreview = () => {
                 transition={{ duration: 0.6, delay: 0.6 }}
             >
                 <div className="resume-preview-wrapper-2" ref={resumeRef}>
-                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={JSON.parse(resumeData.colorJson)}  />
+                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={JSON.parse(resumeData.colorJson)}  />
                 </div>
             </motion.div>
         </div>

@@ -373,7 +373,7 @@ function ResumeInsights() {
                     transition={{ duration: 0.6 }}
                   >
                     <div className="resume-preview-wrapper">
-                      <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={resumeData.colorJson} />
+                      <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeData.colorJson} />
                     </div>
                   </motion.div>
                 </AnimatePresence>

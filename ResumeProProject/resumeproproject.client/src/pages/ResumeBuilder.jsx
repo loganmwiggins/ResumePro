@@ -337,7 +337,7 @@ function ResumeBuilder() {
             // Render AllTemplates inside hidden container
             const root = createRoot(hiddenRef.current);
             root.render(
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={resumeColor} />
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeColor} />
             );
 
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -480,7 +480,7 @@ function ResumeBuilder() {
                                         <AllTemplates
                                             selectedTemplate={templateId}
                                             resumeData={resumeData}
-                                            builderColor={resumeColor}
+                                            color={resumeColor}
                                         />
                                     </TransformComponent>
                                 </React.Fragment>

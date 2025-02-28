@@ -6,11 +6,14 @@ import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_BoldNavy.css';
 
-function Template_BoldNavy({ data, builderColor }) {
+function Template_BoldNavy({ data, color, textSize }) {
     return (
         <div 
             className="resume-paper Template_BoldNavy"
-            style={{"--accent": rgbaToString(builderColor)}}
+            style={{
+                "--accent": rgbaToString(color),
+                "--scale-factor": textSize
+            }}
         >
             {/* HEADER */}
             <div className="resume-header">
