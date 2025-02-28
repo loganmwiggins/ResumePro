@@ -34,8 +34,10 @@ function ResumeBuilder() {
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
     const [resumeColor, setResumeColor] = useState({ r: 0, g: 0, b: 0, a: 1 });
+    const [resumeTextSize, setResumeTextSize] = useState(1);
     const [showColorButton, setShowColorButton] = useState(true);
     const [showColorPicker, setShowColorPicker] = useState(false);
+    const [showSizePicker, setShowSizePicker] = useState(false);
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
     const colorInitialized = useRef(false);
@@ -330,6 +332,14 @@ function ResumeBuilder() {
         else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
     }
 
+    const handleChangeTextSize = (event) => {
+        setResumeTextSize(event.target.value);
+    }
+
+    const handleResetTextSize = () => {
+        setResumeTextSize(1);
+    }
+
     const generateResumeThumbnail = async () => {
         try {
             if (!hiddenRef.current) return null;
@@ -481,6 +491,7 @@ function ResumeBuilder() {
                                             selectedTemplate={templateId}
                                             resumeData={resumeData}
                                             color={resumeColor}
+                                            textSize={resumeTextSize}
                                         />
                                     </TransformComponent>
                                 </React.Fragment>
@@ -528,6 +539,33 @@ function ResumeBuilder() {
                                                 <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
                                                 <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
                                             </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                                <div className="textsize-ctnr">
+                                    <motion.button
+                                        type="button"
+                                        className="textsize-btn"
+                                        onClick={() => setShowSizePicker(!showSizePicker)}
+                                        whileTap={{ scale: 0.8 }}
+                                    >
+                                        <img src="/assets/icons/text.svg" className="icon-dynamic" draggable="false" />
+                                    </motion.button>
+                                    <AnimatePresence>
+                                        {showSizePicker && (
+                                            <div className="textsize-picker">
+                                                <div className="size-txt">{resumeTextSize * 100}%</div>
+                                                <input 
+                                                    type="range"
+                                                    className="textsize-slider"
+                                                    min={.7}
+                                                    max={1} 
+                                                    step={.01}
+                                                    value={resumeTextSize}
+                                                    onChange={handleChangeTextSize}
+                                                />
+                                                <button type="button" className="btn btn-outline" onClick={handleResetTextSize}>Reset to Default</button>
+                                            </div>
                                         )}
                                     </AnimatePresence>
                                 </div>
