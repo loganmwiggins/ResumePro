@@ -11,6 +11,7 @@
 }
 
 .Template_RosyEdge {
+    --scale-factor: 1;
     --column-accent: rgb(255, 210, 210);
     --border-accent: rgb(235, 119, 119);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -19,34 +20,34 @@
 
     /* TEXT */
     h1 {
-        font-size: 1.8rem;
+        font-size: calc(1.8rem * var(--scale-factor));
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: calc(5px * var(--scale-factor));
     }
 
     h2 {
-        font-size: 1.25rem;
+        font-size: calc(1.25rem * var(--scale-factor));
         border-bottom: 1px solid var(--border-accent);
-        padding-bottom: .25rem;
-        margin-bottom: .5rem;
+        padding-bottom: calc(.25rem * var(--scale-factor));
+        margin-bottom: calc(.5rem * var(--scale-factor));
     }
 
     h3 {
-        font-size: 1.1rem;
+        font-size: calc(1.1rem * var(--scale-factor));
         font-weight: bold;
         color: #444;
     }
 
-    ul { padding-left: 1.25rem }
+    ul { padding-left: calc(1.25rem * var(--scale-factor)); }
 
     .subtitle {
-        font-size: 1.1rem;
+        font-size: calc(1.1rem * var(--scale-factor));
         font-weight: normal;
         color: #666;
     }
 
     .date {
-        font-size: 0.9rem;
+        font-size: calc(0.9rem * var(--scale-factor));
         color: #666;
     }
 
@@ -60,23 +61,23 @@
     .left-column, .right-column {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
-        font-size: 1rem;
+        gap: calc(1.25rem * var(--scale-factor));
+        font-size: calc(1rem * var(--scale-factor));
     }
 
     .left-column {
         flex: 1;
-        padding: .75rem;        
+        padding: calc(.75rem * var(--scale-factor));        
         background: var(--column-accent);
     }
 
     .right-column {
         flex: 2;
-        padding: .75rem 0
+        padding: calc(.75rem * var(--scale-factor)) 0;
     }
 
     .entry-head {
-        margin: .5rem 0;
+        margin: calc(.5rem * var(--scale-factor)) 0;
         display: flex;
         justify-content: space-between;
 
@@ -95,7 +96,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 2rem;
+        gap: calc(2rem * var(--scale-factor));
         
         div { text-align: right; }
     }
@@ -105,15 +106,15 @@
     .contact-info {
         display: flex;
         flex-direction: column;
-        gap: .35rem;
+        gap: calc(.35rem * var(--scale-factor));
 
         span {
             display: flex;
-            gap: .5rem;
+            gap: calc(.5rem * var(--scale-factor));
 
             img {
                 opacity: .8;
-                width: 1.15rem;
+                width: calc(1.15rem * var(--scale-factor));
             }
         }
     }
@@ -123,23 +124,24 @@
     .cert-ctnr {
         display: flex;
         flex-direction: column;
-        gap: .5rem;
+        gap: calc(.5rem * var(--scale-factor));
     }
 
-    .cert-item { font-size: 1rem; }
+    .cert-item { font-size: calc(1rem * var(--scale-factor)); }
 
 
     /* SKILLS */
+    .skills-ctnr { gap: calc(.5rem * var(--scale-factor)); }
     .skill-sec {
         display: flex;
         flex-direction: column;
-        gap: .15rem;
+        gap: calc(.15rem * var(--scale-factor));
     }
 
 
     /* EDUCATION */
     .edu-head {
-        margin: .5rem 0 0 0;
+        margin: calc(.5rem * var(--scale-factor)) 0 0 0;
         display: flex;
         justify-content: space-between;
 
