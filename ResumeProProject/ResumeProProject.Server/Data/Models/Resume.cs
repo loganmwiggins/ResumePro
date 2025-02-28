@@ -19,6 +19,8 @@ namespace ResumeProProject.Server.Data.Models
 
         public string ColorJson { get; set; }
 
+        public required double TextSize { get; set; } = 1;
+
         [ForeignKey("User")]
         public required string Id { get; set; } //THIS IS THE USER ID
         [JsonIgnore]

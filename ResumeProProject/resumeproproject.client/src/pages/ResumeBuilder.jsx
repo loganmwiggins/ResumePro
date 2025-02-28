@@ -34,11 +34,14 @@ function ResumeBuilder() {
     const [resumeData, setResumeData] = useState(null);
     const [templateId, setTemplateId] = useState(params.templateId);
     const [resumeColor, setResumeColor] = useState({ r: 0, g: 0, b: 0, a: 1 });
+    const [resumeTextSize, setResumeTextSize] = useState(1);
     const [showColorButton, setShowColorButton] = useState(true);
     const [showColorPicker, setShowColorPicker] = useState(false);
+    const [showSizePicker, setShowSizePicker] = useState(false);
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
     const colorInitialized = useRef(false);
+    const textSizeInitialized = useRef(false);
 
     // When user data is available && user is creating a resume, initialize resumeData with default values
     useEffect(() => {
@@ -51,6 +54,7 @@ function ResumeBuilder() {
                 currentDate: new Date(),
                 templateId: templateId,
                 colorJson: resumeColor,
+                textSize: resumeTextSize,
                 generalInformation: {
                     firstName: user.firstName,
                     middleName: null,
@@ -101,11 +105,28 @@ function ResumeBuilder() {
         }
     }, [templateId]);
 
+    // Text size logic 
+    // useEffect(() => {
+    //     if (updateResumeId == undefined) {
+    //         setShowColorButton(true);
+    //         if (templateColors[templateId]) {
+    //             setResumeColor(templateColors[templateId]);
+    //         }
+    //     }
+    //     else {
+    //         setShowColorButton(templateId !== "minimal");
+    //     }   
+    // })
+
     useEffect(() => {
         if (updateResumeId !== undefined && resumeData) {
             if (!colorInitialized.current) {
                 setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
                 colorInitialized.current = true;
+            }
+            if (!textSizeInitialized.current) {
+                setResumeTextSize(resumeData.textSize || 1);
+                textSizeInitialized.current = true;
             }
         }
     }, [resumeData, updateResumeId]);
@@ -122,7 +143,6 @@ function ResumeBuilder() {
         document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
-
 
 
     const handleChangeResumeData = (section, sectionData) => {
@@ -330,6 +350,15 @@ function ResumeBuilder() {
         else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
     }
 
+    const handleChangeTextSize = (event) => {
+        setResumeTextSize(event.target.value);
+        // console.log(resumeTextSize);
+    }
+
+    const handleResetTextSize = () => {
+        setResumeTextSize(1);
+    }
+
     const generateResumeThumbnail = async () => {
         try {
             if (!hiddenRef.current) return null;
@@ -337,7 +366,7 @@ function ResumeBuilder() {
             // Render AllTemplates inside hidden container
             const root = createRoot(hiddenRef.current);
             root.render(
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} builderColor={resumeColor} />
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeColor} textSize={resumeTextSize} />
             );
 
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -378,7 +407,8 @@ function ResumeBuilder() {
                     )
                 },
                 thumbnail: imgData,
-                colorJson: JSON.stringify(resumeColor)
+                colorJson: JSON.stringify(resumeColor),
+                textSize: resumeTextSize
             };
 
             // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
@@ -480,7 +510,8 @@ function ResumeBuilder() {
                                         <AllTemplates
                                             selectedTemplate={templateId}
                                             resumeData={resumeData}
-                                            builderColor={resumeColor}
+                                            color={resumeColor}
+                                            textSize={resumeTextSize}
                                         />
                                     </TransformComponent>
                                 </React.Fragment>
@@ -528,6 +559,33 @@ function ResumeBuilder() {
                                                 <RgbaColorPicker color={resumeColor} onChange={handleChangeColor} />
                                                 <button type="button" className="btn btn-outline" onClick={handleResetColor}>Reset to Default</button>
                                             </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                                <div className="textsize-ctnr">
+                                    <motion.button
+                                        type="button"
+                                        className="textsize-btn"
+                                        onClick={() => setShowSizePicker(!showSizePicker)}
+                                        whileTap={{ scale: 0.8 }}
+                                    >
+                                        <img src="/assets/icons/text.svg" className="icon-dynamic" draggable="false" />
+                                    </motion.button>
+                                    <AnimatePresence>
+                                        {showSizePicker && (
+                                            <div className="textsize-picker">
+                                                <div className="size-txt">{resumeTextSize * 100}%</div>
+                                                <input 
+                                                    type="range"
+                                                    className="textsize-slider"
+                                                    min={.7}
+                                                    max={1} 
+                                                    step={.01}
+                                                    value={resumeTextSize}
+                                                    onChange={handleChangeTextSize}
+                                                />
+                                                <button type="button" className="btn btn-outline" onClick={handleResetTextSize}>Reset to Default</button>
+                                            </div>
                                         )}
                                     </AnimatePresence>
                                 </div>
