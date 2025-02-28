@@ -21,29 +21,28 @@ function Help() {
             title: "Manage Resumes on the Home Page",
             description: "The Home page is your hub for all things resumes. Create, edit, and manage your existing resumes with ease.",
             images: [
-                // "/assets/images/help/home-1.png",
-                "/assets/images/help/home-2.png",
-                // "/assets/images/help/home-3.png",
+                "/assets/images/help/new-home-4.png",
+                "/assets/images/help/new-home-1.png"
             ]
         },
         {
-            title: "Customize Your Profile",
-            description: `Your Profile page stores all your personal information. 
-                          Here, you can update your username, password, and profile picture. 
-                          Access it anytime via the user dropdown in the top-right corner.`,
-            images: []
+            title: "Create Your Resume in the Builder",
+            description: "The ResumePro Builder is a guided user-interface that helps you fill out your resume every step of the way. Choose a template, color, font size, and perfect your resume!",
+            images: [
+                "/assets/images/help/builder-1.png",
+            ]
         },
         {
-            title: "Get Help from ResumePro AI",
-            description: `Get recommendations on each section of your resume from the ResumePro AI Assistant.`,
+            title: "Get Help from ResumePro Insights",
+            description: "Get recommendations on each section of your resume from the ResumePro AI Assistant.",
             images: ["/assets/images/help/insights-2.png"]
         },
         {
             title: "You're All Set!",
             description: "That’s it! Now you’re ready to start building and managing your resumes like a pro.",
             images: [
-                "/assets/images/help/highlight-1.png",
-                "/assets/images/help/highlight-2.png",
+                "/assets/images/help/highlight-4.png",
+                "/assets/images/help/highlight-5.png",
             ]
         },
     ];    
