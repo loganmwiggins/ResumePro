@@ -351,7 +351,6 @@ function ResumeBuilder() {
 
     const handleChangeTextSize = (event) => {
         setResumeTextSize(event.target.value);
-        // console.log(resumeTextSize);
     }
 
     const handleResetTextSize = () => {
@@ -365,7 +364,12 @@ function ResumeBuilder() {
             // Render AllTemplates inside hidden container
             const root = createRoot(hiddenRef.current);
             root.render(
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeColor} textSize={resumeTextSize} />
+                <AllTemplates 
+                    selectedTemplate={resumeData.templateId}
+                    resumeData={resumeData}
+                    color={resumeColor}
+                    textSize={resumeTextSize} 
+                />
             );
 
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -579,7 +583,7 @@ function ResumeBuilder() {
                                                 exit={{ opacity: 0, y: 10 }}
                                                 transition={{ duration: 0.2, ease: "easeOut" }}
                                             >
-                                                <div className="size-txt">{resumeTextSize * 100}%</div>
+                                                <div className="size-txt">Text Size:&nbsp; {resumeTextSize * 100}%</div>
                                                 <input 
                                                     type="range"
                                                     className="textsize-slider"
