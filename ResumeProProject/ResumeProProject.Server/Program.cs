@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -8,7 +8,10 @@ using ResumeProProject.Server.Data;
 using ResumeProProject.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
+using ResumeProProject.Server.Services;
 
 namespace ResumeProProject.Server
 {
@@ -22,6 +25,11 @@ namespace ResumeProProject.Server
             builder.Logging.AddConsole();
             builder.Logging.AddDebug();
             builder.Logging.AddEventSourceLogger();
+            builder.Logging.AddAzureWebAppDiagnostics(); // Enable Azure logging
+
+            // Add Application Insights (Optional, but useful)
+            builder.Services.AddApplicationInsightsTelemetry();
+
             builder.Services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
             builder.Services.AddControllers()
@@ -44,6 +52,7 @@ namespace ResumeProProject.Server
 
             // ✅ Determine Database Provider
             var environment = builder.Environment.IsProduction() ? "Production" : "Development";
+            //var environment = "Production";
             var config = builder.Configuration;
 
             string connectionString = environment == "Production"
@@ -55,11 +64,38 @@ namespace ResumeProProject.Server
                 builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString)); // SQL Server
 
+
+                // NEW KEY VAULT STUFF
+                var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
+                var keyVaultClientId = builder.Configuration.GetSection("KeyVault:ClientId");
+                var keyVaultClientSecret = builder.Configuration.GetSection("KeyVault:ClientSecret");
+                var keyVaultDirectoryID = builder.Configuration.GetSection("KeyVault:DirectoryID");
+
+                var credential = new ClientSecretCredential(
+                    keyVaultDirectoryID.Value!.ToString(),
+                    keyVaultClientId.Value!.ToString(),
+                    keyVaultClientSecret.Value!.ToString()
+                );
+
+                builder.Configuration.AddAzureKeyVault(
+                    keyVaultURL.Value!.ToString(),
+                    keyVaultClientId.Value!.ToString(),
+                    keyVaultClientSecret.Value!.ToString(),
+                    new DefaultKeyVaultSecretManager()
+                );
+
+                var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), credential);
+                var _apiKey = client.GetSecret("OPENAI-API-KEY-PROD").Value.Value.ToString();
+                Console.WriteLine(_apiKey);
+                builder.Services.AddSingleton(new OpenAIService(_apiKey)); // Register service
+                //builder.Configuration["OpenAI:ApiKey"] = _apiKey;
+
             }
             else
             {
                 builder.Services.AddDbContext<AppDbContext>(options =>
                     options.UseNpgsql(connectionString)); // PostgreSQL
+                builder.Services.AddSingleton(new OpenAIService("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"));
             }
 
             Console.WriteLine($"ASP.NET Environment: {builder.Environment.EnvironmentName}, {environment}");
