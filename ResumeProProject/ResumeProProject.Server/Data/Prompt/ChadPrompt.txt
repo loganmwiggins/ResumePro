@@ -29,12 +29,13 @@ IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE
 
 -------OUTPUT INSTRUCTIONS------------
 Adhere to the following instructions for what your output should look like:
+USE GENDER NUETRAL PRONOUNS SUCH AS THEIR!!!!!!!!!!!
 Format your response like so:
 
 {
   "Overall Score": {
     "score": "81/100",
-    "comments": "Jacob's resume shows strong credentials for the Lead Graphic Designer position he's applying for, with relevant education and experience in the field. However, it could still use some improvements in content depth and ATS optimization."
+    "comments": "Jacob's resume shows strong credentials for the Lead Graphic Designer position they are applying for, with relevant education and experience in the field. However, it could still use some improvements in content depth and ATS optimization."
   },
   "ATS Optimization": {
     "score": "7/10",
@@ -42,34 +43,32 @@ Format your response like so:
   },
   "General Information": {
     "score": "9/10",
-    "comments": "Jacob's contact information is complete and professionally appropriate. His role and location are clearly stated, which further indicates his suitability for the role. The personal website could be a great showcase of his portfolio, which is a plus."
+    "comments": "Jacob's contact information is complete and professionally appropriate. Their role and location are clearly stated, which further indicates their suitability for the role. The personal website could be a great showcase of their portfolio, which is a plus."
   },
   "Experience": {
     "score": "8/10",
-    "comments": "His experience is relevant and displays a progression in duties and responsibilities, which aligns well with the target job of Lead Graphic Designer. However, greater depth in explaining his specific achievements would have been better and quantifying the impacts of his work."
+    "comments": "Their experience is relevant and displays a progression in duties and responsibilities, which aligns well with the target job of Lead Graphic Designer. However, greater depth in explaining their specific achievements would have been better and quantifying the impacts of their work."
   },
   "Education": {
     "score": "8/10",
-    "comments": "Jacob has a strong educational background that is directly related to his chosen profession. Earning a BA in Graphic Design proves he is knowledgeable in the field. However, indicating related academic projects or achievements could have boosted this score."
+    "comments": "Jacob has a strong educational background that is directly related to their chosen profession. Earning a BA in Graphic Design proves they are knowledgeable in the field. However, indicating related academic projects or achievements could have boosted this score."
   },
   "Projects": {
     "score": "7/10",
-    "comments": "The listed project is relevant. However, listing more projects, specifically complex ones that challenged his skills or demonstrated leadership would bring the score up."
+    "comments": "The listed project is relevant. However, listing more projects, specifically complex ones that challenged their skills or demonstrated leadership would bring the score up."
   },
   "Certifications": {
     "score": "9/10",
-    "comments": "His Adobe Certified Expert certification is highly relevant and respected in the industry, which will validate his skills and make him a strong candidate for the role."
+    "comments": "Their Adobe Certified Expert certification is highly relevant and respected in the industry, which will validate their skills and make them a strong candidate for the role."
   },
   "Skills": {
     "score": "8/10",
-    "comments": "Jacob has a sound range of creative and soft skills. To improve this section, he could include more specific proficiency levels for his software skills and technical skills relevant in Graphic Design."
+    "comments": "Jacob has a sound range of creative and soft skills. To improve this section, they could include more specific proficiency levels for their software skills and technical skills relevant in Graphic Design."
   },
   "Completeness": {
     "score": "8/10",
     "comments": "The resume is fundamentally complete, with all major sections covered. More in-depth detail, quantified achievements and showcasing complexity in projects could enhance the document further."
   }
 }
-
-
-ENSURE THE JSON IS PROPERLY FORMATTED!! THIS IS MISSION CRITICAL!
+ENSURE THE JSON IS PROPERLY FORMATTED!! THIS IS MISSION CRITICAL! ALSO NO USAGE OF GENDERED PRONOUNS, USE THE PRONOUN "THEIR" AND/OR USE THEIR NAME, BUT UNDER CIRCUMSTANCES ARE YOU TO USE ANY SORT OF LANGUAGE THAT WOULD ASSUME THE USERS GENDER.
 ----------END OF OUTPUT INSTRUCTIONS--------

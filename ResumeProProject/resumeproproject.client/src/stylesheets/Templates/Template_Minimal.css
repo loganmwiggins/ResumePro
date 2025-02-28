@@ -11,12 +11,13 @@
 }
 
 .Template_Minimal {
+    --scale-factor: 1;
 
     /* LAYOUT */
     section {
         display: flex;
         flex-direction: column;
-        gap: .25rem;
+        gap: calc(.25rem * var(--scale-factor));
     }
     
     .entry-head {
@@ -47,15 +48,17 @@
 
 
     /* TEXT */
-    h1 { font-size: 1.5rem; }
+    h1 { font-size: calc(1.5rem * var(--scale-factor)); }
     section h2 {
-        font-size: 1rem;
+        font-size: calc(1rem * var(--scale-factor));
         border-bottom: 1px solid #555;
     }
 
+    p, h4 { font-size: calc(.9rem * var(--scale-factor)); }
+
     .p-main { font-weight: 700; }
 
-    ul { padding-left: 1.25rem }
+    ul { padding-left: calc(1.25rem * var(--scale-factor)) }
     
     
     /* GENERAL INFO */
@@ -63,14 +66,14 @@
         display: flex;
         align-items: center;
         flex-flow: wrap;
-        gap: 1rem;
+        gap: calc(1rem * var(--scale-factor));
     
         span {
             display: flex;
             align-items: center;
-            gap: .25rem;
+            gap: calc(.25rem * var(--scale-factor));
     
-            img { max-width: 1rem; }
+            img { max-width: calc(1rem * var(--scale-factor)); }
         }
     }
 }

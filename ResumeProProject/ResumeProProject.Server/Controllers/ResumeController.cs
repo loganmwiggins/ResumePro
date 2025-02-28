@@ -35,6 +35,7 @@ namespace ResumeProProject.Server.Controllers
                 Id = request.Id,
                 TemplateId = request.TemplateId,
                 ColorJson = request.ColorJson,
+                TextSize = request.TextSize,
                 Thumbnail = request.Thumbnail // Store Thumbnail
             };
 
@@ -64,7 +65,7 @@ namespace ResumeProProject.Server.Controllers
             if (NewGeneralInformation != null) { _db.GeneralInformation.Add(NewGeneralInformation); await _db.SaveChangesAsync(); }
 
             for (int i = 0; i < request.Educations.Count; i++)
-            {
+            {              
                 var NewEducation = new Education
                 {
                     ResumeId = fetchedResume.ResumeId,
@@ -176,6 +177,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
                 ColorJson = resume.ColorJson,
+                TextSize = resume.TextSize,
                 Thumbnail = resume.Thumbnail,
 
             }).ToList();
@@ -225,6 +227,7 @@ namespace ResumeProProject.Server.Controllers
                 UpdatedDateTime = resume.UpdatedDateTime,
                 TemplateId = resume.TemplateId,
                 ColorJson = resume.ColorJson,
+                TextSize = resume.TextSize,
                 Thumbnail = resume.Thumbnail,
 
                 GeneralInformation = await _db.GeneralInformation
@@ -308,6 +311,7 @@ namespace ResumeProProject.Server.Controllers
             existingResume.UpdatedDateTime = request.updatedDateTime;
             existingResume.TemplateId = request.templateId;
             existingResume.ColorJson = request.colorJson;
+            existingResume.TextSize = request.textSize;
             existingResume.Thumbnail = request.thumbnail;
 
             existingResume.TemplateId = request.templateId;
@@ -465,6 +469,7 @@ namespace ResumeProProject.Server.Controllers
                 Id = existingResume.Id,
                 TemplateId = existingResume.TemplateId,
                 ColorJson = existingResume.ColorJson,
+                TextSize = existingResume.TextSize,
                 Thumbnail = existingResume.Thumbnail // Store Thumbnail
             };
 

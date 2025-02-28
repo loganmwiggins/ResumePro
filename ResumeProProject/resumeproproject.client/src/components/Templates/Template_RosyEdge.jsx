@@ -6,13 +6,14 @@ import { rgbaToString, darkenColor, shiftColorTowards } from '../../utils/ColorF
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_RosyEdge.css';
 
-function Template_RosyEdge({ data, builderColor }) {
+function Template_RosyEdge({ data, color, textSize }) {
     return (
         <div 
             className="resume-paper Template_RosyEdge"
             style={{
-                "--column-accent": rgbaToString(builderColor),
-                "--border-accent": darkenColor(builderColor, 50)
+                "--column-accent": rgbaToString(color),
+                "--border-accent": darkenColor(color, 50),
+                "--scale-factor": textSize
             }}
         >
             {/* HEADER */}

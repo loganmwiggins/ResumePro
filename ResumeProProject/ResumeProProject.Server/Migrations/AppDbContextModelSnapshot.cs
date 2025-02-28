@@ -184,7 +184,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Certifications");
+                    b.ToTable("Certifications", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Education", b =>
@@ -230,7 +230,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Education");
+                    b.ToTable("Education", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Experience", b =>
@@ -279,7 +279,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Experiences");
+                    b.ToTable("Experiences", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.GeneralInformation", b =>
@@ -328,7 +328,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("GeneralInformation");
+                    b.ToTable("GeneralInformation", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Insight", b =>
@@ -348,7 +348,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("Insights");
+                    b.ToTable("Insights", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Project", b =>
@@ -381,7 +381,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Resume", b =>
@@ -405,6 +405,9 @@ namespace ResumeProProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("TextSize")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Thumbnail")
                         .IsRequired()
                         .HasColumnType("text");
@@ -416,7 +419,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Resumes");
+                    b.ToTable("Resumes", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Skills", b =>
@@ -437,7 +440,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>

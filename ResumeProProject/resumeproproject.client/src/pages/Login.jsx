@@ -49,12 +49,12 @@ function Login() {
                     window.location.href = "/home"; // Need to refresh to register cookie
                     showToast("Successful login.", "success");
                 } else {
-                    showToast("Error logging in.", "error");
+                    showToast("Username or password is incorrect.", "error");
                 }
             })
             .catch((error) => {
                 console.error(error);
-                showToast("Error logging in.", "error");
+                showToast("Error logging in. Please try again later.", "error");
             });
     };
 

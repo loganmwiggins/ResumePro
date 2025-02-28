@@ -6,11 +6,14 @@ import { rgbaToString } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_Beeline.css';
 
-function Template_Beeline({ data, builderColor }) {
+function Template_Beeline({ data, color, textSize }) {
     return (
         <div 
             className="resume-paper Template_Beeline"
-            style={{"--accent": rgbaToString(builderColor)}}
+            style={{
+                "--accent": rgbaToString(color),
+                "--scale-factor": textSize
+            }}
         >
             {/* GENERAL INFORMATION */}
             <header className="header">

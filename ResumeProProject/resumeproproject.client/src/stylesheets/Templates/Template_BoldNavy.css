@@ -11,20 +11,21 @@
 }
 
 .Template_BoldNavy {
+    --scale-factor: 1;
     --accent: navy;
-
+    
 
     /* LAYOUT */
     .split-ctnr {
         display: flex;
         align-items: start;
-        gap: 2rem;
+        gap: calc(2rem * var(--scale-factor));
     }
     
     .split-left, .split-right {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: calc(2rem * var(--scale-factor));
     }
     
     .split-left { flex: .5; }
@@ -33,13 +34,13 @@
     section {
         display: flex;
         flex-direction: column;
-        gap: .5rem;
+        gap: calc(.5rem * var(--scale-factor));
     }
 
     .entry-head {
         display: flex;
         justify-content: space-between;
-        margin-bottom: .25rem;
+        margin-bottom: calc(.25rem * var(--scale-factor));
     
         div {
             flex: 1;
@@ -52,11 +53,14 @@
 
 
     /* TEXT */
+    p {
+        font-size: calc(.9rem * var(--scale-factor));
+    }
     .p-sec {
         color: var(--accent);
         border-bottom: 2px solid var(--accent);
-        padding-bottom: .25rem;
-        font-size: 1.1rem;
+        padding-bottom: calc(.25rem * var(--scale-factor));
+        font-size: calc(1.1rem * var(--scale-factor));
         font-weight: 600;
     }
 
@@ -67,18 +71,19 @@
 
     .p-date { font-weight: 600; }
 
-    ul { padding-left: 1.25rem }
+    ul { padding-left: 1.25rem; }
 
 
     /* HEADER */
     .resume-header {
         background: var(--accent);
         color: white;
-        padding: 1rem 2rem;
+        padding: calc(1rem * var(--scale-factor)) calc(2rem * var(--scale-factor));
         display: flex;
         flex-direction: column;
-        gap: .25rem;
+        gap: calc(.25rem * var(--scale-factor));
         
+        h1 { font-size: calc(1.8rem * var(--scale-factor)); }
         p { text-transform: uppercase; }
     }
     
@@ -87,16 +92,16 @@
     .contact-list {
         display: flex;
         flex-direction: column;
-        gap: .25rem;
+        gap: calc(.25rem * var(--scale-factor));
     }
 
     .contact {
         display: flex;
         align-items: center;
-        gap: .5rem;
+        gap: calc(.5rem * var(--scale-factor));
     
         img {
-            max-width: 1rem;
+            max-width: calc(1rem * var(--scale-factor));
             opacity: .9;
         }
     }
@@ -106,6 +111,6 @@
     .skills-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: calc(1rem * var(--scale-factor));
     }
 }

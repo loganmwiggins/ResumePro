@@ -12,6 +12,7 @@ namespace ResumeProProject.Server.Data.DTOs
             public required DateTime CurrentDate { get; set; }
             public required string TemplateId { get; set; }
             public required string ColorJson { get; set; }
+            public required double TextSize { get; set; }
             public string Thumbnail { get; set; } // Base64-encoded image
 
             // One-to-One Relationship
@@ -32,6 +33,7 @@ namespace ResumeProProject.Server.Data.DTOs
             public required DateTime updatedDateTime { get; set; }
             public required string templateId { get; set; }
             public required string colorJson { get; set; }
+            public required double textSize { get; set; }
             public string thumbnail { get; set; } // Base64-encoded image
 
             public required GeneralInformation GeneralInformation { get; set; }
