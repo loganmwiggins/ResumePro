@@ -145,6 +145,7 @@ function ResumeBuilder() {
 
 
     const handleChangeResumeData = (section, sectionData) => {
+        console.log(section.name + "                   " + sectionData)
         setResumeData((prevResume) => ({
             ...prevResume,
             [section]: sectionData,  // Dynamically update the section
@@ -193,6 +194,7 @@ function ResumeBuilder() {
     const handleChange = (section, field, value, index = null) => {
         // console.log(`Updating ${section}[${index}].${field} to:`, value);
         setResumeData((prevResume) => {
+            console.log(section + "  " + index+ "    " +  field + "    " + value + "   ");
             if (index !== null) {
                 return {
                     ...prevResume,
