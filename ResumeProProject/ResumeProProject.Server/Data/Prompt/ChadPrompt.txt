@@ -27,7 +27,6 @@ IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE
 -------END OF GRADING CONSIDERATIONS----
 
 
-
 -------OUTPUT INSTRUCTIONS------------
 Adhere to the following instructions for what your output should look like:
 Format your response like so:
@@ -74,11 +73,3 @@ Format your response like so:
 
 ENSURE THE JSON IS PROPERLY FORMATTED!! THIS IS MISSION CRITICAL!
 ----------END OF OUTPUT INSTRUCTIONS--------
-
-
-
-
-
-
-
-

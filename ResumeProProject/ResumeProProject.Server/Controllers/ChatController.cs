@@ -22,15 +22,17 @@ public class ChatController : ControllerBase
     private readonly ILogger<ChatController> _logger;
     private string _apiKey;
     private readonly OpenAIService _openAIService;
+    private readonly IWebHostEnvironment _env;
 
     public ChatController(IWebHostEnvironment env, ILogger<ChatController> logger, OpenAIService openAIService)
     {
+        _env = env;
         _httpClient = new HttpClient();
         _logger = logger;
         _openAIService = openAIService;
         _apiKey = _openAIService.GetApiKey();
 
-        _logger.LogInformation("YOU ARE IN PROD!");
+        _logger.LogInformation("Environment: " + _env.EnvironmentName);
 
         if (string.IsNullOrEmpty(_apiKey))
         {
@@ -51,7 +53,17 @@ public class ChatController : ControllerBase
         ////stringifiedPayload = stringifiedPayload.Append();
         //string escapedJson = JsonConvert.ToString(stringifiedPayload);
         //string killQuotes = request.Message.Trim('"');
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Prompt", "ChadPrompt.txt");
+        //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Prompt", "ChadPrompt.txt");
+        string basePath = _env.ContentRootPath; // Works for both Dev & Prod
+        string relativePath = Path.Combine("Data", "Prompt", "ChadPrompt.txt");
+        string filePath = Path.Combine(basePath, relativePath);
+
+        if (!System.IO.File.Exists(filePath))
+        {
+            Console.WriteLine($"File Not Found: {filePath}");
+            throw new Exception($"Prompt file is missing: {filePath}");
+        }
+
         string promptText = System.IO.File.ReadAllText(filePath);
         //System.Diagnostics.Debug.WriteLine(promptText);
         string toSend = "";
