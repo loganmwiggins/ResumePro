@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { templates } from '../../utils/TemplateList';
 
-function AllTemplates({ selectedTemplate, resumeData, color, textSize = 1 }) {
+function AllTemplates({ selectedTemplate, resumeData, color, textSize }) {
     const selectedTemplateObj = templates.find(template => template.id === selectedTemplate);
     const resumeContainerRef = useRef(null);
     const [scale, setScale] = useState(1);

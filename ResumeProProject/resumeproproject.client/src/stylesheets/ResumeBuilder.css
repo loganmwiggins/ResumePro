@@ -57,9 +57,7 @@
     width: 100% !important;
     height: 85% !important;
 
-    .resume-paper {
-        border: 1px solid var(--border-1);
-    }
+    .resume-paper { border: 1px solid var(--border-1); }
 }
 
 .zoom-tools {

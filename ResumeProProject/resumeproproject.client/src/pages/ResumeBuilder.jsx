@@ -41,6 +41,7 @@ function ResumeBuilder() {
     const hiddenRef = useRef(null);
     const updateResumeId = params.resumeId;
     const colorInitialized = useRef(false);
+    const textSizeInitialized = useRef(false);
 
     // When user data is available && user is creating a resume, initialize resumeData with default values
     useEffect(() => {
@@ -53,6 +54,7 @@ function ResumeBuilder() {
                 currentDate: new Date(),
                 templateId: templateId,
                 colorJson: resumeColor,
+                textSize: resumeTextSize,
                 generalInformation: {
                     firstName: user.firstName,
                     middleName: null,
@@ -103,11 +105,28 @@ function ResumeBuilder() {
         }
     }, [templateId]);
 
+    // Text size logic 
+    // useEffect(() => {
+    //     if (updateResumeId == undefined) {
+    //         setShowColorButton(true);
+    //         if (templateColors[templateId]) {
+    //             setResumeColor(templateColors[templateId]);
+    //         }
+    //     }
+    //     else {
+    //         setShowColorButton(templateId !== "minimal");
+    //     }   
+    // })
+
     useEffect(() => {
         if (updateResumeId !== undefined && resumeData) {
             if (!colorInitialized.current) {
                 setResumeColor(JSON.parse(resumeData.colorJson) || { r: 0, g: 0, b: 0, a: 1 });
                 colorInitialized.current = true;
+            }
+            if (!textSizeInitialized.current) {
+                setResumeTextSize(resumeData.textSize || 1);
+                textSizeInitialized.current = true;
             }
         }
     }, [resumeData, updateResumeId]);
@@ -124,7 +143,6 @@ function ResumeBuilder() {
         document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
-
 
 
     const handleChangeResumeData = (section, sectionData) => {
@@ -334,6 +352,7 @@ function ResumeBuilder() {
 
     const handleChangeTextSize = (event) => {
         setResumeTextSize(event.target.value);
+        // console.log(resumeTextSize);
     }
 
     const handleResetTextSize = () => {
@@ -347,7 +366,7 @@ function ResumeBuilder() {
             // Render AllTemplates inside hidden container
             const root = createRoot(hiddenRef.current);
             root.render(
-                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeColor} />
+                <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeColor} textSize={resumeTextSize} />
             );
 
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -388,7 +407,8 @@ function ResumeBuilder() {
                     )
                 },
                 thumbnail: imgData,
-                colorJson: JSON.stringify(resumeColor)
+                colorJson: JSON.stringify(resumeColor),
+                textSize: resumeTextSize
             };
 
             // console.log("Sending Data: ", JSON.stringify(processedResumeData, null, 2));
