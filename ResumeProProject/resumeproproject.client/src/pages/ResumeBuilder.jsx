@@ -105,19 +105,6 @@ function ResumeBuilder() {
         }
     }, [templateId]);
 
-    // Text size logic 
-    // useEffect(() => {
-    //     if (updateResumeId == undefined) {
-    //         setShowColorButton(true);
-    //         if (templateColors[templateId]) {
-    //             setResumeColor(templateColors[templateId]);
-    //         }
-    //     }
-    //     else {
-    //         setShowColorButton(templateId !== "minimal");
-    //     }   
-    // })
-
     useEffect(() => {
         if (updateResumeId !== undefined && resumeData) {
             if (!colorInitialized.current) {
@@ -137,6 +124,18 @@ function ResumeBuilder() {
         const handleClickOutside = (event) => {
             if (!event.target.closest(".color-picker-ctnr")) {
                 setShowColorPicker(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
+    // Close text size picker when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".textsize-ctnr")) {
+                setShowSizePicker(false);
             }
         };
 
@@ -573,7 +572,13 @@ function ResumeBuilder() {
                                     </motion.button>
                                     <AnimatePresence>
                                         {showSizePicker && (
-                                            <div className="textsize-picker">
+                                            <motion.div 
+                                                className="textsize-picker"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                            >
                                                 <div className="size-txt">{resumeTextSize * 100}%</div>
                                                 <input 
                                                     type="range"
@@ -585,7 +590,7 @@ function ResumeBuilder() {
                                                     onChange={handleChangeTextSize}
                                                 />
                                                 <button type="button" className="btn btn-outline" onClick={handleResetTextSize}>Reset to Default</button>
-                                            </div>
+                                            </motion.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
