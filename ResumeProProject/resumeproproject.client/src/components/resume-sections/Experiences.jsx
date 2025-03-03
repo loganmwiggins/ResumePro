@@ -7,18 +7,12 @@ import { formatDate } from '../../utils/DateFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Experiences({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
-   console.log(data)
+function Experiences({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
    const swapAttributes = (entryA, entryB) => {
     Object.keys(entryA).forEach((key) => {
-        console.log("-------------------------------------")
-        console.log(key + "  ENTRY A KEY: " + entryA[key])
-        console.log(key + "  ENTRY B KEY: " + entryB[key])
         let temp = entryA[key];
         entryA[key] = entryB[key];
         entryB[key] = temp;
-        console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
-        console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
     });
 };
 
@@ -115,7 +109,7 @@ const moveEntryDown = (index) => {
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("experiences", index)}
+                                    onClick={() => confirmRemoveEntry("experiences", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>

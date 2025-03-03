@@ -49,12 +49,9 @@ function AuthorizeView({ children }) {
         fetchWithRetry("/pingauth", { method: "GET" })
             .catch(error => console.log(error.message))
             .finally(() => setLoading(false));
-
     }, []);
 
-    if (loading) {
-        return <div className="loading-spinner"></div>;
-    }
+    if (loading) return <div className="loading-spinner"></div>;
 
     return authorized ? (
         <UserContext.Provider value={user}>{children}</UserContext.Provider>
