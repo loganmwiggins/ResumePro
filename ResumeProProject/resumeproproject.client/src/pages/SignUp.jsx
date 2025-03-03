@@ -86,7 +86,7 @@ function SignUp() {
             <div className="login-modal">
                 {/* GRAPHIC SIDE */}
                 <div className="graphic-ctnr">
-                    <img src="assets/images/resume-1.webp" draggable="false" />
+                    <img src="assets/images/help/highlight-2.png" draggable="false" />
                 </div>
 
                 {/* FORM SIDE */}

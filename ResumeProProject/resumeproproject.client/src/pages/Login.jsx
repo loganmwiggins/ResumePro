@@ -49,12 +49,12 @@ function Login() {
                     window.location.href = "/home"; // Need to refresh to register cookie
                     showToast("Successful login.", "success");
                 } else {
-                    showToast("Error logging in.", "error");
+                    showToast("Username or password is incorrect.", "error");
                 }
             })
             .catch((error) => {
                 console.error(error);
-                showToast("Error logging in.", "error");
+                showToast("Error logging in. Please try again later.", "error");
             });
     };
 
@@ -63,7 +63,7 @@ function Login() {
             <div className="login-modal">
                 {/* GRAPHIC SIDE */}
                 <div className="graphic-ctnr">
-                    <img src="assets/images/resume-2.webp" draggable="false" />
+                    <img src="assets/images/help/highlight-1.png" draggable="false" />
                 </div>
 
                 {/* FORM SIDE */}
