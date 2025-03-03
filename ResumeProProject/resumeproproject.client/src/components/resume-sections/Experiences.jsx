@@ -8,17 +8,11 @@ import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
 function Experiences({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
-   console.log(data)
    const swapAttributes = (entryA, entryB) => {
     Object.keys(entryA).forEach((key) => {
-        console.log("-------------------------------------")
-        console.log(key + "  ENTRY A KEY: " + entryA[key])
-        console.log(key + "  ENTRY B KEY: " + entryB[key])
         let temp = entryA[key];
         entryA[key] = entryB[key];
         entryB[key] = temp;
-        console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
-        console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
     });
 };
 

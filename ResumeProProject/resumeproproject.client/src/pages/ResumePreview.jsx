@@ -86,13 +86,10 @@ const ResumePreview = () => {
             })
             .from(element)
             .save()
-            .then(() => {
-                console.log("PDF Download Complete");
-            });
+            .then(() => { console.log("PDF Download Complete"); });
     };
 
     const handleInsights = () => navigate(`/insights/${resumeId}`);
-
 
 
     if (!resumeData) return <div className="loading-spinner"></div>;

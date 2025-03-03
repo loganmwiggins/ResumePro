@@ -14,7 +14,6 @@ function Certifications({ data, handleChange, handleAddEntry, confirmRemoveEntry
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                console.log(key)
                 if (!newData[index][key] && key != "expireDate") newData[index][key] = "";
             });
     

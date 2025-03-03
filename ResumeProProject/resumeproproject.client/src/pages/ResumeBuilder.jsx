@@ -146,7 +146,6 @@ function ResumeBuilder() {
 
 
     const handleChangeResumeData = (section, sectionData) => {
-        console.log(section.name + "                   " + sectionData)
         setResumeData((prevResume) => ({
             ...prevResume,
             [section]: sectionData,  // Dynamically update the section
@@ -193,9 +192,7 @@ function ResumeBuilder() {
     };
 
     const handleChange = (section, field, value, index = null) => {
-        // console.log(`Updating ${section}[${index}].${field} to:`, value);
         setResumeData((prevResume) => {
-            console.log(section + "  " + index+ "    " +  field + "    " + value + "   ");
             if (index !== null) {
                 return {
                     ...prevResume,
@@ -493,22 +490,19 @@ function ResumeBuilder() {
                     body: JSON.stringify(processedResumeData),
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Failed to create resume. Status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Failed to create resume. Status: ${response.status}`);
 
                 const responseText = await response.text(); // Read response as text
 
                 let responseData;
                 try {
                     responseData = JSON.parse(responseText); // Convert to JSON
-                } catch (error) {
+                } 
+                catch (error) {
                     throw new Error("API did not return valid JSON.");
                 }
 
-                if (!responseData.resumeId) {
-                    throw new Error("resumeId is missing in API response.");
-                }
+                if (!responseData.resumeId) throw new Error("resumeId is missing in API response.");
 
                 navigate(`/preview/${responseData.resumeId}`);
             }
@@ -743,7 +737,17 @@ function ResumeBuilder() {
                 </form>
 
                 {/*Hidden container for thumbnail generation */}
-                <div ref={hiddenRef} style={{ position: "absolute", left: "-9999px", width: "800px", height: "1100px", overflow: "hidden", backgroundColor: "white" }} />
+                <div 
+                    ref={hiddenRef} 
+                    style={{ 
+                        position: "absolute", 
+                        left: "-9999px", 
+                        width: "800px", 
+                        height: "1100px", 
+                        overflow: "hidden", 
+                        backgroundColor: "white" 
+                    }} 
+                />
             </AuthorizeView>
         );
     }

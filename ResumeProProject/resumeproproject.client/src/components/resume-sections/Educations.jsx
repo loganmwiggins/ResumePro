@@ -14,29 +14,20 @@ function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,han
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                // console.log("KEY VAL" + key.value);
-                 if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){console.log("GPA IS:    " + newData[index][key])}
                 if(newData[index][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 } else if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){
-                    console.log("UP IM HERE selected");
                     newData[index][key] = null; // Set GPA to null if it's undefined
-                    // console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index][key]) newData[index][key] = "";
-              //  console.log("KEY NAME:  " + key + "  " + "|" + newData[index][key] + "|");
-                // console.log(newData[index][key])
             });
     
             Object.keys(newData[index - 1]).forEach((key) => {
                 if(newData[index-1][key] === null){
                     return;
                 }else if(key === "gpa" && isNaN(Number.parseFloat(newData[index-1][key]))){
-                    console.log("UP IM HERE below");
                     newData[index-1][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index - 1][key]) newData[index - 1][key] = "";
@@ -61,13 +52,10 @@ function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,han
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
                 if(newData[index][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 }
                 else if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){
-                    console.log(" DOWN IM HERE selected");
                     newData[index][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index][key]) newData[index][key] = "";
@@ -75,13 +63,10 @@ function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,han
     
             Object.keys(newData[index + 1]).forEach((key) => {
                 if(newData[index + 1][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 }
                 else if(key === "gpa" && isNaN(Number.parseFloat(newData[index + 1][key]))){
-                    console.log("DOWN IM HERE above");
                     newData[index + 1][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index + 1][key]) newData[index + 1][key] = "";
@@ -201,7 +186,6 @@ function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,han
                                     max={4.0}
                                     step="0.01"
                                     onChange={(e) => {
-                                        console.log(e.target.value)
                                         if(e.target.value === "" || null || undefined){
                                             handleChange("educations","gpa",null,index)
                                         }else{

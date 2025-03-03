@@ -178,9 +178,6 @@ function Home() {
 
     const handleRenameResume = async (resumeId, currentName, event, newName = null) => {
         event.stopPropagation();
-        //  event.stopPropagation(); // Prevent parent click events from triggering
-        // event.preventDefault();
-        console.log("IM HERE");
         if (quickRename?.resumeId === resumeId && quickRename.newName != null ) {
             newName = quickRename.newName;
             // If already in rename mode and Enter is pressed, confirm rename
@@ -207,9 +204,9 @@ function Home() {
             } finally {
                 setQuickRename(null); // Exit rename mode
             }
-        } else {
-            // Enter rename mode
-            setQuickRename({ resumeId, newName: currentName });
+        } 
+        else {
+            setQuickRename({ resumeId, newName: currentName }); // Enter rename mode
         }
     };
 

@@ -157,7 +157,6 @@ function ResumeInsights() {
   const getAIAnalysis = async(resumeJson) => {
     try {
       const resumeJsonNoThumbnail = { ...resumeJson, thumbnail: "" };
-      console.log("NO thumbnail:", resumeJsonNoThumbnail);
 
       const response = await fetch(`${API_BASE_URL}/api/Chat/ScoreResume`, {
         method: 'POST',
