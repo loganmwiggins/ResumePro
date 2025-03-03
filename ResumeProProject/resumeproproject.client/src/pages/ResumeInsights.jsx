@@ -234,35 +234,35 @@ function ResumeInsights() {
   // Helper function to confirm and delete insight
   const confirmDelete = (resumeId) => {
     confirmAlert({
-        customUI: ({ onClose }) => {
-            return (
-              <div className="custom-alert">
-                <div className="alert-header">
-                  <h3>Are you sure you want to reanalyze your resume?</h3>
-                  <p>The current AI insights will be deleted and cannot be recovered. You will still be able to generate a new analysis.</p>
-                </div>
-                
-                <div className="alert-btns">
-                  <button 
-                    className="btn btn-outline"
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="btn btn-blue"
-                    onClick={() => {
-                      deleteInsight(resumeId);
-                      onClose();
-                    }}
-                  >
-                    Reanalyze
-                  </button>
-                </div>
-              </div>
-            );
-        }
-    })
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-alert">
+            <div className="alert-header">
+              <h3>Are you sure you want to reanalyze your resume?</h3>
+              <p>The current AI insights will be deleted and cannot be recovered. You will still be able to generate a new analysis.</p>
+            </div>
+            
+            <div className="alert-btns">
+              <button 
+                className="btn btn-outline"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => {
+                  deleteInsight(resumeId);
+                  onClose();
+                }}
+              >
+                Reanalyze
+              </button>
+            </div>
+          </div>
+        );
+      }
+    });
   }
 
   const deleteInsight = async(resumeId) => {

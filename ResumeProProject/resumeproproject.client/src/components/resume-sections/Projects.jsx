@@ -5,7 +5,7 @@ import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+function Projects({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -120,7 +120,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("projects", index)}
+                                    onClick={() => confirmRemoveEntry("projects", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>

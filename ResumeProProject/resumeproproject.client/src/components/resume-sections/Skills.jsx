@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Skills({ data, handleReorderCategories, handleAddSkillCategory, handleRemoveSkillCategory, handleAddSkill, handleRemoveSkill }) {
+function Skills({ data, handleReorderCategories, handleAddSkillCategory, confirmRemoveSkillCategory, handleAddSkill, handleRemoveSkill }) {
 
     const moveCategoryUp = (index) => {
         const categories = Object.entries(data.skillsDataJson).map(([key, value]) => [String(key), value]);
@@ -101,7 +101,7 @@ function Skills({ data, handleReorderCategories, handleAddSkillCategory, handleR
                                     type="button"
                                     title="Delete this category and its skills"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveSkillCategory(category)}
+                                    onClick={() => confirmRemoveSkillCategory(category)}
                                 >
                                     <img src="/assets/icons/trash.svg" className="icon-dynamic" />
                                 </button>

@@ -4,49 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,handleChangeResumeData}) {
-
-    // const swapAttributes = (entryA, entryB) => {
-    //     Object.keys(entryA).forEach((key) => {
-    //         console.log("-------------------------------------")
-    //         console.log(key + "  ENTRY A KEY: " + entryA[key])
-    //         console.log(key + "  ENTRY B KEY: " + entryB[key])
-    //         let temp = entryA[key];
-    //         entryA[key] = entryB[key];
-    //         entryB[key] = temp;
-    //         console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
-    //         console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
-    //     });
-    // };
-    
-    // const moveEntryUp = (index) => {
-    //     if (index > 0) {
-    //         const newData = [...data];
-            
-    
-    //         // Swap attributes instead of objects
-    //         swapAttributes(newData[index], newData[index - 1]);
-    
-    //         // Update order numbers
-    //         newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-    //         handleChangeResumeData("educations", [...newData]);
-    //     }
-    // };
-    
-    // const moveEntryDown = (index) => {
-    //     if (index < data.length - 1) {
-    //         const newData = [...data];
-    
-    //         // Swap attributes instead of objects
-    //         swapAttributes(newData[index], newData[index + 1]);
-    
-    //         // Update order numbers
-    //         newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-    //         handleChangeResumeData("educations", [...newData]);
-    //     }
-    // };
+function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -196,7 +154,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("educations", index)}
+                                    onClick={() => confirmRemoveEntry("educations", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>

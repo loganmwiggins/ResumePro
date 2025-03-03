@@ -258,7 +258,7 @@ function Home() {
                     </div>
                 );
             }
-        })
+        });
     }
 
     const handleDeleteResume = async (resumeId) => {

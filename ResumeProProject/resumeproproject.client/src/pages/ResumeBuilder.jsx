@@ -5,6 +5,7 @@ import html2canvas from 'html2canvas';
 import { createRoot } from 'react-dom/client';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { RgbaColorPicker } from 'react-colorful';
+import { confirmAlert } from 'react-confirm-alert';
 
 import { API_BASE_URL } from '../utils/BaseUrl';
 import AuthorizeView from '../components/AuthorizeView';
@@ -283,6 +284,39 @@ function ResumeBuilder() {
         });
     };
 
+    const confirmRemoveSkillCategory = (category) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Remove this skill category?</h3>
+                            <p>{`This category and all associated skills will be removed.`}</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleRemoveSkillCategory(category);
+                                    onClose();
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
+
     const handleRemoveSkillCategory = (category) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
@@ -326,6 +360,39 @@ function ResumeBuilder() {
             [section]: [...prevResume[section], entry],
         }));
     };
+
+    const confirmRemoveEntry = (section, index) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Remove this entry?</h3>
+                            <p>{`This ${section} entry and its associated details will be removed.`}</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleRemoveEntry(section, index);
+                                    onClose();
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
 
     const handleRemoveEntry = (section, index) => {
         setResumeData((prevResume) => ({
@@ -632,11 +699,11 @@ function ResumeBuilder() {
                         {/* Stepper content */}
                         <div className="step-content">
                             {currentStep === 0 && <GeneralInformation data={resumeData.generalInformation} handleChange={handleChange} />}
-                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
+                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} confirmRemoveSkillCategory={confirmRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
                         <div className="build-footer">

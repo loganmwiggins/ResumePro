@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+function Certifications({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -125,7 +125,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("certifications", index)}
+                                    onClick={() => confirmRemoveEntry("certifications", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>
