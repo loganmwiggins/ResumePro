@@ -1,13 +1,16 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { API_BASE_URL } from '../utils/BaseUrl';
-import '../stylesheets/ResumeInsights.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import AllTemplates from "../components/templates/AllTemplates";
 import AuthorizeView from '../components/AuthorizeView';
+import { API_BASE_URL } from '../utils/BaseUrl';
 import { showToast } from '../utils/Toast';
 import { loadingMessages } from '../utils/Messages';
-//import { BoxesLoader } from "react-awesome-loaders";
-import AllTemplates from "../components/templates/AllTemplates";
+import '../stylesheets/ResumeInsights.css';
+
 
 function ResumeInsights() {
   const navigate = useNavigate();
@@ -228,10 +231,41 @@ function ResumeInsights() {
     }
   }
 
-  // Helper function to delete insight
-  const deleteInsight = async(resumeId) => {
-    if (!window.confirm("Are you sure you want to re-analyze? The current suggestions will be deleted.")) return;
+  // Helper function to confirm and delete insight
+  const confirmDelete = (resumeId) => {
+    confirmAlert({
+        customUI: ({ onClose }) => {
+            return (
+              <div className="custom-alert">
+                <div className="alert-header">
+                  <h3>Are you sure you want to reanalyze your resume?</h3>
+                  <p>The current AI insights will be deleted and cannot be recovered. You will still be able to generate a new analysis.</p>
+                </div>
+                
+                <div className="alert-btns">
+                  <button 
+                    className="btn btn-outline"
+                    onClick={onClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-blue"
+                    onClick={() => {
+                      deleteInsight(resumeId);
+                      onClose();
+                    }}
+                  >
+                    Reanalyze
+                  </button>
+                </div>
+              </div>
+            );
+        }
+    })
+  }
 
+  const deleteInsight = async(resumeId) => {
     const response = await fetch(`${API_BASE_URL}/api/Insight/DeleteInsight/${resumeId}`,
     {
         method: 'DELETE',
@@ -265,7 +299,7 @@ function ResumeInsights() {
               <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
               <span>{showResume ? "Hide" : "Show"} Resume</span>
             </button>
-            <button type="button" className="btn btn-black" onClick={() => deleteInsight(resumeId)}>
+            <button type="button" className="btn btn-black" onClick={() => confirmDelete(resumeId)}>
                 <img src="/assets/icons/sparkles.svg" draggable="false" />
                 <span>Reanalyze</span>
             </button>
@@ -303,17 +337,16 @@ function ResumeInsights() {
       )}
 
       <div className="resume-insights-ctnr">
-              {analysisLoading && (
-                  <div className="loader-center">
-                      <div className="loading-message">
-                          <span>{loadingMessages[loadingMessageIndex]}</span>
-                      </div>
-                      <Suspense fallback={<div>Loading animation...</div>}>
-                          <LazyBoxesLoader boxColor={"#2c6fff"} size={"100px"} />
-                      </Suspense>
-                  </div>
-              )}
-
+        {analysisLoading && (
+            <div className="loader-center">
+              <div className="loading-message">
+                <span>{loadingMessages[loadingMessageIndex]}</span>
+              </div>
+              <Suspense fallback={<div>Loading animation...</div>}>
+                <LazyBoxesLoader boxColor={"#2c6fff"} size={"100px"} />
+              </Suspense>
+            </div>
+        )}
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -373,7 +406,12 @@ function ResumeInsights() {
                     transition={{ duration: 0.6 }}
                   >
                     <div className="resume-preview-wrapper">
-                      <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={resumeData.colorJson} textSize={resumeData.textSize} />
+                      <AllTemplates 
+                        selectedTemplate={resumeData.templateId} 
+                        resumeData={resumeData} 
+                        color={resumeData.colorJson} 
+                        textSize={resumeData.textSize} 
+                      />
                     </div>
                   </motion.div>
                 </AnimatePresence>

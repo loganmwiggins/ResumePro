@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Select from 'react-select';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import AuthorizeView from '../components/AuthorizeView';
 import { useUser } from '../context/UserContext';
@@ -224,11 +226,42 @@ function Home() {
     }
 
     // Delete resume
-    const handleDeleteResume = async (resumeId, event) => {
+    const confirmDelete = (resumeId, event) => {
         event.stopPropagation();
 
-        if (!window.confirm('Are you sure you want to delete this resume?')) return;
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Are you sure you want to delete this resume?</h3>
+                            <p>This action cannot be undone. Your resume and all associated details will be permanently deleted.</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleDeleteResume(resumeId);
+                                    onClose();
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        })
+    }
 
+    const handleDeleteResume = async (resumeId) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/Resume/DeleteResume/${resumeId}`,
             {
@@ -397,7 +430,7 @@ function Home() {
                                                                 <button 
                                                                     title="Delete Resume"
                                                                     onClick={(event) =>
-                                                                        handleDeleteResume(resume.resumeId, event)
+                                                                        confirmDelete(resume.resumeId, event)
                                                                     }
                                                                 >
                                                                     <img src="assets/icons/trash.svg" className="icon-dynamic" draggable="false" />
