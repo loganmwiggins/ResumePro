@@ -33,6 +33,7 @@ The following dependencies power ResumePro:
 - `dompurify` (for input sanitization)
 - `react-awesome-loaders` (for 3d animations)
 - `react-zoom-pan-pinch` (for resume zoom functionality)
+- `react-confirm-alert` (for custom confirm alert modals)
 
 ### Back-end:
 - `ASP.NET Core`
