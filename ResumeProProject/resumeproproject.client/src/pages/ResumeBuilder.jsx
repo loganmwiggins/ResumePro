@@ -398,8 +398,41 @@ function ResumeBuilder() {
         }));
     };
 
+    const confirmCancel = () => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Are you sure you want to leave this page?</h3>
+                            <p>Your changes to this resume will not be saved.</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Stay & Continue Editing
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleCancel();
+                                    onClose();
+                                }}
+                            >
+                                Leave
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
+
     const handleCancel = () => {
-        showToast("Changes were not saved", "warning", "Resume Abandoned");
+        showToast("Changes were not saved.", "warning", "Resume Abandoned");
         navigate("/home");
     }
 
@@ -667,7 +700,7 @@ function ResumeBuilder() {
                                 <motion.button
                                     type="button"
                                     className="btn btn-outline"
-                                    onClick={handleCancel}
+                                    onClick={confirmCancel}
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     <span>Cancel</span>
