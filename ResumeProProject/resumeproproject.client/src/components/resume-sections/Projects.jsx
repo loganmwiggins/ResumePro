@@ -148,11 +148,11 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                             </div>
                             <div className="input-field">
                                 <label>End Date</label>
-                                <input 
+                                 <input 
                                     type="date" 
-                                    min = {data[index].startDate}
-                                    onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
-                                    value={data[index].endDate}
+                                    min={data[index].startDate}
+                                    onChange={(e) => handleChange("projects", "endDate", e.target.value || null, index)} 
+                                    value={data[index].endDate ?? ""} // Ensure empty string for UI, but send null in logic
                                 />
                             </div>
                         </div>
