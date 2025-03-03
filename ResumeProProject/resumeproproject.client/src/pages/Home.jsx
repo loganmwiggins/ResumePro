@@ -421,7 +421,7 @@ function Home() {
                                         title="No resumes yet. Click to create one!"
                                         onClick={handleNewResume}
                                     >
-                                        <img src="assets/icons/plus.svg" draggable="false" />
+                                        <img src="assets/icons/plus.svg" className="icon-dynamic" draggable="false" />
                                         <p>Create a Resume</p>
                                     </div>
                                 )}
