@@ -399,15 +399,6 @@ function Home() {
                                                                 >
                                                                     <img src="assets/icons/text-box-edit.svg" className="icon-dynamic" draggable="false" />
                                                                 </button>
-
-                                                                <button 
-                                                                    title="AI Insights"
-                                                                    onClick={(event) =>
-                                                                        handleInsights(resume.resumeId, event)
-                                                                    }
-                                                                >
-                                                                    <img src="assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
-                                                                </button>
                                                                 <button 
                                                                     title="Duplicate Resume"
                                                                     onClick={(event) =>
@@ -415,6 +406,14 @@ function Home() {
                                                                     }
                                                                 >
                                                                     <img src="assets/icons/duplicate.svg" className="icon-dynamic" draggable="false" />
+                                                                </button>
+                                                                <button 
+                                                                    title="AI Insights"
+                                                                    onClick={(event) =>
+                                                                        handleInsights(resume.resumeId, event)
+                                                                    }
+                                                                >
+                                                                    <img src="assets/icons/sparkles.svg" className="icon-dynamic" draggable="false" />
                                                                 </button>
                                                                 <button 
                                                                     title="Edit Resume"
