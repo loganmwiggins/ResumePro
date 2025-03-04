@@ -65,7 +65,7 @@ function ResumeBuilder() {
                     location: "Miami, FL",
                     role: "Job Title",
                     websiteUrl: `${username}.com`,
-                    linkedInUrl: `linkedin.com/in/${username}`,
+                    linkedInUrl: `/in/${username}`,
                     gitHubUrl: null
                 },
                 skills: {
@@ -442,10 +442,11 @@ function ResumeBuilder() {
 
     const handleResetColor = () => {
         // Minimal doesn't have color ...
-        if (templateId === "bold-navy") { setResumeColor({ r: 0, g: 0, b: 128, a: 1 }); }  // rgba(0, 0, 128, 1) 
-        else if (templateId === "skyline") { setResumeColor({ r: 165, g: 206, b: 241, a: 1 }); }  // rgba(165, 206, 241, 1)
-        else if (templateId === "rosy-edge") { setResumeColor({ r: 255, g: 210, b: 210, a: 1 }); }  // rgba(255, 228, 228, 1)
-        else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
+        if (templateId === "bold-navy") { setResumeColor(templateColors[templateId]); }  // rgba(0, 0, 128, 1) 
+        else if (templateId === "skyline") { setResumeColor(templateColors[templateId]); }  // rgba(165, 206, 241, 1)
+        else if (templateId === "rosy-edge") { setResumeColor(templateColors[templateId]); }  // rgba(255, 228, 228, 1)
+        else if (templateId === "beeline") { setResumeColor(templateColors[templateId]); }  // rgba(255, 215, 0, 1)
+        else if (templateId === "internal") { setResumeColor(templateColors[templateId]); }  // rgba(0, 152, 186, 1)
     }
 
     const handleChangeTextSize = (event) => {

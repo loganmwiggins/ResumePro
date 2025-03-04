@@ -40,7 +40,11 @@ function AllTemplates({ selectedTemplate, resumeData, color, textSize }) {
 
     return (
         <div ref={resumeContainerRef} className="resume-scale-ctnr" style={scaleStyle}>
-            <selectedTemplateObj.component data={resumeData} color={color} textSize={textSize} />
+            <selectedTemplateObj.component 
+                data={resumeData}
+                color={color}
+                textSize={textSize}
+            />
         </div>
     );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 import { formatDate } from '../../utils/DateFormatter';
-import { rgbaToString, darkenColor, shiftColorTowards } from '../../utils/ColorFormatter';
+import { rgbaToString, darkenColor } from '../../utils/ColorFormatter';
 import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/templates/Template_RosyEdge.css';
 
