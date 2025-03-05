@@ -5,7 +5,7 @@ import DescriptionEditor from '../DescriptionEditor';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+function Projects({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -120,7 +120,7 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("projects", index)}
+                                    onClick={() => confirmRemoveEntry("projects", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>
@@ -148,11 +148,11 @@ function Projects({ data, handleChange, handleAddEntry, handleRemoveEntry, handl
                             </div>
                             <div className="input-field">
                                 <label>End Date</label>
-                                <input 
+                                 <input 
                                     type="date" 
-                                    min = {data[index].startDate}
-                                    onChange={(e) => handleChange("projects", "endDate", e.target.value, index)} 
-                                    value={data[index].endDate}
+                                    min={data[index].startDate}
+                                    onChange={(e) => handleChange("projects", "endDate", e.target.value || null, index)} 
+                                    value={data[index].endDate ?? ""} // Ensure empty string for UI, but send null in logic
                                 />
                             </div>
                         </div>

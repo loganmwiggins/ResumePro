@@ -5,6 +5,7 @@ import html2canvas from 'html2canvas';
 import { createRoot } from 'react-dom/client';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { RgbaColorPicker } from 'react-colorful';
+import { confirmAlert } from 'react-confirm-alert';
 
 import { API_BASE_URL } from '../utils/BaseUrl';
 import AuthorizeView from '../components/AuthorizeView';
@@ -64,7 +65,7 @@ function ResumeBuilder() {
                     location: "Miami, FL",
                     role: "Job Title",
                     websiteUrl: `${username}.com`,
-                    linkedInUrl: `linkedin.com/in/${username}`,
+                    linkedInUrl: `/in/${username}`,
                     gitHubUrl: null
                 },
                 skills: {
@@ -145,7 +146,6 @@ function ResumeBuilder() {
 
 
     const handleChangeResumeData = (section, sectionData) => {
-        console.log(section.name + "                   " + sectionData)
         setResumeData((prevResume) => ({
             ...prevResume,
             [section]: sectionData,  // Dynamically update the section
@@ -192,9 +192,7 @@ function ResumeBuilder() {
     };
 
     const handleChange = (section, field, value, index = null) => {
-        // console.log(`Updating ${section}[${index}].${field} to:`, value);
         setResumeData((prevResume) => {
-            console.log(section + "  " + index+ "    " +  field + "    " + value + "   ");
             if (index !== null) {
                 return {
                     ...prevResume,
@@ -283,6 +281,39 @@ function ResumeBuilder() {
         });
     };
 
+    const confirmRemoveSkillCategory = (category) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Remove this skill category?</h3>
+                            <p>{`This category and all associated skills will be removed.`}</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleRemoveSkillCategory(category);
+                                    onClose();
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
+
     const handleRemoveSkillCategory = (category) => {
         setResumeData((prevResume) => {
             const updatedSkills = { ...prevResume.skills.skillsDataJson };
@@ -327,6 +358,39 @@ function ResumeBuilder() {
         }));
     };
 
+    const confirmRemoveEntry = (section, index) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Remove this entry?</h3>
+                            <p>{`This ${section} entry and its associated details will be removed.`}</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleRemoveEntry(section, index);
+                                    onClose();
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
+
     const handleRemoveEntry = (section, index) => {
         setResumeData((prevResume) => ({
             ...prevResume,
@@ -334,8 +398,41 @@ function ResumeBuilder() {
         }));
     };
 
+    const confirmCancel = () => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="custom-alert">
+                        <div className="alert-header">
+                            <h3>Are you sure you want to leave this page?</h3>
+                            <p>Your changes to this resume will not be saved.</p>
+                        </div>
+                        
+                        <div className="alert-btns">
+                            <button 
+                                className="btn btn-outline"
+                                onClick={onClose}
+                            >
+                                Stay & Continue Editing
+                            </button>
+                            <button
+                                className="btn btn-blue"
+                                onClick={() => {
+                                    handleCancel();
+                                    onClose();
+                                }}
+                            >
+                                Leave
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+        });
+    }
+
     const handleCancel = () => {
-        showToast("Changes were not saved", "warning", "Resume Abandoned");
+        showToast("Changes were not saved.", "warning", "Resume Abandoned");
         navigate("/home");
     }
 
@@ -345,10 +442,11 @@ function ResumeBuilder() {
 
     const handleResetColor = () => {
         // Minimal doesn't have color ...
-        if (templateId === "bold-navy") { setResumeColor({ r: 0, g: 0, b: 128, a: 1 }); }  // rgba(0, 0, 128, 1) 
-        else if (templateId === "skyline") { setResumeColor({ r: 165, g: 206, b: 241, a: 1 }); }  // rgba(165, 206, 241, 1)
-        else if (templateId === "rosy-edge") { setResumeColor({ r: 255, g: 210, b: 210, a: 1 }); }  // rgba(255, 228, 228, 1)
-        else if (templateId === "beeline") { setResumeColor({ r: 255, g: 215, b: 0, a: 1 }); }  // rgba(255, 215, 0, 1)
+        if (templateId === "bold-navy") { setResumeColor(templateColors[templateId]); }  // rgba(0, 0, 128, 1) 
+        else if (templateId === "skyline") { setResumeColor(templateColors[templateId]); }  // rgba(165, 206, 241, 1)
+        else if (templateId === "rosy-edge") { setResumeColor(templateColors[templateId]); }  // rgba(255, 228, 228, 1)
+        else if (templateId === "beeline") { setResumeColor(templateColors[templateId]); }  // rgba(255, 215, 0, 1)
+        else if (templateId === "internal") { setResumeColor(templateColors[templateId]); }  // rgba(0, 152, 186, 1)
     }
 
     const handleChangeTextSize = (event) => {
@@ -426,22 +524,19 @@ function ResumeBuilder() {
                     body: JSON.stringify(processedResumeData),
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Failed to create resume. Status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Failed to create resume. Status: ${response.status}`);
 
                 const responseText = await response.text(); // Read response as text
 
                 let responseData;
                 try {
                     responseData = JSON.parse(responseText); // Convert to JSON
-                } catch (error) {
+                } 
+                catch (error) {
                     throw new Error("API did not return valid JSON.");
                 }
 
-                if (!responseData.resumeId) {
-                    throw new Error("resumeId is missing in API response.");
-                }
+                if (!responseData.resumeId) throw new Error("resumeId is missing in API response.");
 
                 navigate(`/preview/${responseData.resumeId}`);
             }
@@ -606,7 +701,7 @@ function ResumeBuilder() {
                                 <motion.button
                                     type="button"
                                     className="btn btn-outline"
-                                    onClick={handleCancel}
+                                    onClick={confirmCancel}
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     <span>Cancel</span>
@@ -632,11 +727,11 @@ function ResumeBuilder() {
                         {/* Stepper content */}
                         <div className="step-content">
                             {currentStep === 0 && <GeneralInformation data={resumeData.generalInformation} handleChange={handleChange} />}
-                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} handleRemoveEntry={handleRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
-                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} handleRemoveSkillCategory={handleRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
+                            {currentStep === 1 && <Experiences data={resumeData.experiences} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 2 && <Educations data={resumeData.educations} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 3 && <Certifications data={resumeData.certifications} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 4 && <Projects data={resumeData.projects} handleChange={handleChange} handleAddEntry={handleAddEntry} confirmRemoveEntry={confirmRemoveEntry} handleChangeResumeData={handleChangeResumeData} />}
+                            {currentStep === 5 && <Skills data={resumeData.skills} handleReorderCategories={handleReorderCategories} handleAddSkillCategory={handleAddSkillCategory} confirmRemoveSkillCategory={confirmRemoveSkillCategory} handleAddSkill={handleAddSkill} handleRemoveSkill={handleRemoveSkill} />}
                         </div>
 
                         <div className="build-footer">
@@ -676,7 +771,17 @@ function ResumeBuilder() {
                 </form>
 
                 {/*Hidden container for thumbnail generation */}
-                <div ref={hiddenRef} style={{ position: "absolute", left: "-9999px", width: "800px", height: "1100px", overflow: "hidden", backgroundColor: "white" }} />
+                <div 
+                    ref={hiddenRef} 
+                    style={{ 
+                        position: "absolute", 
+                        left: "-9999px", 
+                        width: "800px", 
+                        height: "1100px", 
+                        overflow: "hidden", 
+                        backgroundColor: "white" 
+                    }} 
+                />
             </AuthorizeView>
         );
     }

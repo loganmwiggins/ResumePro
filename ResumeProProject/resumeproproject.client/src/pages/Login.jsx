@@ -63,7 +63,7 @@ function Login() {
             <div className="login-modal">
                 {/* GRAPHIC SIDE */}
                 <div className="graphic-ctnr">
-                    <img src="assets/images/resume-2.webp" draggable="false" />
+                    <img src="assets/images/help/highlight-1.png" draggable="false" />
                 </div>
 
                 {/* FORM SIDE */}

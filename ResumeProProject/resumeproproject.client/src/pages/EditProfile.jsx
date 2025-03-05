@@ -44,14 +44,13 @@ function EditProfile() {
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to update profile");
-            }
+            if (!response.ok) throw new Error("Failed to update profile");
 
             showToast("Profile updated successfully!", "success");
 
             window.location.href = "/profile";
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error saving profile:", error);
             showToast("Error updating profile. Please try again.", "error");
         }
@@ -114,7 +113,7 @@ function EditProfile() {
                     </div>
 
                 {/* Profile Picture field */}
-                <div className="field-row">
+                {/* <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Picture</p>
                     </div>
@@ -128,10 +127,10 @@ function EditProfile() {
                             <button type="button">Choose image</button>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Profile Picture field */}
-                <div className="field-row">
+                {/* <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Banner</p>
                     </div>
@@ -145,11 +144,11 @@ function EditProfile() {
                             <button type="button">Choose image</button>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </form>
             )}
         </AuthorizeView>
     )
 }
 
-export default EditProfile
+export default EditProfile;

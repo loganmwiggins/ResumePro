@@ -5,6 +5,7 @@ import Template_BoldNavy from '../components/templates/Template_BoldNavy';
 import Template_Skyline from '../components/templates/Template_Skyline';
 import Template_RosyEdge from '../components/templates/Template_RosyEdge';
 import Template_Beeline from '../components/templates/Template_Beeline';
+import Template_Internal from '../components/templates/Template_Internal';
 
 export const templates = [
     // Minimal
@@ -47,15 +48,24 @@ export const templates = [
         tagline: "Lead with your name, follow with impact",
         imgPath: "/assets/images/template-thumbnails/Thumbnail_Beeline.png",
         component: Template_Beeline
-    }
+    },
+    // Internal (JMF)
+    {
+        id: "internal",
+        name: "JM Family (Internal)",
+        tagline: "The resume that does it better",
+        imgPath: "/assets/images/template-thumbnails/Thumbnail_Internal.png",
+        component: Template_Internal
+    },
     
     // Add more ...
 ];
 
 export const templateColors = {
-    "minimal": { r: 0, g: 0, b: 0, a: 1 },
-    "bold-navy": { r: 0, g: 0, b: 128, a: 1 },
-    "skyline": { r: 165, g: 206, b: 241, a: 1 },
-    "rosy-edge": { r: 255, g: 210, b: 210, a: 1 },
-    "beeline": { r: 255, g: 215, b: 0, a: 1 }
+    "minimal": { r: 0, g: 0, b: 0, a: 1 },          // rgba(0, 0, 0, 1) 
+    "bold-navy": { r: 0, g: 0, b: 128, a: 1 },      // rgba(0, 0, 128, 1) 
+    "skyline": { r: 165, g: 206, b: 241, a: 1 },    // rgba(165, 206, 241, 1)
+    "rosy-edge": { r: 255, g: 210, b: 210, a: 1 },  // rgba(255, 228, 228, 1)
+    "beeline": { r: 255, g: 215, b: 0, a: 1 },      // rgba(255, 215, 0, 1)
+    "internal": { r: 0, g: 149, b: 164, a: 1 }      // rgba(0, 149, 164, 1)
 }

@@ -150,7 +150,8 @@
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    background: rgb(235, 235, 235);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     width: 18rem;
     height: 24rem;
     cursor: pointer;

@@ -4,49 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,handleChangeResumeData}) {
-
-    // const swapAttributes = (entryA, entryB) => {
-    //     Object.keys(entryA).forEach((key) => {
-    //         console.log("-------------------------------------")
-    //         console.log(key + "  ENTRY A KEY: " + entryA[key])
-    //         console.log(key + "  ENTRY B KEY: " + entryB[key])
-    //         let temp = entryA[key];
-    //         entryA[key] = entryB[key];
-    //         entryB[key] = temp;
-    //         console.log(key + "  AFTER SWAP ENTRY A KEY : " + entryA[key])
-    //         console.log(key + "  AFTER SWAP ENTRY B KEY: " + entryB[key])
-    //     });
-    // };
-    
-    // const moveEntryUp = (index) => {
-    //     if (index > 0) {
-    //         const newData = [...data];
-            
-    
-    //         // Swap attributes instead of objects
-    //         swapAttributes(newData[index], newData[index - 1]);
-    
-    //         // Update order numbers
-    //         newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-    //         handleChangeResumeData("educations", [...newData]);
-    //     }
-    // };
-    
-    // const moveEntryDown = (index) => {
-    //     if (index < data.length - 1) {
-    //         const newData = [...data];
-    
-    //         // Swap attributes instead of objects
-    //         swapAttributes(newData[index], newData[index + 1]);
-    
-    //         // Update order numbers
-    //         newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
-    
-    //         handleChangeResumeData("educations", [...newData]);
-    //     }
-    // };
+function Educations({ data, handleChange, handleAddEntry, confirmRemoveEntry,handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -56,29 +14,20 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                // console.log("KEY VAL" + key.value);
-                 if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){console.log("GPA IS:    " + newData[index][key])}
                 if(newData[index][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 } else if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){
-                    console.log("UP IM HERE selected");
                     newData[index][key] = null; // Set GPA to null if it's undefined
-                    // console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index][key]) newData[index][key] = "";
-              //  console.log("KEY NAME:  " + key + "  " + "|" + newData[index][key] + "|");
-                // console.log(newData[index][key])
             });
     
             Object.keys(newData[index - 1]).forEach((key) => {
                 if(newData[index-1][key] === null){
                     return;
                 }else if(key === "gpa" && isNaN(Number.parseFloat(newData[index-1][key]))){
-                    console.log("UP IM HERE below");
                     newData[index-1][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index - 1][key]) newData[index - 1][key] = "";
@@ -103,13 +52,10 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
                 if(newData[index][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 }
                 else if(key === "gpa" && isNaN(Number.parseFloat(newData[index][key]))){
-                    console.log(" DOWN IM HERE selected");
                     newData[index][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index][key]) newData[index][key] = "";
@@ -117,13 +63,10 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
     
             Object.keys(newData[index + 1]).forEach((key) => {
                 if(newData[index + 1][key] === null){
-                    console.log("gpa is null so we're in here")
                     return;
                 }
                 else if(key === "gpa" && isNaN(Number.parseFloat(newData[index + 1][key]))){
-                    console.log("DOWN IM HERE above");
                     newData[index + 1][key] = null; // Set GPA to null if it's undefined
-                    console.log(newData[index][key])
                     return;
                 }
                 if (!newData[index + 1][key]) newData[index + 1][key] = "";
@@ -196,7 +139,7 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("educations", index)}
+                                    onClick={() => confirmRemoveEntry("educations", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>
@@ -243,7 +186,6 @@ function Educations({ data, handleChange, handleAddEntry, handleRemoveEntry,hand
                                     max={4.0}
                                     step="0.01"
                                     onChange={(e) => {
-                                        console.log(e.target.value)
                                         if(e.target.value === "" || null || undefined){
                                             handleChange("educations","gpa",null,index)
                                         }else{

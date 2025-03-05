@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../../utils/DateFormatter';
 import '../../stylesheets/ResumeBuilder.css';
 
-function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry, handleChangeResumeData}) {
+function Certifications({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
     const moveEntryUp = (index) => {
         if (index > 0) {
             const newData = [...data];
@@ -14,7 +14,6 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
     
             // Ensure empty fields are reset to empty strings for the swapped entry
             Object.keys(newData[index]).forEach((key) => {
-                console.log(key)
                 if (!newData[index][key] && key != "expireDate") newData[index][key] = "";
             });
     
@@ -125,7 +124,7 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                     type="button"
                                     title="Delete this entry"
                                     className="delete-btn"
-                                    onClick={() => handleRemoveEntry("certifications", index)}
+                                    onClick={() => confirmRemoveEntry("certifications", index)}
                                 >
                                     <img src="/assets/icons/trash.svg" draggable="false" className="icon-dynamic" />
                                 </button>
@@ -165,8 +164,8 @@ function Certifications({ data, handleChange, handleAddEntry, handleRemoveEntry,
                                 <input 
                                     type="date" 
                                     min = {data[index].issueDate}
-                                    onChange={(e) => handleChange("certifications", "expireDate", e.target.value, index)} 
-                                    value={data[index].expireDate || ""}
+                                    onChange={(e) => handleChange("certifications", "expireDate", e.target.value || null, index)} 
+                                    value={data[index].expireDate ?? ""}
                                 />
                             </div>
                         </div>
