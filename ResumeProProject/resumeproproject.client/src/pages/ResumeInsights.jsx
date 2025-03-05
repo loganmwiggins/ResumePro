@@ -88,6 +88,7 @@ function ResumeInsights() {
       const resumeJson = await fetchResumeData();
       if (!resumeJson) return;
       setResumeData(resumeJson);
+      console.log(resumeJson.colorJson);
 
       // [Step 2]: Get existing insight or null 
       const existingInsightJson = await fetchExistingInsight(resumeId);
@@ -391,8 +392,6 @@ function ResumeInsights() {
               </div>
             </div>
 
-            
-
             <div className="side-by-side">
               {/* Resume preview */}
               {showResume && (
@@ -408,7 +407,7 @@ function ResumeInsights() {
                       <AllTemplates 
                         selectedTemplate={resumeData.templateId} 
                         resumeData={resumeData} 
-                        color={resumeData.colorJson} 
+                        color={JSON.parse(resumeData.colorJson)} 
                         textSize={resumeData.textSize} 
                       />
                     </div>
