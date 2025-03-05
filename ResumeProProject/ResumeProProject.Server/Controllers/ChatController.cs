@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,12 +37,10 @@ public class ChatController : ControllerBase
 
         if (string.IsNullOrEmpty(_apiKey))
         {
-            //throw new Exception("API key is missing. Check OPENAI_API_KEY_PROD in GitHub Secrets.");
             throw new Exception("API key is missing. Check Azure Key Vault.");
         }
 
     }
-
 
     [HttpPost("ScoreResume")]
     public async Task<IActionResult> ScoreResume([FromBody] OpenAiRequest request)
@@ -50,24 +48,7 @@ public class ChatController : ControllerBase
         System.Diagnostics.Debug.WriteLine("|" +    request.jobTitle + "|");
         var apiUrl = "https://api.openai.com/v1/chat/completions";
 
-        //string stringifiedPayload= JsonConvert.SerializeObject(request.Message);
-        ////stringifiedPayload = stringifiedPayload.Append();
-        //string escapedJson = JsonConvert.ToString(stringifiedPayload);
-        //string killQuotes = request.Message.Trim('"');
-        //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Prompt", "ChadPrompt.txt");
-        //string basePath = _env.ContentRootPath; // Works for both Dev & Prod
-        //string relativePath = Path.Combine("Data", "Prompt", "ChadPrompt.txt");
-        //string filePath = Path.Combine(basePath, relativePath);
-
-        //if (!System.IO.File.Exists(filePath))
-        //{
-        //    Console.WriteLine($"File Not Found: {filePath}");
-        //    throw new Exception($"Prompt file is missing: {filePath}");
-        //}
-
-        //string promptText = System.IO.File.ReadAllText(filePath);
         string promptText = GetPrompt();
-        //System.Diagnostics.Debug.WriteLine(promptText);
         string toSend = "";
         if(request.jobTitle.Length > 0)
         {
@@ -127,15 +108,15 @@ public class ChatController : ControllerBase
 
     private string GetPrompt()
     {
-        return @"
+        return @"ï»¿
         ----YOUR ROLE------------
         You are a Resume Scorer using the ATS (Applicant Tracking System) standards. Take this JSON file, which contains the full data of a resume, and provide a detailed score for each section as well as an overall score.
         The order for feedback to appear in by section:
         Overall Score > ATS Optimization > General Information > Experience > Education > Projects > Certifications > Skills > Completeness, evaluate the following factors:
 
-        Relevance and Depth of Content: Does the content align with industry standards? Does it provide enough detail about the applicant’s qualifications, achievements, and responsibilities? Does it address key aspects of the job being applied for?
+        Relevance and Depth of Content: Does the content align with industry standards? Does it provide enough detail about the applicantâ€™s qualifications, achievements, and responsibilities? Does it address key aspects of the job being applied for?
 
-        Grammar and Clarity: Is the writing clear and concise? Are there any spelling, grammar, or punctuation mistakes? Does the resume effectively communicate the applicant’s strengths without unnecessary jargon?
+        Grammar and Clarity: Is the writing clear and concise? Are there any spelling, grammar, or punctuation mistakes? Does the resume effectively communicate the applicantâ€™s strengths without unnecessary jargon?
 
         ATS Optimization: Does the resume include relevant keywords for the specific job or industry? Is the resume formatted in a way that would pass through ATS algorithms?
 
@@ -144,7 +125,7 @@ public class ChatController : ControllerBase
         For each section, provide a detailed score on a scale of 1 to 10, where 1 is poor and 10 is excellent. Include comments on why you assigned the score, with specific feedback on what could be improved.
         --------END OF YOUR ROLE--------------
         --------GRADING CONSIDERATIONS---------
-        Do not automatically give a perfect score just for having fields filled out – detail, relevance, and quality of content matter more. If a category is completely empty, automatically give it a 0.
+        Do not automatically give a perfect score just for having fields filled out â€“ detail, relevance, and quality of content matter more. If a category is completely empty, automatically give it a 0.
         Penalize a candidate if they have incomplete general information, or if their contact information is innapropriate, but do not let that category influence the overall score too much.
         Categories such as Experience, Education, and Projects should carry the most weight.
         As for the skills section, ensure relevance to their current job function and/or for the job they are applying too. Skills should be professional and related to a job functionality.
@@ -156,15 +137,14 @@ public class ChatController : ControllerBase
         IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE THOSE IN YOUR FEEDBACK, AND DO NOT TAKE OFF ANY POINTS FOR THEM.
         -------END OF GRADING CONSIDERATIONS----
 
-
         -------OUTPUT INSTRUCTIONS------------
         Adhere to the following instructions for what your output should look like:
+        USE GENDER NUETRAL PRONOUNS SUCH AS THEIR!!!!!!!!!!!
         Format your response like so:
-
         {
           ""Overall Score"": {
             ""score"": ""81/100"",
-            ""comments"": ""Jacob's resume shows strong credentials for the Lead Graphic Designer position he's applying for, with relevant education and experience in the field. However, it could still use some improvements in content depth and ATS optimization.""
+            ""comments"": ""Jacob's resume shows strong credentials for the Lead Graphic Designer position they are applying for, with relevant education and experience in the field. However, it could still use some improvements in content depth and ATS optimization.""
           },
           ""ATS Optimization"": {
             ""score"": ""7/10"",
@@ -172,38 +152,36 @@ public class ChatController : ControllerBase
           },
           ""General Information"": {
             ""score"": ""9/10"",
-            ""comments"": ""Jacob's contact information is complete and professionally appropriate. His role and location are clearly stated, which further indicates his suitability for the role. The personal website could be a great showcase of his portfolio, which is a plus.""
+            ""comments"": ""Jacob's contact information is complete and professionally appropriate. Their role and location are clearly stated, which further indicates their suitability for the role. The personal website could be a great showcase of their portfolio, which is a plus.""
           },
           ""Experience"": {
             ""score"": ""8/10"",
-            ""comments"": ""His experience is relevant and displays a progression in duties and responsibilities, which aligns well with the target job of Lead Graphic Designer. However, greater depth in explaining his specific achievements would have been better and quantifying the impacts of his work.""
+            ""comments"": ""Their experience is relevant and displays a progression in duties and responsibilities, which aligns well with the target job of Lead Graphic Designer. However, greater depth in explaining their specific achievements would have been better and quantifying the impacts of their work.""
           },
           ""Education"": {
             ""score"": ""8/10"",
-            ""comments"": ""Jacob has a strong educational background that is directly related to his chosen profession. Earning a BA in Graphic Design proves he is knowledgeable in the field. However, indicating related academic projects or achievements could have boosted this score.""
+            ""comments"": ""Jacob has a strong educational background that is directly related to their chosen profession. Earning a BA in Graphic Design proves they are knowledgeable in the field. However, indicating related academic projects or achievements could have boosted this score.""
           },
           ""Projects"": {
             ""score"": ""7/10"",
-            ""comments"": ""The listed project is relevant. However, listing more projects, specifically complex ones that challenged his skills or demonstrated leadership would bring the score up.""
+            ""comments"": ""The listed project is relevant. However, listing more projects, specifically complex ones that challenged their skills or demonstrated leadership would bring the score up.""
           },
           ""Certifications"": {
             ""score"": ""9/10"",
-            ""comments"": ""His Adobe Certified Expert certification is highly relevant and respected in the industry, which will validate his skills and make him a strong candidate for the role.""
+            ""comments"": ""Their Adobe Certified Expert certification is highly relevant and respected in the industry, which will validate their skills and make them a strong candidate for the role.""
           },
           ""Skills"": {
             ""score"": ""8/10"",
-            ""comments"": ""Jacob has a sound range of creative and soft skills. To improve this section, he could include more specific proficiency levels for his software skills and technical skills relevant in Graphic Design.""
+            ""comments"": ""Jacob has a sound range of creative and soft skills. To improve this section, they could include more specific proficiency levels for their software skills and technical skills relevant in Graphic Design.""
           },
           ""Completeness"": {
             ""score"": ""8/10"",
             ""comments"": ""The resume is fundamentally complete, with all major sections covered. More in-depth detail, quantified achievements and showcasing complexity in projects could enhance the document further.""
           }
         }
-
-
-        ENSURE THE JSON IS PROPERLY FORMATTED!! THIS IS MISSION CRITICAL!
+        ENSURE THE JSON IS PROPERLY FORMATTED!! THIS IS MISSION CRITICAL! ALSO NO USAGE OF GENDERED PRONOUNS, USE THE PRONOUN ""THEIR"" AND/OR USE THEIR NAME, BUT UNDER CIRCUMSTANCES ARE YOU TO USE ANY SORT OF LANGUAGE THAT WOULD ASSUME THE USERS GENDER.
         ----------END OF OUTPUT INSTRUCTIONS--------
-                ";
+        ";
     }
 
 }
