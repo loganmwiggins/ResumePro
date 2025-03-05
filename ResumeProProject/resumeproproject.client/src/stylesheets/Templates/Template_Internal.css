@@ -105,12 +105,12 @@
     .p-main { font-weight: 700; }
 
     .p-bubble {
-        background: var(--accent-light);
+        /* background: var(--accent-light); */
         color: var(--accent);
         padding: .1rem .5rem;
         border-radius: .5rem;
         max-width: fit-content;
-        text-align: right;
+        /* text-align: right; */
     }
 
     .p-sub { color: #777; }
