@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { showToast } from '../utils/Toast';
 import DOMPurify from 'dompurify';
 
 import AllTemplates from '../components/templates/AllTemplates';
 import DescriptionEditor from '../components/DescriptionEditor';
 import { API_BASE_URL } from '../utils/BaseUrl';
-import { showToast } from '../utils/Toast';
 import '../stylesheets/ResumeShare.css';
 
 function ResumeShare() {
     const { resumeId } = useParams();
+    const location = useLocation();
     const [resumeData, setResumeData] = useState(null);
     const [showComments, setShowComments] = useState(true);
 
@@ -47,6 +48,25 @@ function ResumeShare() {
         fetchResume();
     }, [resumeId]);
 
+    const handleShare = () => {
+        if (navigator.share) {
+            navigator
+                .share({
+                    title: resumeData.resumeName == "Untitled Document" ? "My Resume" : resumeData.resumeName,
+                    text: "Check out my resume on ResumePro!",
+                    url: window.location.href
+                })
+                // .then(() => showToast("Article shared successfully!", "success"))
+                .catch((error) => {
+                    showToast("Error sharing article", "error");
+                    console.error("Error sharing article:", error);
+                })
+        }
+        else {
+            showToast("Sharing is not supported on your browser. Please copy the URL manually.", "warning");
+        }
+    }
+
     if (!resumeData) return <div className="loading-spinner"></div>;
 
     return (
@@ -62,7 +82,7 @@ function ResumeShare() {
                     <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
                     <span>{showComments ? "Hide" : "Show"} Comments</span>
                     </button>
-                    <button type="button" className="btn btn-black" onClick={() => alert()}>
+                    <button type="button" className="btn btn-black" onClick={handleShare}>
                         <img src="/assets/icons/paper-plane.svg" draggable="false" />
                         <span>Share</span>
                     </button>
