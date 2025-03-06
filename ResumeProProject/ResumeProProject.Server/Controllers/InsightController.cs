@@ -26,7 +26,11 @@ namespace ResumeProProject.Server.Controllers
                 ResumeId = fetchedResume.ResumeId,
                 Content = request.content
             };
-            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            if (NewInsight != null) {
+                _db.Insights.Add(NewInsight);
+                await _db.SaveChangesAsync();
+            }
 
             return Ok(new { message = "Insight added successfully." });
         }

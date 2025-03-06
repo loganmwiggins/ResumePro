@@ -13,6 +13,8 @@ function ResumeShare() {
     const { resumeId } = useParams();
     const location = useLocation();
     const [resumeData, setResumeData] = useState(null);
+    const [comment, setComment] = useState("");
+    const [commentList, setCommentList] = useState(null);
     const [showComments, setShowComments] = useState(true);
 
     // Get resume on component mount
@@ -47,6 +49,45 @@ function ResumeShare() {
 
         fetchResume();
     }, [resumeId]);
+
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+
+            }
+            catch (error) {
+                
+            }
+        }
+    })
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/Comment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({resumeId: resumeId, userId: "yuh", commentBody: comment, })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showToast("Comment added successfully", "success");
+                setComment("");
+            }
+            else {
+                showToast("Error adding comment.", "error");
+            }
+        }
+        catch(error) {
+            showToast("An error occurred.", "error");
+            console.error(error);
+        }
+    }
 
     const handleShare = () => {
         if (navigator.share) {
@@ -116,10 +157,12 @@ function ResumeShare() {
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.6 }}
                         >
-                            <form className="comments-form" onSubmit={() => alert("submit logic")}>
+                            <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
                                 <DescriptionEditor 
                                     value={""}
                                     placeholder={"Add comment..."}
+                                    handleChange={(newVal) => setComment(newVal)}
+                                    required
                                 />
                                 <button className="btn btn-blue">Submit</button>
                             </form>
