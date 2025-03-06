@@ -1,19 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResumeProProject.Server.Data.Models
 {
     public class Comment
     {
+        [Key]
         public Guid CommentId { get; set; }
 
         public required string CommentBody { get; set; }
 
-        // User ID foreign key can't be null, but needs to be when anonymous ?
-
         //[ForeignKey("User")]
         //public required string Id { get; set; } // User ID
 
+        public required string UserId { get; set; } // User ID, but not an actual fkey
+
         [ForeignKey("Resume")]
         public required Guid ResumeId { get; set; }
+
+        [JsonIgnore]
+        public virtual Resume? Resume { get; set; }
     }
 }

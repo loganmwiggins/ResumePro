@@ -184,7 +184,31 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Certifications", (string)null);
+                    b.ToTable("Certifications");
+                });
+
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Comment", b =>
+                {
+                    b.Property<Guid>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CommentBody")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ResumeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Education", b =>
@@ -230,7 +254,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Education", (string)null);
+                    b.ToTable("Education");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Experience", b =>
@@ -279,7 +303,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Experiences", (string)null);
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.GeneralInformation", b =>
@@ -328,7 +352,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("GeneralInformation", (string)null);
+                    b.ToTable("GeneralInformation");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Insight", b =>
@@ -348,7 +372,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("Insights", (string)null);
+                    b.ToTable("Insights");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Project", b =>
@@ -381,7 +405,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("ResumeId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Resume", b =>
@@ -419,7 +443,7 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Resumes", (string)null);
+                    b.ToTable("Resumes");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Skills", b =>
@@ -440,7 +464,7 @@ namespace ResumeProProject.Server.Migrations
                     b.HasIndex("ResumeId")
                         .IsUnique();
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>
@@ -581,6 +605,17 @@ namespace ResumeProProject.Server.Migrations
                     b.Navigation("Resume");
                 });
 
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Comment", b =>
+                {
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
+                        .WithMany("Comments")
+                        .HasForeignKey("ResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resume");
+                });
+
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Education", b =>
                 {
                     b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
@@ -660,6 +695,8 @@ namespace ResumeProProject.Server.Migrations
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Resume", b =>
                 {
                     b.Navigation("Certifications");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("Educations");
 

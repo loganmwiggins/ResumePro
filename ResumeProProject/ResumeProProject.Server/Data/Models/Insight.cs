@@ -6,6 +6,8 @@ namespace ResumeProProject.Server.Data.Models
 {
     public class Insight
     {
+        public string? Content { get; set; }
+
         [JsonIgnore]
         [Key]
         public Guid InsightId { get; set; }
@@ -13,10 +15,7 @@ namespace ResumeProProject.Server.Data.Models
         [ForeignKey("Resume")]
         public Guid ResumeId { get; set; }
 
-        // ✅ Added Navigation Property
         [JsonIgnore]
         public virtual Resume? Resume { get; set; }
-
-        public string? Content { get; set; }
     }
 }

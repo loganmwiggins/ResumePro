@@ -9,7 +9,8 @@ namespace ResumeProProject.Server.Data
 {
     public class AppDbContext : IdentityDbContext<User>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,7 +28,7 @@ namespace ResumeProProject.Server.Data
                 .Property(s => s.JobType)
                 .HasConversion<string>();
 
-            // ✅ Define Relationships (Fixed Foreign Keys)
+            // Define Relationships
 
             // User → Resume (One-to-Many)
             modelBuilder.Entity<Resume>()
@@ -57,6 +58,13 @@ namespace ResumeProProject.Server.Data
                 .HasForeignKey<Insight>(g => g.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Resume → Comments (One-to-Many)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Resume)
+                .WithMany(r => r.Comments)
+                .HasForeignKey(c => c.ResumeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Resume → Certifications (One-to-Many)
             modelBuilder.Entity<Certification>()
                 .HasOne(c => c.Resume)
@@ -84,51 +92,12 @@ namespace ResumeProProject.Server.Data
                 .WithOne(Resume => Resume.Skills)
                 .HasForeignKey<Skills>(s => s.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            //    // ✅ Use Hardcoded GUIDs
-            //    var userId = "550e8400-e29b-41d4-a716-446655440000";
-            //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
-            //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
-
-            //    // ✅ Use Hardcoded DateTime
-            //    var fixedDateTime = new DateTime(2024, 2, 1, 12, 0, 0, DateTimeKind.Utc);
-
-            //    // ✅ Seed User
-            //    modelBuilder.Entity<User>().HasData(new User
-            //    {
-            //        Id = userId,
-            //        Username = "testuser",
-            //        Password = "hashedpassword123",
-            //        DateJoined = fixedDateTime
-            //    });
-
-            //    // ✅ Seed Resume
-            //    modelBuilder.Entity<Resume>().HasData(new Resume
-            //    {
-            //        ResumeId = resumeId,
-            //        Id = userId,
-            //        Name = "Software Engineer Resume",
-            //        UpdatedDateTime = fixedDateTime
-            //    });
-
-            //    // ✅ Seed Skills
-            //    modelBuilder.Entity<Skills>().HasData(new Skills
-            //    {s
-            //        SkillId = skillId,
-            //        ResumeId = resumeId,
-            //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>
-            //{
-            //    "C#", "JavaScript", "Python", "SQL", "ASP.NET Core",
-            //    "React.js", "Docker", "REST APIs", "Machine Learning", "Azure", "Git"
-            //})
-            //    });
         }
 
-
-
-        // ✅ Define Tables
+        // Define Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Resume> Resumes { get; set; }
+
         public DbSet<GeneralInformation> GeneralInformation { get; set; }
         public DbSet<Education> Education { get; set; }
         public DbSet<Certification> Certifications { get; set; }
@@ -136,5 +105,6 @@ namespace ResumeProProject.Server.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Insight> Insights { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
