@@ -38,7 +38,7 @@
         color: #444;
     }
 
-    ul { padding-left: calc(1.25rem * var(--scale-factor)); }
+    ul, ol { padding-left: calc(1.25rem * var(--scale-factor)); }
 
     .subtitle {
         font-size: calc(1.1rem * var(--scale-factor));

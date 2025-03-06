@@ -153,12 +153,6 @@ namespace ResumeProProject.Server.Controllers
         {
             var resumes = await _db.Resumes
                 .Where(r => r.Id == userId)
-                //.Include(r => r.GeneralInformation)
-                //.Include(r => r.Educations)
-                //.Include(r => r.Certifications)
-                //.Include(r => r.Experiences)
-                //.Include(r => r.Projects)
-                //.Include(r => r.Skills)
                 .OrderByDescending(r => r.UpdatedDateTime)
                 .ToListAsync();
 

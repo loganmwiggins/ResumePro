@@ -6,15 +6,20 @@ import DOMPurify from 'dompurify';
 
 import AllTemplates from '../components/templates/AllTemplates';
 import DescriptionEditor from '../components/DescriptionEditor';
+import { useUser } from '../context/UserContext';
 import { API_BASE_URL } from '../utils/BaseUrl';
+import { formatDateTime } from '../utils/DateFormatter';
 import '../stylesheets/ResumeShare.css';
 
 function ResumeShare() {
     const { resumeId } = useParams();
     const location = useLocation();
+    const { user, userLoading } = useUser();
+
     const [resumeData, setResumeData] = useState(null);
     const [comment, setComment] = useState("");
     const [commentList, setCommentList] = useState(null);
+    const [commentsLoading, setCommentsLoading] = useState(false);
     const [showComments, setShowComments] = useState(true);
 
     // Get resume on component mount
@@ -52,32 +57,64 @@ function ResumeShare() {
 
     useEffect(() => {
         const fetchComments = async () => {
-            try {
+            setCommentsLoading(true);
 
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/Comment/${resumeId}`);
+
+                if (!response.ok) {
+                    showToast("Error fetching comments", "error");
+                }
+                
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    setCommentList([]);
+                    return;
+                }
+                else setCommentList(data);
             }
             catch (error) {
-                
+                console.error("(catch) Error fetching comments:", error);
+                showToast("An error occurred.", "error");
+            }
+            finally {
+                setCommentsLoading(false);
             }
         }
-    })
+
+        fetchComments();
+    }, [resumeId, user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
+            let fullName = null;
+            let userId = null;
+
+            if (user) {
+                fullName = `${user.firstName} ${user.lastName}`;
+                userId = user.id;
+            }
+
             const response = await fetch(`${API_BASE_URL}/api/Comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({resumeId: resumeId, userId: "yuh", commentBody: comment, })
+                body: JSON.stringify({resumeId: resumeId, userId: userId, fullName: fullName, commentBody: comment, dateTimeSubmitted: new Date() })
             });
-
-            const data = await response.json();
 
             if (response.ok) {
                 showToast("Comment added successfully", "success");
                 setComment("");
+
+                const data = await response.json();
+                console.log(data);
+
+                // Add new comment to state (optimistic update)
+                setCommentList((prevComments) => [data.comment, ...(prevComments || [])]);
             }
             else {
                 showToast("Error adding comment.", "error");
@@ -150,51 +187,65 @@ function ResumeShare() {
                 {/* Comments view */}
                 <AnimatePresence>
                     {showComments && (
-                        <motion.div 
-                            className="comments-view"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
-                                <DescriptionEditor 
-                                    value={""}
-                                    placeholder={"Add comment..."}
-                                    handleChange={(newVal) => setComment(newVal)}
-                                    required
-                                />
-                                <button className="btn btn-blue">Submit</button>
-                            </form>
-                            <div className="comments-ctnr">
-                                <div className="comments-header">
-                                    <h3>Comments</h3>
-                                    <div className="count">2</div>
-                                </div>
-                                <div className="comments-list">
-                                    <div className="comment">
-                                        <div className="comment-head">
-                                            <img src="/assets/icons/user.svg" draggable="false" />
-                                            <p className="name">Marven Mathelier</p>
-                                            <p className="datetime">Mar 5, 2025 at 7:18pm</p>
+                        !commentsLoading ? (
+                            <motion.div 
+                                className="comments-view"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
+                                    <DescriptionEditor 
+                                        value={comment}
+                                        placeholder={"Add comment..."}
+                                        handleChange={(newVal) => setComment(newVal)}
+                                        required
+                                    />
+                                    <button className="btn btn-blue">Submit</button>
+                                </form>
+
+                                {/* Comments list */}
+                                {commentList && (
+                                    <div className="comments-ctnr">
+                                        <div className="comments-header">
+                                            <h3>Comments</h3>
+                                            <div className="count">{commentList.length}</div>
                                         </div>
-                                        <div className="comment-body">
-                                            <p>This is an example comment.</p>
+                                        <div className="comments-list">
+                                            {commentList.length > 0 ? (
+                                                commentList.map((comment) => {
+                                                    let sanitizedBody = DOMPurify.sanitize(comment.commentBody || "", {
+                                                        ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                                                    });
+
+                                                    return (
+                                                        <div className="comment">
+                                                            <div className="comment-head">
+                                                                <img src="/assets/icons/user.svg" draggable="false" />
+                                                                <p className="name">
+                                                                    {comment.fullName ? comment.fullName : "Anonymous"}
+                                                                </p>
+                                                                <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                            </div>
+                                                            <div className="comment-body">
+                                                                {sanitizedBody && (
+                                                                    <p dangerouslySetInnerHTML={{ __html: sanitizedBody }}></p>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            ) : (
+                                                <p>No comments yet.</p>
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="comment">
-                                        <div className="comment-head">
-                                            <img src="/assets/icons/user.svg" draggable="false" />
-                                            <p className="name">Thum Rangsiyawaranon</p>
-                                            <p className="datetime">Mar 4, 2025 at 12:31pm</p>
-                                        </div>
-                                        <div className="comment-body">
-                                            <p>Condensation happens when water vapor cools down and changes back into liquid droplets. It's the step before precipitation.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
+                                )}
+                            </motion.div>
+                        ) : (
+                            <div className="loading-spinner"></div>
+                        )
                     )}
                 </AnimatePresence>
             </div>

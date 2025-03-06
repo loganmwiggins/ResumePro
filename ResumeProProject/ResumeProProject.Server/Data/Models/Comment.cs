@@ -11,10 +11,14 @@ namespace ResumeProProject.Server.Data.Models
 
         public required string CommentBody { get; set; }
 
+        public required DateTime DateTimeSubmitted { get; set; }
+
         //[ForeignKey("User")]
         //public required string Id { get; set; } // User ID
 
-        public required string UserId { get; set; } // User ID, but not an actual fkey
+        public string? UserId { get; set; } // User ID, but not an actual fkey
+
+        public string? FullName { get; set; }
 
         [ForeignKey("Resume")]
         public required Guid ResumeId { get; set; }
