@@ -8,45 +8,41 @@ import { officeTypeOptions, jobTypeOptions } from '../../utils/SelectOptions';
 import '../../stylesheets/ResumeBuilder.css';
 
 function Experiences({ data, handleChange, handleAddEntry, confirmRemoveEntry, handleChangeResumeData}) {
-   const swapAttributes = (entryA, entryB) => {
-    Object.keys(entryA).forEach((key) => {
-        let temp = entryA[key];
-        entryA[key] = entryB[key];
-        entryB[key] = temp;
-    });
-};
+    const swapAttributes = (entryA, entryB) => {
+        Object.keys(entryA).forEach((key) => {
+            let temp = entryA[key];
+            entryA[key] = entryB[key];
+            entryB[key] = temp;
+        });
+    };
 
-const moveEntryUp = (index) => {
-    if (index > 0) {
-        const newData = [...data];
-        
+    const moveEntryUp = (index) => {
+        if (index > 0) {
+            const newData = [...data];
 
-        // Swap attributes instead of objects
-        swapAttributes(newData[index], newData[index - 1]);
+            // Swap attributes instead of objects
+            swapAttributes(newData[index], newData[index - 1]);
 
-        // Update order numbers
-        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+            // Update order numbers
+            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
 
-        handleChangeResumeData("experiences", [...newData]);
-    }
-};
+            handleChangeResumeData("experiences", [...newData]);
+        }
+    };
 
-const moveEntryDown = (index) => {
-    if (index < data.length - 1) {
-        const newData = [...data];
+    const moveEntryDown = (index) => {
+        if (index < data.length - 1) {
+            const newData = [...data];
 
-        // Swap attributes instead of objects
-        swapAttributes(newData[index], newData[index + 1]);
+            // Swap attributes instead of objects
+            swapAttributes(newData[index], newData[index + 1]);
 
-        // Update order numbers
-        newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
+            // Update order numbers
+            newData.forEach((entry, idx) => (entry.orderNumber = idx + 1));
 
-        handleChangeResumeData("experiences", [...newData]);
-    }
-};
-    
-    
-    
+            handleChangeResumeData("experiences", [...newData]);
+        }
+    };
     
 
     return (

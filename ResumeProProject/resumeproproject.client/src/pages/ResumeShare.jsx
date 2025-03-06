@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import DOMPurify from 'dompurify';
 
 import AllTemplates from '../components/templates/AllTemplates';
+import DescriptionEditor from '../components/DescriptionEditor';
 import { API_BASE_URL } from '../utils/BaseUrl';
 import { showToast } from '../utils/Toast';
 import '../stylesheets/ResumeShare.css';
@@ -10,8 +12,9 @@ import '../stylesheets/ResumeShare.css';
 function ResumeShare() {
     const { resumeId } = useParams();
     const [resumeData, setResumeData] = useState(null);
+    const [showComments, setShowComments] = useState(true);
 
-    // Get resume function
+    // Get resume on component mount
     useEffect(() => {
         const fetchResume = async () => {
             try {
@@ -47,22 +50,91 @@ function ResumeShare() {
     if (!resumeData) return <div className="loading-spinner"></div>;
 
     return (
-        <div className="page-ctnr">
-            <motion.div 
-                className="resume-view"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-                <div>
-                    <AllTemplates 
-                        selectedTemplate={resumeData.templateId} 
-                        resumeData={resumeData} 
-                        color={JSON.parse(resumeData.colorJson)} 
-                        textSize={resumeData.textSize} 
-                    />
+        <div className="page-ctnr ResumeShare">
+            <div className="header-with-btn">
+                <div className="page-header">
+                    <h1>Share Resume</h1>
+                    <p>Send your resume to others and allow them to leave comments.</p>
                 </div>
-            </motion.div>
+
+                <div className="reanalyze-ctnr">
+                    <button type="button" className="btn btn-outline btn-show" onClick={() => setShowComments(!showComments)}>
+                    <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
+                    <span>{showComments ? "Hide" : "Show"} Comments</span>
+                    </button>
+                    <button type="button" className="btn btn-black" onClick={() => alert()}>
+                        <img src="/assets/icons/paper-plane.svg" draggable="false" />
+                        <span>Share</span>
+                    </button>
+                </div>
+            </div>
+            <div className="side-by-side">
+                {/* Resume view */}
+                <motion.div 
+                    className="resume-view"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div>
+                        <AllTemplates 
+                            selectedTemplate={resumeData.templateId} 
+                            resumeData={resumeData} 
+                            color={JSON.parse(resumeData.colorJson)} 
+                            textSize={resumeData.textSize} 
+                        />
+                    </div>
+                </motion.div>
+
+                {/* Comments view */}
+                <AnimatePresence>
+                    {showComments && (
+                        <motion.div 
+                            className="comments-view"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <form className="comments-form" onSubmit={() => alert("submit logic")}>
+                                <DescriptionEditor 
+                                    value={""}
+                                    placeholder={"Add comment..."}
+                                />
+                                <button className="btn btn-blue">Submit</button>
+                            </form>
+                            <div className="comments-ctnr">
+                                <div className="comments-header">
+                                    <h3>Comments</h3>
+                                    <div className="count">2</div>
+                                </div>
+                                <div className="comments-list">
+                                    <div className="comment">
+                                        <div className="comment-head">
+                                            <img src="/assets/icons/user.svg" draggable="false" />
+                                            <p className="name">Marven Mathelier</p>
+                                            <p className="datetime">Mar 5, 2025 at 7:18pm</p>
+                                        </div>
+                                        <div className="comment-body">
+                                            <p>This is an example comment.</p>
+                                        </div>
+                                    </div>
+                                    <div className="comment">
+                                        <div className="comment-head">
+                                            <img src="/assets/icons/user.svg" draggable="false" />
+                                            <p className="name">Thum Rangsiyawaranon</p>
+                                            <p className="datetime">Mar 4, 2025 at 12:31pm</p>
+                                        </div>
+                                        <div className="comment-body">
+                                            <p>Condensation happens when water vapor cools down and changes back into liquid droplets. It's the step before precipitation.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     )
 }
