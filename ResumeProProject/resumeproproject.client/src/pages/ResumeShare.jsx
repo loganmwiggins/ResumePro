@@ -157,7 +157,7 @@ function ResumeShare() {
 
                 <div className="reanalyze-ctnr">
                     <button type="button" className="btn btn-outline btn-show" onClick={() => setShowComments(!showComments)}>
-                    <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
+                    <img src="/assets/icons/messages.svg" className="icon-dynamic" draggable="false" />
                     <span>{showComments ? "Hide" : "Show"} Comments</span>
                     </button>
                     <button type="button" className="btn btn-black" onClick={handleShare}>
@@ -214,26 +214,34 @@ function ResumeShare() {
                                         </div>
                                         <div className="comments-list">
                                             {commentList.length > 0 ? (
-                                                commentList.map((comment) => {
+                                                commentList.map((comment, index) => {
                                                     let sanitizedBody = DOMPurify.sanitize(comment.commentBody || "", {
                                                         ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
                                                     });
 
                                                     return (
-                                                        <div className="comment">
-                                                            <div className="comment-head">
-                                                                <img src="/assets/icons/user.svg" draggable="false" />
-                                                                <p className="name">
-                                                                    {comment.fullName ? comment.fullName : "Anonymous"}
-                                                                </p>
-                                                                <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
-                                                            </div>
-                                                            <div className="comment-body">
-                                                                {sanitizedBody && (
-                                                                    <p dangerouslySetInnerHTML={{ __html: sanitizedBody }}></p>
-                                                                )}
-                                                            </div>
-                                                        </div>
+                                                        <AnimatePresence>
+                                                            <motion.div 
+                                                                key={index}
+                                                                className="comment"
+                                                                initial={{ opacity: 0, y: 20 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                transition={{ duration: 0.6, delay: `${index * 0.1}` }}
+                                                            >
+                                                                <div className="comment-head">
+                                                                    <img src="/assets/icons/user.svg" draggable="false" />
+                                                                    <p className="name">
+                                                                        {comment.fullName ? comment.fullName : "Anonymous"}
+                                                                    </p>
+                                                                    <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                                </div>
+                                                                <div className="comment-body">
+                                                                    {sanitizedBody && (
+                                                                        <p dangerouslySetInnerHTML={{ __html: sanitizedBody }}></p>
+                                                                    )}
+                                                                </div>
+                                                            </motion.div>
+                                                        </AnimatePresence>
                                                     );
                                                 })
                                             ) : (
