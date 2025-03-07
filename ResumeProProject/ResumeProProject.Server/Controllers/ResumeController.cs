@@ -222,8 +222,9 @@ namespace ResumeProProject.Server.Controllers
                 TemplateId = resume.TemplateId,
                 ColorJson = resume.ColorJson,
                 TextSize = resume.TextSize,
+                UserId = resume.Id,
                 Thumbnail = resume.Thumbnail,
-
+                
                 GeneralInformation = await _db.GeneralInformation
            .Where(g => g.ResumeId == resumeId)
            .FirstOrDefaultAsync(),
@@ -272,7 +273,8 @@ namespace ResumeProProject.Server.Controllers
                     p.StartDate,
                     p.EndDate,
                     p.OrderNumber
-                }).ToList(),
+                }
+                ).ToList(),
 
                 Skills = await _db.Skills
            .Where(g => g.ResumeId == resumeId)
