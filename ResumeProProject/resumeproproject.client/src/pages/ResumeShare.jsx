@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { showToast } from '../utils/Toast';
+import { confirmAlert } from 'react-confirm-alert';
 import DOMPurify from 'dompurify';
 
 import AllTemplates from '../components/templates/AllTemplates';
@@ -43,7 +44,7 @@ function ResumeShare() {
                         data.skills.skillsDataJson = {};
                     }
                 }
-
+                console.log(data);
                 setResumeData(data);
             }
             catch (error) {
@@ -111,7 +112,6 @@ function ResumeShare() {
                 setComment("");
 
                 const data = await response.json();
-                console.log(data);
 
                 // Add new comment to state (optimistic update)
                 setCommentList((prevComments) => [data.comment, ...(prevComments || [])]);
@@ -125,6 +125,63 @@ function ResumeShare() {
             console.error(error);
         }
     }
+
+    // Helper function to confirm and delete insight
+    const confirmDelete = (commentId) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+            return (
+                <div className="custom-alert">
+                    <div className="alert-header">
+                        <h3>Are you sure you want to delete this comment?</h3>
+                        <p>This action cannot be undone. This comment will be permanently deleted and will no longer be visible to others.</p>
+                    </div>
+                    
+                    <div className="alert-btns">
+                        <button 
+                            className="btn btn-outline"
+                            onClick={onClose}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="btn btn-blue"
+                            onClick={() => {
+                                deleteComment(commentId);
+                                onClose();
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            );
+            }
+        });
+    }
+
+    const deleteComment = async (commentId) => {
+        // Optimistically remove the comment
+        const previousComments = [...commentList]; // Store current state in case of rollback
+        const updatedComments = commentList.filter(comment => comment.commentId !== commentId);
+        setCommentList(updatedComments); // Update UI before API call
+    
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/Comment/${commentId}`, {
+                method: "DELETE",
+            });
+    
+            if (!response.ok) {
+                throw new Error("Failed to delete comment.");
+            }
+    
+            showToast("Comment removed successfully", "success");
+        } catch (error) {
+            showToast("Error deleting comment", "error");
+            setCommentList(previousComments); // Rollback state if API call fails
+        }
+    };
+    
 
     const handleShare = () => {
         if (navigator.share) {
@@ -228,24 +285,35 @@ function ResumeShare() {
                                                                 animate={{ opacity: 1, y: 0 }}
                                                                 transition={{ duration: 0.6, delay: `${index * 0.1}` }}
                                                             >
-                                                                <div className="comment-head">
-                                                                    <img src="/assets/icons/user.svg" draggable="false" />
-                                                                    <p className="name">
-                                                                        {comment.fullName ? comment.fullName : "Anonymous"}
-                                                                    </p>
-                                                                    <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                                <div className="comment-content">
+                                                                    <div className="comment-head">
+                                                                        <img src="/assets/icons/user.svg" draggable="false" />
+                                                                        <p className="name">
+                                                                            {comment.fullName ? comment.fullName : "Anonymous"}
+                                                                        </p>
+                                                                        <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                                    </div>
+                                                                    <div className="comment-body">
+                                                                        {sanitizedBody && (
+                                                                            <p dangerouslySetInnerHTML={{ __html: sanitizedBody }}></p>
+                                                                        )}
+                                                                    </div>
                                                                 </div>
-                                                                <div className="comment-body">
-                                                                    {sanitizedBody && (
-                                                                        <p dangerouslySetInnerHTML={{ __html: sanitizedBody }}></p>
-                                                                    )}
-                                                                </div>
+                                                                {user && comment.userId === user.id && (
+                                                                    <div className="comment-actions">
+                                                                        <button type="button" onClick={() => confirmDelete(comment.commentId)}>
+                                                                            <img src="/assets/icons/trash.svg" draggable="false" />
+                                                                        </button>
+                                                                    </div>
+                                                                )}
                                                             </motion.div>
                                                         </AnimatePresence>
                                                     );
                                                 })
                                             ) : (
-                                                <p>No comments yet.</p>
+                                                <div className="no-comment">
+                                                    <p>No comments yet.</p>
+                                                </div>
                                             )}
                                         </div>
                                     </div>

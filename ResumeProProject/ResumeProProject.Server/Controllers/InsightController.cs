@@ -68,6 +68,5 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
             return Ok(new { message = "Insight deleted successfully." });
         }
-
     }
 }

@@ -61,5 +61,22 @@ namespace ResumeProProject.Server.Controllers
                 comment = newComment
             });
         }
+
+        // Delete Comment
+        [HttpDelete("{commentId}")]
+
+        public async Task<IActionResult> DeleteInsight(Guid commentId)
+        {
+            var comment = await _db.Comments
+                .Where(c => c.CommentId == commentId)
+                .FirstOrDefaultAsync();
+
+            if (comment == null) return NotFound("Comment does not exist.");
+
+            _db.Comments.Remove(comment);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Comment deleted successfully." });
+        }
     }
 }
