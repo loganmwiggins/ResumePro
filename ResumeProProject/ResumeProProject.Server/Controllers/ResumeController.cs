@@ -133,31 +133,25 @@ namespace ResumeProProject.Server.Controllers
         [HttpGet("GetResumes/{userId}")]
         public async Task<IActionResult> GetResumes(string userId)
         {
-            var resumes = await _db.Resumes
+            var result = await _db.Resumes
                 .Where(r => r.Id == userId)
                 .OrderByDescending(r => r.UpdatedDateTime)
-                .ToListAsync();
+                .Select(resume => new
+                {
+                    ResumeId = resume.ResumeId,
+                    ResumeName = resume.Name,
+                    UpdatedDateTime = resume.UpdatedDateTime,
+                    TemplateId = resume.TemplateId,
+                    ColorJson = resume.ColorJson,
+                    TextSize = resume.TextSize,
+                    Thumbnail = resume.Thumbnail
+                })
+                .ToListAsync(); // Fetch only needed columns
 
-            Console.Write(resumes);
-            if (!resumes.Any())
+            if (!result.Any())
             {
                 return Ok(new List<object>());
             }
-
-            //var resumeIds = resumes.Select(r => r.ResumeId).ToList();
-
-            var result = resumes.Select(resume => new
-            {
-                ResumeId = resume.ResumeId,
-                ResumeName = resume.Name,
-                UpdatedDateTime = resume.UpdatedDateTime,
-                TemplateId = resume.TemplateId,
-                ColorJson = resume.ColorJson,
-                TextSize = resume.TextSize,
-                Thumbnail = resume.Thumbnail,
-
-            }).ToList();
-            Console.WriteLine(result);
 
             return Ok(result);
         }
@@ -184,12 +178,88 @@ namespace ResumeProProject.Server.Controllers
         {
             var resume = await _db.Resumes
                 .Where(r => r.ResumeId == resumeId)
-                .Include(r => r.GeneralInformation)
-                .Include(r => r.Educations)
-                .Include(r => r.Certifications)
-                .Include(r => r.Experiences)
-                .Include(r => r.Projects)
-                .Include(r => r.Skills)
+                .Select(r => new
+                {
+                    ResumeId = r.ResumeId,
+                    ResumeName = r.Name,
+                    UpdatedDateTime = r.UpdatedDateTime,
+                    TemplateId = r.TemplateId,
+                    ColorJson = r.ColorJson,
+                    TextSize = r.TextSize,
+                    Thumbnail = r.Thumbnail,
+
+                    GeneralInformation = r.GeneralInformation != null ? new
+                    {
+                        r.GeneralInformation.FirstName,
+                        r.GeneralInformation.MiddleName,
+                        r.GeneralInformation.LastName,
+                        r.GeneralInformation.Email,
+                        r.GeneralInformation.PhoneNumber,
+                        r.GeneralInformation.WebsiteUrl,
+                        r.GeneralInformation.LinkedInUrl,
+                        r.GeneralInformation.GitHubUrl,
+                        r.GeneralInformation.Location,
+                        r.GeneralInformation.Role
+                    } : null,
+
+                    Educations = r.Educations
+                        .OrderBy(e => e.OrderNumber)
+                        .Select(e => new
+                        {
+                            e.SchoolName,
+                            e.DegreeType,
+                            GPA = e.GPA.HasValue ? e.GPA.Value.ToString("0.0") : (string)null,
+                            e.Major,
+                            e.Minor,
+                            e.StartDate,
+                            e.EndDate,
+                            e.SchoolLocation,
+                            e.OrderNumber
+                        }).ToList(),
+
+                    Certifications = r.Certifications
+                        .OrderBy(c => c.OrderNumber)
+                        .Select(c => new
+                        {
+                            c.Name,
+                            c.Issuer,
+                            c.IssueDate,
+                            c.ExpireDate,
+                            c.OrderNumber
+                        }).ToList(),
+
+                    Experiences = r.Experiences
+                        .OrderBy(ex => ex.OrderNumber)
+                        .Select(ex => new
+                        {
+                            ex.CompanyName,
+                            ex.Role,
+                            ex.StartDate,
+                            ex.EndDate,
+                            ex.IsCurrent,
+                            ex.Description,
+                            ex.Location,
+                            ex.OfficeType,
+                            ex.JobType,
+                            ex.OrderNumber
+                        }).ToList(),
+
+                    Projects = r.Projects
+                        .OrderBy(p => p.OrderNumber)
+                        .Select(p => new
+                        {
+                            p.Title,
+                            p.Description,
+                            p.StartDate,
+                            p.EndDate,
+                            p.OrderNumber
+                        }).ToList(),
+
+                    Skills = r.Skills != null ? new
+                    {
+                        r.Skills.SkillsDataJson
+                    } : null
+                })
                 .FirstOrDefaultAsync();
 
             if (resume == null)
@@ -197,86 +267,17 @@ namespace ResumeProProject.Server.Controllers
                 return NotFound(new { message = "Resume not found." });
             }
 
-            var result = new
-            {
-                ResumeId = resume.ResumeId,
-                ResumeName = resume.Name,
-                UpdatedDateTime = resume.UpdatedDateTime,
-                TemplateId = resume.TemplateId,
-                ColorJson = resume.ColorJson,
-                TextSize = resume.TextSize,
-                Thumbnail = resume.Thumbnail,
-
-                GeneralInformation = await _db.GeneralInformation
-           .Where(g => g.ResumeId == resumeId)
-           .FirstOrDefaultAsync(),
-
-
-                Educations = resume.Educations.OrderBy(e => e.OrderNumber).Select(e => new
-                {
-                    e.SchoolName,
-                    e.DegreeType,
-                    GPA = e.GPA.HasValue ? e.GPA.Value.ToString("0.0") : (string)null,
-                    e.Major,
-                    e.Minor,
-                    e.StartDate,
-                    e.EndDate,
-                    e.SchoolLocation,
-                    e.OrderNumber
-                }).ToList(),
-
-                Certifications = resume.Certifications.OrderBy(c => c.OrderNumber).Select(c => new
-                {
-                    c.Name,
-                    c.Issuer,
-                    c.IssueDate,
-                    c.ExpireDate,
-                    c.OrderNumber
-                }).ToList(),
-
-                Experiences = resume.Experiences.OrderBy(ex => ex.OrderNumber).Select(ex => new
-                {
-                    ex.CompanyName,
-                    ex.Role,
-                    ex.StartDate,
-                    ex.EndDate,
-                    ex.IsCurrent,
-                    ex.Description,
-                    ex.Location,
-                    ex.OfficeType,
-                    ex.JobType,
-                    ex.OrderNumber
-                }).ToList(),
-
-                Projects = resume.Projects.OrderBy(p => p.OrderNumber).Select(p => new
-                {
-                    p.Title,
-                    p.Description,
-                    p.StartDate,
-                    p.EndDate,
-                    p.OrderNumber
-                }).ToList(),
-
-                Skills = await _db.Skills
-           .Where(g => g.ResumeId == resumeId)
-           .FirstOrDefaultAsync(),
-            };
-
-            return Ok(result);
+            return Ok(resume);
         }
-
 
         [HttpPut("Update/{resumeId}")]
         public async Task<IActionResult> UpdateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.UpdateResumeDto request)
         {
             var existingResume = await _db.Resumes
+                .Where(r => r.ResumeId == request.resumeId)
                 .Include(r => r.GeneralInformation)
                 .Include(r => r.Skills)
-                .Include(r => r.Educations)
-                .Include(r => r.Certifications)
-                .Include(r => r.Experiences)
-                .Include(r => r.Projects)
-                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+                .FirstOrDefaultAsync();
 
             if (existingResume == null)
             {
@@ -291,7 +292,6 @@ namespace ResumeProProject.Server.Controllers
             existingResume.TextSize = request.textSize;
             existingResume.Thumbnail = request.thumbnail;
 
-            existingResume.TemplateId = request.templateId;
             // Update General Information
             if (existingResume.GeneralInformation != null)
             {
@@ -320,84 +320,66 @@ namespace ResumeProProject.Server.Controllers
                 existingResume.Skills = request.Skills;
             }
 
-            _db.Education.RemoveRange(existingResume.Educations);
-            await _db.SaveChangesAsync();
+            // Remove old ones in a single call
+            var resumeId = request.resumeId;
+            _db.Education.RemoveRange(_db.Education.Where(e => e.ResumeId == resumeId));
+            _db.Certifications.RemoveRange(_db.Certifications.Where(c => c.ResumeId == resumeId));
+            _db.Experiences.RemoveRange(_db.Experiences.Where(e => e.ResumeId == resumeId));
+            _db.Projects.RemoveRange(_db.Projects.Where(p => p.ResumeId == resumeId));
 
-            existingResume.Educations.Clear();
-            foreach (var edu in request.Educations)
+            // Batch Insert 
+            _db.Education.AddRange(request.Educations.Select(e => new Education
             {
-                existingResume.Educations.Add(new Education
-                {
-                    ResumeId = request.resumeId,
-                    SchoolName = edu.SchoolName,
-                    DegreeType = edu.DegreeType,
-                    GPA = edu.GPA,
-                    Major = edu.Major,
-                    Minor = edu.Minor,
-                    StartDate = edu.StartDate,
-                    EndDate = edu.EndDate,
-                    SchoolLocation = edu.SchoolLocation,
-                    OrderNumber = edu.OrderNumber,
-                });
-            }
+                ResumeId = resumeId,
+                SchoolName = e.SchoolName,
+                DegreeType = e.DegreeType,
+                GPA = e.GPA,
+                Major = e.Major,
+                Minor = e.Minor,
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                SchoolLocation = e.SchoolLocation,
+                OrderNumber = e.OrderNumber
+            }));
 
-            _db.Certifications.RemoveRange(existingResume.Certifications);
-            await _db.SaveChangesAsync();
-            existingResume.Certifications.Clear();
-            foreach (var cert in request.Certifications)
+            _db.Certifications.AddRange(request.Certifications.Select(c => new Certification
             {
-                existingResume.Certifications.Add(new Certification
-                {
-                    ResumeId = request.resumeId,
-                    Issuer = cert.Issuer,
-                    IssueDate = cert.IssueDate,
-                    ExpireDate = cert.ExpireDate,
-                    Name = cert.Name,
-                    OrderNumber = cert.OrderNumber,
-                });
-            }
+                ResumeId = resumeId,
+                Issuer = c.Issuer,
+                IssueDate = c.IssueDate,
+                ExpireDate = c.ExpireDate,
+                Name = c.Name,
+                OrderNumber = c.OrderNumber
+            }));
 
-            _db.Experiences.RemoveRange(existingResume.Experiences);
-            await _db.SaveChangesAsync();
-
-            existingResume.Experiences.Clear();
-            foreach (var exp in request.Experiences)
+            _db.Experiences.AddRange(request.Experiences.Select(e => new Experience
             {
-                existingResume.Experiences.Add(new Experience
-                {
-                    ResumeId = request.resumeId,
-                    CompanyName = exp.CompanyName,
-                    OfficeType = exp.OfficeType,
-                    JobType = exp.JobType,
-                    Description = exp.Description,
-                    Role = exp.Role,
-                    Location = exp.Location,
-                    IsCurrent = exp.IsCurrent,
-                    StartDate = exp.StartDate,
-                    EndDate = exp.EndDate,
-                    OrderNumber = exp.OrderNumber
-                });
-            }
+                ResumeId = resumeId,
+                CompanyName = e.CompanyName,
+                OfficeType = e.OfficeType,
+                JobType = e.JobType,
+                Description = e.Description,
+                Role = e.Role,
+                Location = e.Location,
+                IsCurrent = e.IsCurrent,
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                OrderNumber = e.OrderNumber
+            }));
 
-
-            _db.Projects.RemoveRange(existingResume.Projects);
-            await _db.SaveChangesAsync();
-            existingResume.Projects.Clear();
-            foreach (var proj in request.Projects)
+            _db.Projects.AddRange(request.Projects.Select(p => new Project
             {
-                existingResume.Projects.Add(new Project
-                {
-                    ResumeId = request.resumeId,
-                    Title = proj.Title,
-                    Description = proj.Description,
-                    StartDate = proj.StartDate,
-                    EndDate = proj.EndDate,
-                    OrderNumber = proj.OrderNumber
-                });
-            }
+                ResumeId = resumeId,
+                Title = p.Title,
+                Description = p.Description,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                OrderNumber = p.OrderNumber
+            }));
 
-
+            // Save all in a single call
             await _db.SaveChangesAsync();
+
             return Ok(new { message = "Resume updated successfully.", resumeId = existingResume.ResumeId });
         }
 
@@ -420,24 +402,26 @@ namespace ResumeProProject.Server.Controllers
             return Ok(new { message = "Resume renamed successfully.", resumeId = existingResume.ResumeId });
 
         }
+
             [HttpPost("Duplicate")]
         public async Task<IActionResult> DuplicateResume([FromBody] ResumeProProject.Server.Data.DTOs.ResumeDTOs.DuplicateResumeDto request)
         {
             var existingResume = await _db.Resumes
+                .Where(r => r.ResumeId == request.resumeId)
                 .Include(r => r.GeneralInformation)
                 .Include(r => r.Skills)
                 .Include(r => r.Educations)
                 .Include(r => r.Certifications)
                 .Include(r => r.Experiences)
                 .Include(r => r.Projects)
-                .FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+                .FirstOrDefaultAsync();
 
             if (existingResume == null)
             {
                 return NotFound(new { message = "Resume not found." });
             }
 
-            var NewResume = new Resume
+            var newResume = new Resume
             {
                 Name = existingResume.Name + " - Copy",
                 UpdatedDateTime = request.CurrentDate,
@@ -445,18 +429,18 @@ namespace ResumeProProject.Server.Controllers
                 TemplateId = existingResume.TemplateId,
                 ColorJson = existingResume.ColorJson,
                 TextSize = existingResume.TextSize,
-                Thumbnail = existingResume.Thumbnail // Store Thumbnail
+                Thumbnail = existingResume.Thumbnail
             };
 
-            _db.Resumes.Add(NewResume);
+            _db.Resumes.Add(newResume);
             await _db.SaveChangesAsync();
 
-            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate && r.Id == existingResume.Id);
+            //Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.UpdatedDateTime == request.CurrentDate && r.Id == existingResume.Id);
+
             var NewGeneralInformation = new GeneralInformation
             {
 
-                ResumeId = fetchedResume.ResumeId,
-
+                ResumeId = newResume.ResumeId,
                 FirstName = existingResume.GeneralInformation.FirstName,
                 MiddleName = existingResume.GeneralInformation.MiddleName,
                 LastName = existingResume.GeneralInformation.LastName,
@@ -470,90 +454,72 @@ namespace ResumeProProject.Server.Controllers
                 //Resume = fetchedResume,
 
             };
-            if (NewGeneralInformation != null) { _db.GeneralInformation.Add(NewGeneralInformation); await _db.SaveChangesAsync(); }
+            if (NewGeneralInformation != null) { _db.GeneralInformation.Add(NewGeneralInformation); }
 
-            foreach (var education in existingResume.Educations)
+            var newEducations = existingResume.Educations.Select(e => new Education
             {
-                var NewEducation = new Education
-                {
-                    ResumeId = fetchedResume.ResumeId,
-                    SchoolName = education.SchoolName,
-                    DegreeType = education.DegreeType,
-                    GPA = education.GPA,
-                    Major = education.Major,
-                    Minor = education.Minor,
-                    StartDate = education.StartDate,
-                    EndDate = education.EndDate,
-                    SchoolLocation = education.SchoolLocation,
-                    OrderNumber = education.OrderNumber,
-                    //Resume = fetchedResume,
-                };
-                if (NewEducation != null) { _db.Education.Add(NewEducation); }
-                await _db.SaveChangesAsync();
-            }
-            foreach (var certification in existingResume.Certifications)
-            {
-                var NewCertification = new Certification
-                {
-                    ResumeId = fetchedResume.ResumeId,
-                    Name = certification.Name,
-                    Issuer = certification.Issuer,
-                    IssueDate = certification.IssueDate,
-                    ExpireDate = certification.ExpireDate,
-                    OrderNumber = certification.OrderNumber,
-                    //Resume = fetchedResume,
+                ResumeId = newResume.ResumeId,
+                SchoolName = e.SchoolName,
+                DegreeType = e.DegreeType,
+                GPA = e.GPA,
+                Major = e.Major,
+                Minor = e.Minor,
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                SchoolLocation = e.SchoolLocation,
+                OrderNumber = e.OrderNumber
+            }).ToList();
+            _db.Education.AddRange(newEducations);
 
-                };
-                if (NewCertification != null) { _db.Certifications.Add(NewCertification); }
-                await _db.SaveChangesAsync();
-            }
-            foreach (var experience in existingResume.Experiences)
+            var newCertifications = existingResume.Certifications.Select(c => new Certification
             {
-                var NewExperience = new Experience
-                {
-                    ResumeId = fetchedResume.ResumeId,
-                    CompanyName = experience.CompanyName,
-                    Role = experience.Role,
-                    StartDate = experience.StartDate,
-                    EndDate = experience.EndDate,
-                    IsCurrent = experience.EndDate == null ? true : false,
-                    Description = experience.Description,
-                    Location = experience.Location,
-                    OfficeType = experience.OfficeType,
-                    JobType = experience.JobType,
-                    OrderNumber = experience.OrderNumber,
-                    //Resume = fetchedResume,
-                };
+                ResumeId = newResume.ResumeId,
+                Name = c.Name,
+                Issuer = c.Issuer,
+                IssueDate = c.IssueDate,
+                ExpireDate = c.ExpireDate,
+                OrderNumber = c.OrderNumber
+            }).ToList();
+            _db.Certifications.AddRange(newCertifications);
 
-                if (NewExperience != null) { _db.Experiences.Add(NewExperience); }
-                await _db.SaveChangesAsync();
-            }
-            var NewSkill = new Skills
+            var newExperiences = existingResume.Experiences.Select(exp => new Experience
             {
-                ResumeId = fetchedResume.ResumeId,
-                SkillsDataJson = existingResume.Skills.SkillsDataJson,
-                //Resume = fetchedResume,
+                ResumeId = newResume.ResumeId,
+                CompanyName = exp.CompanyName,
+                Role = exp.Role,
+                StartDate = exp.StartDate,
+                EndDate = exp.EndDate,
+                IsCurrent = exp.EndDate == null,
+                Description = exp.Description,
+                Location = exp.Location,
+                OfficeType = exp.OfficeType,
+                JobType = exp.JobType,
+                OrderNumber = exp.OrderNumber
+            }).ToList();
+            _db.Experiences.AddRange(newExperiences);
+
+            var newSkill = new Skills
+            {
+                ResumeId = newResume.ResumeId,
+                SkillsDataJson = existingResume.Skills?.SkillsDataJson
             };
-            if (NewSkill != null)
+            if (newSkill != null)
             {
-                _db.Skills.Add(NewSkill);
-                await _db.SaveChangesAsync();
+                _db.Skills.Add(newSkill);
             }
-            foreach (var project in existingResume.Projects)
+            var newProjects = existingResume.Projects.Select(p => new Project
             {
-                var NewProject = new Project
-                {
-                    ResumeId = fetchedResume.ResumeId,
-                    Description = project.Description,
-                    StartDate = project.StartDate,
-                    EndDate = project.EndDate,
-                    Title = project.Title,
-                    OrderNumber = project.OrderNumber,
-                };
-                if (NewProject != null) { _db.Projects.Add(NewProject); }
-                await _db.SaveChangesAsync();
-            }
-            return Ok(new { message = "Resume duplicated successfully.", resumeId = fetchedResume.ResumeId });
+                ResumeId = newResume.ResumeId,
+                Description = p.Description,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                Title = p.Title,
+                OrderNumber = p.OrderNumber
+            }).ToList();
+            _db.Projects.AddRange(newProjects);
+
+            await _db.SaveChangesAsync();
+            return Ok(new { message = "Resume duplicated successfully.", resumeId = newResume.ResumeId });
         }
     }
 }
