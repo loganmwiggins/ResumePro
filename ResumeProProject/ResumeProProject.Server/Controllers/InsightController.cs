@@ -19,11 +19,11 @@ namespace ResumeProProject.Server.Controllers
         [HttpPost("AddInsight")]
         public async Task<IActionResult> AddInsight([FromBody] ResumeProProject.Server.Data.DTOs.InsightDTOs.addInsightDTO request)
         {
-            Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
+            //Resume fetchedResume = await _db.Resumes.FirstOrDefaultAsync(r => r.ResumeId == request.resumeId);
 
             var NewInsight = new Insight
             {
-                ResumeId = fetchedResume.ResumeId,
+                ResumeId = request.resumeId,
                 Content = request.content
             };
             if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
