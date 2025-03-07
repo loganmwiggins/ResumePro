@@ -23,6 +23,7 @@ function ResumeShare() {
     const [commentsLoading, setCommentsLoading] = useState(false);
     const [showComments, setShowComments] = useState(true);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const [userIsOwner, setUserIsOwner] = useState(false);
 
     // Get resume on component mount
     useEffect(() => {
@@ -88,6 +89,16 @@ function ResumeShare() {
 
         fetchComments();
     }, [resumeId, user]);
+
+    // Logic to check if current user owns document
+    useEffect(() => {
+        if (user && resumeData) {
+            if (resumeData.userId === user.id) {
+                setUserIsOwner(true);
+            }
+            else setUserIsOwner(false);
+        }
+    }, [resumeData, user]);
 
     // Logic for disclaimer pop-up
     useEffect(() => {
@@ -220,23 +231,22 @@ function ResumeShare() {
 
     return (
         <div className="page-ctnr ResumeShare">
-            <div className="header-with-btn">
-                <div className="page-header">
-                    <h1>Share Resume</h1>
-                    <p>Send your resume and receive feedback from others.</p>
-                </div>
+            {userIsOwner && (
+                <div className="header-with-btn">
+                    <div className="page-header">
+                        <h1>Share Resume</h1>
+                        <p>Send your resume and receive feedback from others.</p>
+                    </div>
 
-                <div className="reanalyze-ctnr">
-                    <button type="button" className="btn btn-outline btn-show" onClick={() => setShowComments(!showComments)}>
-                        <img src="/assets/icons/messages.svg" className="icon-dynamic" draggable="false" />
-                        <span>{showComments ? "Hide" : "Show"} Comments</span>
-                    </button>
-                    <button type="button" className="btn btn-black" onClick={handleShare}>
-                        <img src="/assets/icons/paper-plane.svg" draggable="false" />
-                        <span>Share</span>
-                    </button>
+                    <div className="reanalyze-ctnr">
+                        <button type="button" className="btn btn-black" onClick={handleShare}>
+                            <img src="/assets/icons/paper-plane.svg" draggable="false" />
+                            <span>Share</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
+            
             <div className="side-by-side">
                 {/* Resume view */}
                 <motion.div 
@@ -257,88 +267,122 @@ function ResumeShare() {
 
                 {/* Comments view */}
                 <AnimatePresence>
-                    {showComments && (
-                        !commentsLoading ? (
-                            <motion.div 
-                                className="comments-view"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.6 }}
-                            >
-                                <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
-                                    <DescriptionEditor 
-                                        value={comment}
-                                        placeholder={"Add comment..."}
-                                        handleChange={(newVal) => setComment(newVal)}
-                                        required
-                                    />
-                                    <div className="form-btns">
-                                        <button className="btn btn-blue">Submit</button>
-                                        <div className="info-item">
-                                            <img 
-                                                src="/assets/icons/info.svg" 
-                                                draggable="false" 
-                                                className="icon-dynamic info-icon"
-                                                onClick={() => setShowDisclaimer(!showDisclaimer)}
-                                            />
-                                            <AnimatePresence>
-                                                {showDisclaimer && (
-                                                <motion.div
-                                                    className="info-txt"
-                                                    initial={{ opacity: 0, y: -10}}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, y: -10 }}
-                                                    transition={{ duration: 0.2, ease: "easeOut" }}
-                                                >
-                                                    <span>
-                                                        Please be respectful when leaving comments. Constructive feedback is encouraged, but inappropriate or offensive remarks will not be tolerated.
-                                                    </span>
-                                                    <br /><br />
-                                                    <span>Comments cannot be edited after submission — they can only be deleted.</span>
-                                                    <br /><br />
-                                                    <span>If you are not logged in, your comment will be posted anonymously and cannot be edited or deleted.</span>
-                                                    {/* <ul>
-                                                        <li>Comments cannot be edited after submission — they can only be deleted.</li>
-                                                        <li>If you are not logged in, your comment will be posted anonymously and cannot be edited or deleted.</li>
-                                                    </ul> */}
-                                                </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        </div>
+                    {!commentsLoading ? (
+                        <motion.div 
+                            className="comments-view"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <div className="doc-info-ctnr">
+                                <div title="Resume Title">
+                                    <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
+                                    <p>"{resumeData.resumeName}"</p>
+                                </div>
+                                <div title="Resume For">
+                                    <img src="/assets/icons/user-2.svg" className="icon-dynamic" draggable="false" />
+                                    <p>{resumeData.generalInformation.firstName} {resumeData.generalInformation.lastName}</p>
+                                </div>
+                                <div title="Last Updated">
+                                    <img src="/assets/icons/pencil.svg" className="icon-dynamic" draggable="false" />
+                                    <p>{formatDateTime(resumeData.updatedDateTime)}</p>
+                                </div>
+                            </div>
+                            <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
+                                <DescriptionEditor 
+                                    value={comment}
+                                    placeholder={"Add comment..."}
+                                    handleChange={(newVal) => setComment(newVal)}
+                                    required
+                                />
+                                <div className="form-btns">
+                                    <button className="btn btn-blue">Submit</button>
+                                    <div className="info-item">
+                                        <img 
+                                            src="/assets/icons/info.svg" 
+                                            draggable="false" 
+                                            className="icon-dynamic info-icon"
+                                            onClick={() => setShowDisclaimer(!showDisclaimer)}
+                                        />
+                                        <AnimatePresence>
+                                            {showDisclaimer && (
+                                            <motion.div
+                                                className="info-txt"
+                                                initial={{ opacity: 0, y: -10}}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                            >
+                                                <span>
+                                                    Please be respectful when leaving comments. Constructive feedback is encouraged, but inappropriate or offensive remarks will not be tolerated.
+                                                </span>
+                                                <br /><br />
+                                                <span>Comments cannot be edited after submission — they can only be deleted.</span>
+                                                <br /><br />
+                                                <span>If you are not logged in, your comment will be posted anonymously and cannot be edited or deleted.</span>
+                                            </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
-                                </form>
+                                </div>
+                            </form>
 
-                                {/* Comments list */}
-                                {commentList && (
-                                    <div className="comments-ctnr">
-                                        <div className="comments-header">
-                                            <h3>Comments</h3>
-                                            <div className="count">{commentList.length}</div>
-                                        </div>
-                                        <div className="comments-list">
-                                            {commentList.length > 0 ? (
-                                                commentList.map((comment, index) => {
-                                                    let sanitizedBody = DOMPurify.sanitize(comment.commentBody || "", {
-                                                        ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
-                                                    });
+                            {/* Comments list */}
+                            {commentList && (
+                                <div className="comments-ctnr">
+                                    <div className="comments-header">
+                                        <h3>Comments</h3>
+                                        <div className="count">{commentList.length}</div>
+                                        <button
+                                            type="button"
+                                            className="btn btn-icon"
+                                            onClick={() => setShowComments(!showComments)}
+                                        >
+                                            <motion.img
+                                                src="/assets/icons/angle-down.svg"
+                                                className="icon-dynamic angle-icon"
+                                                draggable="false"
+                                                animate={{ rotate: showComments ? 180 : 0 }}
+                                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                            />
+                                        </button>
+                                    </div>
 
-                                                    return (
-                                                        <AnimatePresence>
+                                    <AnimatePresence>
+                                        {showComments && (
+                                            <div className="comments-list">
+                                                {commentList.length > 0 ? (
+                                                    commentList.map((comment, index) => {
+                                                        let sanitizedBody = DOMPurify.sanitize(comment.commentBody || "", {
+                                                            ALLOWED_TAGS: ["b", "i", "em", "strong", "ul", "li", "ol", "p"],
+                                                        });
+
+                                                        return (
                                                             <motion.div 
                                                                 key={index}
                                                                 className="comment"
                                                                 initial={{ opacity: 0, y: 20 }}
                                                                 animate={{ opacity: 1, y: 0 }}
+                                                                exit={{ opacity: 0, y: -20 }}
                                                                 transition={{ duration: 0.6, delay: `${index * 0.1}` }}
                                                             >
                                                                 <div className="comment-content">
                                                                     <div className="comment-head">
                                                                         <img src="/assets/icons/user.svg" draggable="false" />
-                                                                        <p className="name">
-                                                                            {comment.fullName ? comment.fullName : "Anonymous"}
-                                                                        </p>
-                                                                        <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                                        <div className="head-text">
+                                                                            <div className="head-main">
+                                                                                <p className="name">
+                                                                                    {comment.fullName ? comment.fullName : "Anonymous"}
+                                                                                </p>
+                                                                                {comment.userId === resumeData.userId && (
+                                                                                    <p className="owner-tag">Owner</p>
+                                                                                )}
+                                                                            </div>
+                                                                            <div className="head-sub">
+                                                                                <p className="datetime">{formatDateTime(comment.dateTimeSubmitted)}</p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                     <div className="comment-body">
                                                                         {sanitizedBody && (
@@ -346,29 +390,33 @@ function ResumeShare() {
                                                                         )}
                                                                     </div>
                                                                 </div>
-                                                                {user && comment.userId === user.id && (
+                                                                {(user && (userIsOwner || comment.userId === user.id)) && (
                                                                     <div className="comment-actions">
-                                                                        <button type="button" onClick={() => confirmDelete(comment.commentId)}>
-                                                                            <img src="/assets/icons/trash.svg" draggable="false" />
+                                                                        <button 
+                                                                            type="button" 
+                                                                            className="btn btn-icon" 
+                                                                            onClick={() => confirmDelete(comment.commentId)}
+                                                                        >
+                                                                            <img src="/assets/icons/trash.svg" className="icon-dynamic" draggable="false" />
                                                                         </button>
                                                                     </div>
                                                                 )}
                                                             </motion.div>
-                                                        </AnimatePresence>
-                                                    );
-                                                })
-                                            ) : (
-                                                <div className="no-comment">
-                                                    <p>No comments yet.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </motion.div>
-                        ) : (
-                            <div className="loading-spinner"></div>
-                        )
+                                                        );
+                                                    })
+                                                ) : (
+                                                    <div className="no-comment">
+                                                        <p>No comments yet.</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            )}
+                        </motion.div>
+                    ) : (
+                        <div className="loading-spinner"></div>
                     )}
                 </AnimatePresence>
             </div>
