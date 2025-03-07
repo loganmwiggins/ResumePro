@@ -22,6 +22,7 @@ function ResumeShare() {
     const [commentList, setCommentList] = useState(null);
     const [commentsLoading, setCommentsLoading] = useState(false);
     const [showComments, setShowComments] = useState(true);
+    const [showDisclaimer, setShowDisclaimer] = useState(false);
 
     // Get resume on component mount
     useEffect(() => {
@@ -35,6 +36,7 @@ function ResumeShare() {
                 }
 
                 const data = await response.json();
+                console.log(data);
 
                 if (data.skills?.skillsDataJson) {
                     try {
@@ -86,6 +88,18 @@ function ResumeShare() {
 
         fetchComments();
     }, [resumeId, user]);
+
+    // Logic for disclaimer pop-up
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".info-item")) {
+                setShowDisclaimer(false);
+            }
+        }
+    
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    })
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -209,13 +223,13 @@ function ResumeShare() {
             <div className="header-with-btn">
                 <div className="page-header">
                     <h1>Share Resume</h1>
-                    <p>Send your resume to others and allow them to leave comments.</p>
+                    <p>Send your resume and receive feedback from others.</p>
                 </div>
 
                 <div className="reanalyze-ctnr">
                     <button type="button" className="btn btn-outline btn-show" onClick={() => setShowComments(!showComments)}>
-                    <img src="/assets/icons/messages.svg" className="icon-dynamic" draggable="false" />
-                    <span>{showComments ? "Hide" : "Show"} Comments</span>
+                        <img src="/assets/icons/messages.svg" className="icon-dynamic" draggable="false" />
+                        <span>{showComments ? "Hide" : "Show"} Comments</span>
                     </button>
                     <button type="button" className="btn btn-black" onClick={handleShare}>
                         <img src="/assets/icons/paper-plane.svg" draggable="false" />
@@ -259,7 +273,40 @@ function ResumeShare() {
                                         handleChange={(newVal) => setComment(newVal)}
                                         required
                                     />
-                                    <button className="btn btn-blue">Submit</button>
+                                    <div className="form-btns">
+                                        <button className="btn btn-blue">Submit</button>
+                                        <div className="info-item">
+                                            <img 
+                                                src="/assets/icons/info.svg" 
+                                                draggable="false" 
+                                                className="icon-dynamic info-icon"
+                                                onClick={() => setShowDisclaimer(!showDisclaimer)}
+                                            />
+                                            <AnimatePresence>
+                                                {showDisclaimer && (
+                                                <motion.div
+                                                    className="info-txt"
+                                                    initial={{ opacity: 0, y: -10}}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: -10 }}
+                                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                                >
+                                                    <span>
+                                                        Please be respectful when leaving comments. Constructive feedback is encouraged, but inappropriate or offensive remarks will not be tolerated.
+                                                    </span>
+                                                    <br /><br />
+                                                    <span>Comments cannot be edited after submission — they can only be deleted.</span>
+                                                    <br /><br />
+                                                    <span>If you are not logged in, your comment will be posted anonymously and cannot be edited or deleted.</span>
+                                                    {/* <ul>
+                                                        <li>Comments cannot be edited after submission — they can only be deleted.</li>
+                                                        <li>If you are not logged in, your comment will be posted anonymously and cannot be edited or deleted.</li>
+                                                    </ul> */}
+                                                </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    </div>
                                 </form>
 
                                 {/* Comments list */}
