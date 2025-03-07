@@ -182,9 +182,10 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("CertificationId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Certification_ResumeId");
 
-                    b.ToTable("Certifications", (string)null);
+                    b.ToTable("Certifications");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Education", b =>
@@ -228,9 +229,10 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("EducationId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Education_ResumeId");
 
-                    b.ToTable("Education", (string)null);
+                    b.ToTable("Education");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Experience", b =>
@@ -277,9 +279,10 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ExperienceId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Experience_ResumeId");
 
-                    b.ToTable("Experiences", (string)null);
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.GeneralInformation", b =>
@@ -326,9 +329,10 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("GeneralInfoId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_GeneralInformation_ResumeId");
 
-                    b.ToTable("GeneralInformation", (string)null);
+                    b.ToTable("GeneralInformation");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Insight", b =>
@@ -346,9 +350,10 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("InsightId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Insight_ResumeId");
 
-                    b.ToTable("Insights", (string)null);
+                    b.ToTable("Insights");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Project", b =>
@@ -379,9 +384,10 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Project_ResumeId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Resume", b =>
@@ -417,9 +423,10 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ResumeId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("Id")
+                        .HasDatabaseName("IX_Resume_UserId");
 
-                    b.ToTable("Resumes", (string)null);
+                    b.ToTable("Resumes");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Skills", b =>
@@ -438,9 +445,10 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("SkillId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Skills_ResumeId");
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.User", b =>
