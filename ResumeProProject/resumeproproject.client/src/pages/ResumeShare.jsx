@@ -115,6 +115,11 @@ function ResumeShare() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!comment || comment === "") {
+            showToast("Comments cannot be empty", "warning");
+            return;
+        }
+
         try {
             let fullName = null;
             let userId = null;
