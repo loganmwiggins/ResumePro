@@ -92,9 +92,82 @@ namespace ResumeProProject.Server.Data
                 .WithOne(Resume => Resume.Skills)
                 .HasForeignKey<Skills>(s => s.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Indexing for faster queries
+
+            modelBuilder.Entity<Resume>()
+                .HasIndex(r => r.Id)
+                .HasDatabaseName("IX_Resume_UserId");
+
+            modelBuilder.Entity<Education>()
+                .HasIndex(e => e.ResumeId)
+                .HasDatabaseName("IX_Education_ResumeId");
+
+            modelBuilder.Entity<GeneralInformation>()
+                .HasIndex(g => g.ResumeId)
+                .HasDatabaseName("IX_GeneralInformation_ResumeId");
+
+            modelBuilder.Entity<Insight>()
+                .HasIndex(i => i.ResumeId)
+                .HasDatabaseName("IX_Insight_ResumeId");
+
+            modelBuilder.Entity<Certification>()
+                .HasIndex(c => c.ResumeId)
+                .HasDatabaseName("IX_Certification_ResumeId");
+
+            modelBuilder.Entity<Experience>()
+                .HasIndex(e => e.ResumeId)
+                .HasDatabaseName("IX_Experience_ResumeId");
+
+            modelBuilder.Entity<Project>()
+                .HasIndex(p => p.ResumeId)
+                .HasDatabaseName("IX_Project_ResumeId");
+
+            modelBuilder.Entity<Skills>()
+                .HasIndex(s => s.ResumeId)
+                .HasDatabaseName("IX_Skills_ResumeId");
+
+            //    // ✅ Use Hardcoded GUIDs
+            //    var userId = "550e8400-e29b-41d4-a716-446655440000";
+            //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
+            //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
+
+            //    // ✅ Use Hardcoded DateTime
+            //    var fixedDateTime = new DateTime(2024, 2, 1, 12, 0, 0, DateTimeKind.Utc);
+
+            //    // ✅ Seed User
+            //    modelBuilder.Entity<User>().HasData(new User
+            //    {
+            //        Id = userId,
+            //        Username = "testuser",
+            //        Password = "hashedpassword123",
+            //        DateJoined = fixedDateTime
+            //    });
+
+            //    // ✅ Seed Resume
+            //    modelBuilder.Entity<Resume>().HasData(new Resume
+            //    {
+            //        ResumeId = resumeId,
+            //        Id = userId,
+            //        Name = "Software Engineer Resume",
+            //        UpdatedDateTime = fixedDateTime
+            //    });
+
+            //    // ✅ Seed Skills
+            //    modelBuilder.Entity<Skills>().HasData(new Skills
+            //    {s
+            //        SkillId = skillId,
+            //        ResumeId = resumeId,
+            //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>
+            //{
+            //    "C#", "JavaScript", "Python", "SQL", "ASP.NET Core",
+            //    "React.js", "Docker", "REST APIs", "Machine Learning", "Azure", "Git"
+            //})
+            //    });
         }
 
-        // Define Tables
+
+        // ✅ Define Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Resume> Resumes { get; set; }
 

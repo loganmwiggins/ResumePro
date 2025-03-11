@@ -182,7 +182,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("CertificationId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Certification_ResumeId");
 
                     b.ToTable("Certifications");
                 });
@@ -257,7 +258,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("EducationId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Education_ResumeId");
 
                     b.ToTable("Education");
                 });
@@ -306,7 +308,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ExperienceId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Experience_ResumeId");
 
                     b.ToTable("Experiences");
                 });
@@ -355,7 +358,8 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("GeneralInfoId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_GeneralInformation_ResumeId");
 
                     b.ToTable("GeneralInformation");
                 });
@@ -375,7 +379,8 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("InsightId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Insight_ResumeId");
 
                     b.ToTable("Insights");
                 });
@@ -408,7 +413,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.HasIndex("ResumeId");
+                    b.HasIndex("ResumeId")
+                        .HasDatabaseName("IX_Project_ResumeId");
 
                     b.ToTable("Projects");
                 });
@@ -446,7 +452,8 @@ namespace ResumeProProject.Server.Migrations
 
                     b.HasKey("ResumeId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("Id")
+                        .HasDatabaseName("IX_Resume_UserId");
 
                     b.ToTable("Resumes");
                 });
@@ -467,7 +474,8 @@ namespace ResumeProProject.Server.Migrations
                     b.HasKey("SkillId");
 
                     b.HasIndex("ResumeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Skills_ResumeId");
 
                     b.ToTable("Skills");
                 });
