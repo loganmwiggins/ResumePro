@@ -1,11 +1,12 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
-import { API_BASE_URL } from "../utils/BaseUrl";
-import { showToast } from "../utils/Toast";
-import AllTemplates from "../components/templates/AllTemplates";
-import "../stylesheets/ResumePreview.css";
+import React, { useRef, useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import Fireworks from 'react-canvas-confetti/dist/presets/fireworks';
+
+import { API_BASE_URL } from '../utils/BaseUrl';
+import { showToast } from '../utils/Toast';
+import AllTemplates from '../components/templates/AllTemplates';
+import '../stylesheets/ResumePreview.css';
 
 const ResumePreview = () => {
     const { resumeId } = useParams();
@@ -91,11 +92,12 @@ const ResumePreview = () => {
 
     const handleInsights = () => navigate(`/insights/${resumeId}`);
 
+    const handleShare = () => navigate(`/share/${resumeId}`);
+
 
     if (!resumeData) return <div className="loading-spinner"></div>;
 
     return (
-        
         <div className="preview-ctnr">
             {showConfetti ?
                 <Fireworks autorun={{ speed: 1, duration: 2000 }} />
@@ -130,6 +132,10 @@ const ResumePreview = () => {
                     <img src="/assets/icons/sparkles.svg" draggable="false" />
                     <span>AI Insights</span>
                 </button>
+                <button onClick={handleShare} title="Share your resume with others">
+                    <img src="/assets/icons/paper-plane.svg" draggable="false" />
+                    <span>Share</span>
+                </button>
             </motion.div>
 
             <motion.div 
@@ -138,8 +144,13 @@ const ResumePreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
             >
-                <div className="resume-preview-wrapper-2" ref={resumeRef}>
-                    <AllTemplates selectedTemplate={resumeData.templateId} resumeData={resumeData} color={JSON.parse(resumeData.colorJson)} textSize={resumeData.textSize} />
+                <div ref={resumeRef}>
+                    <AllTemplates 
+                        selectedTemplate={resumeData.templateId} 
+                        resumeData={resumeData} 
+                        color={JSON.parse(resumeData.colorJson)} 
+                        textSize={resumeData.textSize} 
+                    />
                 </div>
             </motion.div>
         </div>

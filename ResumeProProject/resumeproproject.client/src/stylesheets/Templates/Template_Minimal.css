@@ -58,7 +58,7 @@
 
     .p-main { font-weight: 700; }
 
-    ul { padding-left: calc(1.25rem * var(--scale-factor)) }
+    ul, ol { padding-left: calc(1.25rem * var(--scale-factor)) }
     
     
     /* GENERAL INFO */

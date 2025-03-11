@@ -74,11 +74,6 @@ function ResumeInsights() {
     return "score-red";  // Ensure 0% falls in this range
   };
 
-  // AI content disclaimer
-  const toggleDisclaimer = () => {
-    setShowDisclaimer(!showDisclaimer);
-  }
-
   const fetchResumeInsights = async () => {
     setError('');
     setResumeLoading(true);
@@ -365,7 +360,7 @@ function ResumeInsights() {
                     src="/assets/icons/info.svg" 
                     draggable="false" 
                     className="icon-dynamic info-icon"
-                    onClick={toggleDisclaimer}
+                    onClick={() => setShowDisclaimer(!showDisclaimer)}
                   />
                   <AnimatePresence>
                     {showDisclaimer && (

@@ -62,7 +62,7 @@
         opacity: .5;
     }
 
-    ul { padding-left: calc(2rem * var(--scale-factor)) }
+    ul, ol { padding-left: calc(2rem * var(--scale-factor)) }
 
 
     /* GENERAL INFORMATION */

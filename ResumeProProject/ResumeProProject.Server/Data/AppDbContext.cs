@@ -9,7 +9,8 @@ namespace ResumeProProject.Server.Data
 {
     public class AppDbContext : IdentityDbContext<User>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,7 +28,7 @@ namespace ResumeProProject.Server.Data
                 .Property(s => s.JobType)
                 .HasConversion<string>();
 
-            // ✅ Define Relationships (Fixed Foreign Keys)
+            // Define Relationships
 
             // User → Resume (One-to-Many)
             modelBuilder.Entity<Resume>()
@@ -55,6 +56,13 @@ namespace ResumeProProject.Server.Data
                 .HasOne(g => g.Resume)
                 .WithOne(Resume => Resume.Insights)
                 .HasForeignKey<Insight>(g => g.ResumeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Resume → Comments (One-to-Many)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Resume)
+                .WithMany(r => r.Comments)
+                .HasForeignKey(c => c.ResumeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Resume → Certifications (One-to-Many)
@@ -162,6 +170,7 @@ namespace ResumeProProject.Server.Data
         // ✅ Define Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Resume> Resumes { get; set; }
+
         public DbSet<GeneralInformation> GeneralInformation { get; set; }
         public DbSet<Education> Education { get; set; }
         public DbSet<Certification> Certifications { get; set; }
@@ -169,5 +178,6 @@ namespace ResumeProProject.Server.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Insight> Insights { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
