@@ -74,7 +74,7 @@
 
     .p-date { font-style: italic; }
 
-    ul { padding-left: calc(2.25rem * var(--scale-factor)) }
+    ul, ol { padding-left: calc(2.25rem * var(--scale-factor)) }
 
 
     /* HEADER */

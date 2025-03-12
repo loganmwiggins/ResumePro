@@ -78,8 +78,7 @@ namespace ResumeProProject.Server.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            if (user == null)
-                return NotFound(new { message = "User not found" });
+            if (user == null) return NotFound(new { message = "User not found" });
 
             return Ok(new
             {

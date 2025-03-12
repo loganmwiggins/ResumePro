@@ -14,5 +14,7 @@ namespace ResumeProProject.Server.Data.Models
         public bool IsFirstLogin { get; set; } = true;
 
         public virtual ICollection<Resume> Resumes { get; set; } = new List<Resume>();
+
+        //public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

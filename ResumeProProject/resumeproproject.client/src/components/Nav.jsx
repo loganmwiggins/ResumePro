@@ -74,7 +74,13 @@ function Nav() {
                                 {/* Profile Button */}
                                 <button className="user-btn" onClick={toggleDropdown} title="Profile">
                                     <img src="/assets/icons/user.svg" draggable="false" />
-                                    <img src="/assets/icons/angle-down.svg" className="icon-dynamic" draggable="false" />
+                                    <motion.img
+                                        src="/assets/icons/angle-down.svg"
+                                        className="icon-dynamic"
+                                        draggable="false"
+                                        animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                                    />
                                 </button>
 
                                 {/* User dropdown menu */}

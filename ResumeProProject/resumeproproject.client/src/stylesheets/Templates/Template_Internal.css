@@ -117,7 +117,7 @@
 
     .p-accent { color: var(--accent); }
 
-    ul { padding-left: 1.25rem; }
+    ul, ol { padding-left: 1.25rem; }
 
 
     /* CONTACT */
