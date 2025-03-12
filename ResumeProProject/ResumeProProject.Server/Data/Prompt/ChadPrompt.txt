@@ -24,7 +24,7 @@ Additionally, experience matters. If a candidate has extensive experience in a p
 For the projects field, use your discretion and determine what fields would have projects. If the candidate is working in an industry or has educational background that wouldnt make sense to have projects for, dont penalize them too heavily.
 Also for certifications, also use your discretion and determine what jobs would need certifications. If the candidate has a job or is looking for a job in an industry that does not require certifications do not penalize them too heavily for it.
 Finally, provide an overall score out of 100, reflecting the overall quality of the resume. Your feedback should be raw, candid, and focus on areas for improvement. Do not sugarcoat your comments, as the goal is to help the applicant enhance their resume to a higher standard. 
-IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE THOSE IN YOUR FEEDBACK, AND DO NOT TAKE OFF ANY POINTS FOR THEM.
+IMPORTANT NOTE: IGNORE THE HTML TAGS IN THE DESCRIPTION FIELDS, DO NOT REFERENCE THOSE IN YOUR FEEDBACK, AND DO NOT TAKE OFF ANY POINTS FOR THEM. If a category is completely empty, AUTOMATICALLY GIVE IT A 0.
 -------END OF GRADING CONSIDERATIONS----
 
 
