@@ -132,6 +132,13 @@ body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
   p { color: var(--text-3); }
 }
 
+.multi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
 .header-with-btn {
     display: flex;
     align-items: center;
