@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactImageUploading from 'react-images-uploading';
 
 import AuthorizeView from '../components/AuthorizeView';
 import { API_BASE_URL } from '../utils/BaseUrl';
@@ -14,12 +15,34 @@ function EditProfile() {
     const [formData, setFormData] = useState({
         firstName: user?.firstName || "",
         lastName: user?.lastName || "",
-        email: user?.email || "",
-        phoneNumber: user?.phoneNumber || "",
+        email: user?.email || ""
     });
+
+    const [profileImage, setProfileImage] = useState(user?.profileImage || null);
+
+    useEffect(() => {
+        if (user) { 
+            setProfileImage(user.profileImage);
+            setFormData({
+                firstName: user?.firstName || "",
+                lastName: user?.lastName || "",
+                email: user?.email || ""
+            });
+        }
+    }, [user]);
+
+    useEffect(() => {
+        console.log("USER ON MOUNT/CHANGE:", user)
+        console.log("IMAGE ON MOUNT/CHANGE:", profileImage);
+
+    }, [user, profileImage]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const onProfilePicChange = (imageList) => {
+        setProfileImage(imageList[0]['data_url']);
     };
 
     const handleCancel = () => {
@@ -28,6 +51,10 @@ function EditProfile() {
     };
 
     const handleSave = async () => {
+        console.log("PROFILE IMAGE ON SAVE:", profileImage);
+        const profileImageData = profileImage || null;
+        console.log("PROFILE IMAGE DATA ON SAVE:", profileImageData);
+
         try {
             const response = await fetch(`${API_BASE_URL}/api/user/update`, {
                 method: "PUT",
@@ -40,15 +67,18 @@ function EditProfile() {
                     Email: formData.email,
                     FirstName: formData.firstName,
                     LastName: formData.lastName,
-                    CoreResumeId: null,
+                    ProfileImage: profileImageData
                 }),
             });
 
-            if (!response.ok) throw new Error("Failed to update profile");
+            if (!response.ok) {
+                showToast("Failed to update profile", "error");
+                throw new Error("Failed to update profile");
+            } 
 
             showToast("Profile updated successfully!", "success");
 
-            window.location.href = "/profile";
+            navigate("/profile");
         } 
         catch (error) {
             console.error("Error saving profile:", error);
@@ -113,21 +143,57 @@ function EditProfile() {
                     </div>
 
                 {/* Profile Picture field */}
-                {/* <div className="field-row">
+                <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Picture</p>
                     </div>
-                    <div className="input-ctnr edit-pfp-ctnr">   
-                        <div className="pfp">
-                            <img src="assets/icons/user.svg" draggable="false" />
-                        </div>
-                        <div>
-                            <p><strong>Upload an image</strong></p>
-                            <p>PNG or JPG (max. 300x300px)</p>
-                            <button type="button">Choose image</button>
-                        </div>
-                    </div>
-                </div> */}
+                    <ReactImageUploading
+                        value={profileImage}
+                        onChange={onProfilePicChange}
+                        dataURLKey="data_url"
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            onImageUpload,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            <div className="input-ctnr edit-pfp-ctnr">   
+                                <div className="pfp">
+                                    {profileImage ? (
+                                        <img src={profileImage} draggable="false" />
+                                    ) : (
+                                        <img src="assets/icons/user.svg" draggable="false" />
+                                    )}
+                                </div>
+                                <div>
+                                    <p><strong>Upload an image</strong></p>
+                                    <p>Accepted types: JPG or PNG</p>
+                                    {profileImage ? (
+                                        <div className="btn-row">
+                                            <button 
+                                                type="button"
+                                                onClick={onImageRemove}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button 
+                                            type="button"
+                                            style={isDragging ? { color: 'red' } : undefined}
+                                            onClick={onImageUpload}
+                                            {...dragProps}
+                                        >
+                                            Click or drop here
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </ReactImageUploading>
+                </div>
 
                 {/* Profile Picture field */}
                 {/* <div className="field-row">

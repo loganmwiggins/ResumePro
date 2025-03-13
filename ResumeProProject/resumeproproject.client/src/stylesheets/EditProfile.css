@@ -76,3 +76,9 @@
         border-radius: inherit;
     }
 }
+
+.btn-row {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+}

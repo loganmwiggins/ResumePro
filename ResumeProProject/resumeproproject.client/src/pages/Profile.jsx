@@ -33,7 +33,14 @@ function Profile() {
         </div>
         <div className="profile-head">
           <div className="head-info">
-            <img src="assets/icons/user.svg" draggable="false" />
+            <div className="pfp">
+              {user.profileImage ? (
+                <img src={user.profileImage} draggable="false" />
+              ) : (
+                <img src="assets/icons/user.svg" draggable="false" />
+              )}
+            </div>
+            
             <div className="head-info-txt">
               <h3>{user.firstName} {user.lastName}</h3>
               <div className="user-tags">
