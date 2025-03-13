@@ -185,11 +185,12 @@ function EditProfile() {
                                     ) : (
                                         <button 
                                             type="button"
-                                            style={isDragging ? { color: 'red' } : undefined}
+                                            className="drop-box"
+                                            style={isDragging ? { background: "var(--bg-secondary) !important", color: "var(--blue)" } : undefined}
                                             onClick={onImageUpload}
                                             {...dragProps}
                                         >
-                                            Click or drop here
+                                            {isDragging ? "Let go!" : "Click or Drop here"}
                                         </button>
                                     )}
                                 </div>
@@ -198,7 +199,7 @@ function EditProfile() {
                     </ReactImageUploading>
                 </div>
 
-                {/* Profile Picture field */}
+                {/* Profile Banner field */}
                 {/* <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Banner</p>

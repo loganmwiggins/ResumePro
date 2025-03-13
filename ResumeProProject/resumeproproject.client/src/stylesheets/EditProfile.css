@@ -39,11 +39,13 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-input);
     border-radius: .5rem;
     padding: .75rem;
 
     .pfp-text-ctnr {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: start !important;
@@ -54,7 +56,10 @@
         flex-direction: column;
         align-items: start;
         
-        .types { color: var(--text-3); }
+        .types {
+            font-size: .85rem;
+            color: var(--text-3);
+        }
     }
     button {
         background: none;
@@ -70,6 +75,7 @@
     }
 
     .pfp {
+        flex-shrink: 0;
         width: 5rem;
         height: 5rem;
         background: lightgrey;
@@ -89,4 +95,12 @@
     display: flex;
     flex-direction: row !important;
     align-items: center;
+}
+
+.drop-box {
+    width: 100%;
+    height: 4rem;
+    background: var(--bg-builder) !important;
+    border-color: var(--border-input) !important;
+    border-radius: .5rem !important;
 }
