@@ -210,6 +210,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
+                    b.Property<string>("UserImage")
+                        .HasColumnType("text");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex("ResumeId");

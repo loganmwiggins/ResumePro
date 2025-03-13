@@ -37,7 +37,6 @@ function ResumeShare() {
                 }
 
                 const data = await response.json();
-                console.log(data);
 
                 if (data.skills?.skillsDataJson) {
                     try {
@@ -47,7 +46,7 @@ function ResumeShare() {
                         data.skills.skillsDataJson = {};
                     }
                 }
-                console.log(data);
+
                 setResumeData(data);
             }
             catch (error) {
@@ -59,6 +58,7 @@ function ResumeShare() {
         fetchResume();
     }, [resumeId]);
 
+    // Fetch existing comments list
     useEffect(() => {
         const fetchComments = async () => {
             setCommentsLoading(true);
@@ -123,10 +123,13 @@ function ResumeShare() {
         try {
             let fullName = null;
             let userId = null;
+            let profileImage = null;
 
             if (user) {
+                console.log(user);
                 fullName = `${user.firstName} ${user.lastName}`;
                 userId = user.id;
+                profileImage = user.profileImage;
             }
 
             const response = await fetch(`${API_BASE_URL}/api/Comment`, {
@@ -134,7 +137,14 @@ function ResumeShare() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({resumeId: resumeId, userId: userId, fullName: fullName, commentBody: comment, dateTimeSubmitted: new Date() })
+                body: JSON.stringify({
+                    resumeId: resumeId, 
+                    userId: userId, 
+                    fullName: fullName,
+                    userImage: profileImage,
+                    commentBody: comment, 
+                    dateTimeSubmitted: new Date() 
+                })
             });
 
             if (response.ok) {
@@ -280,6 +290,7 @@ function ResumeShare() {
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.6 }}
                         >
+                            {/* Document information */}
                             <div className="doc-info-ctnr">
                                 <div title="Resume Title">
                                     <img src="/assets/icons/document.svg" className="icon-dynamic" draggable="false" />
@@ -294,6 +305,7 @@ function ResumeShare() {
                                     <p>{formatDateTime(resumeData.updatedDateTime)}</p>
                                 </div>
                             </div>
+                            {/* Comment form */}
                             <form className="comments-form" onSubmit={(event) => handleSubmit(event)}>
                                 <DescriptionEditor 
                                     value={comment}
@@ -374,7 +386,15 @@ function ResumeShare() {
                                                             >
                                                                 <div className="comment-content">
                                                                     <div className="comment-head">
-                                                                        <img src="/assets/icons/user.svg" draggable="false" />
+                                                                        <div className="pfp">
+                                                                            {comment.userImage ? (
+                                                                                <img src={comment.userImage} draggable="false" />
+                                                                            ) : (
+                                                                                <img src="/assets/icons/user.svg" draggable="false" />
+                                                                            )}
+                                                                        </div>
+                                                                        
+                                                                        
                                                                         <div className="head-text">
                                                                             <div className="head-main">
                                                                                 <p className="name">
