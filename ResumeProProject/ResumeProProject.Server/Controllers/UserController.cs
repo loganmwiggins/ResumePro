@@ -105,16 +105,13 @@ namespace ResumeProProject.Server.Controllers
 
             if (!string.IsNullOrEmpty(model.Email))
                 user.Email = model.Email;
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
-                user.PhoneNumber = model.PhoneNumber;
             if (!string.IsNullOrEmpty(model.FirstName))
                 user.FirstName = model.FirstName;
             if (!string.IsNullOrEmpty(model.LastName))
                 user.LastName = model.LastName;
-            if (!string.IsNullOrEmpty(model.ProfileImage))
-                user.ProfileImage = model.ProfileImage;
-            if (!string.IsNullOrEmpty(model.BannerImage))
-                user.BannerImage = model.BannerImage;
+
+            user.ProfileImage = model.ProfileImage;
+            user.BannerImage = model.BannerImage;
 
 
             var result = await _userManager.UpdateAsync(user);

@@ -68,7 +68,7 @@ function EditProfile() {
                     FirstName: formData.firstName,
                     LastName: formData.lastName,
                     ProfileImage: profileImageData
-                }),
+                })
             });
 
             if (!response.ok) {
@@ -167,9 +167,12 @@ function EditProfile() {
                                         <img src="assets/icons/user.svg" draggable="false" />
                                     )}
                                 </div>
-                                <div>
-                                    <p><strong>Upload an image</strong></p>
-                                    <p>Accepted types: JPG or PNG</p>
+                                <div className="pfp-text-ctnr">
+                                    <div className="pfp-text">
+                                        <p><strong>Upload an image</strong></p>
+                                        <p className="types">Accepted types: JPG or PNG</p>
+                                    </div>
+                                    
                                     {profileImage ? (
                                         <div className="btn-row">
                                             <button 
