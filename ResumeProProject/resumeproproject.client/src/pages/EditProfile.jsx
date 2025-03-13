@@ -19,10 +19,12 @@ function EditProfile() {
     });
 
     const [profileImage, setProfileImage] = useState(user?.profileImage || null);
+    const [bannerImage, setBannerImage] = useState(user?.bannerImage || null);
 
     useEffect(() => {
         if (user) { 
             setProfileImage(user.profileImage);
+            setBannerImage(user.bannerImage);
             setFormData({
                 firstName: user?.firstName || "",
                 lastName: user?.lastName || "",
@@ -30,12 +32,6 @@ function EditProfile() {
             });
         }
     }, [user]);
-
-    useEffect(() => {
-        console.log("USER ON MOUNT/CHANGE:", user)
-        console.log("IMAGE ON MOUNT/CHANGE:", profileImage);
-
-    }, [user, profileImage]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,15 +41,18 @@ function EditProfile() {
         setProfileImage(imageList[0]['data_url']);
     };
 
+    const onBannerChange = (imageList) => {
+        setBannerImage(imageList[0]['data_url']);
+    };
+
     const handleCancel = () => {
         navigate("/profile");
         showToast("Changes were not saved", "warning", "Canceled");
     };
 
     const handleSave = async () => {
-        console.log("PROFILE IMAGE ON SAVE:", profileImage);
         const profileImageData = profileImage || null;
-        console.log("PROFILE IMAGE DATA ON SAVE:", profileImageData);
+        const bannerImageData = bannerImage || null;
 
         try {
             const response = await fetch(`${API_BASE_URL}/api/user/update`, {
@@ -67,7 +66,8 @@ function EditProfile() {
                     Email: formData.email,
                     FirstName: formData.firstName,
                     LastName: formData.lastName,
-                    ProfileImage: profileImageData
+                    ProfileImage: profileImageData,
+                    BannerImage: bannerImageData
                 })
             });
 
@@ -200,21 +200,61 @@ function EditProfile() {
                 </div>
 
                 {/* Profile Banner field */}
-                {/* <div className="field-row">
+                <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Banner</p>
                     </div>
-                    <div className="input-ctnr edit-pfp-ctnr">
-                        <div className="pfp">
-                            <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
-                        </div>
-                        <div>
-                            <p><strong>Upload an image</strong></p>
-                            <p>PNG or JPG (max. 1920x1080px)</p>
-                            <button type="button">Choose image</button>
-                        </div>
-                    </div>
-                </div> */}
+                    <ReactImageUploading
+                        value={bannerImage}
+                        onChange={onBannerChange}
+                        dataURLKey="data_url"
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            onImageUpload,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            <div className="input-ctnr edit-pfp-ctnr">   
+                                <div className="pfp">
+                                    {bannerImage ? (
+                                        <img src={bannerImage} draggable="false" />
+                                    ) : (
+                                        <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+                                    )}
+                                </div>
+                                <div className="pfp-text-ctnr">
+                                    <div className="pfp-text">
+                                        <p><strong>Upload an image</strong></p>
+                                        <p className="types">Accepted types: JPG or PNG</p>
+                                    </div>
+                                    
+                                    {bannerImage ? (
+                                        <div className="btn-row">
+                                            <button 
+                                                type="button"
+                                                onClick={onImageRemove}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button 
+                                            type="button"
+                                            className="drop-box"
+                                            style={isDragging ? { background: "var(--bg-secondary) !important", color: "var(--blue)" } : undefined}
+                                            onClick={onImageUpload}
+                                            {...dragProps}
+                                        >
+                                            {isDragging ? "Let go!" : "Click or Drop here"}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </ReactImageUploading>
+                </div>
             </form>
             )}
         </AuthorizeView>

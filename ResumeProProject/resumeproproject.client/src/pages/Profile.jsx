@@ -29,7 +29,11 @@ function Profile() {
     ) : (
       <div className="profile-ctnr">
         <div className="profile-banner">
-          <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+            {user.bannerImage ? (
+                <img src={user.bannerImage} draggable="false" />
+            ) : (
+                <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+            )}
         </div>
         <div className="profile-head">
           <div className="head-info">

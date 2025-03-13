@@ -103,23 +103,21 @@ namespace ResumeProProject.Server.Controllers
             if (user == null)
                 return NotFound(new { message = "User not found" });
 
-            if (!string.IsNullOrEmpty(model.Email))
-                user.Email = model.Email;
-            if (!string.IsNullOrEmpty(model.FirstName))
-                user.FirstName = model.FirstName;
-            if (!string.IsNullOrEmpty(model.LastName))
-                user.LastName = model.LastName;
+            if (!string.IsNullOrEmpty(model.Email)) user.Email = model.Email;
+            if (!string.IsNullOrEmpty(model.FirstName)) user.FirstName = model.FirstName;
+            if (!string.IsNullOrEmpty(model.LastName)) user.LastName = model.LastName;
 
             user.ProfileImage = model.ProfileImage;
             user.BannerImage = model.BannerImage;
 
-
             var result = await _userManager.UpdateAsync(user);
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
-            return Ok(new { message = "User updated successfully", userId = user.Id });
+            return Ok(new { 
+                message = "User updated successfully", 
+                userId = user.Id 
+            });
         }
 
         // DELETE User by ID
