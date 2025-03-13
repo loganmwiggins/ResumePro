@@ -140,10 +140,10 @@ body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
 }
 
 .header-with-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
 .icon-dynamic { filter: var(--filter-icon); }

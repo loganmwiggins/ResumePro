@@ -210,6 +210,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
+                    b.Property<string>("UserImage")
+                        .HasColumnType("text");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex("ResumeId");
@@ -488,6 +491,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("BannerImage")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -533,6 +539,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");

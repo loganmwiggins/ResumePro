@@ -45,6 +45,7 @@ namespace ResumeProProject.Server.Controllers
                 ResumeId = fetchedResume.ResumeId,
                 UserId = commentDTO.UserId,
                 FullName = commentDTO.FullName,
+                UserImage = commentDTO.UserImage,
                 CommentBody = commentDTO.CommentBody,
                 DateTimeSubmitted = DateTime.UtcNow
             };
@@ -64,7 +65,6 @@ namespace ResumeProProject.Server.Controllers
 
         // Delete Comment
         [HttpDelete("{commentId}")]
-
         public async Task<IActionResult> DeleteInsight(Guid commentId)
         {
             var comment = await _db.Comments

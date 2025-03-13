@@ -66,7 +66,9 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
-                user.IsFirstLogin
+                user.IsFirstLogin,
+                user.ProfileImage,
+                user.BannerImage
             });
 
             return Ok(userList);
@@ -87,7 +89,9 @@ namespace ResumeProProject.Server.Controllers
                 user.FirstName,
                 user.LastName,
                 user.DateJoined,
-                user.IsFirstLogin
+                user.IsFirstLogin,
+                user.ProfileImage,
+                user.BannerImage
             });
         }
 
@@ -99,22 +103,21 @@ namespace ResumeProProject.Server.Controllers
             if (user == null)
                 return NotFound(new { message = "User not found" });
 
-            if (!string.IsNullOrEmpty(model.Email))
-                user.Email = model.Email;
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
-                user.PhoneNumber = model.PhoneNumber;
-            if (!string.IsNullOrEmpty(model.FirstName))
-                user.FirstName = model.FirstName;
-            if (!string.IsNullOrEmpty(model.LastName))
-                user.LastName = model.LastName;
-           
+            if (!string.IsNullOrEmpty(model.Email)) user.Email = model.Email;
+            if (!string.IsNullOrEmpty(model.FirstName)) user.FirstName = model.FirstName;
+            if (!string.IsNullOrEmpty(model.LastName)) user.LastName = model.LastName;
+
+            user.ProfileImage = model.ProfileImage;
+            user.BannerImage = model.BannerImage;
 
             var result = await _userManager.UpdateAsync(user);
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
-            return Ok(new { message = "User updated successfully", userId = user.Id });
+            return Ok(new { 
+                message = "User updated successfully", 
+                userId = user.Id 
+            });
         }
 
         // DELETE User by ID
@@ -155,6 +158,8 @@ namespace ResumeProProject.Server.Controllers
                 user.LastName,
                 user.DateJoined,
                 user.IsFirstLogin,
+                user.ProfileImage,
+                user.BannerImage
             });
         }
 
@@ -195,6 +200,8 @@ namespace ResumeProProject.Server.Controllers
         public string? PhoneNumber { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? ProfileImage { get; set; }
+        public string? BannerImage { get; set; }
         public Guid? CoreResumeId { get; set; }
     }
 }
