@@ -20,6 +20,8 @@ namespace ResumeProProject.Server.Data.Models
 
         public string? FullName { get; set; }
 
+        public string? UserImage { get; set; }
+
         [ForeignKey("Resume")]
         public required Guid ResumeId { get; set; }
 

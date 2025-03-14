@@ -13,8 +13,10 @@ namespace ResumeProProject.Server.Data.Models
 
         public bool IsFirstLogin { get; set; } = true;
 
-        public virtual ICollection<Resume> Resumes { get; set; } = new List<Resume>();
+        public string? ProfileImage { get; set; }
 
-        //public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public string? BannerImage { get; set; }
+
+        public virtual ICollection<Resume> Resumes { get; set; } = new List<Resume>();
     }
 }
