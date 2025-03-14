@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactImageUploading from 'react-images-uploading';
 
 import AuthorizeView from '../components/AuthorizeView';
 import { API_BASE_URL } from '../utils/BaseUrl';
@@ -14,12 +15,34 @@ function EditProfile() {
     const [formData, setFormData] = useState({
         firstName: user?.firstName || "",
         lastName: user?.lastName || "",
-        email: user?.email || "",
-        phoneNumber: user?.phoneNumber || "",
+        email: user?.email || ""
     });
+
+    const [profileImage, setProfileImage] = useState(user?.profileImage || null);
+    const [bannerImage, setBannerImage] = useState(user?.bannerImage || null);
+
+    useEffect(() => {
+        if (user) { 
+            setProfileImage(user.profileImage);
+            setBannerImage(user.bannerImage);
+            setFormData({
+                firstName: user?.firstName || "",
+                lastName: user?.lastName || "",
+                email: user?.email || ""
+            });
+        }
+    }, [user]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const onProfilePicChange = (imageList) => {
+        setProfileImage(imageList[0]['data_url']);
+    };
+
+    const onBannerChange = (imageList) => {
+        setBannerImage(imageList[0]['data_url']);
     };
 
     const handleCancel = () => {
@@ -28,6 +51,9 @@ function EditProfile() {
     };
 
     const handleSave = async () => {
+        const profileImageData = profileImage || null;
+        const bannerImageData = bannerImage || null;
+
         try {
             const response = await fetch(`${API_BASE_URL}/api/user/update`, {
                 method: "PUT",
@@ -40,15 +66,19 @@ function EditProfile() {
                     Email: formData.email,
                     FirstName: formData.firstName,
                     LastName: formData.lastName,
-                    CoreResumeId: null,
-                }),
+                    ProfileImage: profileImageData,
+                    BannerImage: bannerImageData
+                })
             });
 
-            if (!response.ok) throw new Error("Failed to update profile");
+            if (!response.ok) {
+                showToast("Failed to update profile", "error");
+                throw new Error("Failed to update profile");
+            } 
 
             showToast("Profile updated successfully!", "success");
 
-            window.location.href = "/profile";
+            navigate("/profile");
         } 
         catch (error) {
             console.error("Error saving profile:", error);
@@ -113,38 +143,118 @@ function EditProfile() {
                     </div>
 
                 {/* Profile Picture field */}
-                {/* <div className="field-row">
+                <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Picture</p>
                     </div>
-                    <div className="input-ctnr edit-pfp-ctnr">   
-                        <div className="pfp">
-                            <img src="assets/icons/user.svg" draggable="false" />
-                        </div>
-                        <div>
-                            <p><strong>Upload an image</strong></p>
-                            <p>PNG or JPG (max. 300x300px)</p>
-                            <button type="button">Choose image</button>
-                        </div>
-                    </div>
-                </div> */}
+                    <ReactImageUploading
+                        value={profileImage}
+                        onChange={onProfilePicChange}
+                        dataURLKey="data_url"
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            onImageUpload,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            <div className="input-ctnr edit-pfp-ctnr">   
+                                <div className="pfp">
+                                    {profileImage ? (
+                                        <img src={profileImage} draggable="false" />
+                                    ) : (
+                                        <img src="assets/icons/user.svg" draggable="false" />
+                                    )}
+                                </div>
+                                <div className="pfp-text-ctnr">
+                                    <div className="pfp-text">
+                                        <p><strong>Upload an image</strong></p>
+                                        <p className="types">Accepted types: JPG or PNG</p>
+                                    </div>
+                                    
+                                    {profileImage ? (
+                                        <div className="btn-row">
+                                            <button 
+                                                type="button"
+                                                onClick={onImageRemove}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button 
+                                            type="button"
+                                            className="drop-box"
+                                            style={isDragging ? { background: "var(--bg-secondary) !important", color: "var(--blue)" } : undefined}
+                                            onClick={onImageUpload}
+                                            {...dragProps}
+                                        >
+                                            {isDragging ? "Let go!" : "Click or Drop here"}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </ReactImageUploading>
+                </div>
 
-                {/* Profile Picture field */}
-                {/* <div className="field-row">
+                {/* Profile Banner field */}
+                <div className="field-row">
                     <div className="label-ctnr">
                         <p>Profile Banner</p>
                     </div>
-                    <div className="input-ctnr edit-pfp-ctnr">
-                        <div className="pfp">
-                            <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
-                        </div>
-                        <div>
-                            <p><strong>Upload an image</strong></p>
-                            <p>PNG or JPG (max. 1920x1080px)</p>
-                            <button type="button">Choose image</button>
-                        </div>
-                    </div>
-                </div> */}
+                    <ReactImageUploading
+                        value={bannerImage}
+                        onChange={onBannerChange}
+                        dataURLKey="data_url"
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            onImageUpload,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            <div className="input-ctnr edit-pfp-ctnr">   
+                                <div className="pfp">
+                                    {bannerImage ? (
+                                        <img src={bannerImage} draggable="false" />
+                                    ) : (
+                                        <img src="assets/images/profile-banners/modern-blue-halftone.jpg" draggable="false" />
+                                    )}
+                                </div>
+                                <div className="pfp-text-ctnr">
+                                    <div className="pfp-text">
+                                        <p><strong>Upload an image</strong></p>
+                                        <p className="types">Accepted types: JPG or PNG</p>
+                                    </div>
+                                    
+                                    {bannerImage ? (
+                                        <div className="btn-row">
+                                            <button 
+                                                type="button"
+                                                onClick={onImageRemove}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button 
+                                            type="button"
+                                            className="drop-box"
+                                            style={isDragging ? { background: "var(--bg-secondary) !important", color: "var(--blue)" } : undefined}
+                                            onClick={onImageUpload}
+                                            {...dragProps}
+                                        >
+                                            {isDragging ? "Let go!" : "Click or Drop here"}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </ReactImageUploading>
+                </div>
             </form>
             )}
         </AuthorizeView>

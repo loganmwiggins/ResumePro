@@ -26,7 +26,11 @@ namespace ResumeProProject.Server.Controllers
                 ResumeId = request.resumeId,
                 Content = request.content
             };
-            if (NewInsight != null) { _db.Insights.Add(NewInsight); await _db.SaveChangesAsync(); }
+
+            if (NewInsight != null) {
+                _db.Insights.Add(NewInsight);
+                await _db.SaveChangesAsync();
+            }
 
             return Ok(new { message = "Insight added successfully." });
         }
@@ -64,6 +68,5 @@ namespace ResumeProProject.Server.Controllers
             await _db.SaveChangesAsync();
             return Ok(new { message = "Insight deleted successfully." });
         }
-
     }
 }

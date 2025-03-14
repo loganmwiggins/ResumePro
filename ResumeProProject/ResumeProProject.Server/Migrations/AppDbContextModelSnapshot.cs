@@ -188,6 +188,38 @@ namespace ResumeProProject.Server.Migrations
                     b.ToTable("Certifications");
                 });
 
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Comment", b =>
+                {
+                    b.Property<Guid>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CommentBody")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateTimeSubmitted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ResumeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserImage")
+                        .HasColumnType("text");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Education", b =>
                 {
                     b.Property<Guid>("EducationId")
@@ -459,6 +491,9 @@ namespace ResumeProProject.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("BannerImage")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -504,6 +539,9 @@ namespace ResumeProProject.Server.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -582,6 +620,17 @@ namespace ResumeProProject.Server.Migrations
                 {
                     b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
                         .WithMany("Certifications")
+                        .HasForeignKey("ResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resume");
+                });
+
+            modelBuilder.Entity("ResumeProProject.Server.Data.Models.Comment", b =>
+                {
+                    b.HasOne("ResumeProProject.Server.Data.Models.Resume", "Resume")
+                        .WithMany("Comments")
                         .HasForeignKey("ResumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -668,6 +717,8 @@ namespace ResumeProProject.Server.Migrations
             modelBuilder.Entity("ResumeProProject.Server.Data.Models.Resume", b =>
                 {
                     b.Navigation("Certifications");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("Educations");
 

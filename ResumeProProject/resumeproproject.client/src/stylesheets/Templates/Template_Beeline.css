@@ -12,7 +12,6 @@
 
 .Template_Beeline {
     --scale-factor: 1;
-
     --accent: gold;
     font-size: calc(1rem * var(--scale-factor));
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -55,6 +54,8 @@
 
 
     /* TEXT */
+    p { font-size: calc(.9rem * var(--scale-factor)); }
+
     .text-main { font-weight: 600; }
 
     .text-sub {
@@ -62,7 +63,7 @@
         opacity: .5;
     }
 
-    ul { padding-left: calc(2rem * var(--scale-factor)) }
+    ul, ol { padding-left: calc(2rem * var(--scale-factor)) }
 
 
     /* GENERAL INFORMATION */
@@ -71,7 +72,7 @@
         flex-direction: column;
         gap: calc(.75rem * var(--scale-factor));
         padding-bottom: calc(1rem * var(--scale-factor));
-        border-bottom: .5rem solid var(--accent);
+        border-bottom: calc(.5rem * var(--scale-factor)) solid var(--accent);
 
         h1 {
             font-size: calc(2rem * var(--scale-factor));

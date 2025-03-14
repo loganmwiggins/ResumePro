@@ -266,7 +266,6 @@ namespace ResumeProProject.Server.Controllers
             {
                 return NotFound(new { message = "Resume not found." });
             }
-
             return Ok(resume);
         }
 

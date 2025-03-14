@@ -71,7 +71,7 @@
 
     .p-date { font-weight: 600; }
 
-    ul { padding-left: 1.25rem; }
+    ul, ol { padding-left: 1.25rem; }
 
 
     /* HEADER */

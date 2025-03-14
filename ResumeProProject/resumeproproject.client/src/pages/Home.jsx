@@ -216,6 +216,11 @@ function Home() {
         navigate(`/insights/${resumeId}`);
     }
 
+    const handleShareResume = (resumeId, event) => {
+        event.stopPropagation();
+        navigate(`/share/${resumeId}`);
+    }
+
     // Edit resume
     const handleEditResume = (templateId, resumeId, event) => {
         event.stopPropagation();
@@ -406,6 +411,14 @@ function Home() {
                                                                     }
                                                                 >
                                                                     <img src="assets/icons/duplicate.svg" className="icon-dynamic" draggable="false" />
+                                                                </button>
+                                                                <button 
+                                                                    title="Share Resume"
+                                                                    onClick={(event) =>
+                                                                        handleShareResume(resume.resumeId, event)
+                                                                    }
+                                                                >
+                                                                    <img src="assets/icons/paper-plane.svg" className="icon-dynamic" draggable="false" />
                                                                 </button>
                                                                 <button 
                                                                     title="AI Insights"

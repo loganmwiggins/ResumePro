@@ -13,6 +13,7 @@ import TemplateSelection from './pages/TemplateSelection';
 import ResumeBuilder from './pages/ResumeBuilder';
 import ResumePreview from './pages/ResumePreview';
 import ResumeInsights from './pages/ResumeInsights';
+import ResumeShare from './pages/ResumeShare';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/share/:resumeId" element={<ResumeShare />} />
 
           {/* Catch-all route for unknown paths */}
           <Route path="*" element={<Navigate to="/home" />} />
