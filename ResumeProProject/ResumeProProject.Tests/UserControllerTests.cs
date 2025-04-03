@@ -24,49 +24,6 @@ public class UserControllerTests
         _controller = new UserController(_mockUserManager.Object, _mockSignInManager.Object);
     }
 
-    //[Fact]
-    //public async Task Register_User_Success()
-    //{
-    //    // Arrange
-    //    var request = new CustomRegisterRequest
-    //    {
-    //        Email = "test@example.com",
-    //        Password = "Test@1234",
-    //        FirstName = "John",
-    //        LastName = "Doe"
-    //    };
-
-    //    var newUser = new User
-    //    {
-    //        Id = Guid.NewGuid().ToString(),
-    //        Email = request.Email,
-    //        FirstName = request.FirstName,
-    //        LastName = request.LastName,
-    //        DateJoined = DateTime.UtcNow,
-    //        IsFirstLogin = true
-    //    };
-
-    //    _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-    //                    .ReturnsAsync(IdentityResult.Success);
-
-    //    _mockUserManager.Setup(x => x.FindByEmailAsync(request.Email))
-    //                    .ReturnsAsync(newUser);
-
-    //    // Act
-    //    var result = await _controller.Register(request);
-
-    //    // Assert
-    //    var okResult = Assert.IsType<OkObjectResult>(result);
-
-    //    //  Use dynamic typing to match anonymous objects
-    //    dynamic response = okResult.Value;
-
-    //    Assert.Equal("User registered successfully", (string)response.message);
-    //    Assert.NotNull(response.userId);
-    //}
-
-
-
     [Fact]
     public async Task Register_User_Fails()
     {
@@ -122,41 +79,6 @@ public class UserControllerTests
         // Assert
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
     }
-
-    //[Fact]
-    //public async Task GetUserById_ReturnsUser()
-    //{
-    //    // Arrange
-    //    var userId = Guid.NewGuid().ToString(); // Ensure ID is a valid GUID
-    //    var user = new User
-    //    {
-    //        Id = userId,
-    //        Email = "test@example.com",
-    //        FirstName = "John",
-    //        LastName = "Doe",
-    //        DateJoined = DateTime.UtcNow,
-    //        IsFirstLogin = true
-    //    };
-
-    //    _mockUserManager.Setup(x => x.FindByIdAsync(userId)).ReturnsAsync(user);
-
-    //    // Act
-    //    var result = await _controller.GetUserById(userId);
-
-    //    // Assert
-    //    var okResult = Assert.IsType<OkObjectResult>(result);
-
-    //    //  Use dynamic typing to match anonymous objects
-    //    dynamic response = okResult.Value;
-
-    //    Assert.Equal("test@example.com", (string)response.Email);
-    //    Assert.Equal(userId, (string)response.Id);
-    //    Assert.Equal("John", (string)response.FirstName);
-    //    Assert.Equal("Doe", (string)response.LastName);
-    //    Assert.True((bool)response.IsFirstLogin);
-    //}
-
-
 
     [Fact]
     public async Task GetUserById_ReturnsNotFound()
