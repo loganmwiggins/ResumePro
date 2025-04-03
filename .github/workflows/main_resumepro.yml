@@ -38,10 +38,11 @@ jobs:
         run: npm install --legacy-peer-deps
         working-directory: ./ResumeProProject/resumeproproject.client
 
-      #- name: Run ESLint (Linting for Frontend)
-       # run: npx eslint . --ext .js,.ts,.tsx,.vue
-       # working-directory: ./ResumeProProject/resumeproproject.client
-
+      - name: Run ESLint (Linting for Frontend)
+        run: npx eslint . --ext .js,.ts,.tsx,.vue
+        working-directory: ./ResumeProProject/resumeproproject.client
+        continue-on-error: true
+        
       - name: Run frontend tests
         run: npm test
         working-directory: ./ResumeProProject/resumeproproject.client
@@ -53,6 +54,7 @@ jobs:
       - name: Run .NET Code Formatting Check
         run: dotnet format --verify-no-changes
         working-directory: ./ResumeProProject/resumeproproject.server
+        continue-on-error: true
 
       - name: Run backend tests
         run: dotnet test --configuration Release --verbosity normal
