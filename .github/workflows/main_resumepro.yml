@@ -37,11 +37,15 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
         working-directory: ./ResumeProProject/resumeproproject.client
- 
+
+      - name: Run frontend tests
+        run: npm test -- --watchAll=false
+        working-directory: ./ResumeProProject/resumeproproject.client
+
       - name: Build frontend
         run: npm run build -- --config ./vite.config.js
         working-directory: ./ResumeProProject/resumeproproject.client
- 
+
       - name: Build backend
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish
         working-directory: ./ResumeProProject/resumeproproject.server
