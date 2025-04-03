@@ -89,7 +89,6 @@
         }
     }
 
-
     .comments-list {
         width: 100%;
         display: flex;
@@ -143,7 +142,6 @@
         gap: .5rem;
 
     }
-    /* .head-sub { padding-left: 3rem; } */
 
     .name { font-weight: 600; }
 
@@ -179,5 +177,23 @@
         color: var(--text-3);
         padding: 1rem;
         border-radius: .5rem;
+    }
+
+    /* Medium devices (tablets, 992px and down) */
+    @media only screen and (max-width: 992px) {
+        .side-by-side {
+            flex-direction: column;
+        }
+        .resume-paper {
+            
+        }
+        .comments-view {
+            width: 100%;
+        }
+    }
+
+    /* Small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {
+
     }
 }

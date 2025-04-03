@@ -140,10 +140,10 @@ body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
 }
 
 .header-with-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
 }
 
 .icon-dynamic { filter: var(--filter-icon); }
@@ -187,4 +187,19 @@ body::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+
+
+
+/* Medium devices (tablets, 992px and down) */
+@media only screen and (max-width: 992px) {
+  .page-ctnr {
+    padding: 0 2rem 4rem 2rem;
+  }
+}
+
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
 }

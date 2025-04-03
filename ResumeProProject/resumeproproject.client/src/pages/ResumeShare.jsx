@@ -231,7 +231,6 @@ function ResumeShare() {
                     text: "Check out my resume on ResumePro!",
                     url: window.location.href
                 })
-                // .then(() => showToast("Article shared successfully!", "success"))
                 .catch((error) => {
                     showToast("Error sharing article", "error");
                     console.error("Error sharing article:", error);
@@ -393,7 +392,6 @@ function ResumeShare() {
                                                                                 <img src="/assets/icons/user.svg" draggable="false" />
                                                                             )}
                                                                         </div>
-                                                                        
                                                                         
                                                                         <div className="head-text">
                                                                             <div className="head-main">
