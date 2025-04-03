@@ -43,9 +43,9 @@ jobs:
         working-directory: ./ResumeProProject/resumeproproject.client
         
       - name: Run backend tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test --configuration Release --verbosity normal
         working-directory: ./ResumeProProject/ResumeProProject.Tests
-        
+
       - name: Build backend
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish
         working-directory: ./ResumeProProject/resumeproproject.server
