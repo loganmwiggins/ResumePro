@@ -43,7 +43,7 @@ jobs:
        # working-directory: ./ResumeProProject/resumeproproject.client
 
       - name: Run frontend tests
-        run: npm test -- --watchAll=false
+        run: npm test
         working-directory: ./ResumeProProject/resumeproproject.client
 
       - name: Build frontend
