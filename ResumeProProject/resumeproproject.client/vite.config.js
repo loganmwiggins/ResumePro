@@ -42,8 +42,9 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 export default defineConfig({
     plugins: [plugin()],
     test: {
+        globals: true,
         environment: "jsdom",
-        setupFiles: "src/tests/setup.js",
+        setupFiles: "./src/tests/setup.js",
     },
     resolve: {
         alias: {
