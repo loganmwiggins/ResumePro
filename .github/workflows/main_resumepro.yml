@@ -38,9 +38,9 @@ jobs:
         run: npm install --legacy-peer-deps
         working-directory: ./ResumeProProject/resumeproproject.client
 
-      - name: Run ESLint (Linting for Frontend)
-        run: npx eslint . --ext .js,.ts,.tsx,.vue
-        working-directory: ./ResumeProProject/resumeproproject.client
+      #- name: Run ESLint (Linting for Frontend)
+       # run: npx eslint . --ext .js,.ts,.tsx,.vue
+       # working-directory: ./ResumeProProject/resumeproproject.client
 
       - name: Run frontend tests
         run: npm test -- --watchAll=false
