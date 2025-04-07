@@ -103,7 +103,7 @@ public class ResumeControllerTests : ControllerBase
             ColorJson = "{}",
             TemplateId = "classic",
             Thumbnail = "preview.png",
-            TextSize = 1,
+            TextSize = 1, //make sure to not repeat code
             GeneralInformation = new GeneralInformation
             {
                 ResumeId = resumeId,
@@ -189,7 +189,7 @@ public class ResumeControllerTests : ControllerBase
         };
 
         // Act
-        var result = await _controller.RenameResume(request);
+        var result = await _controller.RenameResume(request); //make sure there is error handling
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
