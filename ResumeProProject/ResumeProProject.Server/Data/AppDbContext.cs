@@ -9,13 +9,13 @@ namespace ResumeProProject.Server.Data
 {
     public class AppDbContext : IdentityDbContext<User>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // ✅ Store Enums as Strings for PostgreSQL Compatibility
+            // Store Enums as Strings for PostgreSQL Compatibility
             modelBuilder.Entity<Education>()
                 .Property(s => s.DegreeType)
                 .HasConversion<string>();
@@ -126,58 +126,18 @@ namespace ResumeProProject.Server.Data
             modelBuilder.Entity<Skills>()
                 .HasIndex(s => s.ResumeId)
                 .HasDatabaseName("IX_Skills_ResumeId");
-
-            //    // ✅ Use Hardcoded GUIDs
-            //    var userId = "550e8400-e29b-41d4-a716-446655440000";
-            //    var resumeId = Guid.Parse("a1234567-bcde-8901-2345-67890abcdef0");
-            //    var skillId = Guid.Parse("770e8400-e29b-41d4-a716-446655440000");
-
-            //    // ✅ Use Hardcoded DateTime
-            //    var fixedDateTime = new DateTime(2024, 2, 1, 12, 0, 0, DateTimeKind.Utc);
-
-            //    // ✅ Seed User
-            //    modelBuilder.Entity<User>().HasData(new User
-            //    {
-            //        Id = userId,
-            //        Username = "testuser",
-            //        Password = "hashedpassword123",
-            //        DateJoined = fixedDateTime
-            //    });
-
-            //    // ✅ Seed Resume
-            //    modelBuilder.Entity<Resume>().HasData(new Resume
-            //    {
-            //        ResumeId = resumeId,
-            //        Id = userId,
-            //        Name = "Software Engineer Resume",
-            //        UpdatedDateTime = fixedDateTime
-            //    });
-
-            //    // ✅ Seed Skills
-            //    modelBuilder.Entity<Skills>().HasData(new Skills
-            //    {s
-            //        SkillId = skillId,
-            //        ResumeId = resumeId,
-            //        SkillsDataJson = System.Text.Json.JsonSerializer.Serialize(new List<string>
-            //{
-            //    "C#", "JavaScript", "Python", "SQL", "ASP.NET Core",
-            //    "React.js", "Docker", "REST APIs", "Machine Learning", "Azure", "Git"
-            //})
-            //    });
         }
 
-
-        // ✅ Define Tables
-        public DbSet<User> Users { get; set; }
-        public DbSet<Resume> Resumes { get; set; }
-
-        public DbSet<GeneralInformation> GeneralInformation { get; set; }
-        public DbSet<Education> Education { get; set; }
-        public DbSet<Certification> Certifications { get; set; }
-        public DbSet<Experience> Experiences { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Skills> Skills { get; set; }
-        public DbSet<Insight> Insights { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        // Define Tables
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Resume> Resumes { get; set; }
+        public virtual DbSet<GeneralInformation> GeneralInformation { get; set; }
+        public virtual DbSet<Education> Education { get; set; }
+        public virtual DbSet<Certification> Certifications { get; set; }
+        public virtual DbSet<Experience> Experiences { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Skills> Skills { get; set; }
+        public virtual DbSet<Insight> Insights { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
     }
 }
